@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-12">
+    <mat-tab-group>
+      <mat-tab label="Срезы">
+        <div class="sliceContent ">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">
+            sync
+          </mat-icon>
+          <mat-checkbox>Показать удаленные</mat-checkbox>
+        </div>
+      </mat-tab>
+      <mat-tab label="Сформировать">
+        <div class="orderSliceContent">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12" style="float: none; margin: 0 auto;">
+                <h2>Сформировать срез</h2>
+              </div>
+              <div class="col-md-6">
+                <div class="box">
+                  <mat-checkbox *ngFor="let item of items;">{{item}}</mat-checkbox>
+                </div>
+              </div>
+              <div class="forms" class="col-md-6" style="text-align: left;">
+                <mat-form-field>
+									<input matInput [matDatepicker]="picker1" placeholder="Angular forms" [formControl]="date">
+									<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+									<mat-datepicker #picker1></mat-datepicker>
+								</mat-form-field>
+
+								
+
+                <mat-form-field>
+									<input matInput [matDatepicker]="picker1" placeholder="Дата окончания отчета *">
+									<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+									<mat-datepicker #picker1></mat-datepicker>
+								</mat-form-field>
+
+								<mat-form-field class="example-full-width">
+									<input matInput placeholder="Статсрез на № *" value="148305224">
+								</mat-form-field>
+								<a href="">
+									<mat-icon aria-hidden="false" aria-label="Example home icon">
+										sync
+									</mat-icon>
+								</a>
+								<button class="orderSlice" mat-raised-button color="primary">Сформировать</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>;
