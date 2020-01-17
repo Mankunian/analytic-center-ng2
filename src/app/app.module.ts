@@ -24,6 +24,8 @@ import {ButtonModule} from 'primeng/button';
 import {CalendarModule} from 'primeng/calendar';
 import {TreeTableModule} from 'primeng/treetable';
 import { HttpClientModule } from '@angular/common/http';
+// Services
+import { GetSliceNumberService } from './get-slice-number.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,7 @@ import { HttpClientModule } from '@angular/common/http';
 	exports: [
     MatInputModule
   ],
-  providers: [],
+  providers: [GetSliceNumberService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
