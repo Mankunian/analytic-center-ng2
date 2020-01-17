@@ -7,7 +7,7 @@
             sync
           </mat-icon>
 					<mat-checkbox>Показать удаленные</mat-checkbox> -->
-					<p-button label="Обновить" (onClick)="handleClick($event)" icon="pi pi-refresh" iconPos="left"></p-button>
+					<p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
 					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" [(ngModel)]="selectedCities" inputId="ny"></p-checkbox>
         </div>
       </mat-tab>
@@ -27,7 +27,7 @@
 								<div class="col-md-12">
 									<!-- <h6>Дата начала отчета *</h6> -->
 									<mat-form-field>
-										<input matInput [matDatepicker]="picker" placeholder="Дата начала отчета *">
+										<input matInput [matDatepicker]="picker" placeholder="Дата начала отчета *" [formControl]="dateFrom">
 										<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 										<mat-datepicker #picker></mat-datepicker>
 									</mat-form-field>
@@ -38,7 +38,7 @@
 									<!-- <h6>Дата окончания отчета *</h6> -->
 									<!-- <p-calendar [style]="{'width':'90%'}" [inputStyle]="{'width':'90%'}" [(ngModel)]="dateTo" [showIcon]="true"></p-calendar> -->
 									<mat-form-field>
-										<input matInput [matDatepicker]="picker1" placeholder="Дата окончания отчета *">
+										<input matInput [matDatepicker]="picker1" placeholder="Дата окончания отчета *" [formControl]="dateTo">
 										<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
 										<mat-datepicker #picker1></mat-datepicker>
 									</mat-form-field>
@@ -51,10 +51,10 @@
 										<button pButton type="button" icon="pi pi-refresh" class="ui-button-warn"></button>      
 									</div> -->
 									<mat-form-field class="example-full-width">
-										<input matInput type="number" placeholder="Статсрез на № *" value="148305224">
+										<input matInput type="number" placeholder="Статсрез на № *" [(ngModel)]="max">
 									</mat-form-field>
 									<span>
-										<button mat-icon-button color="primary" aria-label="Example icon-button with a heart icon">
+										<button (click)="getSliceNumber()" mat-icon-button color="primary" aria-label="Example icon-button with a heart icon">
 											<mat-icon>refresh</mat-icon>
 										</button>
 									</span>
