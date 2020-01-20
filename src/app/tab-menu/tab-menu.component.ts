@@ -17,12 +17,11 @@ export class TabMenuComponent implements OnInit {
 	groupListFormGroup : FormGroup
 	groupList:any;
 	max: number;
+	checkedGroupCodes: any;
+	checkedGroupList: any = [];
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
-	dateTo = new FormControl(new Date());
-
-	// items =[ {"name": "Apple iPhone 7" }, {"name": "Huawei Mate 9"}, {"name": "Samsung Galaxy S7"}];
-	
+	dateTo = new FormControl(new Date());	
 
 	sliceNumber: SliceNumber;
   constructor(private getSliceNumberService: GetSliceNumberService, public getGroupListService: GroupListService, private formBuilder: FormBuilder,) {}
@@ -33,7 +32,6 @@ export class TabMenuComponent implements OnInit {
 		});
 
 		setTimeout((res) => {
-			// this.groupList = [{"name": "group1"}, {"name": "group2"}]
 			this.getGroupListService.getGroupList().subscribe((data)=>{
 				console.log(data)
 				this.groupList = data;
@@ -56,6 +54,14 @@ export class TabMenuComponent implements OnInit {
 			this.max = data.value
 			console.log(this.max)
 		})
+	}
+
+	onChange(event){
+		console.log(event.source.value);
+		this.checkedGroupCodes = event.source.value.code;
+		console.log(this.checkedGroupCodes)
+		this.checkedGroupList.push(this.checkedGroupCodes)
+		console.log(this.checkedGroupList);
 	}
 
 }
