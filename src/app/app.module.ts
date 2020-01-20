@@ -7,7 +7,6 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-
 // MaterialDesign library
 import { MatInputModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material';
@@ -18,7 +17,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
 // PrimeNG library
-import {AccordionModule} from 'primeng/accordion'; 
+import {AccordionModule} from 'primeng/accordion';
 import {CheckboxModule} from 'primeng/checkbox';
 import {ButtonModule} from 'primeng/button';
 import {CalendarModule} from 'primeng/calendar';
@@ -32,30 +31,30 @@ import { GroupListService } from './group-list.service';
   declarations: [
     AppComponent,
     NavBarComponent,
-		TabMenuComponent
+    TabMenuComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-		BrowserAnimationsModule,
-		MatSliderModule,
-		MatCheckboxModule,
-		MatTabsModule,
-		MatIconModule,
-		MatDatepickerModule,
-		FormsModule,
-		ReactiveFormsModule,
-		MatInputModule,
-		MatNativeDateModule,
-		MatButtonModule,		
-		AccordionModule,
-		CheckboxModule,
-		ButtonModule,
-		CalendarModule,
-		TreeTableModule,
-		HttpClientModule
-	],
-	exports: [
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatIconModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    AccordionModule,
+    CheckboxModule,
+    ButtonModule,
+    CalendarModule,
+    TreeTableModule,
+    HttpClientModule
+  ],
+  exports: [
     MatInputModule
   ],
   providers: [GetSliceNumberService, GroupListService],

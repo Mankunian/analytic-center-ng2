@@ -1,15 +1,15 @@
 .selector-for-some-widget {
-  box-sizing: content-box;
+	box-sizing: content-box;
 }
 header{
 	padding: 13px 20px;
 }
 
 .logo{
-		// width: 100px;
-    display: inline-block;
-    vertical-align: middle;
-    // margin-right: 10px;
+	// width: 100px;
+	display: inline-block;
+	vertical-align: middle;
+	// margin-right: 10px;
 }
 
 .logo img {
@@ -27,9 +27,9 @@ header{
 
 header h1{
 		color: #134179;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 30px;
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 30px;
 		text-align: center;
 		margin-top: 15px;
 		// margin-bottom: 10px;
@@ -37,8 +37,8 @@ header h1{
 
 .main-navigation{
 		background-color: #134179;
-    height: 40px;
-    position: relative;
+		height: 40px;
+		position: relative;
 }
 
 .main-navigation span{

@@ -4,8 +4,6 @@ import { GroupListService } from '../group-list.service';
 import { GetSliceNumberService } from '../get-slice-number.service';
 import { SliceNumber } from "../sliceNumber";
 
-
-
 @Component({
   selector: 'app-tab-menu',
   templateUrl: './tab-menu.component.html',
