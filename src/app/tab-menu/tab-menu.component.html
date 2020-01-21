@@ -8,7 +8,7 @@
           </mat-icon>
 					<mat-checkbox>Показать удаленные</mat-checkbox> -->
 					<p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
-					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" [(ngModel)]="selectedCities" inputId="ny"></p-checkbox>
+					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" inputId="ny"></p-checkbox>
         </div>
       </mat-tab>
       <mat-tab label="Сформировать">
@@ -19,9 +19,12 @@
                 <h2>Сформировать срез</h2>
               </div>
               <div class="col-md-6">
-                <div class="box">
-                  <mat-checkbox *ngFor="let item of items;">{{item}}</mat-checkbox>
-                </div>
+								
+                <form [formGroup]="groupListFormGroup">
+									<div class="box">
+										<mat-checkbox [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)" *ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>
+										</div>
+								</form>
               </div>
 							<div class="forms" class="col-md-6" style="text-align: left;">
 								<div class="col-md-12">
@@ -62,7 +65,7 @@
 							
 								<br>
 								<div class="col-md-12">
-									<button class="orderSlice" mat-raised-button color="primary">Сформировать</button>
+									<button (click)="orderSlice()" class="orderSlice" mat-raised-button color="primary">Сформировать</button>
 								</div>
               </div>
             </div>
