@@ -8,7 +8,10 @@
           </mat-icon>
 					<mat-checkbox>Показать удаленные</mat-checkbox> -->
 					<p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
-					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" [(ngModel)]="selectedCities" inputId="ny"></p-checkbox>
+          <p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" [(ngModel)]="selectedCities" inputId="ny"></p-checkbox>
+        </div>
+        <div id="mainGrid">
+          <app-tree-table></app-tree-table>
         </div>
       </mat-tab>
       <mat-tab label="Сформировать">
