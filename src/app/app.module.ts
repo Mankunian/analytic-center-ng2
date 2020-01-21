@@ -23,7 +23,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
 // Services
-import { GetSliceNumberService } from './get-slice-number.service';
+import { HttpService } from "./http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
 
@@ -58,7 +58,7 @@ import {TreeTableModule} from 'primeng/treetable';
   exports: [
     MatInputModule
   ],
-  providers: [GetSliceNumberService],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,42 +1,98 @@
 import { Component, OnInit } from '@angular/core';
-import { GetSliceNumberService } from '../get-slice-number.service';
-import {FormControl} from '@angular/forms';
-// import { HttpClient} from '@angular/common/http';
+import {FormGroup, FormControl, FormArray, FormBuilder} from '@angular/forms';
+// import { GroupListService } from '../group-list.service';
+// import { GetSliceNumberService } from '../get-slice-number.service';
+import { HttpService } from "../http.service";
 import { SliceNumber } from "../sliceNumber";
 
 @Component({
   selector: 'app-tab-menu',
   templateUrl: './tab-menu.component.html',
 	styleUrls: ['./tab-menu.component.scss'],
-	providers: [GetSliceNumberService]
+	providers: [HttpService]
 })
 export class TabMenuComponent implements OnInit {
 
-	sliceNumber: SliceNumber;
+	groupListFormGroup : FormGroup
+	groupList:any;
+	max: number;
+	checkedGroupCodes: any;
+	checkedGroupList: any = [];
+	disabledStatus: boolean;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
-	dateTo = new FormControl(new Date());
+	dateTo = new FormControl(new Date());	
 
-	items = ["Apple iPhone 7", "Huawei Mate 9", "Samsung Galaxy S7", "Motorola Moto Z","Apple iPhone 7", "Huawei Mate 9", "Samsung Galaxy S7", "Motorola Moto Z"];
+	sliceNumber: SliceNumber;
+  constructor(private httpService: HttpService,  private formBuilder: FormBuilder,) {}
 	
-
-
-  constructor(private getSliceNumberService: GetSliceNumberService) { }
-	max: number;
   ngOnInit() {
-		this.getSliceNumberService.getSliceNumber().subscribe((data:SliceNumber) => {
-			// console.log(JSON.stringify(data.max))
+		this.groupListFormGroup = this.formBuilder.group({
+			groupList: this.formBuilder.array([])
+		});
+
+		setTimeout((res) => {
+			this.httpService.getGroupList().subscribe((data)=>{
+				
+				this.groupList = data;
+				this.groupList.forEach(element => {
+					
+					if (element.status == 2) {
+						element.disabledStatus = true;
+					}
+					
+				});
+				
+			})
+
+		});
+		
+		this.httpService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
-			console.log(this.max)
-		})
+			
+		});
 	}
 	
 	getSliceNumber(){
-		this.getSliceNumberService.getSliceNumber().subscribe((data:SliceNumber) => {
-			// console.log(JSON.stringify(data.max))
+		this.httpService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
-			console.log(this.max)
 		})
+	}
+
+	onCheckedGroup(event){
+		this.checkedGroupCodes = event.source.value.code;
+
+		if (event.source._checked) {
+			this.checkedGroupList.push(this.checkedGroupCodes);
+		} else {
+			var a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
+			this.checkedGroupList.splice(a, 1)
+		}		
+		console.log(this.checkedGroupList)
+	}
+
+	orderSlice(){
+		this.dateFrom.value.setHours(0)
+		this.dateFrom.value.setMinutes(0)
+		this.dateFrom.value.setSeconds(0)
+
+		this.dateTo.value.setHours(0)
+		this.dateTo.value.setMinutes(0)
+		this.dateTo.value.setSeconds(0)
+
+		const dateFromTimestamp = this.dateFrom.value.getTime() / 1000;
+		const dateToTimestamp = this.dateTo.value.getTime() / 1000 | 0;
+
+
+		var objForOrderSlice = {
+			startDate : dateFromTimestamp,
+			endDate   : dateToTimestamp,
+			maxRecNum : this.max,
+			groups    : this.checkedGroupList,
+		};
+		console.log(objForOrderSlice)
+
+
 	}
 
 }
