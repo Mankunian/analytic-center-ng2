@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, FormArray, FormBuilder} from '@angular/forms';
-import { GroupListService } from '../group-list.service';
-import { GetSliceNumberService } from '../get-slice-number.service';
+// import { GroupListService } from '../group-list.service';
+// import { GetSliceNumberService } from '../get-slice-number.service';
+import { HttpService } from "../http.service";
 import { SliceNumber } from "../sliceNumber";
 
 @Component({
   selector: 'app-tab-menu',
   templateUrl: './tab-menu.component.html',
 	styleUrls: ['./tab-menu.component.scss'],
-	providers: [GetSliceNumberService, GroupListService]
+	providers: [HttpService]
 })
 export class TabMenuComponent implements OnInit {
 
@@ -23,7 +24,7 @@ export class TabMenuComponent implements OnInit {
 	dateTo = new FormControl(new Date());	
 
 	sliceNumber: SliceNumber;
-  constructor(private getSliceNumberService: GetSliceNumberService, public getGroupListService: GroupListService, private formBuilder: FormBuilder,) {}
+  constructor(private httpService: HttpService,  private formBuilder: FormBuilder,) {}
 	
   ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
@@ -31,7 +32,7 @@ export class TabMenuComponent implements OnInit {
 		});
 
 		setTimeout((res) => {
-			this.getGroupListService.getGroupList().subscribe((data)=>{
+			this.httpService.getGroupList().subscribe((data)=>{
 				
 				this.groupList = data;
 				this.groupList.forEach(element => {
@@ -46,38 +47,52 @@ export class TabMenuComponent implements OnInit {
 
 		});
 		
-
-		this.getSliceNumberService.getSliceNumber().subscribe((data:SliceNumber) => {
+		this.httpService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
 			
 		});
-
-		
-
 	}
 	
 	getSliceNumber(){
-		this.getSliceNumberService.getSliceNumber().subscribe((data:SliceNumber) => {
+		this.httpService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
-		
 		})
 	}
 
-	onChange(event){
-		console.log(event.source);
+	onCheckedGroup(event){
 		this.checkedGroupCodes = event.source.value.code;
 
 		if (event.source._checked) {
-			// console.log('true');
 			this.checkedGroupList.push(this.checkedGroupCodes);
-			console.log(this.checkedGroupCodes)
-			console.log(this.checkedGroupList)
 		} else {
 			var a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
-			console.log(a)
 			this.checkedGroupList.splice(a, 1)
-			console.log(this.checkedGroupList)
 		}		
+		console.log(this.checkedGroupList)
+	}
+
+	orderSlice(){
+		this.dateFrom.value.setHours(0)
+		this.dateFrom.value.setMinutes(0)
+		this.dateFrom.value.setSeconds(0)
+
+		this.dateTo.value.setHours(0)
+		this.dateTo.value.setMinutes(0)
+		this.dateTo.value.setSeconds(0)
+
+		const dateFromTimestamp = this.dateFrom.value.getTime() / 1000;
+		const dateToTimestamp = this.dateTo.value.getTime() / 1000 | 0;
+
+
+		var objForOrderSlice = {
+			startDate : dateFromTimestamp,
+			endDate   : dateToTimestamp,
+			maxRecNum : this.max,
+			groups    : this.checkedGroupList,
+		};
+		console.log(objForOrderSlice)
+
+
 	}
 
 }

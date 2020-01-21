@@ -22,7 +22,7 @@
 								
                 <form [formGroup]="groupListFormGroup">
 									<div class="box">
-										<mat-checkbox [disabled]="group.disabledStatus" (change)="onChange($event)" *ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>
+										<mat-checkbox [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)" *ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>
 										</div>
 								</form>
               </div>
@@ -65,7 +65,7 @@
 							
 								<br>
 								<div class="col-md-12">
-									<button class="orderSlice" mat-raised-button color="primary">Сформировать</button>
+									<button (click)="orderSlice()" class="orderSlice" mat-raised-button color="primary">Сформировать</button>
 								</div>
               </div>
             </div>
