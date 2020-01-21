@@ -32,16 +32,16 @@ export class TabMenuComponent implements OnInit {
 
 		setTimeout((res) => {
 			this.getGroupListService.getGroupList().subscribe((data)=>{
-				console.log(data)
+				
 				this.groupList = data;
 				this.groupList.forEach(element => {
-					console.log(element.status);
+					
 					if (element.status == 2) {
 						element.disabledStatus = true;
 					}
 					
 				});
-				console.log(this.groupList)
+				
 			})
 
 		});
@@ -49,7 +49,7 @@ export class TabMenuComponent implements OnInit {
 
 		this.getSliceNumberService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
-			console.log(this.max)
+			
 		});
 
 		
@@ -59,7 +59,7 @@ export class TabMenuComponent implements OnInit {
 	getSliceNumber(){
 		this.getSliceNumberService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
-			console.log(this.max)
+		
 		})
 	}
 
@@ -68,23 +68,16 @@ export class TabMenuComponent implements OnInit {
 		this.checkedGroupCodes = event.source.value.code;
 
 		if (event.source._checked) {
-			console.log('true');
+			// console.log('true');
 			this.checkedGroupList.push(this.checkedGroupCodes);
+			console.log(this.checkedGroupCodes)
 			console.log(this.checkedGroupList)
 		} else {
-			console.log('false');
-			this.checkedGroupList.splice(this.checkedGroupCodes)
-		}
-
-		console.log(this.checkedGroupList)
-		
-		// push only it has uniqe id
-		// if (this.checkedGroupList.indexOf(this.checkedGroupCodes) === -1) {
-		// 	this.checkedGroupList.push(this.checkedGroupCodes);
-		// 	console.log(this.checkedGroupList)
-		// }
-
-		
+			var a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
+			console.log(a)
+			this.checkedGroupList.splice(a, 1)
+			console.log(this.checkedGroupList)
+		}		
 	}
 
 }
