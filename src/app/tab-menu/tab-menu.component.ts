@@ -17,6 +17,7 @@ export class TabMenuComponent implements OnInit {
 	max: number;
 	checkedGroupCodes: any;
 	checkedGroupList: any = [];
+	disabledStatus: boolean;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());	
@@ -33,6 +34,14 @@ export class TabMenuComponent implements OnInit {
 			this.getGroupListService.getGroupList().subscribe((data)=>{
 				console.log(data)
 				this.groupList = data;
+				this.groupList.forEach(element => {
+					console.log(element.status);
+					if (element.status == 2) {
+						element.disabledStatus = true;
+					}
+					
+				});
+				console.log(this.groupList)
 			})
 
 		});
@@ -55,11 +64,27 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	onChange(event){
-		console.log(event.source.value);
+		console.log(event.source);
 		this.checkedGroupCodes = event.source.value.code;
-		console.log(this.checkedGroupCodes)
-		this.checkedGroupList.push(this.checkedGroupCodes)
-		console.log(this.checkedGroupList);
+
+		if (event.source._checked) {
+			console.log('true');
+			this.checkedGroupList.push(this.checkedGroupCodes);
+			console.log(this.checkedGroupList)
+		} else {
+			console.log('false');
+			this.checkedGroupList.splice(this.checkedGroupCodes)
+		}
+
+		console.log(this.checkedGroupList)
+		
+		// push only it has uniqe id
+		// if (this.checkedGroupList.indexOf(this.checkedGroupCodes) === -1) {
+		// 	this.checkedGroupList.push(this.checkedGroupCodes);
+		// 	console.log(this.checkedGroupList)
+		// }
+
+		
 	}
 
 }

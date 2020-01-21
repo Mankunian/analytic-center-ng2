@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http'
   providedIn: 'root'
 })
 export class GroupListService {
-	private configUrl = 'https://18.140.232.52:8081/api/v1/RU/slices/groups'
+	private configUrl = 'https://18.140.232.52:8081/api/v1/KZ/slices/groups'
 
 	constructor(private http: HttpClient) { }
 	
