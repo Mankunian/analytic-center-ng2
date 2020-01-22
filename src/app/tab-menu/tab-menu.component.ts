@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, FormArray, FormBuilder} from '@angular/forms';
-// import { GroupListService } from '../group-list.service';
-// import { GetSliceNumberService } from '../get-slice-number.service';
 import { HttpService } from "../http.service";
 import { SliceNumber } from "../sliceNumber";
+import { OrderSliceObj } from "../orderSliceObj";
 
 @Component({
   selector: 'app-tab-menu',
@@ -36,20 +35,15 @@ export class TabMenuComponent implements OnInit {
 				
 				this.groupList = data;
 				this.groupList.forEach(element => {
-					
 					if (element.status == 2) {
 						element.disabledStatus = true;
 					}
-					
 				});
-				
 			})
-
 		});
 		
 		this.httpService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
-			
 		});
 	}
 	
@@ -71,7 +65,7 @@ export class TabMenuComponent implements OnInit {
 		console.log(this.checkedGroupList)
 	}
 
-	orderSlice(){
+	orderSlice(item: OrderSliceObj){
 		this.dateFrom.value.setHours(0)
 		this.dateFrom.value.setMinutes(0)
 		this.dateFrom.value.setSeconds(0)
@@ -84,14 +78,18 @@ export class TabMenuComponent implements OnInit {
 		const dateToTimestamp = this.dateTo.value.getTime() / 1000 | 0;
 
 
-		var objForOrderSlice = {
+		var orderSliceObj = {
 			startDate : dateFromTimestamp,
 			endDate   : dateToTimestamp,
 			maxRecNum : this.max,
 			groups    : this.checkedGroupList,
 		};
-		console.log(objForOrderSlice)
+		console.log(orderSliceObj)
 
+		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
+			console.log('sadasd')
+		})
+		
 
 	}
 
