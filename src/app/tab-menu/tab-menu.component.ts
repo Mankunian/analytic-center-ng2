@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, FormArray, FormBuilder} from '@angular/forms';
-// import { GroupListService } from '../group-list.service';
-// import { GetSliceNumberService } from '../get-slice-number.service';
-import { HttpService } from "../http.service";
+import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
 
 @Component({
@@ -21,7 +19,7 @@ export class TabMenuComponent implements OnInit {
 	disabledStatus: boolean;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
-	dateTo = new FormControl(new Date());	
+	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
   constructor(private httpService: HttpService,  private formBuilder: FormBuilder,) {}
@@ -65,7 +63,7 @@ export class TabMenuComponent implements OnInit {
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
 		} else {
-			var a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
+			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
 		}		
 		console.log(this.checkedGroupList)
@@ -84,7 +82,7 @@ export class TabMenuComponent implements OnInit {
 		const dateToTimestamp = this.dateTo.value.getTime() / 1000 | 0;
 
 
-		var objForOrderSlice = {
+		let objForOrderSlice = {
 			startDate : dateFromTimestamp,
 			endDate   : dateToTimestamp,
 			maxRecNum : this.max,

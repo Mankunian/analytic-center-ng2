@@ -23,7 +23,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
 // Services
-import { HttpService } from "./http.service";
+import { HttpService } from "./services/http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
 
