@@ -1,6 +1,6 @@
 export class OrderSliceObj {
-  startDate: number;
-  endDate: number;
+  startDate: string;
+  endDate: string;
   maxRecNum: number;
   groups: [];
 }

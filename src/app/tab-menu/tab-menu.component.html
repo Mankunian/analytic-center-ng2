@@ -23,9 +23,10 @@
 								
                 <form [formGroup]="groupListFormGroup">
 									<div class="box">
-										<mat-checkbox [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)" *ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>
-										</div>
+										<mat-checkbox color="primary" [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)" *ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>
+									</div>
 								</form>
+								
               </div>
 							<div class="forms" class="col-md-6" style="text-align: left;">
 								<div class="col-md-12">

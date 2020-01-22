@@ -30,8 +30,9 @@ export class TabMenuComponent implements OnInit {
   ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([])
+			
 		});
-
+		console.log(this.groupListFormGroup)
 		setTimeout((res) => {
 			this.httpService.getGroupList().subscribe((data)=>{
 				
@@ -80,12 +81,23 @@ export class TabMenuComponent implements OnInit {
 		this.dateTo.value.setMinutes(0)
 		this.dateTo.value.setSeconds(0)
 
-		const dateFromTimestamp = this.dateFrom.value.getTime() / 1000;
-		const dateToTimestamp = this.dateTo.value.getTime() / 1000 | 0;
+
+		let dateFrom = this.dateFrom.value,
+			ddFrom = ("0" + dateFrom.getDate()).slice(-2),
+			mmFrom = ("0" + (dateFrom.getMonth() + 1)).slice(-2),
+			yyFrom = dateFrom.getFullYear();
+		let dateFromInput = ddFrom + '.' + mmFrom + '.' + yyFrom;
+
+		let dateTo = this.dateTo.value,
+			ddTo = ("0" + dateTo.getDate()).slice(-2),
+			mmTo = ("0" + (dateTo.getMonth() + 1)).slice(-2),
+			yyTo = dateTo.getFullYear();
+		let	dateToInput = ddTo + '.' + mmTo + '.' + yyTo;
+	
 
 		let orderSliceObj = {
-			startDate : dateFromTimestamp,
-			endDate   : dateToTimestamp,
+			startDate : dateFromInput,
+			endDate   : dateToInput,
 			maxRecNum : this.max,
 			groups    : this.checkedGroupList,
 		};
@@ -93,8 +105,8 @@ export class TabMenuComponent implements OnInit {
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
 			console.log(data)
 			// this.selected = (0)
-			this.checkedGroupList.length = 0;
-			this.checkedGroupList = []
+			console.log(this.checkedGroupList = [])
+			console.log(this.checkedGroupList.length = 0)
 		})
 	}
 }
