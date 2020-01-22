@@ -30,8 +30,9 @@ export class TabMenuComponent implements OnInit {
   ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([])
+			
 		});
-
+		console.log(this.groupListFormGroup)
 		setTimeout((res) => {
 			this.httpService.getGroupList().subscribe((data)=>{
 				
@@ -94,7 +95,6 @@ export class TabMenuComponent implements OnInit {
 			console.log(data)
 			// this.selected = (0)
 			this.checkedGroupList.length = 0;
-			this.checkedGroupList = []
 		})
 	}
 }
