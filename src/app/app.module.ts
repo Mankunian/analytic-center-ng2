@@ -24,8 +24,6 @@ import {CalendarModule} from 'primeng/calendar';
 import {TreeTableModule} from 'primeng/treetable';
 import { HttpClientModule } from '@angular/common/http';
 // Services
-import { GetSliceNumberService } from './get-slice-number.service';
-import { GroupListService } from './group-list.service';
 import { HttpService } from "./http.service";
 
 @NgModule({
