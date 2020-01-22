@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { OrderSliceObj } from "./orderSliceObj";
+import { OrderSliceObj } from "./../orderSliceObj";
 import { Header } from 'primeng/api/shared';
 
 @Injectable({
