@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12">
-    <mat-tab-group animationDuration="0ms">
+    <mat-tab-group (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]=selected animationDuration="0ms">
       <mat-tab label="Срезы">
         <div class="sliceContent ">
           <!-- <mat-icon aria-hidden="false" aria-label="Example home icon">
