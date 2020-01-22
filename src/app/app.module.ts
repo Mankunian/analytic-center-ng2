@@ -23,13 +23,9 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
 // Services
-<<<<<<< HEAD
 import { HttpService } from "./services/http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
-=======
-import { HttpService } from "./http.service";
->>>>>>> fae7ae2bec2f15627a808cafc46c454210a3e911
 
 @NgModule({
   declarations: [
