@@ -28,40 +28,32 @@ export class TreeTableComponent implements OnInit {
   }
 
   formatGridData(dataArray) {
-    let newArray :TreeNode = { 'data': [] };
-    let formattedData;
+    // let newArray :TreeNode = { 'data': [] };
+    let formattedData :TreeNode = { 'data': [] };
     console.log(dataArray);
 
     dataArray.forEach((item, index) => {
-      console.log(item.children);
       if (item['children'].length) {
         console.log('have child');
+        // formattedData.data.push(this.childTreeNode(item['children']))
       }
-      console.log(typeof item);
-      this.childTreeNode(item)
-      // let objectWithoutChildren = Object.keys(item).reduce((object, key) => {
-      //   if (key !== 'children') {
-      //     object[key] = item[key]
-      //   }
-      //   return object
-      // }, {})
-
-      formattedData = { 'data': objectWithoutChildren, 'children' : item['children'] }
-      newArray['data'].push(formattedData)
+      
+      formattedData.data.push({ 'data': this.childTreeNode(item), 'children' : this.childTreeNode(item['children']) })
     });
-    console.log("TCL: formatGridData -> newArray", newArray)
-    return newArray;
+    console.log("TCL: formatGridData -> formattedData", formattedData)
+    return formattedData
   }
 
   childTreeNode(data) {
-    let dataNode = Object.keys(item).reduce((object, key) => {
+    let dataNode = Object.keys(data).reduce((object, key) => {
       if (key !== 'children') {
         object[key] = data[key]
       }
-      return object
+      return object // В переменной объекты отдельно, без children
     }, {})
 
-
+    return dataNode
+    // return { 'data': dataNode, 'children' : data['children'] }
   }
 
 }
