@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, FormArray, FormBuilder} from '@angular/forms';
-import { HttpService } from "../http.service";
+import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
 import { OrderSliceObj } from "../orderSliceObj";
 
@@ -22,7 +22,7 @@ export class TabMenuComponent implements OnInit {
 	selected: number = (1);
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
-	dateTo = new FormControl(new Date());	
+	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
   constructor(private httpService: HttpService,  private formBuilder: FormBuilder,) {}
@@ -62,7 +62,7 @@ export class TabMenuComponent implements OnInit {
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
 		} else {
-			var a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
+			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
 		}		
 		console.log(this.checkedGroupList)

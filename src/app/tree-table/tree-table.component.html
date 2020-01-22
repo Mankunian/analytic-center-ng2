@@ -1,0 +1,19 @@
+<p-treeTable [value]="files">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Группы</th>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+        <tr>
+            <td>
+                <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                {{rowData.code}}
+            </td>
+            <td>{{rowData.name}}</td>
+            <!-- <td>{{rowData.name}}</td> -->
+        </tr>
+    </ng-template>
+</p-treeTable>

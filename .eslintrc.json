@@ -19,6 +19,10 @@
     "prettier/@typescript-eslint"
   ],
   "rules": {
-    "no-var": "error"
+    "no-var": "error",
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "prefer-const": "off"
   }
 }
