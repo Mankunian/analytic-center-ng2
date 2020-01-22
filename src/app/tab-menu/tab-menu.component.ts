@@ -18,6 +18,8 @@ export class TabMenuComponent implements OnInit {
 	checkedGroupCodes: any;
 	checkedGroupList: any = [];
 	disabledStatus: boolean;
+	orderSliceDone: boolean
+	selected: number = (1);
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());	
@@ -65,6 +67,10 @@ export class TabMenuComponent implements OnInit {
 		console.log(this.checkedGroupList)
 	}
 
+	onTabSelectedEvent(event){
+		console.log(event)
+	}
+
 	orderSlice(item: OrderSliceObj){
 		this.dateFrom.value.setHours(0)
 		this.dateFrom.value.setMinutes(0)
@@ -77,20 +83,18 @@ export class TabMenuComponent implements OnInit {
 		const dateFromTimestamp = this.dateFrom.value.getTime() / 1000;
 		const dateToTimestamp = this.dateTo.value.getTime() / 1000 | 0;
 
-
 		var orderSliceObj = {
 			startDate : dateFromTimestamp,
 			endDate   : dateToTimestamp,
 			maxRecNum : this.max,
 			groups    : this.checkedGroupList,
 		};
-		console.log(orderSliceObj)
-
-		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
-			console.log('sadasd')
-		})
 		
-
+		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
+			console.log(data)
+			// this.selected = (0)
+			this.checkedGroupList.length = 0;
+			this.checkedGroupList = []
+		})
 	}
-
 }
