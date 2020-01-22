@@ -27,6 +27,7 @@ export class TreeTableComponent implements OnInit {
     });
   }
 
+  
   formatGridData(dataArray) {
     // let newArray :TreeNode = { 'data': [] };
     let formattedData :TreeNode = { 'data': [] };
