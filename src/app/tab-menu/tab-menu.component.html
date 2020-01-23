@@ -20,7 +20,12 @@
                 <h2>Сформировать срез</h2>
               </div>
               <div class="col-md-6">
-								
+								<!-- <div class="box">
+									<div class="custom-control custom-checkbox mb-3" *ngFor="let group of groupList; let i = index">
+									<input type="checkbox" class="custom-control-input" value="{{group.code}}" id="customCheck" name="example1">
+										<label class="custom-control-label" for="customCheck">{{group.name}}</label>
+									</div>
+								</div> -->
                 <form [formGroup]="groupListFormGroup">
 									<div class="box">
 										<mat-checkbox color="primary" [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)" *ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>

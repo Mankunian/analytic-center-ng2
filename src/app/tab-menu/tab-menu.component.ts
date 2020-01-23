@@ -16,6 +16,8 @@ export class TabMenuComponent implements OnInit {
 	groupList:any;
 	max: number;
 	checkedGroupCodes: any;
+	checkedGroupValue: any;
+	indexOfCheckedGroupValue: any;
 	checkedGroupList: any = [];
 	disabledStatus: boolean;
 	orderSliceDone: boolean
@@ -55,17 +57,21 @@ export class TabMenuComponent implements OnInit {
 			this.max = data.value
 		})
 	}
-
+	
 	onCheckedGroup(event){
 		this.checkedGroupCodes = event.source.value.code;
+		this.checkedGroupValue = event.source;
 
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
+			this.indexOfCheckedGroupValue = this.checkedGroupList.indexOf(this.checkedGroupCodes)
+			console.log(this.indexOfCheckedGroupValue)
+
 		} else {
 			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
 		}		
-		console.log(this.checkedGroupList)
+		
 	}
 
 	onTabSelectedEvent(event){
@@ -104,9 +110,11 @@ export class TabMenuComponent implements OnInit {
 		
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
 			console.log(data)
-			// this.selected = (0)
-			console.log(this.checkedGroupList = [])
-			console.log(this.checkedGroupList.length = 0)
+			this.checkedGroupList.forEach(element => {
+				// ЗДЕСЬ ДЛЯ ВСЕХ ЭЛЕМЕНТОВ В МАССИВЕ НУЖНО ЗАДАТЬ ЗНАЧЕНИЕ CHECKED = FALSE ЧТОБЫ УБРАТЬ ГАЛОЧКИ, НО УБИРАЕТ ТОЛЬКО ГАЛОЧКУ ПОСЛЕДЕГО ЭЛЕМЕНТА
+				console.log(element)
+				this.checkedGroupValue._checked = false;
+			});
 		})
 	}
 }
