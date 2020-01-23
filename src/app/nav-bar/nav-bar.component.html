@@ -18,9 +18,17 @@
 </header>
 
 <div class="main-navigation row">
-	<span>СТАТИСТИЧЕСКИЕ СРЕЗЫ</span>
-	<div style="float: right;">
-			
-	</div>
+	<span class="title">СТАТИСТИЧЕСКИЕ СРЕЗЫ</span>
+	<!-- <span class="regions">
+		
+	</span> -->
+	<mat-form-field class="regions">
+		<mat-label style="color: #fff;">Выберите регион</mat-label>
+		<mat-select>
+			<mat-option *ngFor="let food of foods" [value]="food.value">
+				{{food.viewValue}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
 </div>
 <br>

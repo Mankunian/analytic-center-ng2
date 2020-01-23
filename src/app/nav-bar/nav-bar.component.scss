@@ -41,7 +41,7 @@ header h1{
 		position: relative;
 }
 
-.main-navigation span{
+.main-navigation span.title{
 	background: #1975C0;
 	position: absolute;
 	bottom: 0;
@@ -55,4 +55,24 @@ header h1{
 	left: 100px;
 	border-radius: 3px 3px 0 0;
 	cursor: pointer;
+}
+.main-navigation mat-form-field{
+	background: #1975C0;
+	position: absolute;
+	bottom: 0;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: 400;
+	height: 50px;
+	display: block;
+	padding: 7px 20px 0 20px;
+	right: 100px;
+	// left: 100px;
+	border-radius: 3px 3px 0 0;
+	cursor: pointer;
+}
+
+.mat-select-value{
+	color: #fff;
 }
