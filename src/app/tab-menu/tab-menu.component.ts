@@ -16,12 +16,11 @@ export class TabMenuComponent implements OnInit {
 	groupList:any;
 	max: number;
 	checkedGroupCodes: any;
-	checkedGroupValue: any;
-	indexOfCheckedGroupValue: any;
 	checkedGroupList: any = [];
 	disabledStatus: boolean;
 	orderSliceDone: boolean
-	selected: number = (1);
+  selected = (1);
+  checkedGroups: any = [];
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
@@ -58,15 +57,12 @@ export class TabMenuComponent implements OnInit {
 		})
 	}
 	
-	onCheckedGroup(event){
+  onCheckedGroup(event) {
+    this.checkedGroups.push(event)
 		this.checkedGroupCodes = event.source.value.code;
-		this.checkedGroupValue = event.source;
 
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
-			this.indexOfCheckedGroupValue = this.checkedGroupList.indexOf(this.checkedGroupCodes)
-			console.log(this.indexOfCheckedGroupValue)
-
 		} else {
 			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
@@ -75,7 +71,7 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	onTabSelectedEvent(event){
-		console.log(event)
+		// console.log(event)
 	}
 
 	orderSlice(item: OrderSliceObj){
@@ -86,7 +82,6 @@ export class TabMenuComponent implements OnInit {
 		this.dateTo.value.setHours(0)
 		this.dateTo.value.setMinutes(0)
 		this.dateTo.value.setSeconds(0)
-
 
 		let dateFrom = this.dateFrom.value,
 			ddFrom = ("0" + dateFrom.getDate()).slice(-2),
@@ -99,7 +94,6 @@ export class TabMenuComponent implements OnInit {
 			mmTo = ("0" + (dateTo.getMonth() + 1)).slice(-2),
 			yyTo = dateTo.getFullYear();
 		let	dateToInput = ddTo + '.' + mmTo + '.' + yyTo;
-	
 
 		let orderSliceObj = {
 			startDate : dateFromInput,
@@ -109,11 +103,8 @@ export class TabMenuComponent implements OnInit {
 		};
 		
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
-			console.log(data)
-			this.checkedGroupList.forEach(element => {
-				// ЗДЕСЬ ДЛЯ ВСЕХ ЭЛЕМЕНТОВ В МАССИВЕ НУЖНО ЗАДАТЬ ЗНАЧЕНИЕ CHECKED = FALSE ЧТОБЫ УБРАТЬ ГАЛОЧКИ, НО УБИРАЕТ ТОЛЬКО ГАЛОЧКУ ПОСЛЕДЕГО ЭЛЕМЕНТА
-				console.log(element)
-				this.checkedGroupValue._checked = false;
+      this.checkedGroups.forEach(element => {
+				element.source._checked = false;
 			});
 		})
 	}
