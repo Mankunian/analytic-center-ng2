@@ -9,40 +9,42 @@ import { TreeNode } from 'primeng/api';
 })
 export class TreeTableComponent implements OnInit {
 
-  files: TreeNode[];
+  gridData: TreeNode[];
+  cols: any[];
   files1: TreeNode[];
-  test: any;
 
   constructor(private gridService: SlicesGridDataService) {}
 
   ngOnInit() {
-    this.gridService.getSliceGroups().then((files) => { 
-      this.test = this.formatGridData(files)
-      this.files = this.test.data;
+    this.gridService.getSliceGroups().then((gridData) => { 
+      this.gridData = this.formatGridData(gridData)['data']
     });
 
-    this.gridService.getSliceGroups1().then((files1) => {
-      console.log(files1);
-      this.files1 = files1
-    });
+    this.cols = [
+      { field: 'code', header: 'Группы' },
+      { field: 'name', header: 'Size' },
+      { field: 'complete', header: 'Type' }
+    ];
+
+    // this.gridService.getSliceGroups1().then((files1) => {
+    //   this.files1 = files1
+    // });
   }
 
-  
   formatGridData(dataArray) {
-    // let newArray :TreeNode = { 'data': [] };
-    let formattedData :TreeNode = { 'data': [] };
-    console.log(dataArray);
-
-    dataArray.forEach((item, index) => {
-      if (item['children'].length) {
-        console.log('have child');
-        // formattedData.data.push(this.childTreeNode(item['children']))
-      }
+    let parentNode: TreeNode = { 'data': [] };
+    
+    dataArray.forEach((item) => {
+      let childNode = [];
       
-      formattedData.data.push({ 'data': this.childTreeNode(item), 'children' : this.childTreeNode(item['children']) })
+      if (item['children'].length) {
+        item['children'].forEach(element => {
+          childNode.push({ 'data' : this.childTreeNode(element), 'children' : [] })
+        });
+      }
+      parentNode.data.push({ 'data': this.childTreeNode(item), 'children' : childNode })
     });
-    console.log("TCL: formatGridData -> formattedData", formattedData)
-    return formattedData
+    return parentNode
   }
 
   childTreeNode(data) {
@@ -52,9 +54,6 @@ export class TreeTableComponent implements OnInit {
       }
       return object // В переменной объекты отдельно, без children
     }, {})
-
     return dataNode
-    // return { 'data': dataNode, 'children' : data['children'] }
   }
-
 }

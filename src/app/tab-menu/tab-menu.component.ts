@@ -19,7 +19,7 @@ export class TabMenuComponent implements OnInit {
 	checkedGroupList: any = [];
 	disabledStatus: boolean;
 	orderSliceDone: boolean
-	selected: number = (1);
+	selected = (0);
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
@@ -69,7 +69,7 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	onTabSelectedEvent(event){
-		console.log(event)
+		// console.log(event)
 	}
 
 	orderSlice(item: OrderSliceObj){
