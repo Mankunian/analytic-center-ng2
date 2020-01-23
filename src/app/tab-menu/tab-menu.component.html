@@ -3,10 +3,6 @@
     <mat-tab-group (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]=selected animationDuration="0ms">
       <mat-tab label="Срезы">
         <div class="sliceContent ">
-          <!-- <mat-icon aria-hidden="false" aria-label="Example home icon">
-            sync
-          </mat-icon>
-					<mat-checkbox>Показать удаленные</mat-checkbox> -->
 					<p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
 					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" inputId="ny"></p-checkbox>
         </div>
@@ -29,20 +25,16 @@
 							<div class="forms" class="col-md-6" style="text-align: left;">
 								<div class="row">
 									<div class="col-md-12">
-										<!-- <h6>Дата начала отчета *</h6> -->
 										<mat-form-field>
 											<input matInput [matDatepicker]="picker" placeholder="Дата начала отчета *" [formControl]="dateFrom">
 											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 											<mat-datepicker #picker></mat-datepicker>
 										</mat-form-field>
-										<!-- <p-calendar [style]="{'width':'90%'}" [inputStyle]="{'width':'90%'}" [(ngModel)]="dateFrom" [showIcon]="true"></p-calendar> -->
 									</div>
 								</div>
 								<br>
 								<div class="row">
 									<div class="col-md-12">
-										<!-- <h6>Дата окончания отчета *</h6> -->
-										<!-- <p-calendar [style]="{'width':'90%'}" [inputStyle]="{'width':'90%'}" [(ngModel)]="dateTo" [showIcon]="true"></p-calendar> -->
 										<mat-form-field>
 											<input matInput [matDatepicker]="picker1" placeholder="Дата окончания отчета *" [formControl]="dateTo">
 											<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -53,15 +45,9 @@
 								<br>
 								<div class="row">
 									<div class="col-md-10">
-										<!-- <h6>Статсрез на № *</h6>
-										<div class="ui-inputgroup">
-											<input style="width: 100%;" type="text" pInputText placeholder="Keyword">   
-											<button pButton type="button" icon="pi pi-refresh" class="ui-button-warn"></button>      
-										</div> -->
 										<mat-form-field class="example-full-width">
 											<input matInput type="number" placeholder="Статсрез на № *" [(ngModel)]="max">
 										</mat-form-field>
-										
 									</div>
 									<div class="col-md-2">
 										<button (click)="getSliceNumber()" mat-raised-button color="primary">
@@ -69,7 +55,6 @@
 										</button>
 									</div>
 								</div>
-							
 								<br>
 								<div class="row">
 									<div class="col-md-12">
