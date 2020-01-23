@@ -67,6 +67,7 @@ export class TabMenuComponent implements OnInit {
 			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
 		}		
+		console.log(this.checkedGroupList)
 		
 	}
 
@@ -106,6 +107,7 @@ export class TabMenuComponent implements OnInit {
       this.checkedGroups.forEach(element => {
 				element.source._checked = false;
 			});
+			this.checkedGroupList.length = 0;
 		})
 	}
 }
