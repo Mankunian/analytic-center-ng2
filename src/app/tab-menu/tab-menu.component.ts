@@ -19,8 +19,9 @@ export class TabMenuComponent implements OnInit {
 	checkedGroupList: any = [];
 	disabledStatus: boolean;
 	orderSliceDone: boolean
-  selected = (1);
-  checkedGroups: any = [];
+  selected = 0;
+	checkedGroups: any = [];
+	onTabSelectedIndex: number;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
@@ -72,7 +73,7 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	onTabSelectedEvent(event){
-		// console.log(event)
+		this.selected = event.index;
 	}
 
 	orderSlice(item: OrderSliceObj){
@@ -105,9 +106,10 @@ export class TabMenuComponent implements OnInit {
 		
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
       this.checkedGroups.forEach(element => {
-				element.source._checked = false;
+				element.source._checked = false; // uncheck all selected value after response
 			});
-			this.checkedGroupList.length = 0;
+			this.checkedGroupList.length = 0; // clear checkbox array after response
+			this.selected = 0; // transfer to Home Tab after response
 		})
 	}
 }
