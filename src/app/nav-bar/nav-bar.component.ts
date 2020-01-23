@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpService } from "../services/http.service";
 
-export interface Food {
-  value: string;
-  viewValue: string;
+export interface Territory {
+  code: string;
+  name: string;
 }
 
 @Component({
@@ -11,13 +12,19 @@ export interface Food {
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-	foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
+	territoryList: any = []
+	// foods: Food[] = [
+  //   {value: 'steak-0', viewValue: 'Steak'},
+  //   {value: 'pizza-1', viewValue: 'Pizza'},
+  //   {value: 'tacos-2', viewValue: 'Tacos'}
+  // ];
 	
-  constructor() {}
+  constructor(private http: HttpService) {
+		this.http.getTerritories().subscribe((data:Territory)=>{
+			console.log(data)
+			this.territoryList = data;
+		})
+	}
 
   ngOnInit() {
   }

@@ -102,6 +102,7 @@ export class TabMenuComponent implements OnInit {
 		};
 		
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
+			// this.orderSliceDone = true;
       this.checkedGroups.forEach(element => {
 				element.source._checked = false; // uncheck all selected value after response
 			});
