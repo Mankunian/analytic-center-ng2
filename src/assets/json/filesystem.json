@@ -13,39 +13,14 @@
             "name":"Work",
             "size":"55kb",
             "type":"Folder"
-          },
-          "children":[
-            {
-              "data":{
-                "name":"Expenses.doc",
-                "size":"30kb",
-                "type":"Document"
-              }
-            },
-            {
-              "data":{
-                "name":"Resume.doc",
-                "size":"25kb",
-                "type":"Resume"
-              }
-            }
-          ]
+          }
         },
         {
           "data":{
             "name":"Home",
             "size":"20kb",
             "type":"Folder"
-          },
-          "children":[
-            {
-              "data":{
-                "name":"Invoices",
-                "size":"20kb",
-                "type":"Text"
-              }
-            }
-          ]
+          }
         }
       ]
     },
