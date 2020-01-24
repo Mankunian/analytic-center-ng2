@@ -1,37 +1,28 @@
-<!-- <md-toolbar color="primary">
-  <span>angular-mgl-timeline demo</span>
-</md-toolbar>
-<md-toolbar>
-  <button md-raised-button (click)="addEntry()">Add Entry</button>
-  <button md-raised-button (click)="removeEntry()">Remove Entry</button>
-  <button md-raised-button (click)="alternate = !alternate">Toggle Alternate</button>
-  <button md-raised-button (click)="toggle = !toggle">Toggle Toggle</button>
-  <button md-raised-button (click)="expandEnabled = !expandEnabled">Toggle Expand Enabled</button>
-    <button md-raised-button (click)="toggleSide()">Toggle Side</button>
-</md-toolbar>
-<md-toolbar>
-  <button md-raised-button (click)="color = !color">Toggle Dot Color</button>
-<button md-raised-button (click)="size = size + 10">Increase Dot size</button>
-<button md-raised-button (click)="size = size - 10">Decrease Dot size</button>
-</md-toolbar>
 
-
+<mat-toolbar style="text-align: center;">
+	<button (click)="addEntry()" mat-raised-button color="primary">Добавить запись</button>
+	<button (click)="removeEntry()" mat-raised-button color="primary">Удалить запись</button>
+	<button mat-raised-button color="primary" (click)="alternate = !alternate">Переключить альтернативу</button>
+	<button mat-raised-button color="primary" (click)="size = size + 10">Увеличить размер точки</button>
+	<button mat-raised-button color="primary" (click)="size = size - 10">Уменьшить размер точки</button>
+  
+</mat-toolbar>
 <mgl-timeline [toggle]="toggle" [alternate]="alternate" [side]="side">
-  <mgl-timeline-entry *ngFor="let entry of entries; let i = index;" (expand)="onExpandEntry($event, i)">
+  <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (expand)="onExpandEntry($event, i)">
     <mgl-timeline-entry-header (click)="onHeaderClick($event)">
-      <div>{{entry.header}}</div>
-    </mgl-timeline-entry-header>
+			<div>{{history.statusName}}</div>
+		</mgl-timeline-entry-header>
+		
+
     <mgl-timeline-entry-content>
       <div>
-        <div>{{entry.content}}</div>
-        <div>{{entry.content}}</div>
-        <div>{{entry.content}}</div>
+        <div>{{history.personName}}</div>
+			<div>{{history.statusDate}}</div>
       </div>
     </mgl-timeline-entry-content>
-    <mgl-timeline-entry-dot [class]="color ? 'primary' : 'accent'" 
-                            [size]="size"
-                            (click)="onDotClick($event)"></mgl-timeline-entry-dot>
-    <mgl-timeline-entry-side>2018</mgl-timeline-entry-side>
+    <mgl-timeline-entry-dot [size]="size"
+style="text-align: center; background-color: #2196F3; color: darkblue"></mgl-timeline-entry-dot>
+    <!-- <mgl-timeline-entry-side>2018</mgl-timeline-entry-side> -->
   </mgl-timeline-entry>
 </mgl-timeline>
- -->
+

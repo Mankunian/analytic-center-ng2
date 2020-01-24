@@ -20,6 +20,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
 
 import { MglTimelineModule } from 'angular-mgl-timeline';
+import {MatToolbarModule} from '@angular/material';
 
 
 // PrimeNG library
@@ -70,7 +71,8 @@ import { TimelineComponent } from './timeline/timeline.component';
 		TreeTableModule,
 		MatSelectModule,
 		MatDialogModule,
-		MglTimelineModule
+		MglTimelineModule,
+		MatToolbarModule
   ],
   exports: [
     MatInputModule
