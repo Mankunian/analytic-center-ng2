@@ -8,16 +8,17 @@
   
 </mat-toolbar>
 <mgl-timeline [toggle]="toggle" [alternate]="alternate" [side]="side">
-  <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (expand)="onExpandEntry($event, i)">
-    <mgl-timeline-entry-header (click)="onHeaderClick($event)">
+  <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (expand)="onExpandEntry(history)">
+    <mgl-timeline-entry-header (click)="onHeaderClick(history)">
 			<div>{{history.statusName}}</div>
 		</mgl-timeline-entry-header>
 		
 
     <mgl-timeline-entry-content>
       <div>
+        <div>{{history.statusCode}}</div>
         <div>{{history.personName}}</div>
-			<div>{{history.statusDate}}</div>
+				<div>{{history.statusDate}}</div>
       </div>
     </mgl-timeline-entry-content>
     <mgl-timeline-entry-dot [size]="size"

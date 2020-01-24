@@ -10,11 +10,11 @@ export class TimelineComponent  {
   alternate = true;
   toggle = true;
   color = false;
-  size = 40;
+  size = 30;
   expandEnabled = true;
 	side = 'left';
-
 	historyList: any;
+	showTableInAgreement: boolean;
 	
 
 
@@ -45,7 +45,12 @@ export class TimelineComponent  {
     this.entries.pop();
   }
 
-  onHeaderClick(event) {
+  onHeaderClick(historyValue) {
+		console.log(historyValue)
+		if (historyValue.statusCode == "7") {
+			console.log('На согласовании')
+			this.showTableInAgreement = true;
+		}
     if (!this.expandEnabled) {
       event.stopPropagation();
     }
@@ -59,7 +64,7 @@ export class TimelineComponent  {
   }
 
   onExpandEntry(expanded, index) {
-    console.log(`Expand status of entry #${index} changed to ${expanded}`)
+    // console.log(`Expand status of entry #${index} changed to ${expanded}`)
   }
 
   toggleSide() {
