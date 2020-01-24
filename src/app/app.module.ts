@@ -16,6 +16,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSliderModule  } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatSelectModule} from '@angular/material/select';
+
+
 // PrimeNG library
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -53,7 +56,8 @@ import {TreeTableModule} from 'primeng/treetable';
     ButtonModule,
     CalendarModule,
     HttpClientModule,
-    TreeTableModule,
+		TreeTableModule,
+		MatSelectModule
   ],
   exports: [
     MatInputModule

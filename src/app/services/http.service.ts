@@ -30,4 +30,8 @@ export class HttpService {
 		console.log(body)
 		return this.http.post(this.configUrl, body, options);
 	}
+
+	getTerritories(){
+		return this.http.get(this.configUrl + '/territories')
+	}
 }

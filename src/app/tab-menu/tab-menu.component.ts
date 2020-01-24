@@ -18,8 +18,11 @@ export class TabMenuComponent implements OnInit {
 	checkedGroupCodes: any;
 	checkedGroupList: any = [];
 	disabledStatus: boolean;
-	orderSliceDone: boolean
-	selected = (0);
+	orderSliceDone: boolean;
+  selected = 0;
+	checkedGroups: any = [];
+	onTabSelectedIndex: number;
+	preloaderByOrderSlice: boolean;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
@@ -30,7 +33,6 @@ export class TabMenuComponent implements OnInit {
   ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([])
-			
 		});
 		console.log(this.groupListFormGroup)
 		setTimeout((res) => {
@@ -55,8 +57,9 @@ export class TabMenuComponent implements OnInit {
 			this.max = data.value
 		})
 	}
-
-	onCheckedGroup(event){
+	
+  onCheckedGroup(event) {
+    this.checkedGroups.push(event)
 		this.checkedGroupCodes = event.source.value.code;
 
 		if (event.source._checked) {
@@ -65,11 +68,10 @@ export class TabMenuComponent implements OnInit {
 			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
 		}		
-		console.log(this.checkedGroupList)
 	}
 
 	onTabSelectedEvent(event){
-		// console.log(event)
+		this.selected = event.index;
 	}
 
 	orderSlice(item: OrderSliceObj){
@@ -80,7 +82,6 @@ export class TabMenuComponent implements OnInit {
 		this.dateTo.value.setHours(0)
 		this.dateTo.value.setMinutes(0)
 		this.dateTo.value.setSeconds(0)
-
 
 		let dateFrom = this.dateFrom.value,
 			ddFrom = ("0" + dateFrom.getDate()).slice(-2),
@@ -93,7 +94,6 @@ export class TabMenuComponent implements OnInit {
 			mmTo = ("0" + (dateTo.getMonth() + 1)).slice(-2),
 			yyTo = dateTo.getFullYear();
 		let	dateToInput = ddTo + '.' + mmTo + '.' + yyTo;
-	
 
 		let orderSliceObj = {
 			startDate : dateFromInput,
@@ -103,10 +103,14 @@ export class TabMenuComponent implements OnInit {
 		};
 		
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
-			console.log(data)
-			// this.selected = (0)
-			console.log(this.checkedGroupList = [])
-			console.log(this.checkedGroupList.length = 0)
+			this.preloaderByOrderSlice = true;
+      this.checkedGroups.forEach(element => {
+				element.source._checked = false; // uncheck all selected value after response
+			});
+			this.checkedGroupList.length = 0; // clear checkbox array after response
+			this.selected = 0; // transfer to Home Tab after response
+			this.preloaderByOrderSlice = false;
 		})
+		
 	}
 }
