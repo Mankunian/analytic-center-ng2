@@ -5,7 +5,10 @@
         <div class="sliceContent ">
 					<p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
 					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" inputId="ny"></p-checkbox>
-        </div>
+				</div>
+				<div *ngIf="preloaderByOrderSlice" class="loader">
+					<div class="bar"></div>
+			 </div>
         <div id="sliceGrd"><app-tree-table></app-tree-table></div>
       </mat-tab>
       <mat-tab label="Сформировать">

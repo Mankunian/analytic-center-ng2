@@ -12,21 +12,22 @@ export interface Territory {
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-	territoryList: any = []
-	// foods: Food[] = [
-  //   {value: 'steak-0', viewValue: 'Steak'},
-  //   {value: 'pizza-1', viewValue: 'Pizza'},
-  //   {value: 'tacos-2', viewValue: 'Tacos'}
-  // ];
-	
-  constructor(private http: HttpService) {
+	territoryList: any = [];
+	selectedTerritory: any;
+
+  constructor(private http: HttpService) {}
+
+  ngOnInit() {
+		this.selectedTerritory = '19000090';
+
 		this.http.getTerritories().subscribe((data:Territory)=>{
 			console.log(data)
 			this.territoryList = data;
 		})
 	}
-
-  ngOnInit() {
-  }
+	
+	selectedTerr(selectedTerr){
+		console.log(selectedTerr)
+	}
 
 }

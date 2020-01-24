@@ -21,17 +21,9 @@
 	<span class="title">СТАТИСТИЧЕСКИЕ СРЕЗЫ</span>
 	<mat-form-field>
 		<mat-label style="color: #fff;">Выберите регион</mat-label>
-		<select matNativeControl required>
-		<option *ngFor="let terr of territoryList" value="{{terr.code}}">{{terr.name}}</option>
+		<select [(ngModel)]="selectedTerritory" (change)="selectedTerr($event.target.value)" matNativeControl required>
+		<option *ngFor="let terr of territoryList" [value]="terr.code">{{terr.name}}</option>
 		</select>
 	</mat-form-field>
-	<!-- <mat-form-field class="regions">
-		<mat-label style="color: #fff;">Выберите регион</mat-label>
-		<mat-select>
-			<mat-option *ngFor="let food of foods" [value]="food.value">
-				{{food.viewValue}}
-			</mat-option>
-		</mat-select>
-	</mat-form-field> -->
 </div>
 <br>
