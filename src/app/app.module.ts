@@ -17,6 +17,9 @@ import { MatSliderModule  } from '@angular/material/slider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
+
+import { MglTimelineModule } from 'angular-mgl-timeline';
 
 
 // PrimeNG library
@@ -29,6 +32,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpService } from "./services/http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
+import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
+import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
+import { TimelineComponent } from './timeline/timeline.component';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +43,10 @@ import {TreeTableModule} from 'primeng/treetable';
     NavBarComponent,
     TabMenuComponent,
     TreeTableComponent,
+		SliceOperationsModalComponent,
+		SliceOperationsModalContentComponent,
+		TimelineComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -57,12 +68,15 @@ import {TreeTableModule} from 'primeng/treetable';
     CalendarModule,
     HttpClientModule,
 		TreeTableModule,
-		MatSelectModule
+		MatSelectModule,
+		MatDialogModule,
+		MglTimelineModule
   ],
   exports: [
     MatInputModule
   ],
   providers: [HttpService],
-  bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	entryComponents: [SliceOperationsModalContentComponent]
 })
 export class AppModule { }
