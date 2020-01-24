@@ -40,4 +40,8 @@ export class HttpService {
 	getTerritories(){
 		return this.http.get(this.configUrl + '/territories')
 	}
+
+	getHistory(){
+		return this.http.get(this.configUrl +'/'+ 889 + '/history')
+	}
 }

@@ -38,6 +38,7 @@ export class TimelineComponent  {
   }
 
   onDotClick(event) {
+		console.log(event)
     if (!this.expandEnabled) {
       event.stopPropagation();
     }

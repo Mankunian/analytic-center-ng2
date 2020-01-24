@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TreeTableComponent } from './tree-table.component';
+import { TreeTableComponent } from "./tree-table.component";
 
-describe('TreeTableComponent', () => {
+describe("TreeTableComponent", () => {
   let component: TreeTableComponent;
   let fixture: ComponentFixture<TreeTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TreeTableComponent ]
-    })
-    .compileComponents();
+      declarations: [TreeTableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('TreeTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
