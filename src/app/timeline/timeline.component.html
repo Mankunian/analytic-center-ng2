@@ -1,10 +1,10 @@
 
 <mat-toolbar style="text-align: center;">
-	<button (click)="addEntry()" mat-raised-button color="primary">Add Entry</button>
-	<button (click)="removeEntry()" mat-raised-button color="primary">Remove Entry</button>
-	<button mat-raised-button color="primary" (click)="alternate = !alternate">Toggle Alternate</button>
-	<button mat-raised-button color="primary" (click)="size = size + 10">Increase Dot size</button>
-	<button mat-raised-button color="primary" (click)="size = size - 10">Decrease Dot size</button>
+	<button (click)="addEntry()" mat-raised-button color="primary">Добавить запись</button>
+	<button (click)="removeEntry()" mat-raised-button color="primary">Удалить запись</button>
+	<button mat-raised-button color="primary" (click)="alternate = !alternate">Переключить альтернативу</button>
+	<button mat-raised-button color="primary" (click)="size = size + 10">Увеличить размер точки</button>
+	<button mat-raised-button color="primary" (click)="size = size - 10">Уменьшить размер точки</button>
   
 </mat-toolbar>
 <mgl-timeline [toggle]="toggle" [alternate]="alternate" [side]="side">
@@ -16,7 +16,8 @@
 
     <mgl-timeline-entry-content>
       <div>
-        <div>{{history.id}}</div>
+        <div>{{history.personName}}</div>
+			<div>{{history.statusDate}}</div>
       </div>
     </mgl-timeline-entry-content>
     <mgl-timeline-entry-dot [size]="size"
