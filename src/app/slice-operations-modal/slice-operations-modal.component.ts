@@ -20,6 +20,7 @@ export class SliceOperationsModalComponent {
 	
 	openDialog(){
 		console.log('works')
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialog.open(SliceOperationsModalContentComponent);
 
 		dialogRef.afterClosed().subscribe(result => {

@@ -22,6 +22,7 @@ export class HttpService {
   getSlices(checkDeleted:boolean, groupCode, statusCode, year) {
     return this.http.get(this.configUrl + '?deleted='+checkDeleted+'&groupCode='+groupCode+'&statusCode='+statusCode+'&year='+year)
       .toPromise()
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       .then(response => <TreeNode[]> response);
 	}
 
