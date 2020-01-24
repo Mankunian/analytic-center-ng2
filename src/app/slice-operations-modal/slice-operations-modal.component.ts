@@ -11,12 +11,7 @@ export class SliceOperationsModalComponent {
 
 	constructor(public dialog: MatDialog, private http: HttpService) { }
 
-	ngOnInit(){
-			this.http.getHistory().subscribe((data) => {
-				console.log(data)
-			})
-		
-	}
+	
 	
 	openDialog(){
 		console.log('works')
@@ -42,4 +37,14 @@ export class SliceOperationsModalComponent {
 
 export class SliceOperationsModalContentComponent {
 
+	historyList: any;
+
+	constructor(private http: HttpService){}
+	ngOnInit(){
+		this.http.getHistory().subscribe((data) => {
+			console.log(data)
+			this.historyList = data;
+		})
+	
+}
 }

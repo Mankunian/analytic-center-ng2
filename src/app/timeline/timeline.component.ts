@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {HttpService} from '../services/http.service'
 
 @Component({
   selector: 'app-timeline',
@@ -11,7 +12,20 @@ export class TimelineComponent  {
   color = false;
   size = 40;
   expandEnabled = true;
-  side = 'left';
+	side = 'left';
+
+	historyList: any;
+	
+
+
+	constructor(private http: HttpService){}
+
+	ngOnInit(){
+		this.http.getHistory().subscribe((data) => {
+			console.log(data)
+			this.historyList = data;
+		})
+	}
 
   entries = [
     {
