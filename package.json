@@ -24,7 +24,7 @@
     "@angular/router": "~8.2.0",
     "font-awesome": "^4.7.0",
     "primeicons": "^2.0.0",
-    "primeng": "^9.0.0-rc.2",
+    "primeng": "^9.0.0-rc.3",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
@@ -35,8 +35,8 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
-    "@typescript-eslint/eslint-plugin": "^2.16.0",
-    "@typescript-eslint/parser": "^2.16.0",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",

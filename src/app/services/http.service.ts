@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { OrderSliceObj } from "./../orderSliceObj";
-import { Header } from 'primeng/api/shared';
+import {TreeNode} from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,12 @@ export class HttpService {
 
 	getSliceNumber() {
 		return this.http.get(this.configUrl + '/max');
+  }
+  
+  getSlices(checkDeleted:boolean, groupCode, statusCode, year) {
+    return this.http.get(this.configUrl + '?deleted='+checkDeleted+'&groupCode='+groupCode+'&statusCode='+statusCode+'&year='+year)
+      .toPromise()
+      .then(response => <TreeNode[]> response);
 	}
 
 	postOrderSlice(orderSliceObj: OrderSliceObj){

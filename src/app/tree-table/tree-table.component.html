@@ -1,17 +1,46 @@
-<p-treeTable [value]="gridData">
-    <ng-template pTemplate="header" let-columns>
-        <tr>
-            <th *ngFor="let col of cols">
-                {{col.header}}
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-        <tr>
-            <td *ngFor="let col of cols; let i = index">
-                <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                {{rowData[col.field]}}
-            </td>
-        </tr>
-    </ng-template>
+<p-treeTable [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading">
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+        <col style="width: 40px;">
+        <col style="width: 200px;">
+        <col style="width: 200px;">
+        <col style="width: 200px;">
+        <col style="width: 200px;">
+        <col style="width: 200px;">
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th></th>
+      <th *ngFor="let col of cols">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+      <tr>
+        <td>
+          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+        </td>
+        <td>
+          {{rowData.name}}
+          <a href="#" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
+        </td>
+        <td>
+          {{rowData.maxRecNum}}
+        </td>
+        <td>
+          {{rowData.completed}}
+        </td>
+        <td>
+          {{rowData.region}}
+        </td>
+        <td>
+          {{rowData.percentComplete}}
+        </td>
+        <!-- <td *ngFor="let col of cols; let i = index;" >
+          {{rowData[col.field]}}
+        </td> -->
+      </tr>
+  </ng-template>
 </p-treeTable>

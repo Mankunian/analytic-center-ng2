@@ -7,7 +7,6 @@ import {TreeNode} from 'primeng/api';
 })
 export class SlicesGridDataService {
   private httpUrl = 'https://18.140.232.52:8081/api/v1/RU/slices/parents'
-  // private httpUrl = 'assets/json/groups.json'
 
   constructor(private http: HttpClient) { }
 	
