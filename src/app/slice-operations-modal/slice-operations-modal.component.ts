@@ -11,8 +11,6 @@ export class SliceOperationsModalComponent {
 
 	constructor(public dialog: MatDialog, private http: HttpService) { }
 
-	
-	
 	openDialog(){
 		console.log('works')
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -22,10 +20,6 @@ export class SliceOperationsModalComponent {
 			console.log(result)
 		})
 	}
-
-	
-
-  
 
 }
 
@@ -40,7 +34,8 @@ export class SliceOperationsModalContentComponent {
 	historyList: any;
 
 	constructor(private http: HttpService){}
-	ngOnInit(){
+  ngOnInit() {
+    console.log('on init');
 		this.http.getHistory().subscribe((data) => {
 			console.log(data)
 			this.historyList = data;
