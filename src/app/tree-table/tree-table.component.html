@@ -24,7 +24,7 @@
         </td>
         <td>
           {{rowData.name}}
-          <a href="#" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
+          <a href="#" (click)="openDialogIn(rowData)" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
         </td>
         <td>
           {{rowData.maxRecNum}}

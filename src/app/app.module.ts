@@ -47,7 +47,6 @@ import { TimelineComponent } from './timeline/timeline.component';
 		SliceOperationsModalComponent,
 		SliceOperationsModalContentComponent,
 		TimelineComponent
-    
   ],
   imports: [
     BrowserModule,
@@ -79,6 +78,6 @@ import { TimelineComponent } from './timeline/timeline.component';
   ],
   providers: [HttpService],
 	bootstrap: [AppComponent],
-	entryComponents: [SliceOperationsModalContentComponent]
+	entryComponents: [SliceOperationsModalComponent, SliceOperationsModalContentComponent]
 })
 export class AppModule { }
