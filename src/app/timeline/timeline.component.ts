@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {HttpService} from '../services/http.service'
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-timeline',
@@ -15,6 +16,8 @@ export class TimelineComponent  {
 	side = 'left';
 	historyList: any;
 	showTableInAgreement: boolean;
+	sliceCreator: string;
+	sliceDate: string;
 	
 
 
@@ -47,10 +50,19 @@ export class TimelineComponent  {
 
   onHeaderClick(historyValue) {
 		console.log(historyValue)
-		if (historyValue.statusCode == "7") {
-			console.log('На согласовании')
-			this.showTableInAgreement = true;
+		if (historyValue.statusCode == "2") {
+			console.log('Предварительный')
+			this.sliceCreator = 'Задачу выставил:'
+			this.sliceDate = 'Время начала формирования:'
+			// this.showTableInAgreement = true;
+		} else if(historyValue.statusCode == "1"){
+			this.sliceCreator = 'Срез утвердил:';
+			this.sliceDate = 'Время утверждения среза:'
+		} else if (historyValue.statusCode == "7"){
+			this.sliceCreator = 'Срез отправил на согласование:'
+			this.sliceDate = 'Время отправки на согласование среза:'
 		}
+
     if (!this.expandEnabled) {
       event.stopPropagation();
     }

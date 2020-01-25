@@ -15,11 +15,23 @@
 		
 
     <mgl-timeline-entry-content>
-      <div>
-        <div>{{history.statusCode}}</div>
-        <div>{{history.personName}}</div>
-				<div>{{history.statusDate}}</div>
-      </div>
+      
+        <div>
+					<span>
+						{{history.statusCode}}
+					</span>
+				</div>
+				<div>
+					<span class="titleStyle">{{sliceCreator}}</span> 
+					{{history.personName}}
+				</div>
+				<div>
+					<span class="titleStyle">
+						{{sliceDate}}
+					</span>
+					{{history.statusDate}}
+				</div>
+      
     </mgl-timeline-entry-content>
     <mgl-timeline-entry-dot [size]="size"
 style="text-align: center; background-color: #2196F3; color: darkblue"></mgl-timeline-entry-dot>
