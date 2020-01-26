@@ -47,6 +47,6 @@ export class HttpService {
 	}
 
 	getDataGridInAgreement(){
-		return this.http.get(this.configUrl + '/'+ 889 + 'history')
+		return this.http.get(this.configUrl + '/'+ 889 + '/history/' + 134 + '/approving')
 	}
 }

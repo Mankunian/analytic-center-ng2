@@ -19,6 +19,7 @@ export class TimelineComponent  {
 	sliceDate: string;
 	showTableInAgreement: boolean;
 	showTimeline: boolean;
+	gridListInAgreement: any;
 	
 
 
@@ -54,6 +55,10 @@ export class TimelineComponent  {
 			this.showTableInAgreement = true;
 			this.showTimeline = false
 
+			this.http.getDataGridInAgreement().subscribe((data)=>{
+				console.log(data)
+				this.gridListInAgreement = data;
+			})
 			
 		}
 
@@ -88,8 +93,7 @@ export class TimelineComponent  {
     }
   }
 
-  onExpandEntry(expanded, index) {
-    // console.log(`Expand status of entry #${index} changed to ${expanded}`)
+  onExpandEntry() {
   }
 
   toggleSide() {

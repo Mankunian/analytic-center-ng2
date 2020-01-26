@@ -1,18 +1,22 @@
-<table *ngIf="inputTableInAgreement" class="table">
+<table class="table" *ngIf="inputTableInAgreement">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">{{gridTitle[0]}}</th>
+      <th scope="col">{{gridTitle[1]}}</th>
+			<th scope="col">{{gridTitle[2]}}</th>
+			<th scope="col">{{gridTitle[3]}}</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody *ngFor="let a of inputDataGridInAgreement">
     <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+		<th scope="row">{{a.territoryName}}</th>
+      <td>{{a.approveDate}}</td>
+      <td>
+				<a style="color: redgi;" *ngIf="a.approveCode =='2'">{{a.approveName}}</a>
+			<span *ngIf="a.approveCode == '1'">{{a.approveName}}</span>
+			</td>
+			<td>{{a.personName}}</td>
     </tr>
   </tbody>
 </table>;
+
