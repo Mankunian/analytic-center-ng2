@@ -22,11 +22,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import {MatToolbarModule} from '@angular/material';
 
-
 // PrimeNG library
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
 // Services
@@ -34,7 +34,7 @@ import { HttpService } from "./services/http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
 import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
-import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
+// import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
 
 
@@ -45,7 +45,7 @@ import { TimelineComponent } from './timeline/timeline.component';
     TabMenuComponent,
     TreeTableComponent,
 		SliceOperationsModalComponent,
-		SliceOperationsModalContentComponent,
+		// SliceOperationsModalContentComponent,
 		TimelineComponent
   ],
   imports: [
@@ -71,13 +71,13 @@ import { TimelineComponent } from './timeline/timeline.component';
 		MatSelectModule,
 		MatDialogModule,
 		MglTimelineModule,
-		MatToolbarModule
+    MatToolbarModule,
+    DialogModule
   ],
   exports: [
     MatInputModule
   ],
   providers: [HttpService],
-	bootstrap: [AppComponent],
-	entryComponents: [SliceOperationsModalComponent, SliceOperationsModalContentComponent]
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
