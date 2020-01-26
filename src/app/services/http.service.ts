@@ -45,4 +45,8 @@ export class HttpService {
 	getHistory(){
 		return this.http.get(this.configUrl +'/'+ 889 + '/history')
 	}
+
+	getDataGridInAgreement(){
+		return this.http.get(this.configUrl + '/'+ 889 + 'history')
+	}
 }

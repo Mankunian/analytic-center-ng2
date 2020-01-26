@@ -8,25 +8,16 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./slice-operations-modal.component.scss']
 })
 export class SliceOperationsModalComponent {
-
 	constructor(public dialog: MatDialog, private http: HttpService) { }
 
-	
-	
 	openDialog(){
 		console.log('works')
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialog.open(SliceOperationsModalContentComponent);
-
 		dialogRef.afterClosed().subscribe(result => {
 			console.log(result)
 		})
 	}
-
-	
-
-  
-
 }
 
 
