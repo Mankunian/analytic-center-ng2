@@ -85,7 +85,10 @@ export class TimelineComponent  {
 			this.sliceDate = 'Время отправки на согласование среза:'
 			this.showTableInAgreement = true;
 			this.showTimeline = false
-
+			this.http.getDataGridInAgreement().subscribe((data)=>{
+				console.log(data)
+				this.gridListInAgreement = data;
+			})
 			
 		}
     if (!this.expandEnabled) {
@@ -93,8 +96,28 @@ export class TimelineComponent  {
     }
   }
 
-  onExpandEntry() {
-  }
+  onExpandEntry(historyValue) {
+		if (historyValue.statusCode == "2") {
+			console.log('Предварительный')
+			this.sliceCreator = 'Задачу выставил:'
+			this.sliceDate = 'Время начала формирования:'
+		} else if(historyValue.statusCode == "1"){
+			this.sliceCreator = 'Срез утвердил:';
+			this.sliceDate = 'Время утверждения среза:'
+		} else if (historyValue.statusCode == "7"){
+			this.sliceCreator = 'Срез отправил на согласование:'
+			this.sliceDate = 'Время отправки на согласование среза:'
+			this.showTableInAgreement = true;
+			this.showTimeline = false
+
+			this.http.getDataGridInAgreement().subscribe((data)=>{
+				console.log(data)
+				this.gridListInAgreement = data;
+			})
+	}
+
+
+}
 
   toggleSide() {
     this.side = this.side === 'left' ? 'right' : 'left';
