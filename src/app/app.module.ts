@@ -36,6 +36,7 @@ import {TreeTableModule} from 'primeng/treetable';
 import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
 // import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
+import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
 
 
 @NgModule({
@@ -45,6 +46,10 @@ import { TimelineComponent } from './timeline/timeline.component';
     TabMenuComponent,
     TreeTableComponent,
 		SliceOperationsModalComponent,
+
+// 		SliceOperationsModalContentComponent,
+		TimelineComponent,
+		GridDataInAgreementComponent
 		// SliceOperationsModalContentComponent,
 		TimelineComponent
   ],
