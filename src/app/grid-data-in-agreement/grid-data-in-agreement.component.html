@@ -12,7 +12,7 @@
 		<th scope="row">{{a.territoryName}}</th>
       <td>{{a.approveDate}}</td>
       <td>
-				<a style="color: red;" *ngIf="a.approveCode =='2'">{{a.approveName}}</a>
+				<a class="underline" style="color: red;" *ngIf="a.approveCode =='2'">{{a.approveName}}</a>
 			<span *ngIf="a.approveCode == '1'">{{a.approveName}}</span>
 			</td>
 			<td>{{a.personName}}</td>

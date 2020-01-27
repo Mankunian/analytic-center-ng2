@@ -6,7 +6,7 @@
 	<button mat-raised-button color="primary" (click)="size = size - 10">Уменьшить размер точки</button>
 </mat-toolbar>
 <mgl-timeline *ngIf="showTimeline" [toggle]="toggle" [alternate]="alternate" [side]="side">
-  <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (expand)="onExpandEntry(history)">
+  <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (click)="onExpandEntry(history)">
     <mgl-timeline-entry-header (click)="onHeaderClick(history)">
 			<div>{{history.statusName}}</div>
 		</mgl-timeline-entry-header>
@@ -27,7 +27,7 @@
 					{{history.statusDate}}
 				</div>
     </mgl-timeline-entry-content>
-		<mgl-timeline-entry-dot [size]="size" style="text-align: center; background-color: #2196F3; color: darkblue">
+		<mgl-timeline-entry-dot [size]="size" style="text-align: center; background-color: #2196F3; color: darkblue; cursor: pointer;">
 		</mgl-timeline-entry-dot>
   </mgl-timeline-entry>
 </mgl-timeline>

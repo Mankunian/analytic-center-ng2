@@ -35,7 +35,8 @@ export class TreeTableComponent implements OnInit {
       { field: 'name', header: 'Группы' },
       { field: 'maxRecNum', header: 'На номер' },
       { field: 'completed', header: 'Сформирован' },
-      { field: 'region', header: 'Действие' },
+      { field: 'action', header: 'Действие' },
+      { field: 'region', header: 'По органу' },
       { field: 'percentComplete', header: 'Прогресс' }
     ];
 
