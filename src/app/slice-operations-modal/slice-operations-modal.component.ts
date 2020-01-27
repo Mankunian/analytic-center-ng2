@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpService} from '../services/http.service'
 import {MatDialog} from '@angular/material/dialog';
 
@@ -38,4 +38,7 @@ export class SliceOperationsModalContentComponent {
 		})
 	
 }
+
+
+	
 }
