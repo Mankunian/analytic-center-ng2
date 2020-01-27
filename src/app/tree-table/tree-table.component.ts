@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SlicesGridDataService } from "../services/slices-grid-data.service";
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
@@ -49,7 +49,6 @@ export class TreeTableComponent implements OnInit {
 	}
 	
 	openOperationSliceModal(rowEntity){
-		console.log(rowEntity.id)
 		this.sliceId = rowEntity.id;
 		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
 			data: {sliceId: this.sliceId}
@@ -58,7 +57,6 @@ export class TreeTableComponent implements OnInit {
 		dialogRef.afterOpen().subscribe(result =>{
 			this.httpService.getHistory(this.sliceId).subscribe((data)=>{
 				this.historyList = data;
-				console.log(this.historyList)
 				this.showTimeline = true;
 			})
 		})
