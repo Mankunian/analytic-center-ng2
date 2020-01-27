@@ -34,7 +34,6 @@ export class TabMenuComponent implements OnInit {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([])
 		});
-		console.log(this.groupListFormGroup)
 		setTimeout(() => {
 			this.httpService.getGroupList().subscribe((data)=>{
 				

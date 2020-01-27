@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {HttpService} from '../services/http.service'
+import { MatDialog } from '@angular/material/dialog';
+
 
 
 @Component({
@@ -15,11 +17,14 @@ export class GridDataInAgreementComponent {
 	@Input() inputTableInAgreement: boolean;
 	@Input() inputDataGridInAgreement: any = [];
 
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService, public dialogRejectionReason: MatDialog) { }
 
-  ngOnInit() {
-		console.log(this.inputDataGridInAgreement)
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+	ngOnInit() {}
 	
+	openRejectionReasonModal(rowEntity){
+		console.log(rowEntity)
+		
 	}
 
 }

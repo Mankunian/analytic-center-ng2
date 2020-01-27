@@ -28,14 +28,10 @@ export class SliceOperationsModalComponent {
 
 export class SliceOperationsModalContentComponent {
 
-	historyList: any;
-
 	constructor(private http: HttpService){}
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit(){
-		this.http.getHistory().subscribe((data) => {
-			console.log(data)
-			this.historyList = data;
-		})
+	
 	
 }
 

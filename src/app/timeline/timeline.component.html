@@ -5,17 +5,13 @@
 	<button mat-raised-button color="primary" (click)="size = size + 10">Увеличить размер точки</button>
 	<button mat-raised-button color="primary" (click)="size = size - 10">Уменьшить размер точки</button>
 </mat-toolbar>
+<!-- <app-tree-table [sliceId]="inputSliceId"></app-tree-table> -->
 <mgl-timeline *ngIf="showTimeline" [toggle]="toggle" [alternate]="alternate" [side]="side">
   <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (click)="onExpandEntry(history)">
     <mgl-timeline-entry-header (click)="onHeaderClick(history)">
 			<div>{{history.statusName}}</div>
 		</mgl-timeline-entry-header>
     <mgl-timeline-entry-content>
-        <div>
-					<span>
-						<!-- {{history.statusCode}} -->
-					</span>
-				</div>
 				<div>
 					<span class="titleStyle">{{sliceCreator}}</span> 
 					{{history.personName}}

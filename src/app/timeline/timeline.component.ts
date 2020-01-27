@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {HttpService} from '../services/http.service'
 import { ThrowStmt } from '@angular/compiler';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-timeline',
@@ -14,19 +16,21 @@ export class TimelineComponent  {
   size = 30;
   expandEnabled = true;
 	side = 'left';
-	historyList: any;
 	sliceCreator: string;
 	sliceDate: string;
 	showTableInAgreement: boolean;
 	showTimeline: boolean;
 	gridListInAgreement: any;
-	
+	historyList: any;
+	injectSliceId: any;
 
 
-	constructor(private http: HttpService){}
+
+	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any){}
 
 	ngOnInit(){
-		this.http.getHistory().subscribe((data) => {
+		this.injectSliceId = this.data;
+		this.http.getHistory(this.injectSliceId.sliceId).subscribe((data) => {
 			console.log(data)
 			this.historyList = data;
 			this.showTimeline = true;

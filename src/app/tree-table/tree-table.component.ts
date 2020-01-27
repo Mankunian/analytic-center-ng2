@@ -18,7 +18,10 @@ export class TreeTableComponent implements OnInit {
   loading: boolean;
   childrenNode: TreeNode[];
   display = false;
-  modalContent: any;
+	modalContent: any;
+	sliceId: number;
+	historyList: any;
+	showTimeline: boolean;
 
   files1: TreeNode[];
 
@@ -41,16 +44,30 @@ export class TreeTableComponent implements OnInit {
     ];
 
     this.gridService.getSliceGroups1().then((files1) => {
-      console.log(files1);
       this.files1 = files1
     });
 	}
 	
-	openOperationSliceModal(){
-		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent);
+	openOperationSliceModal(rowEntity){
+		console.log(rowEntity.id)
+		this.sliceId = rowEntity.id;
+		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
+			data: {sliceId: this.sliceId}
+		});
+
+		dialogRef.afterOpen().subscribe(result =>{
+			this.httpService.getHistory(this.sliceId).subscribe((data)=>{
+				this.historyList = data;
+				console.log(this.historyList)
+				this.showTimeline = true;
+			})
+		})
+		
 		dialogRef.afterClosed().subscribe(result => {
 			console.log(result)
 		})
+
+
 	}
 
   openDialog(row) {

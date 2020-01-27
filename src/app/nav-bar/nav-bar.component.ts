@@ -21,7 +21,6 @@ export class NavBarComponent implements OnInit {
 		this.selectedTerritory = '19000090';
 
 		this.http.getTerritories().subscribe((data:Territory)=>{
-			console.log(data)
 			this.territoryList = data;
 		})
 	}

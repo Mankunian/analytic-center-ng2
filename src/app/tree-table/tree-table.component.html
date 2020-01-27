@@ -6,8 +6,8 @@
         <col style="width: 200px;">
         <col style="width: 200px;">
         <col style="width: 200px;">
-        <col style="width: 200px;">
         <col style="width: 100px;">
+        <col style="width: 200px;">
     </colgroup>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
@@ -25,7 +25,7 @@
         </td>
         <td>
           {{rowData.name}}
-          <a href="#" (click)="openDialog(rowData)" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
+          <a (click)="openDialog(rowData)" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
         </td>
         <td>
           {{rowData.maxRecNum}}
@@ -34,7 +34,7 @@
           {{rowData.completed}}
         </td>
         <td style="text-align: center;">
-					<button (click)="openOperationSliceModal()" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1'" mat-flat-button color="primary">Операция со срезами</button>
+					<button (click)="openOperationSliceModal(rowData)" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1'" mat-flat-button color="primary">Операция со срезами</button>
         </td>
         <td>
           {{rowData.region}}
