@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SlicesGridDataService } from "../services/slices-grid-data.service";
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
+import { MatDialog } from '@angular/material/dialog';
+import { SliceOperationsModalComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
 
 @Component({
   selector: 'app-tree-table',
   templateUrl: './tree-table.component.html',
-  styleUrls: ['./tree-table.component.scss']
+  styleUrls: ['./tree-table.component.scss'],
+  providers: [SliceOperationsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
 
@@ -14,10 +17,12 @@ export class TreeTableComponent implements OnInit {
   cols: any[];
   loading: boolean;
   childrenNode: TreeNode[];
+  display = false;
+  modalContent: any;
 
   files1: TreeNode[];
 
-  constructor(private httpService: HttpService, private gridService: SlicesGridDataService) { }
+  constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService) { }
 
   ngOnInit() {
     this.loading = true
@@ -38,6 +43,13 @@ export class TreeTableComponent implements OnInit {
       console.log(files1);
       this.files1 = files1
     });
+  }
+
+  openDialog(row) {
+    // this.dialog.showDialog(row)
+    this.modalContent = row
+    console.log(row);
+    this.display = true;
   }
 
   formatGridData(dataArray) {
@@ -85,4 +97,6 @@ export class TreeTableComponent implements OnInit {
       })
     }
   }
+
+
 }

@@ -22,11 +22,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import {MatToolbarModule} from '@angular/material';
 
-
 // PrimeNG library
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
 // Services
@@ -34,7 +34,7 @@ import { HttpService } from "./services/http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
 import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
-import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
+// import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
 
@@ -46,10 +46,12 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
     TabMenuComponent,
     TreeTableComponent,
 		SliceOperationsModalComponent,
-		SliceOperationsModalContentComponent,
+
+// 		SliceOperationsModalContentComponent,
 		TimelineComponent,
 		GridDataInAgreementComponent
-    
+		// SliceOperationsModalContentComponent,
+		TimelineComponent
   ],
   imports: [
     BrowserModule,
@@ -74,13 +76,13 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
 		MatSelectModule,
 		MatDialogModule,
 		MglTimelineModule,
-		MatToolbarModule
+    MatToolbarModule,
+    DialogModule
   ],
   exports: [
     MatInputModule
   ],
   providers: [HttpService],
-	bootstrap: [AppComponent],
-	entryComponents: [SliceOperationsModalContentComponent]
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
