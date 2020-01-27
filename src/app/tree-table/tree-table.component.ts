@@ -3,7 +3,7 @@ import { SlicesGridDataService } from "../services/slices-grid-data.service";
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
-import { SliceOperationsModalComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
+import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
 
 @Component({
   selector: 'app-tree-table',
@@ -22,7 +22,7 @@ export class TreeTableComponent implements OnInit {
 
   files1: TreeNode[];
 
-  constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService) { }
+	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog) { }
 
   ngOnInit() {
     this.loading = true
@@ -44,7 +44,14 @@ export class TreeTableComponent implements OnInit {
       console.log(files1);
       this.files1 = files1
     });
-  }
+	}
+	
+	openOperationSliceModal(){
+		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent);
+		dialogRef.afterClosed().subscribe(result => {
+			console.log(result)
+		})
+	}
 
   openDialog(row) {
     // this.dialog.showDialog(row)

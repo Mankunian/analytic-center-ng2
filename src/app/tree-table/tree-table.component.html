@@ -33,8 +33,8 @@
         <td>
           {{rowData.completed}}
         </td>
-        <td>
-					<button style="text-align: center;" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1'" mat-flat-button color="primary">Операция со срезами</button>
+        <td style="text-align: center;">
+					<button (click)="openOperationSliceModal()" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1'" mat-flat-button color="primary">Операция со срезами</button>
         </td>
         <td>
           {{rowData.region}}

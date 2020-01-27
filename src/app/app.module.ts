@@ -34,7 +34,7 @@ import { HttpService } from "./services/http.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
 import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
-// import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
+import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
 
@@ -46,12 +46,9 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
     TabMenuComponent,
     TreeTableComponent,
 		SliceOperationsModalComponent,
-
-// 		SliceOperationsModalContentComponent,
+		SliceOperationsModalContentComponent,
 		TimelineComponent,
 		GridDataInAgreementComponent
-		// SliceOperationsModalContentComponent,
-		TimelineComponent
   ],
   imports: [
     BrowserModule,
@@ -81,8 +78,9 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
   ],
   exports: [
     MatInputModule
-  ],
+	],
   providers: [HttpService],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	entryComponents: [SliceOperationsModalContentComponent]
 })
 export class AppModule { }
