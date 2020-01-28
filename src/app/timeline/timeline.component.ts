@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Input, Component, Inject } from '@angular/core';
 import {HttpService} from '../services/http.service'
 import { ThrowStmt } from '@angular/compiler';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -22,15 +22,19 @@ export class TimelineComponent  {
 	showTimeline: boolean;
 	gridListInAgreement: any;
 	historyList: any;
-	injectSliceId: any;
+	injectValueToModal: any;
+
+	@Input() rowEntityToModalSliceId: number;
+	@Input() rowEntityToModalPeriod: string;
 
 
 
 	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any){}
 
 	ngOnInit(){
-		this.injectSliceId = this.data;
-		this.http.getHistory(this.injectSliceId.sliceId).subscribe((data) => {
+		this.injectValueToModal = this.data;
+		console.log(this.injectValueToModal)
+		this.http.getHistory(this.injectValueToModal.sliceId).subscribe((data) => {
 			console.log(data)
 			this.historyList = data;
 			this.showTimeline = true;
@@ -59,7 +63,7 @@ export class TimelineComponent  {
 			this.showTableInAgreement = true;
 			this.showTimeline = false
 
-			this.http.getDataGridInAgreement().subscribe((data)=>{
+			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe((data)=>{
 				console.log(data)
 				this.gridListInAgreement = data;
 			})
@@ -75,30 +79,6 @@ export class TimelineComponent  {
 		this.showTimeline = true;
 		this.showTableInAgreement = false;
 	}
-  onDotClick(historyValue) {
-		console.log(historyValue)
-		if (historyValue.statusCode == "2") {
-			console.log('Предварительный')
-			this.sliceCreator = 'Задачу выставил:'
-			this.sliceDate = 'Время начала формирования:'
-		} else if(historyValue.statusCode == "1"){
-			this.sliceCreator = 'Срез утвердил:';
-			this.sliceDate = 'Время утверждения среза:'
-		} else if (historyValue.statusCode == "7"){
-			this.sliceCreator = 'Срез отправил на согласование:'
-			this.sliceDate = 'Время отправки на согласование среза:'
-			this.showTableInAgreement = true;
-			this.showTimeline = false
-			this.http.getDataGridInAgreement().subscribe((data)=>{
-				console.log(data)
-				this.gridListInAgreement = data;
-			})
-			
-		}
-    if (!this.expandEnabled) {
-      event.stopPropagation();
-    }
-  }
 
   onExpandEntry(historyValue) {
 		if (historyValue.statusCode == "2") {
@@ -114,7 +94,7 @@ export class TimelineComponent  {
 			this.showTableInAgreement = true;
 			this.showTimeline = false
 
-			this.http.getDataGridInAgreement().subscribe((data)=>{
+			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe((data)=>{
 				console.log(data)
 				this.gridListInAgreement = data;
 			})

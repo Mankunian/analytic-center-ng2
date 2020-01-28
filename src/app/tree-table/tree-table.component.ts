@@ -22,6 +22,7 @@ export class TreeTableComponent implements OnInit {
 	sliceId: number;
 	historyList: any;
 	showTimeline: boolean;
+	period: string;
 
   files1: TreeNode[];
 
@@ -49,9 +50,12 @@ export class TreeTableComponent implements OnInit {
 	}
 	
 	openOperationSliceModal(rowEntity){
+		console.log(rowEntity)
+		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
 		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
-			data: {sliceId: this.sliceId}
+			width: '1100px',
+			data: {sliceId: this.sliceId, period: this.period}
 		});
 
 		dialogRef.afterOpen().subscribe(result =>{
