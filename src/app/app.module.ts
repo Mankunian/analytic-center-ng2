@@ -37,6 +37,8 @@ import { SliceOperationsModalComponent } from './slice-operations-modal/slice-op
 import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
+import { RejectionReasonContentComponent } from "src/app/grid-data-in-agreement/grid-data-in-agreement.component";
+
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
 		SliceOperationsModalComponent,
 		SliceOperationsModalContentComponent,
 		TimelineComponent,
-		GridDataInAgreementComponent
+		GridDataInAgreementComponent,
+		RejectionReasonContentComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +84,6 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
 	],
   providers: [HttpService],
 	bootstrap: [AppComponent],
-	entryComponents: [SliceOperationsModalContentComponent]
+	entryComponents: [SliceOperationsModalContentComponent, RejectionReasonContentComponent]
 })
 export class AppModule { }

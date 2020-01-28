@@ -27,7 +27,6 @@ export class SliceOperationsModalComponent {
 })
 
 export class SliceOperationsModalContentComponent {
-
 	constructor(private http: HttpService){}
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit(){

@@ -27,6 +27,7 @@ export class NavBarComponent implements OnInit {
 	
 	selectedTerr(selectedTerr){
 		console.log(selectedTerr)
+		this.selectedTerritory =  selectedTerr;
 	}
 
 }

@@ -46,7 +46,7 @@ export class HttpService {
 		return this.http.get(this.configUrl +'/'+ sliceId + '/history')
 	}
 
-	getDataGridInAgreement(sliceId, historyId){
+	getDataGridInAgreement(sliceId: number, historyId: number){
 		return this.http.get(this.configUrl + '/'+ sliceId + '/history/' + historyId + '/approving')
 	}
 }

@@ -1,3 +1,14 @@
+<div *ngIf="inputTableInAgreement" class="col-md-12" style="background-color: #E6E6E6;">
+	<div class="row" style="padding: 10px 0 0;">
+		<div class="col-md-6">
+			<p><span style="font-weight: bold;">Срез отправил на согласование: </span> {{inputPersonName}}</p>
+		</div>
+	<div class="col-md-6" style="text-align: right;">
+		<p><span style="font-weight: bold;">Время отправки на согласование среза:</span> {{inputStatusDate}}</p>
+	</div>
+	</div>
+</div>
+
 <table class="table" *ngIf="inputTableInAgreement">
   <thead>
     <tr>
@@ -18,5 +29,5 @@
 			<td>{{a.personName}}</td>
     </tr>
   </tbody>
-</table>;
+</table>
 

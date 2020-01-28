@@ -4,7 +4,7 @@
 	<button mat-raised-button color="primary" (click)="size = size - 10">Уменьшить размер точки</button>
 </mat-toolbar> -->
 	<a class="backToHistory" *ngIf="showTableInAgreement" (click)="backToTimeline()"> < Назад к истории</a>
-	<div class="col-md-12" style="background-color: #E6E6E6;">
+	<div class="col-md-12">
 		<div class="row" style="padding: 10px 0 0;">
 			<div class="col-md-6">
 				<p><span style="font-weight: bold;">№ среза:</span> {{injectValueToModal.sliceId}}</p>
@@ -15,7 +15,7 @@
 		</div>
 	</div>
 
-<mgl-timeline *ngIf="showTimeline" [toggle]="toggle" [alternate]="alternate" [side]="side">
+<mgl-timeline style="overflow: auto;" *ngIf="showTimeline" [toggle]="toggle" [alternate]="alternate" [side]="side">
   <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (click)="onExpandEntry(history)">
     <mgl-timeline-entry-header (click)="onHeaderClick(history)">
 			<div>{{history.statusName}}</div>
@@ -39,4 +39,4 @@
 </mgl-timeline>
 
 
-<app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement" [inputTableInAgreement]="showTableInAgreement"></app-grid-data-in-agreement>
+<app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement" [inputTableInAgreement]="showTableInAgreement" [inputPersonName]="personName" [inputStatusDate]="statusDate"></app-grid-data-in-agreement>

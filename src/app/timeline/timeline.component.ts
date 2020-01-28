@@ -1,7 +1,6 @@
-import { Input, Component, Inject } from '@angular/core';
-import {HttpService} from '../services/http.service'
-import { ThrowStmt } from '@angular/compiler';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { HttpService } from '../services/http.service'
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({
@@ -23,9 +22,9 @@ export class TimelineComponent  {
 	gridListInAgreement: any;
 	historyList: any;
 	injectValueToModal: any;
+	personName: string;
+	statusDate: string;
 
-	@Input() rowEntityToModalSliceId: number;
-	@Input() rowEntityToModalPeriod: string;
 
 
 
@@ -49,7 +48,7 @@ export class TimelineComponent  {
   ]
 
   onHeaderClick(historyValue) {
-		console.log(historyValue)
+		// console.log(historyValue)
 		if (historyValue.statusCode == "2") {
 			console.log('Предварительный')
 			this.sliceCreator = 'Задачу выставил:'
@@ -62,6 +61,9 @@ export class TimelineComponent  {
 			this.sliceDate = 'Время отправки на согласование среза:'
 			this.showTableInAgreement = true;
 			this.showTimeline = false
+
+			this.personName = historyValue.personName;
+			this.statusDate = historyValue.statusDate;
 
 			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe((data)=>{
 				console.log(data)
@@ -107,3 +109,5 @@ export class TimelineComponent  {
     this.side = this.side === 'left' ? 'right' : 'left';
   }
 }
+
+

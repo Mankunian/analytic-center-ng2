@@ -1,0 +1,10 @@
+<h1 style="text-align: center;" mat-dialog-title>Причина отказа в согласовании</h1>
+<div mat-dialog-content>
+  <textarea rows="3" cols="45" name="text">
+		{{injectValueToModal.msgReason}}
+	</textarea>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Вернуться</button>
+  <button mat-button  cdkFocusInitial>Сохранить</button>
+</div>
