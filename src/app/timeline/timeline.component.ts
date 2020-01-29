@@ -24,6 +24,7 @@ export class TimelineComponent  {
 	injectValueToModal: any;
 	personName: string;
 	statusDate: string;
+	GP: boolean;
 
 
 
@@ -32,7 +33,9 @@ export class TimelineComponent  {
 
 	ngOnInit(){
 		this.injectValueToModal = this.data;
-		console.log(this.injectValueToModal)
+		if (this.injectValueToModal.terrCode == '19000090') {
+			this.GP = true;
+		}
 		this.http.getHistory(this.injectValueToModal.sliceId).subscribe((data) => {
 			console.log(data)
 			this.historyList = data;

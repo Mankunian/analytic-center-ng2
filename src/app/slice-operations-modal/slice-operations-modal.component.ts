@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {HttpService} from '../services/http.service'
-import {MatDialog} from '@angular/material/dialog';
+import {Component, Inject} from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-slice-operations-modal',
@@ -8,18 +7,11 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./slice-operations-modal.component.scss']
 })
 export class SliceOperationsModalComponent {
-	constructor(public dialog: MatDialog, private http: HttpService) { }
-
-	openDialog(){
-		console.log('works')
-		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		const dialogRef = this.dialog.open(SliceOperationsModalContentComponent);
-		dialogRef.afterClosed().subscribe(result => {
-			console.log(result)
-		})
+	constructor(){
 	}
-}
 
+	
+}
 
 @Component({
 	selector: 'app-slice-operations-modal-content',
@@ -27,13 +19,33 @@ export class SliceOperationsModalComponent {
 })
 
 export class SliceOperationsModalContentComponent {
-	constructor(private http: HttpService){}
+	injectValueToModal: any;
+	headTerritory: boolean;
+	btnInAgreement: boolean;
+	btnDecided: boolean;
+	btnToAgreement: boolean;
+
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any){}
+	
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit(){
-	
-	
+		this.injectValueToModal = this.data;
+		console.log(this.injectValueToModal)
+		if (this.injectValueToModal.statusCode == '7') {
+			this.btnInAgreement = true;
+		}
+		if (this.injectValueToModal.statusCode == '1') {
+			this.btnDecided = true;
+		}
+		if (this.injectValueToModal.statusCode == '2') {
+			this.btnToAgreement = true;
+		}
+		if (this.injectValueToModal.terrCode == '19000090') {
+			this.headTerritory = true;
+		}
+	}
 }
 
 
-	
-}
+
+

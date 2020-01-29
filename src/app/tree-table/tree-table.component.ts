@@ -4,6 +4,8 @@ import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
 import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
+import { SharedService } from "../services/shared.service";
+import { Subscription }   from 'rxjs';
 
 @Component({
   selector: 'app-tree-table',
@@ -12,6 +14,9 @@ import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } f
   providers: [SliceOperationsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
+
+	subscription: Subscription;
+	terrCode: unknown;
 
   gridData: TreeNode[];
   cols: any[];
@@ -26,7 +31,12 @@ export class TreeTableComponent implements OnInit {
 
   files1: TreeNode[];
 
-	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog) { }
+	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog, shared: SharedService) { 
+		this.subscription = shared.subj$.subscribe(val =>{
+			this.terrCode = val;
+			console.log(this.terrCode)
+		 })
+	}
 
   ngOnInit() {
     this.loading = true
@@ -50,12 +60,11 @@ export class TreeTableComponent implements OnInit {
 	}
 	
 	openOperationSliceModal(rowEntity){
-		console.log(rowEntity)
 		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
 		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
 			width: '1100px',
-			data: {sliceId: this.sliceId, period: this.period}
+			data: {sliceId: this.sliceId, period: this.period, terrCode: this.terrCode, statusCode: rowEntity.statusCode}
 		});
 
 		dialogRef.afterOpen().subscribe(result =>{

@@ -30,6 +30,7 @@ export class GridDataInAgreementComponent {
 		console.log(rowEntity);
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogRejectionReason.open(RejectionReasonContentComponent,{
+			width: '500px',
 			data: {msgReason: rowEntity.msg}
 		});
 		dialogRef.afterClosed().subscribe(result => {

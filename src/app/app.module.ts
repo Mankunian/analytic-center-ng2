@@ -31,6 +31,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
 // Services
 import { HttpService } from "./services/http.service";
+import { SharedService } from "./services/shared.service";
 // Data table
 import {TreeTableModule} from 'primeng/treetable';
 import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
@@ -82,7 +83,7 @@ import { RejectionReasonContentComponent } from "src/app/grid-data-in-agreement/
   exports: [
     MatInputModule
 	],
-  providers: [HttpService],
+  providers: [HttpService, SharedService],
 	bootstrap: [AppComponent],
 	entryComponents: [SliceOperationsModalContentComponent, RejectionReasonContentComponent]
 })

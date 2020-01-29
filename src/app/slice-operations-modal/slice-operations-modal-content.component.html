@@ -20,8 +20,24 @@
 	<app-grid-data-in-agreement></app-grid-data-in-agreement>
   
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Отмена</button>
+<mat-dialog-actions>
+	<div class="col-md-6" *ngIf="!headTerritory">
+		<div *ngIf="btnInAgreement">
+			<button mat-raised-button color="primary">Согласовать</button>
+		<button mat-raised-button color="primary">Отказать</button>
+		</div>
+	</div>
+	<div class="col-md-6" *ngIf="headTerritory">
+		<div *ngIf="btnInAgreement">
+			<button mat-flat-button color="primary">Удалить</button>
+			<button mat-flat-button color="primary">Утвердить</button>
+		</div>
+		<button *ngIf="btnDecided" mat-flat-button color="primary">Перевести в предварительный</button>
+		<button *ngIf="btnToAgreement" mat-flat-button color="primary">На согласование</button>
+	</div>
+	<div class="col-md-6" style="text-align: right;">
+		<button mat-dialog-close mat-raised-button color="warn">Отмена</button>
+	</div>
   <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
 </mat-dialog-actions>
 
