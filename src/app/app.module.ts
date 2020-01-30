@@ -35,8 +35,12 @@ import { HttpService } from "./services/http.service";
 import {TreeTableModule} from 'primeng/treetable';
 import { SliceOperationsModalComponent } from './slice-operations-modal/slice-operations-modal.component';
 import { SliceOperationsModalContentComponent } from './slice-operations-modal/slice-operations-modal.component';
+import { ReportsModalComponent } from './reports-modal/reports-modal.component';
+import { ReportsModalContentComponent } from './reports-modal/reports-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
+import { ReportDepartmentsListComponent } from './report-departments-list/report-departments-list.component';
+import { ReportRegionsListComponent } from './report-regions-list/report-regions-list.component';
 
 
 @NgModule({
@@ -47,8 +51,12 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
     TreeTableComponent,
 		SliceOperationsModalComponent,
 		SliceOperationsModalContentComponent,
+		ReportsModalComponent,
+		ReportsModalContentComponent,
 		TimelineComponent,
-		GridDataInAgreementComponent
+		GridDataInAgreementComponent,
+		ReportDepartmentsListComponent,
+		ReportRegionsListComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +89,6 @@ import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data
 	],
   providers: [HttpService],
 	bootstrap: [AppComponent],
-	entryComponents: [SliceOperationsModalContentComponent]
+	entryComponents: [SliceOperationsModalContentComponent, ReportsModalContentComponent]
 })
 export class AppModule { }

@@ -3,8 +3,8 @@
     <colgroup>
         <col style="width: 40px;">
         <col style="width: 200px;">
-        <col style="width: 200px;">
-        <col style="width: 200px;">
+        <col style="width: 80px;">
+        <col style="width: 100px;">
         <col style="width: 200px;">
         <col style="width: 200px;">
         <col style="width: 100px;">
@@ -25,7 +25,7 @@
         </td>
         <td>
           {{rowData.name}}
-          <a href="#" (click)="openDialog(rowData)" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
+          <a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2"> <span *ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> период {{rowData.period}}</span></a>
         </td>
         <td>
           {{rowData.maxRecNum}}
@@ -45,73 +45,3 @@
       </tr>
   </ng-template>
 </p-treeTable>
-
-<p-dialog header="Godfather I" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false">
-  <p-header>
-      Получение отчетов
-  </p-header>
-  <span *ngIf="modalContent"> Данные среза после открытие - <b>{{modalContent.groupName}}, {{modalContent.id}}</b></span>
-  <div class="row">
-    <form class="form-inline">
-      <div class="col-md-12">
-        <div class="form-group slice-name-input-group">
-          <label for="statSliceNum" class="blue-title">Статсрез на №</label>
-          <!-- <input type="text" name="statSliceNum" id="statSliceNum" class="form-control" disabled value="{{statSliceNum}}"> -->
-        </div>
-        <div class="form-group slice-date-input-group">
-          <label for="reportDatePeriod">Отчетный период</label>
-          <!-- <input type="text" name="reportDatePeriod" id="reportDatePeriod" class="form-control" disabled value="{{statSlicePeriod}}"> -->
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="form-group langs-checkboxes">
-          <label for="langSelect">Язык отчета</label>
-          <label class="containerLabel">
-            <!-- <input type="checkbox" ng-model="reportLangs.ru.isSelected" ng-checked="reportLangs.ru.isInterfaceLang">{{reportLangs.ru.name}} -->
-            <span class="checkmark"></span>
-          </label>
-          <label class="containerLabel">
-            <!-- <input type="checkbox" ng-model="reportLangs.kz.isSelected" ng-checked="reportLangs.kz.isInterfaceLang">{{reportLangs.kz.name}} -->
-            <span class="checkmark"></span>
-          </label>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="row" style="border-top: 1px solid #e5e5e5; padding-top: 15px;">
-    <div class="col-md-6">
-      <div class="requested-reports">
-        <h4>Запрошенные отчеты</h4>
-        <ul>
-          <li ng-repeat="(key, item) in requestedReports track by key">
-            <!-- <span class="remove-icon glyphicon glyphicon-remove-circle" ng-click="removeSelectedReport(key)"></span> -->
-            <!-- <span class="requested-report-item">{{item | limitTo: 55}}{{item.length > 55 ? '&hellip;' : ''}}</span> -->
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="ready-reports">
-        <!-- <h4>Отчеты <span ng-if="showDigitalPreloader" style="float: right;">Получено {{ reportValuesLength }} из {{requestedReports.length}}</span></h4> -->
-        <div class="preloader-block ready-reports" ng-if="!isReadyReportsLoaded">
-          <div class="lds-ring-readyReports">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-        <ul ng-if="isReadyReportsLoaded">
-          <li ng-repeat="item in readyReports">
-            <!-- <a href="{{item.url}}">{{item.name | limitTo: 55}}{{item.name.length > 55 ? '&hellip;' : ''}}</a> -->
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <p-footer>
-      <button type="button" pButton icon="pi pi-check" (click)="display=false" label="Yes"></button>
-      <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No" class="ui-button-secondary"></button>
-  </p-footer>
-</p-dialog>

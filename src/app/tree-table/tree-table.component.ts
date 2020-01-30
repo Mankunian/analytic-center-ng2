@@ -1,15 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SlicesGridDataService } from "../services/slices-grid-data.service";
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
+import { ReportsModalComponent, ReportsModalContentComponent } from "../reports-modal/reports-modal.component";
 import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
+import { FormatGridDataService } from '../services/format-grid-data.service';
 
 @Component({
   selector: 'app-tree-table',
   templateUrl: './tree-table.component.html',
   styleUrls: ['./tree-table.component.scss'],
-  providers: [SliceOperationsModalComponent]
+  providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
 
@@ -17,17 +19,22 @@ export class TreeTableComponent implements OnInit {
   cols: any[];
   loading: boolean;
   childrenNode: TreeNode[];
-  display = false;
-  modalContent: any;
 
   files1: TreeNode[];
 
-	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog) { }
+  constructor(
+    public reportsModalInstance: ReportsModalComponent,
+    private httpService: HttpService,
+    private formatGridDataService: FormatGridDataService,
+    private gridService: SlicesGridDataService,
+    public dialogOperSlice: MatDialog,
+    public reportsModal: MatDialog,
+  ) { }
 
   ngOnInit() {
     this.loading = true
     this.gridService.getSliceGroups().then((gridData) => {
-      this.gridData = this.formatGridData(gridData)['data']
+      this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
       this.loading = false
     });
 
@@ -53,51 +60,34 @@ export class TreeTableComponent implements OnInit {
 		})
 	}
 
-  openDialog(row) {
-    // this.dialog.showDialog(row)
-    this.modalContent = row
-    console.log(row);
-    this.display = true;
-  }
-
-  formatGridData(dataArray) {
-    let parentNode: TreeNode = { 'data': [] };
+  openReportsModal(row) {
+    const sliceId = row.id
+    const slicePeriod = row.period
     
-    dataArray.forEach((item) => {
-      let childNode = [];
-      
-      if (item['children'] != undefined && item['children'].length) {
-        item['children'].forEach(element => {
-          childNode.push({ 'data': this.childTreeNode(element), 'children': [{'data' : {}}]})
-        });
-      }
-      parentNode.data.push({ 'data': this.childTreeNode(item), 'children': childNode})
-    });
-    return parentNode
-  }
-
-  childTreeNode(data) {
-    let dataNode = Object.keys(data).reduce((object, key) => {
-      if (key !== 'children') {
-        object[key] = data[key]
-      }
-      return object // В переменной объекты отдельно, без children
-    }, {})
-    return dataNode
-  }
+    if (row.statusCode == "0" || row.statusCode == "6") {
+      alert('По данному статусу невозможно получить отчет!')
+    } else {
+      const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
+        data: { sliceId: sliceId, slicePeriod: slicePeriod  },
+        height: '695px',
+        width: '1050px'
+      });
+      reportsModalRef.afterClosed().subscribe(result => {
+        console.log(result)
+      })
+    }
+	}
 
   onNodeExpand(event) {
     if (event.node.parent != null) {
-      console.log("TCL: onNodeExpand -> event", event)
       this.loading = true
-      const checkDeleted = false
-      const groupCode = event.node.parent.data.code
-      const statusCode = event.node.data.code
-      const year = event.node.data.statusYear
+      const checkDeleted = false,
+            groupCode = event.node.parent.data.code,
+            statusCode = event.node.data.code,
+            year = event.node.data.statusYear
       
       this.httpService.getSlices(checkDeleted, groupCode, statusCode, year).then((data) => {
-      console.log("TCL: onNodeExpand -> data", data)
-        this.childrenNode = this.formatGridData(data)['data']
+        this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
         event.node.children = this.childrenNode
         //refresh the data
         this.gridData = [...this.gridData];
@@ -105,6 +95,5 @@ export class TreeTableComponent implements OnInit {
       })
     }
   }
-
 
 }

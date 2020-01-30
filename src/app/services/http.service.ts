@@ -34,19 +34,30 @@ export class HttpService {
 		let options = {headers: headers}
 
 		const body = {startDate: orderSliceObj.startDate, endDate: orderSliceObj.endDate, maxRecNum: orderSliceObj.maxRecNum, groups: orderSliceObj.groups}
-		console.log(body)
 		return this.http.post(this.configUrl, body, options);
 	}
 
 	getTerritories(){
 		return this.http.get(this.configUrl + '/territories')
 	}
-
+  
 	getHistory(){
-		return this.http.get(this.configUrl +'/'+ 889 + '/history')
+    return this.http.get(this.configUrl +'/'+ 889 + '/history')
 	}
-
+  
 	getDataGridInAgreement(){
-		return this.http.get(this.configUrl + '/'+ 889 + '/history/' + 134 + '/approving')
-	}
+    return this.http.get(this.configUrl + '/'+ 889 + '/history/' + 134 + '/approving')
+  }
+  
+  getReportsBySliceId(sliceId) {
+    return this.http.get(this.configUrl + '/reports?sliceId=' + sliceId)
+  }
+
+  getRegions() {
+    return this.http.get(this.configUrl + '/regsTree')
+  }
+
+  getDepsByReportId(reportId) {
+    return this.http.get(this.configUrl + '/orgs?reportCode=' + reportId)
+  }
 }
