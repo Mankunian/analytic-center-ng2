@@ -1,0 +1,29 @@
+<p-treeTable [value]="gridDepData" [columns]="colsDep" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox" [(selection)]="selectedNodes" dataKey="code">
+1  фыв
+  <div *ngFor="let code of reportGroups">
+    фыв
+    {{code.code}}
+  </div>
+  <!-- <ng-template pTemplate="caption">
+    <div style="text-align:left">
+      <p-treeTableHeaderCheckbox></p-treeTableHeaderCheckbox>
+      <span style="margin-left: .25em; vertical-align: middle">Toggle All</span>  
+    </div>
+  </ng-template> -->
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [ttSelectableRow]="rowNode">
+      <td *ngFor="let col of columns; let i = index">
+        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+          <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox>
+          {{rowData[col.field]}}
+        </td>
+      </tr>
+  </ng-template>
+</p-treeTable>
