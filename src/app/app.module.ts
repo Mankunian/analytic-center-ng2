@@ -39,9 +39,6 @@ import { ReportsModalComponent } from './reports-modal/reports-modal.component';
 import { ReportsModalContentComponent } from './reports-modal/reports-modal.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
-import { ReportDepartmentsListComponent } from './report-departments-list/report-departments-list.component';
-import { ReportRegionsListComponent } from './report-regions-list/report-regions-list.component';
-
 
 @NgModule({
   declarations: [
@@ -55,8 +52,6 @@ import { ReportRegionsListComponent } from './report-regions-list/report-regions
 		ReportsModalContentComponent,
 		TimelineComponent,
 		GridDataInAgreementComponent,
-		ReportDepartmentsListComponent,
-		ReportRegionsListComponent
   ],
   imports: [
     BrowserModule,
