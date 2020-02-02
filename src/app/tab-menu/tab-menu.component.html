@@ -3,10 +3,12 @@
     <mat-tab-group (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]=selected animationDuration="0ms">
       <mat-tab label="Срезы">
         <div class="sliceContent ">
-					<p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
-					<p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York" label="Показать удаленные" inputId="ny"></p-checkbox>
+          <p-button label="Обновить" icon="pi pi-refresh" iconPos="left"></p-button>
+          <!-- <form action=""> -->
+          <!-- <p-checkbox class="showDeletedCheckbox" icon="pi pi-check" [ngModel]="checkDeleted" name="checkDeleted" value="New York" label="Показать удаленные" inputId="ny"></p-checkbox></form> -->
+          <mat-checkbox class="showDeletedCheckbox" [(ngModel)]="checkDeleted" name="isDeleted">Показать удаленные</mat-checkbox>
 				</div>
-        <div id="sliceGrd"><app-tree-table></app-tree-table></div>
+        <div id="sliceGrd"><app-tree-table [checkDeleted]=checkDeleted></app-tree-table></div>
       </mat-tab>
       <mat-tab label="Сформировать">
         <div class="orderSliceContent">

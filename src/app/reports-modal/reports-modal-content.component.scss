@@ -14,3 +14,66 @@
   padding: 0px!important;
   margin: 0px!important;
 }
+.even-row {
+  background-color: #1CA979 !important;
+  color: #ffffff !important;
+}
+.lang-checkbox-label {
+  display: inline-block;
+  margin-right: 10px;
+}
+.reports-list {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+.selected-reports ul {
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-left: 0;
+}
+.selected-reports ul li {
+  min-height: 22px;
+  margin-bottom: 10px;
+  float: none;
+}
+.remove-icon {
+  color: #f52929;
+  font-size: 22px;
+  display: inline-block;
+  vertical-align: bottom;
+  margin-right: 8px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity .3s ease;
+}
+.remove-icon:hover {
+  opacity: 1;
+}
+.selected-report-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+.reports ul {
+  list-style: square;
+  padding-left: 20px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.reports ul li {
+  float: none;
+  margin-bottom: 10px;
+  min-height: 22px;
+}
+.reports ul li a {
+  display: block;
+  padding: 0;
+  color: #000;
+  text-decoration: none;
+  text-align: left;
+}
+.readyReportsCounter {
+  float: right;
+  font-size: 14px;
+}

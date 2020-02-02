@@ -22,7 +22,8 @@ export class TabMenuComponent implements OnInit {
   selected = 0;
 	checkedGroups: any = [];
 	onTabSelectedIndex: number;
-	preloaderByOrderSlice: boolean;
+  preloaderByOrderSlice: boolean;
+  checkDeleted = false
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());

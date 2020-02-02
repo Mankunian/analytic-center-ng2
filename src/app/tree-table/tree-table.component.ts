@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { SlicesGridDataService } from "../services/slices-grid-data.service";
+import { Component, OnInit, Input } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
@@ -19,21 +18,19 @@ export class TreeTableComponent implements OnInit {
   cols: any[];
   loading: boolean;
   childrenNode: TreeNode[];
-
-  files1: TreeNode[];
+  @Input() checkDeleted: boolean
 
   constructor(
     public reportsModalInstance: ReportsModalComponent,
     private httpService: HttpService,
     private formatGridDataService: FormatGridDataService,
-    private gridService: SlicesGridDataService,
     public dialogOperSlice: MatDialog,
     public reportsModal: MatDialog,
   ) { }
 
   ngOnInit() {
     this.loading = true
-    this.gridService.getSliceGroups().then((gridData) => {
+    this.httpService.getSliceGroups().then((gridData) => {
       this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
       this.loading = false
     });
@@ -46,11 +43,6 @@ export class TreeTableComponent implements OnInit {
       { field: 'region', header: 'По органу' },
       { field: 'percentComplete', header: 'Прогресс' }
     ];
-
-    this.gridService.getSliceGroups1().then((files1) => {
-      console.log(files1);
-      this.files1 = files1
-    });
 	}
 	
 	openOperationSliceModal(){
@@ -73,20 +65,20 @@ export class TreeTableComponent implements OnInit {
         width: '1050px'
       });
       reportsModalRef.afterClosed().subscribe(result => {
-        console.log(result)
+        // console.log(result)
       })
     }
 	}
 
   onNodeExpand(event) {
+    console.log(this.checkDeleted);
     if (event.node.parent != null) {
       this.loading = true
-      const checkDeleted = false,
-            groupCode = event.node.parent.data.code,
+      const groupCode = event.node.parent.data.code,
             statusCode = event.node.data.code,
             year = event.node.data.statusYear
       
-      this.httpService.getSlices(checkDeleted, groupCode, statusCode, year).then((data) => {
+      this.httpService.getSlices(this.checkDeleted, groupCode, statusCode, year).then((data) => {
         this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
         event.node.children = this.childrenNode
         //refresh the data
