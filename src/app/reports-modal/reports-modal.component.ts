@@ -100,9 +100,7 @@ export class ReportsModalContentComponent {
   }
 
   tabChange(index: number) {
-    this.selected = index
-    console.log("TCL: ReportsModalContentComponent -> tabChange -> this.selected", this.selected)
-    
+    this.selected = index // current tab index    
     if (index != 0) {
       this.selectedGroupCode = this.reportGroups[index - 1].code
       if (!this.tabLoadedData[index]) {
@@ -252,9 +250,7 @@ export class ReportsModalContentComponent {
   
   showReports(data, counterFrom) {
     this.readyReportsParts += data.length
-    console.log("TCL: ReportsModalContentComponent -> showReports -> data.length", data.length)
-    console.log("TCL: ReportsModalContentComponent -> showReports -> this.readyReportsParts", this.readyReportsParts)
-    // this.readyReportsTotal = this.selectedReportsList.length
+
     let reportValues = data,
       counter = counterFrom,
       counterKz = counterFrom,
