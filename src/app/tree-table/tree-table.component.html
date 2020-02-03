@@ -24,7 +24,7 @@
           <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
         </td>
         <td>
-          {{rowData.name}}
+          <b>{{rowData.name}}</b>
           <a (click)="openDialog(rowData)" *ngIf="rowNode.level == 2">№{{rowData.id}} период {{rowData.period}}</a>
         </td>
         <td>
@@ -34,7 +34,7 @@
           {{rowData.completed}}
         </td>
         <td style="text-align: center;">
-					<button (click)="openOperationSliceModal(rowData)" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1'" mat-flat-button color="primary">Операция со срезами</button>
+					<button (click)="openOperationSliceModal(rowData)" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1' || rowData.statusCode == '2'" mat-flat-button color="primary">Операция со срезами</button>
         </td>
         <td>
           {{rowData.region}}

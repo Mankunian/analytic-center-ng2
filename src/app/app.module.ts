@@ -83,7 +83,7 @@ import { RejectionReasonContentComponent } from "src/app/grid-data-in-agreement/
   exports: [
     MatInputModule
 	],
-  providers: [HttpService, SharedService],
+  providers: [HttpService, SharedService, TimelineComponent],
 	bootstrap: [AppComponent],
 	entryComponents: [SliceOperationsModalContentComponent, RejectionReasonContentComponent]
 })

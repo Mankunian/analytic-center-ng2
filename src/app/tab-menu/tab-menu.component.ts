@@ -21,14 +21,14 @@ export class TabMenuComponent implements OnInit {
 	orderSliceDone: boolean;
   selected = 0;
 	checkedGroups: any = [];
-	onTabSelectedIndex: number;
+	onTabSelectedIndex: number; 
 	preloaderByOrderSlice: boolean;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-  constructor(private httpService: HttpService,  private formBuilder: FormBuilder,) {}
+  constructor(private httpService: HttpService,  private formBuilder: FormBuilder) {}
 	
   ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
@@ -49,6 +49,11 @@ export class TabMenuComponent implements OnInit {
 		this.httpService.getSliceNumber().subscribe((data:SliceNumber) => {
 			this.max = data.value
 		});
+	}
+
+	refreshGridTable(){
+		//Todo refresh grid 
+		// this.httpService.getSlices(checkDeleted, groupCode, statusCode, year)
 	}
 	
 	getSliceNumber(){

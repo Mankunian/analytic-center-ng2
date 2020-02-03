@@ -49,4 +49,44 @@ export class HttpService {
 	getDataGridInAgreement(sliceId: number, historyId: number){
 		return this.http.get(this.configUrl + '/'+ sliceId + '/history/' + historyId + '/approving')
 	}
+
+	confirmSliceService(sliceId: number){
+		let headers = new HttpHeaders({
+			'sessionKey': 'admin'
+		});
+
+		let options = {headers: headers}
+		const body = {}
+		return this.http.put(this.configUrl + '/' + sliceId + '/confirm', body, options)
+	}
+
+	deleteSliceService(sliceId: number){
+		let headers = new HttpHeaders({
+			'sessionKey': 'admin'
+		});
+
+		let options = {headers: headers}
+		const body = {}
+		return this.http.put(this.configUrl + '/' + sliceId + '/delete', body, options)
+	}
+
+	sendToPreliminaryService(sliceId: number){
+		let headers = new HttpHeaders({
+			'sessionKey': 'admin'
+		});
+
+		let options = {headers: headers}
+		const body = {}
+		return this.http.put(this.configUrl + '/' + sliceId + '/preliminary', body, options)
+	}
+	sendToAgreementService(sliceId: number){
+		let headers = new HttpHeaders({
+			'sessionKey': 'admin'
+		});
+
+		let options = {headers: headers}
+		const body = {}
+		return this.http.put(this.configUrl + '/' + sliceId + '/send', body, options)
+	}
+
 }

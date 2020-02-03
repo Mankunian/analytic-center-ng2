@@ -20,18 +20,20 @@ export class GridDataInAgreementComponent {
 	@Input() inputDataGridInAgreement: any = [];
 	@Input() inputPersonName: string;
 	@Input() inputStatusDate: string;
+	terrCode: string;
 
-  constructor(private http: HttpService, public dialogRejectionReason: MatDialog) { }
+  constructor(private http: HttpService, public dialogRejectionReason: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {}
 	
 	openRejectionReasonModal(rowEntity){
+		this.terrCode = this.data.terrCode;
 		console.log(rowEntity);
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogRejectionReason.open(RejectionReasonContentComponent,{
 			width: '500px',
-			data: {msgReason: rowEntity.msg}
+			data: {msgReason: rowEntity.msg, terrCode: this.terrCode}
 		});
 		dialogRef.afterClosed().subscribe(result => {
 			console.log('modal closed')
@@ -47,10 +49,14 @@ export class GridDataInAgreementComponent {
 
 export class RejectionReasonContentComponent {
 	injectValueToModal: any;
+	headTerritory: boolean;
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any){}
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit(){
 		this.injectValueToModal = this.data;
 		console.log(this.injectValueToModal)
+		if (this.injectValueToModal.terrCode == '19000090') {
+			this.headTerritory = true;
+		}
 	}
 }

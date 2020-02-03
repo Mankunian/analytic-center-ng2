@@ -4,12 +4,11 @@
 	<div class="example-container">
 		<mat-form-field style="width: 100%;" appearance="outline">
 			<mat-label>Причина</mat-label>
-			<textarea style="height: 75px;"  [(ngModel)]="injectValueToModal.msgReason" matInput placeholder="Placeholder"></textarea>
+			<textarea disabled="headTerritory" style="height: 75px;"  [(ngModel)]="injectValueToModal.msgReason" matInput placeholder="Placeholder"></textarea>
 		</mat-form-field>
 	</div>
 	
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Вернуться</button>
-  <button mat-button  cdkFocusInitial>Сохранить</button>
 </div>
