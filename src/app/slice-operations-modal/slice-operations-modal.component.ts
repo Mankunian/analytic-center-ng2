@@ -1,8 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { HttpService } from "../services/http.service";
 import { TimelineComponent } from "../../app/timeline/timeline.component";
+import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
+// import { SaveEditReasonObj } from "../saveEditReasonObj";
+
+
 
 @Component({
 	selector: 'app-slice-operations-modal',
@@ -28,8 +32,11 @@ export class SliceOperationsModalContentComponent {
 	btnInAgreement: boolean;
 	btnDecided: boolean;
 	btnToAgreement: boolean;
+	showTableInAgreement: boolean;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>) { }
+	subscription: Subscription;
+
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>, public dialogEditRejection: MatDialog) { }
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
@@ -37,6 +44,8 @@ export class SliceOperationsModalContentComponent {
 		console.log(this.injectValueToModal)
 		if (this.injectValueToModal.statusCode == '7') {
 			this.btnInAgreement = true;
+			this.showTableInAgreement = true;
+			this.service.showTableAgreement(this.showTableInAgreement)
 		}
 		if (this.injectValueToModal.statusCode == '1') {
 			this.btnDecided = true;
@@ -89,11 +98,69 @@ export class SliceOperationsModalContentComponent {
 			this.btnToAgreement = false;
 			this.btnDecided = false;
 		})
-
 	}
+
+	rejectInAgreement() {
+		console.log('open dialog to reject')
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		const dialogRef = this.dialogEditRejection.open(EditReasonComponent, {
+			width: '500px',
+			data: this.injectValueToModal
+		})
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log('modal closed')
+		})
+	}
+
 	closeDialog(): void {
 		this.dialogRef.close();
 	}
+}
+
+
+
+
+
+
+@Component({
+	selector: 'app-edit-reason',
+	templateUrl: './edit-reason.component.html',
+	providers: [SharedService, TimelineComponent]
+})
+
+export class EditReasonComponent implements OnInit {
+	injectValueToDialogEditReason: any;
+	reason: string;
+	message: any;
+
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dataService: SharedService) {
+
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	ngOnInit() {
+		this.injectValueToDialogEditReason = this.data; // rowEntity slice from table
+	}
+
+
+
+	saveEditReason(reason) {
+
+		// let SaveEditReasonObj = {
+		// 	historyId: this.lastHistoryId,
+		// 	approveCode: 2,
+		// 	territoryCode: this.injectValueToDialogEditReason.terrCode,
+		// 	msg: reason,
+		// };
+		// console.log(SaveEditReasonObj)
+		// this.http.rejectInAgreementService(this.injectValueToDialogEditReason.sliceId, SaveRejectReason).subscribe((data: SaveRejectReason) => {
+		// 	console.log(data)
+		// 	console.log(SaveRejectReason)
+		// })
+	}
+
 }
 
 

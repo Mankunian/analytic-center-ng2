@@ -6,7 +6,7 @@
 			</div>
 			<div class="col-md-6">
 				<!-- <h2 style="float: right; text-align: right;" mat-dialog-title>Операция со срезами</h2> -->
-				<i (click)="closeDialog()" style="float: right;" class="material-icons">
+				<i (click)="closeDialog()" style="float: right; cursor: pointer;" class="material-icons">
 					clear
 				</i>
 			</div>
@@ -23,7 +23,7 @@
 	<div class="col-md-6" *ngIf="!headTerritory">
 		<div *ngIf="btnInAgreement">
 			<button mat-raised-button color="primary">Согласовать</button>
-			<button mat-raised-button color="primary">Отказать</button>
+			<button (click)="rejectInAgreement()" mat-raised-button color="primary">Отказать</button>
 		</div>
 	</div>
 	<div class="col-md-6" *ngIf="headTerritory">

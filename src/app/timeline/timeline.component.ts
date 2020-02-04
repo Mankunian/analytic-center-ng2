@@ -35,16 +35,22 @@ export class TimelineComponent {
 
 	subscription: Subscription;
 	updatedHistoryList: unknown;
-
+	shared: any;
 	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
-		this.subscription = shared.subj$.subscribe(val => {
-			console.log('check here')
-			console.log(val)
-			this.historyList = val;
+		this.subscription = shared.subjTerrCode$.subscribe(value => {
+			console.log(value)
+			this.historyList = value;
 		})
+
+		// this.subscription = shared.subjTable$.subscribe(value => {
+		// 	console.log(value)
+		// })
+
+
 	}
 
 	ngOnInit() {
+
 		this.injectValueToModal = this.data;
 		if (this.injectValueToModal.terrCode == '19000090') {
 			this.GP = true;
@@ -53,11 +59,6 @@ export class TimelineComponent {
 			this.historyList = data;
 			this.historyListLength = this.historyList.length;
 			this.lastElemHistoryList = this.historyList[this.historyListLength - 1]
-
-			if (this.historyListLength - 1) {
-				console.log(this.historyListLength - 1)
-				this.expandEnabled = true;
-			}
 			this.showTimeline = true;
 		})
 	}
@@ -109,25 +110,9 @@ export class TimelineComponent {
 		this.showTableInAgreement = false;
 	}
 
-	onExpandEntry(historyValue) {
-		// 	console.log(historyValue)
-		// 	if (historyValue.statusCode == "2") {
-		// 		this.sliceCreator = 'Задачу выставил:'
-		// 		this.sliceDate = 'Время начала формирования:'
-		// 	} else if(historyValue.statusCode == "1"){
-		// 		this.sliceCreator = 'Срез утвердил:';
-		// 		this.sliceDate = 'Время утверждения среза:'
-		// 	} else if (historyValue.statusCode == "7"){
-		// 		this.sliceCreator = 'Срез отправил на согласование:'
-		// 		this.sliceDate = 'Время отправки на согласование среза:'
-		// 		this.showTableInAgreement = true;
-		// 		this.showTimeline = false
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	onExpandEntry() {
 
-		// 		this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe((data)=>{
-		// 			console.log(data)
-		// 			this.gridListInAgreement = data;
-		// 		})
-		// }
 	}
 
 	toggleSide() {
