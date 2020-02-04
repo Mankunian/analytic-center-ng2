@@ -29,14 +29,14 @@ export class SharedService {
 
 
 
-	// HistoryId for Edit Rejection Reason
-	private subHistoryId = new Subject();
-	subjHistoryId$ = this.subHistoryId.asObservable()
+	// HistoryList update 
+	private subHistoryValue = new Subject();
+	subjHistoryId$ = this.subHistoryValue.asObservable()
 
 
-	sendHistoryList(historyId: number) {
-		this.subHistoryId.next(historyId)
-		console.log(historyId)
+	sendHistoryList(historyValue: any) {
+		this.subHistoryValue.next(historyValue)
+		console.log(historyValue)
 	}
 
 

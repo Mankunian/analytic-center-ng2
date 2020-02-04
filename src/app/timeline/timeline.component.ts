@@ -37,13 +37,15 @@ export class TimelineComponent {
 	updatedHistoryList: unknown;
 	shared: any;
 	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
-		this.subscription = shared.subjTerrCode$.subscribe(value => {
+		this.subscription = shared.subjHistoryId$.subscribe(value => {
 			console.log(value)
 			this.historyList = value;
 		})
 
 		// this.subscription = shared.subjTable$.subscribe(value => {
 		// 	console.log(value)
+		// 	this.showTableInAgreement = true;
+		// 	this.showTimeline = false;
 		// })
 
 
@@ -58,8 +60,16 @@ export class TimelineComponent {
 		this.http.getHistory(this.injectValueToModal.sliceId).subscribe((data) => {
 			this.historyList = data;
 			this.historyListLength = this.historyList.length;
-			this.lastElemHistoryList = this.historyList[this.historyListLength - 1]
-			this.showTimeline = true;
+			this.lastElemHistoryList = this.historyList[this.historyListLength - 1];
+			if (this.lastElemHistoryList.statusCode == '7') {
+				console.log(this.lastElemHistoryList)
+				this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe((data) => {
+					this.gridListInAgreement = data;
+				})
+				this.showTableInAgreement = true;
+			} else {
+				this.showTimeline = true;
+			}
 		})
 	}
 
