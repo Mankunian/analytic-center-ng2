@@ -53,27 +53,14 @@ export class TimelineComponent {
 			this.historyList = data;
 			this.historyListLength = this.historyList.length;
 			this.lastElemHistoryList = this.historyList[this.historyListLength - 1]
-			// this.onExpandEntry(this.lastElemHistoryList)
+
+			if (this.historyListLength - 1) {
+				console.log(this.historyListLength - 1)
+				this.expandEnabled = true;
+			}
 			this.showTimeline = true;
 		})
 	}
-
-	// getHistory(sliceId: number) {
-	// 	console.log('asdasdadsdasdad')
-	// 	this.historyList = [];
-	// 	console.log(this.historyList)
-	// 	this.http.getHistory(sliceId).subscribe((data) => {
-	// 		this.historyList = data;
-	// 		this.historyListLength = this.historyList.length;
-	// 		this.lastElemHistoryList = this.historyList[this.historyListLength - 1]
-	// 		this.showTimeline = false;
-	// 		console.log('timeline is hidden')
-	// 		setTimeout(() => {
-	// 			this.showTimeline = true;
-	// 		}, 1000);
-	// 	})
-
-	// }
 
 	entries = [
 		{
@@ -83,7 +70,7 @@ export class TimelineComponent {
 	]
 
 	onHeaderClick(historyValue) {
-		console.log(historyValue)
+
 		if (historyValue.statusCode == "2") {
 			this.sliceCreator = 'Задачу выставил:'
 			this.sliceDate = 'Время начала формирования:'

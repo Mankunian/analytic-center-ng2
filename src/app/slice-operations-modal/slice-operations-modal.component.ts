@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpService } from "../services/http.service";
 import { TimelineComponent } from "../../app/timeline/timeline.component";
 import { SharedService } from '../services/shared.service';
@@ -29,7 +29,7 @@ export class SliceOperationsModalContentComponent {
 	btnDecided: boolean;
 	btnToAgreement: boolean;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>) { }
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
@@ -53,7 +53,6 @@ export class SliceOperationsModalContentComponent {
 		this.http.confirmSliceService(this.injectValueToModal.sliceId).subscribe((data) => {
 			alert('Операция прошла успешна')
 			this.http.getHistory(this.injectValueToModal.sliceId).subscribe((historyValue) => {
-				console.log(historyValue)
 				this.service.sendHistoryList(historyValue)
 			})
 			this.btnDecided = true;
@@ -75,7 +74,6 @@ export class SliceOperationsModalContentComponent {
 				console.log(historyValue)
 				this.service.sendHistoryList(historyValue)
 			})
-			// this.timeline.getHistory(this.injectValueToModal.sliceId)
 			this.btnToAgreement = true;
 			this.btnDecided = false;
 			this.btnInAgreement = false;
@@ -85,7 +83,6 @@ export class SliceOperationsModalContentComponent {
 		this.http.sendToAgreementService(this.injectValueToModal.sliceId).subscribe((data) => {
 			alert('Операция прошла успешна')
 			this.http.getHistory(this.injectValueToModal.sliceId).subscribe((historyValue) => {
-				console.log(historyValue)
 				this.service.sendHistoryList(historyValue)
 			})
 			this.btnInAgreement = true;
@@ -93,6 +90,9 @@ export class SliceOperationsModalContentComponent {
 			this.btnDecided = false;
 		})
 
+	}
+	closeDialog(): void {
+		this.dialogRef.close();
 	}
 }
 

@@ -14,12 +14,13 @@
 		<mgl-timeline style="overflow: auto;" *ngIf="showTimeline" [focusOnOpen]="onFocusOpened" [toggle]="toggle"
 			[side]="side">
 			<mgl-timeline-entry *ngFor="let history of historyList; let i = index; let last = last"
-				(click)="onHeaderClick(history)">
-				<mgl-timeline-entry-header (click)="onHeaderClick(history)">
+				(click)="onExpandEntry(history, $event)">
+				<mgl-timeline-entry-header [ngClass]="{backgroundLast: last}" (click)="onHeaderClick(history, i, last)">
 					<div>{{history.statusName}}</div>
+					<div>{{history.id}}</div>
 				</mgl-timeline-entry-header>
 
-				<mgl-timeline-entry-content>
+				<mgl-timeline-entry-content [ngClass]="{showBlock: last}">
 					<div>
 						<span class="titleStyle">{{sliceCreator}} </span>
 						{{history.personName}}
