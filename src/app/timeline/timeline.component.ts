@@ -36,19 +36,16 @@ export class TimelineComponent {
 	subscription: Subscription;
 	updatedHistoryList: unknown;
 	shared: any;
-	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
-		this.subscription = shared.subjHistoryId$.subscribe(value => {
+	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService, private dataService: SharedService) {
+		this.subscription = shared.subjHistoryValue$.subscribe(value => {
 			console.log(value)
 			this.historyList = value;
 		})
 
-		// this.subscription = shared.subjTable$.subscribe(value => {
-		// 	console.log(value)
-		// 	this.showTableInAgreement = true;
-		// 	this.showTimeline = false;
-		// })
-
-
+		this.subscription = shared.subjGridInAgreement$.subscribe(value => {
+			console.log(value)
+			this.gridListInAgreement = value;
+		})
 	}
 
 	ngOnInit() {
@@ -61,6 +58,9 @@ export class TimelineComponent {
 			this.historyList = data;
 			this.historyListLength = this.historyList.length;
 			this.lastElemHistoryList = this.historyList[this.historyListLength - 1];
+
+			this.dataService.sendHistoryId(this.lastElemHistoryList)
+
 			if (this.lastElemHistoryList.statusCode == '7') {
 				console.log(this.lastElemHistoryList)
 				this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe((data) => {

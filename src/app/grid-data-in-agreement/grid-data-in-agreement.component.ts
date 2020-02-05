@@ -55,7 +55,7 @@ export class RejectionReasonContentComponent {
 	subscription: Subscription;
 	headTerritory: boolean;
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
-		this.subscription = shared.subjHistoryId$.subscribe(val => {
+		this.subscription = shared.subjHistoryValue$.subscribe(val => {
 			console.log(val)
 		})
 	}

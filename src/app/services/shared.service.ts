@@ -31,12 +31,31 @@ export class SharedService {
 
 	// HistoryList update 
 	private subHistoryValue = new Subject();
-	subjHistoryId$ = this.subHistoryValue.asObservable()
+	subjHistoryValue$ = this.subHistoryValue.asObservable()
 
 
 	sendHistoryList(historyValue: any) {
 		this.subHistoryValue.next(historyValue)
 		console.log(historyValue)
+	}
+
+	//history Id to Edit Rejection Reason Modal
+	private subHistoryId = new Subject();
+	subjHistoryId$ = this.subHistoryId.asObservable()
+
+	sendHistoryId(historyId: any) {
+		console.log(historyId)
+		this.subHistoryId.next(historyId)
+	}
+
+
+	//gridinagreement
+	private subGridInAgreement = new Subject();
+	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
+
+	sendGridInAgreement(gridData: any) {
+		console.log(gridData)
+		this.subGridInAgreement.next(gridData)
 	}
 
 

@@ -4,7 +4,7 @@ import { HttpService } from "../services/http.service";
 import { TimelineComponent } from "../../app/timeline/timeline.component";
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
-// import { SaveEditReasonObj } from "../saveEditReasonObj";
+import { SaveEditReasonObj } from "../saveEditReasonObj";
 
 
 
@@ -14,6 +14,7 @@ import { SharedService } from '../services/shared.service';
 	styleUrls: ['./slice-operations-modal.component.scss']
 })
 export class SliceOperationsModalComponent {
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor() {
 	}
 
@@ -33,10 +34,15 @@ export class SliceOperationsModalContentComponent {
 	btnDecided: boolean;
 	btnToAgreement: boolean;
 	showTableInAgreement: boolean;
-
 	subscription: Subscription;
+	historyValue: any;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>, public dialogEditRejection: MatDialog) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>, public dialogEditRejection: MatDialog) {
+		this.subscription = service.subjHistoryId$.subscribe(value => {
+			console.log(value)
+			this.historyValue = value;
+		})
+	}
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
@@ -101,11 +107,10 @@ export class SliceOperationsModalContentComponent {
 	}
 
 	rejectInAgreement() {
-		console.log('open dialog to reject')
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogEditRejection.open(EditReasonComponent, {
 			width: '500px',
-			data: this.injectValueToModal
+			data: [this.injectValueToModal, this.historyValue]
 		})
 
 		dialogRef.afterClosed().subscribe(result => {
@@ -125,42 +130,52 @@ export class SliceOperationsModalContentComponent {
 
 @Component({
 	selector: 'app-edit-reason',
-	templateUrl: './edit-reason.component.html',
-	providers: [SharedService, TimelineComponent]
+	templateUrl: './edit-reason.component.html'
 })
 
 export class EditReasonComponent implements OnInit {
-	injectValueToDialogEditReason: any;
+	objOfRejectionReason: any;
 	reason: string;
-	message: any;
+	sliceId: any;
+	historyId: any;
+	gridInAgreement: any;
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dataService: SharedService) {
-
-	}
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private shared: SharedService) { }
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
-		this.injectValueToDialogEditReason = this.data; // rowEntity slice from table
+		this.objOfRejectionReason = this.data; // rowEntity slice from table
 	}
 
 
 
 	saveEditReason(reason) {
 
-		// let SaveEditReasonObj = {
-		// 	historyId: this.lastHistoryId,
-		// 	approveCode: 2,
-		// 	territoryCode: this.injectValueToDialogEditReason.terrCode,
-		// 	msg: reason,
-		// };
-		// console.log(SaveEditReasonObj)
-		// this.http.rejectInAgreementService(this.injectValueToDialogEditReason.sliceId, SaveRejectReason).subscribe((data: SaveRejectReason) => {
-		// 	console.log(data)
-		// 	console.log(SaveRejectReason)
-		// })
-	}
+		let SaveEditReasonObj = {
+			historyId: this.objOfRejectionReason[1].id,
+			approveCode: 2,
+			territoryCode: this.objOfRejectionReason[0].terrCode,
+			msg: reason
+		}
 
+
+		console.log(SaveEditReasonObj)
+
+
+		this.sliceId = this.objOfRejectionReason[1].sliceId
+		this.historyId = this.objOfRejectionReason[1].id
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		this.http.putEditRejectedReasonService(this.sliceId, SaveEditReasonObj).subscribe((data: SaveEditReasonObj) => {
+			// update ui-grid-in-agreement
+			this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe((data) => {
+				console.log(data)
+				this.gridInAgreement = data;
+				this.shared.sendGridInAgreement(this.gridInAgreement)
+			})
+		})
+	}
 }
 
 

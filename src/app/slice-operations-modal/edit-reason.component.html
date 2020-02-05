@@ -10,5 +10,5 @@
 </div>
 <div mat-dialog-actions align="end">
 	<button mat-button mat-dialog-close>Вернуться</button>
-	<button mat-raised-button (click)="saveEditReason(reason)">Сохранить</button>
+	<button [disabled]="!reason" mat-raised-button (click)="saveEditReason(reason)">Сохранить</button>
 </div>
