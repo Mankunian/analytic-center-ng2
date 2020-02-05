@@ -145,6 +145,7 @@ export class SliceOperationsModalContentComponent {
 				this.service.sendGridInAgreement(this.gridInAgreement)
 				alert('Операция прошла успешно')
 				this.approved = true;
+				this.service.approveAndRejectBtnStatus(this.approved)
 			})
 		})
 	}
@@ -173,7 +174,7 @@ export class EditReasonComponent implements OnInit {
 	rejected: boolean;
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private shared: SharedService) { }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService) { }
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
@@ -198,8 +199,10 @@ export class EditReasonComponent implements OnInit {
 			this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe((data) => {
 				console.log(data)
 				this.gridInAgreement = data;
-				this.shared.sendGridInAgreement(this.gridInAgreement)
+				this.service.sendGridInAgreement(this.gridInAgreement)
 				this.rejected = true;
+				this.service.approveAndRejectBtnStatus(this.rejected)
+
 			})
 		})
 	}

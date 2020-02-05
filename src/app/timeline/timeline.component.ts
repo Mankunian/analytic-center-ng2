@@ -71,10 +71,7 @@ export class TimelineComponent {
 					this.gridListInAgreement = data;
 					this.gridListInAgreement.forEach(element => {
 						if (element.territoryCode == this.injectValueToModal.terrCode) {
-							console.log(true)
-							console.log(element)
 							if (element.approveName !== null) {
-								console.log(true)
 								this.approveAndRejectBtnDisable = true;
 								this.dataService.approveAndRejectBtnStatus(this.approveAndRejectBtnDisable)
 							}
