@@ -5,10 +5,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedService } from '../services/shared.service';
 import { Subscription } from 'rxjs';
 
-
-
-
-
 @Component({
 	selector: 'app-grid-data-in-agreement',
 	templateUrl: './grid-data-in-agreement.component.html',

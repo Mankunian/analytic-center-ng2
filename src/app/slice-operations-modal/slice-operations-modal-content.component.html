@@ -22,8 +22,8 @@
 <mat-dialog-actions>
 	<div class="col-md-6" *ngIf="!headTerritory">
 		<div *ngIf="btnInAgreement">
-			<button mat-raised-button color="primary">Согласовать</button>
-			<button (click)="rejectInAgreement()" mat-raised-button color="primary">Отказать</button>
+			<button [disabled]="disableBtn" (click)="approveSlice()" mat-raised-button color="primary">Согласовать</button>
+			<button [disabled]="disableBtn" (click)="rejectInAgreement()" mat-raised-button color="primary">Отказать</button>
 		</div>
 	</div>
 	<div class="col-md-6" *ngIf="headTerritory">

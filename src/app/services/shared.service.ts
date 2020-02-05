@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -49,13 +48,23 @@ export class SharedService {
 	}
 
 
-	//gridinagreement
+	//grid-in-agreement
 	private subGridInAgreement = new Subject();
 	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
 	sendGridInAgreement(gridData: any) {
 		console.log(gridData)
 		this.subGridInAgreement.next(gridData)
+	}
+
+
+	// approve and reject btn status for disable
+	private subBtnStatus = new Subject();
+	subjBtnStatus$ = this.subBtnStatus.asObservable();
+
+	approveAndRejectBtnStatus(btnStatus: any) {
+		console.log(btnStatus)
+		this.subBtnStatus.next(btnStatus)
 	}
 
 

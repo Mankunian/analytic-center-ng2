@@ -24,8 +24,6 @@ export class TimelineComponent {
 	sliceDate: string;
 	showTableInAgreement: boolean;
 	showTimeline: boolean;
-	gridListInAgreement: any;
-	historyList: any;
 	injectValueToModal: any;
 	personName: string;
 	statusDate: string;
@@ -36,14 +34,21 @@ export class TimelineComponent {
 	subscription: Subscription;
 	updatedHistoryList: unknown;
 	shared: any;
+	// from Shared service
+	terrCode: any;
+	historyList: any;
+	gridListInAgreement: any;
+
+	// to shared service
+	approveAndRejectBtnDisable: boolean;
+
+
 	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService, private dataService: SharedService) {
 		this.subscription = shared.subjHistoryValue$.subscribe(value => {
-			console.log(value)
 			this.historyList = value;
 		})
 
 		this.subscription = shared.subjGridInAgreement$.subscribe(value => {
-			console.log(value)
 			this.gridListInAgreement = value;
 		})
 	}
@@ -62,9 +67,19 @@ export class TimelineComponent {
 			this.dataService.sendHistoryId(this.lastElemHistoryList)
 
 			if (this.lastElemHistoryList.statusCode == '7') {
-				console.log(this.lastElemHistoryList)
 				this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe((data) => {
 					this.gridListInAgreement = data;
+					this.gridListInAgreement.forEach(element => {
+						if (element.territoryCode == this.injectValueToModal.terrCode) {
+							console.log(true)
+							console.log(element)
+							if (element.approveName !== null) {
+								console.log(true)
+								this.approveAndRejectBtnDisable = true;
+								this.dataService.approveAndRejectBtnStatus(this.approveAndRejectBtnDisable)
+							}
+						}
+					});
 				})
 				this.showTableInAgreement = true;
 			} else {
@@ -98,7 +113,6 @@ export class TimelineComponent {
 			this.statusDate = historyValue.statusDate;
 
 			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe((data) => {
-				console.log(data)
 				this.gridListInAgreement = data;
 			})
 		} else if (historyValue.statusCode == "3") {

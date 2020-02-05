@@ -35,12 +35,22 @@ export class SliceOperationsModalContentComponent {
 	btnToAgreement: boolean;
 	showTableInAgreement: boolean;
 	subscription: Subscription;
+	gridInAgreement: any;
+	approved: boolean;
+	// from shared service
 	historyValue: any;
+	disableBtn: any;
+
 
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>, public dialogEditRejection: MatDialog) {
 		this.subscription = service.subjHistoryId$.subscribe(value => {
 			console.log(value)
 			this.historyValue = value;
+		})
+
+		this.subscription = service.subjBtnStatus$.subscribe(value => {
+			this.disableBtn = value;
+			console.log(this.disableBtn)
 		})
 	}
 
@@ -118,6 +128,27 @@ export class SliceOperationsModalContentComponent {
 		})
 	}
 
+	approveSlice() {
+		let approveSliceObj = {
+			historyId: this.historyValue.id,
+			approveCode: 1,
+			territoryCode: this.injectValueToModal.terrCode,
+			msg: ''
+		}
+		console.log(approveSliceObj)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe((data: SaveEditReasonObj) => {
+			// update ui-grid-in-agreement
+			this.http.getDataGridInAgreement(this.historyValue.sliceId, this.historyValue.id).subscribe((data) => {
+				console.log(data)
+				this.gridInAgreement = data;
+				this.service.sendGridInAgreement(this.gridInAgreement)
+				alert('Операция прошла успешно')
+				this.approved = true;
+			})
+		})
+	}
+
 	closeDialog(): void {
 		this.dialogRef.close();
 	}
@@ -139,6 +170,7 @@ export class EditReasonComponent implements OnInit {
 	sliceId: any;
 	historyId: any;
 	gridInAgreement: any;
+	rejected: boolean;
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private shared: SharedService) { }
@@ -151,28 +183,23 @@ export class EditReasonComponent implements OnInit {
 
 
 	saveEditReason(reason) {
-
 		let SaveEditReasonObj = {
 			historyId: this.objOfRejectionReason[1].id,
 			approveCode: 2,
 			territoryCode: this.objOfRejectionReason[0].terrCode,
 			msg: reason
 		}
-
-
-		console.log(SaveEditReasonObj)
-
-
 		this.sliceId = this.objOfRejectionReason[1].sliceId
 		this.historyId = this.objOfRejectionReason[1].id
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		this.http.putEditRejectedReasonService(this.sliceId, SaveEditReasonObj).subscribe((data: SaveEditReasonObj) => {
+		this.http.rejectSliceService(this.sliceId, SaveEditReasonObj).subscribe((data: SaveEditReasonObj) => {
 			// update ui-grid-in-agreement
 			this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe((data) => {
 				console.log(data)
 				this.gridInAgreement = data;
 				this.shared.sendGridInAgreement(this.gridInAgreement)
+				this.rejected = true;
 			})
 		})
 	}

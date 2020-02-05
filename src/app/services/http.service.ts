@@ -93,7 +93,7 @@ export class HttpService {
 		return this.http.post(this.configUrl, body, options);
 	}
 
-	putEditRejectedReasonService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
+	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
 			'sessionKey': 'admin'
 		});
@@ -103,6 +103,17 @@ export class HttpService {
 		const body = { historyId: saveEditReasonObj.historyId, approveCode: saveEditReasonObj.approveCode, territoryCode: saveEditReasonObj.territoryCode, msg: saveEditReasonObj.msg };
 		console.log(body)
 		return this.http.put(this.configUrl + '/' + sliceId + '/approve', body, options)
+	}
+
+	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
+		let headers = new HttpHeaders({
+			'sessionKey': 'admin'
+		});
+
+		let options = { headers: headers }
+		const body = { historyId: saveEditReasonObj.historyId, approveCode: saveEditReasonObj.approveCode, territoryCode: saveEditReasonObj.territoryCode, msg: saveEditReasonObj.msg };
+		return this.http.put(this.configUrl + '/' + sliceId + '/approve', body, options)
+
 	}
 
 }
