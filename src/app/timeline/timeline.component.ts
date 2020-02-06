@@ -63,6 +63,7 @@ export class TimelineComponent {
 			this.historyList = data;
 			this.historyListLength = this.historyList.length;
 			this.lastElemHistoryList = this.historyList[this.historyListLength - 1];
+			console.log(this.lastElemHistoryList)
 
 			this.dataService.sendHistoryId(this.lastElemHistoryList)
 
@@ -92,7 +93,9 @@ export class TimelineComponent {
 		}
 	]
 
-	onHeaderClick(historyValue) {
+	onHeaderClick(historyValue, event) {
+		console.log(historyValue)
+		console.log(event)
 
 		if (historyValue.statusCode == "2") {
 			this.sliceCreator = 'Задачу выставил:'
@@ -132,8 +135,8 @@ export class TimelineComponent {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	onExpandEntry() {
-
+	onExpandEntry(event, index) {
+		console.log(event, index)
 	}
 
 	toggleSide() {

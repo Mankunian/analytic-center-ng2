@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 })
 export class TreeTableComponent implements OnInit {
 
+	progress = 0;
+
 	subscription: Subscription;
 	terrCode: unknown;
 
@@ -39,6 +41,19 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
+		// progressBar
+		let interval = setInterval(() => {
+			this.progress = 75;
+			if (this.progress >= 100) {
+				this.progress = 100;
+				// this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
+				clearInterval(interval);
+			}
+		}, 5000);
+		// progressBar
+
+
 		this.loading = true
 		this.gridService.getSliceGroups().then((gridData) => {
 			this.gridData = this.formatGridData(gridData)['data']

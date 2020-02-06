@@ -19,6 +19,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 
+
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import { MatToolbarModule } from '@angular/material';
 
@@ -29,6 +30,8 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { HttpClientModule } from '@angular/common/http';
+import { ProgressBarModule } from 'primeng/progressbar';
+
 // Services
 import { HttpService } from "./services/http.service";
 import { SharedService } from "./services/shared.service";
@@ -79,7 +82,9 @@ import { RejectionReasonContentComponent } from "src/app/grid-data-in-agreement/
 		MatDialogModule,
 		MglTimelineModule,
 		MatToolbarModule,
-		DialogModule
+		DialogModule,
+		ProgressBarModule
+
 	],
 	exports: [
 		MatInputModule

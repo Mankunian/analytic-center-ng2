@@ -14,13 +14,12 @@
 		<mgl-timeline style="overflow: auto;" *ngIf="showTimeline" [focusOnOpen]="onFocusOpened" [toggle]="toggle"
 			[side]="side">
 			<mgl-timeline-entry *ngFor="let history of historyList; let i = index; let last = last"
-				(click)="onExpandEntry(history, $event)">
-				<mgl-timeline-entry-header [ngClass]="{backgroundLast: last}" (click)="onHeaderClick(history, i, last)">
+				(click)="onExpandEntry($event, i)">
+				<mgl-timeline-entry-header [ngClass]="{onFocusOpened: last}" (click)="onHeaderClick(history, $event)">
 					<div>{{history.statusName}}</div>
-					<div>{{history.id}}</div>
 				</mgl-timeline-entry-header>
 
-				<mgl-timeline-entry-content [ngClass]="{showBlock: last}">
+				<mgl-timeline-entry-content [ngClass]="{onFocusOpened: last}">
 					<div>
 						<span class="titleStyle">{{sliceCreator}} </span>
 						{{history.personName}}
@@ -39,7 +38,6 @@
 				</mgl-timeline-entry-dot>
 			</mgl-timeline-entry>
 		</mgl-timeline>
-
 
 		<app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement"
 			[inputTableInAgreement]="showTableInAgreement" [inputPersonName]="personName" [inputStatusDate]="statusDate">

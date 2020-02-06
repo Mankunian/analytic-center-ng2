@@ -42,7 +42,10 @@
 				{{rowData.region}}
 			</td>
 			<td>
-				{{rowData.percentComplete}}
+				<p-progressBar *ngIf="rowData.statusCode == '0' || rowData.statusCode == '6'" [value]="rowData.percentComplete">
+				</p-progressBar>
+
+				<!-- {{rowData.percentComplete}} -->
 			</td>
 		</tr>
 	</ng-template>
