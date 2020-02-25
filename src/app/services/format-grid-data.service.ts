@@ -16,7 +16,7 @@ export class FormatGridDataService {
     dataArray.forEach((item) => {
       let childNode = [];
       
-      if (item['children'] != undefined && item['children'].length) {
+      if (item['children'] != undefined && item['children'].length > 0) {
         item['children'].forEach(element => {
           let childNode2 = [];
           
