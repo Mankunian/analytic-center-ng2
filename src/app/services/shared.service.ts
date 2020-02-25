@@ -68,5 +68,15 @@ export class SharedService {
 	}
 
 
+	// Список групп на КАЗ во вкладке "Сформировать срез" 
+	private subGroupListKaz = new Subject();
+	subjGroupListKaz$ = this.subGroupListKaz.asObservable();
+
+	sendGroupListKaz(groupListKaz: any) {
+		console.log(groupListKaz)
+		this.subGroupListKaz.next(groupListKaz)
+	}
+
+
 
 }

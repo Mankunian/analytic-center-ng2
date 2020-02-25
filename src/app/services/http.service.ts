@@ -9,12 +9,16 @@ import { TreeNode } from 'primeng/api';
 })
 export class HttpService {
 	private configUrl = 'https://anal-centre.tk:8081/api/v1/RU/slices'
+	private configUrlKz = 'https://anal-centre.tk:8081/api/v1/KZ/slices'
 	// private configUrl = 'https://18.140.232.52:8081/api/v1/RU/slices'
 
 	constructor(private http: HttpClient) { }
 
 	getGroupList() {
 		return this.http.get(this.configUrl + '/groups')
+	}
+	getGroupListKz() {
+		return this.http.get(this.configUrlKz + '/groups')
 	}
 
 	getSliceNumber() {

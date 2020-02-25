@@ -4,6 +4,10 @@ import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
 import { OrderSliceObj } from "../orderSliceObj";
 import { TranslateService } from '@ngx-translate/core';
+// import { Subscription } from 'stompjs';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../services/shared.service';
+
 
 
 @Component({
@@ -26,17 +30,30 @@ export class TabMenuComponent implements OnInit {
 	onTabSelectedIndex: number;
 	preloaderByOrderSlice: boolean;
 
+	subscription: Subscription;
+	groupListKaz: any;
+	shared: any;
+
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService) {
-		translate.addLangs(['ru', 'kaz']);
+	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, shared: SharedService) {
+		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
 
 		const browserLang = translate.getBrowserLang();
-		translate.use(browserLang.match(/ru|kaz/) ? browserLang : 'ru');
+		translate.use(browserLang.match(/ru|kaz|qaz/) ? browserLang : 'ru');
+
+		this.subscription = shared.subjGroupListKaz$.subscribe(value => {
+			this.groupList = value;
+			console.log(this.groupList)
+		})
+
+
 	}
+
+
 
 	ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({

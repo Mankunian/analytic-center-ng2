@@ -21,11 +21,20 @@ export class NavBarComponent implements OnInit {
 	public terrValue: string;
 
 	constructor(private http: HttpService, private service: SharedService, public translate: TranslateService) {
-		translate.addLangs(['ru', 'kaz']);
+		// translate.addLangs(['ru', 'kaz']);
 		translate.setDefaultLang('ru');
 
 		const browserLang = translate.getBrowserLang();
 		translate.use(browserLang.match(/ru|kaz/) ? browserLang : 'ru');
+	}
+
+	changeToKz(lang) {
+		console.log(lang)
+		if (lang == 'KZ') {
+			this.http.getGroupListKz().subscribe((groupListKaz) => {
+				this.service.sendGroupListKaz(groupListKaz)
+			})
+		}
 	}
 
 	ngOnInit() {
