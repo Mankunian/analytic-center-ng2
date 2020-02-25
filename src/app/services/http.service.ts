@@ -8,7 +8,8 @@ import { TreeNode } from 'primeng/api';
 	providedIn: 'root'
 })
 export class HttpService {
-	private configUrl = 'https://18.140.232.52:8081/api/v1/RU/slices'
+	private configUrl = 'https://anal-centre.tk:8081/api/v1/RU/slices'
+	// private configUrl = 'https://18.140.232.52:8081/api/v1/RU/slices'
 
 	constructor(private http: HttpClient) { }
 
