@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from "../services/http.service";
 import { SharedService } from '../services/shared.service';
+import { TranslateService } from '@ngx-translate/core';
+
 
 
 export interface Territory {
@@ -18,7 +20,13 @@ export class NavBarComponent implements OnInit {
 	selectedTerritory: any;
 	public terrValue: string;
 
-	constructor(private http: HttpService, private service: SharedService) { }
+	constructor(private http: HttpService, private service: SharedService, public translate: TranslateService) {
+		translate.addLangs(['ru', 'kaz']);
+		translate.setDefaultLang('ru');
+
+		const browserLang = translate.getBrowserLang();
+		translate.use(browserLang.match(/ru|kaz/) ? browserLang : 'ru');
+	}
 
 	ngOnInit() {
 		this.http.getTerritories().subscribe((data: Territory) => {

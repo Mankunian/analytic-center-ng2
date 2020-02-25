@@ -7,14 +7,25 @@ import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } f
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 
+import { WebsocketService } from '../services/websocket.service'
+import { ProgressbarService } from '../services/progressbar.service';
+import * as SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
+
+
+
+
 @Component({
 	selector: 'app-tree-table',
 	templateUrl: './tree-table.component.html',
 	styleUrls: ['./tree-table.component.scss'],
-	providers: [SliceOperationsModalComponent]
+	providers: [SliceOperationsModalComponent, WebsocketService, ProgressbarService]
 })
 export class TreeTableComponent implements OnInit {
 
+
+
+	stompClient = null;
 	progress = 0;
 
 	subscription: Subscription;
@@ -33,10 +44,14 @@ export class TreeTableComponent implements OnInit {
 
 	files1: TreeNode[];
 
-	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog, shared: SharedService) {
+	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog, shared: SharedService, private progressbarService: ProgressbarService) {
 		this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
 			console.log(this.terrCode)
+		})
+
+		progressbarService.messages.subscribe(msg => {
+			console.log("Response from websocket:" + msg)
 		})
 	}
 
@@ -73,6 +88,8 @@ export class TreeTableComponent implements OnInit {
 			this.files1 = files1
 		});
 	}
+
+
 
 	openOperationSliceModal(rowEntity) {
 		this.period = rowEntity.period;

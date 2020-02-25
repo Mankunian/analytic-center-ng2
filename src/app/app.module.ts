@@ -7,6 +7,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
 import { TreeTableComponent } from './tree-table/tree-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 // MaterialDesign library
 import { MatInputModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material';
@@ -29,12 +31,14 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
-import { HttpClientModule } from '@angular/common/http';
+// import { HttpClientModule } from '@angular/common/http';
 import { ProgressBarModule } from 'primeng/progressbar';
 
 // Services
 import { HttpService } from "./services/http.service";
 import { SharedService } from "./services/shared.service";
+
+
 // Data table
 import { TreeTableModule } from 'primeng/treetable';
 import { SliceOperationsModalComponent, EditReasonComponent } from './slice-operations-modal/slice-operations-modal.component';
@@ -43,6 +47,15 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { GridDataInAgreementComponent } from './grid-data-in-agreement/grid-data-in-agreement.component';
 import { RejectionReasonContentComponent } from "src/app/grid-data-in-agreement/grid-data-in-agreement.component";
 
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+	return new TranslateHttpLoader(httpClient);
+}
 
 
 @NgModule({
@@ -83,7 +96,14 @@ import { RejectionReasonContentComponent } from "src/app/grid-data-in-agreement/
 		MglTimelineModule,
 		MatToolbarModule,
 		DialogModule,
-		ProgressBarModule
+		ProgressBarModule,
+		TranslateModule.forRoot({
+			loader: {
+				provide: TranslateLoader,
+				useFactory: HttpLoaderFactory,
+				deps: [HttpClient]
+			}
+		})
 
 	],
 	exports: [
