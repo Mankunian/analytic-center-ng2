@@ -16,7 +16,7 @@ export class TreeTableComponent implements OnInit {
 
   gridData: TreeNode[];
   cols: any[];
-  loading: boolean;
+  loader: boolean;
   childrenNode: TreeNode[];
   @Input() checkDeleted: boolean
 
@@ -29,10 +29,10 @@ export class TreeTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loading = true
+    this.loader = true
     this.httpService.getSliceGroups().then((gridData) => {
       this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-      this.loading = false
+      this.loader = false
     });
 
     this.cols = [
@@ -55,12 +55,13 @@ export class TreeTableComponent implements OnInit {
   openReportsModal(row) {
     const sliceId = row.id
     const slicePeriod = row.period
+    const sliceGroupCode = row.groupCode
     
     if (row.statusCode == "0" || row.statusCode == "6") {
       alert('По данному статусу невозможно получить отчет!')
     } else {
       const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
-        data: { sliceId: sliceId, slicePeriod: slicePeriod  },
+        data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode  },
         height: '695px',
         width: '1050px'
       });
@@ -71,9 +72,8 @@ export class TreeTableComponent implements OnInit {
 	}
 
   onNodeExpand(event) {
-    console.log(this.checkDeleted);
     if (event.node.parent != null) {
-      this.loading = true
+      this.loader = true
       const groupCode = event.node.parent.data.code,
             statusCode = event.node.data.code,
             year = event.node.data.statusYear
@@ -83,7 +83,7 @@ export class TreeTableComponent implements OnInit {
         event.node.children = this.childrenNode
         //refresh the data
         this.gridData = [...this.gridData];
-        this.loading = false
+        this.loader = false
       })
     }
   }

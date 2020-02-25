@@ -32,20 +32,20 @@ export class HttpService {
       .toPromise()
       .then(response => <TreeNode[]> response);
 	}
-
+  
 	postOrderSlice(orderSliceObj: OrderSliceObj){
-		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+    let headers = new HttpHeaders({
+      'sessionKey': 'admin'
 		});
-
+    
 		let options = {headers: headers}
 
 		const body = {startDate: orderSliceObj.startDate, endDate: orderSliceObj.endDate, maxRecNum: orderSliceObj.maxRecNum, groups: orderSliceObj.groups}
 		return this.http.post(this.BASE_API_URL, body, options);
 	}
-
+  
 	getTerritories(){
-		return this.http.get(this.BASE_API_URL + '/territories')
+    return this.http.get(this.BASE_API_URL + '/territories')
 	}
   
 	getHistory(){
@@ -62,6 +62,16 @@ export class HttpService {
 
   getRegions() {
     return this.http.get(this.BASE_API_URL + '/regsTree')
+  }
+  
+  getGroupCommon() {
+    return this.http.get(this.BASE_API_URL + '/governments/parents')
+  }
+  
+  getGroupCommonChildren(searchPattern) {
+    return this.http.get(this.BASE_API_URL + '/governments/children?searchPattern='+searchPattern)
+      .toPromise()
+      .then(response => <TreeNode[]> response);
   }
 
   getDepsByReportId(reportId) {
