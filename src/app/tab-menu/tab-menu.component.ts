@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 // import { Subscription } from 'stompjs';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
+import { TreeNode } from 'primeng/api/treenode';
 
 
 
@@ -85,9 +86,11 @@ export class TabMenuComponent implements OnInit {
 		});
 	}
 
-	refreshGridTable() {
-		//Todo refresh grid 
-		// this.httpService.getSlices(checkDeleted, groupCode, statusCode, year)
+	refreshGridTable(status) {
+		console.log(status)
+		if (status) {
+			this.httpService.getSliceGroups()
+		}
 	}
 
 	getSliceNumber() {

@@ -1,55 +1,57 @@
 <div style="height: 5px; width: 100%; background: transparent">
-  <div *ngIf="loader" class="loader">
-    <div class="bar"></div>
-  </div>
+	<div *ngIf="loader" class="loader">
+		<div class="bar"></div>
+	</div>
 </div>
-<p-treeTable [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" [showLoader]="false">
-  <ng-template pTemplate="colgroup" let-columns>
-    <colgroup>
-        <col style="width: 40px;">
+<p-treeTable [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading"
+	[showLoader]="false">
+	<ng-template pTemplate="colgroup" let-columns>
+		<colgroup>
+			<col style="width: 40px;">
 			<col style="width: 200px;">
 			<col style="width: 200px;">
 			<col style="width: 200px;">
 			<col style="width: 200px;">
 			<col style="width: 100px;">
 			<col style="width: 200px;">
-    </colgroup>
-  </ng-template>
-  <ng-template pTemplate="header" let-columns>
-    <tr>
-      <th></th>
-      <th *ngFor="let col of cols">
-        {{col.header}}
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-      <tr>
-        <td>
-          <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-        </td>
-        <td>
-          {{rowData.name}}
-          <a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2"> <span *ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> период {{rowData.period}}</span></a>
-        </td>
-        <td>
-          {{rowData.maxRecNum}}
-        </td>
-        <td>
-          {{rowData.completed}}
-        </td>
-        <td style="text-align: center;">
-				<button (click)="openOperationSliceModal(rowData)"
-					*ngIf="rowData.statusCode == '7' || rowData.statusCode == '1' || rowData.statusCode == '2'" mat-flat-button
-					color="primary">Операция со срезами</button>
+		</colgroup>
+	</ng-template>
+	<ng-template pTemplate="header" let-columns>
+		<tr>
+			<th></th>
+			<th *ngFor="let col of cols">
+				{{col.header}}
+			</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+		<tr>
+			<td>
+				<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
 			</td>
-        <td>
-          {{rowData.region}}
-        </td>
-        <td>
-          <p-progressBar *ngIf="rowData.statusCode == '0' || rowData.statusCode == '6'" [value]="rowData.percentComplete">
+			<td>
+				{{rowData.name}}
+				<a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2"> <span
+						*ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> период {{rowData.period}}</span></a>
+			</td>
+			<td>
+				{{rowData.maxRecNum}}
+			</td>
+			<td>
+				{{rowData.completed}}
+			</td>
+			<td style="text-align: center;">
+				<p-button (click)="openOperationSliceModal(rowData)"
+					*ngIf="rowData.statusCode == '7' || rowData.statusCode == '1' || rowData.statusCode == '2'"
+					label="Операция со срезами"></p-button>
+			</td>
+			<td>
+				{{rowData.region}}
+			</td>
+			<td>
+				<p-progressBar *ngIf="rowData.statusCode == '0' || rowData.statusCode == '6'" [value]="rowData.percentComplete">
 				</p-progressBar>
-        </td>
-      </tr>
-  </ng-template>
+			</td>
+		</tr>
+	</ng-template>
 </p-treeTable>

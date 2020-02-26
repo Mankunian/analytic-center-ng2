@@ -3,7 +3,7 @@
 		<mat-tab-group (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]=selected animationDuration="0ms">
 			<mat-tab label="{{'TAB_MENU.SLICES' | translate}}">
 				<div class="sliceContent ">
-					<p-button (onClick)="refreshGridTable()" label="{{'TAB_MENU.REFRESH' | translate}}" icon="pi pi-refresh"
+					<p-button (onClick)="refreshGridTable(true)" label="{{'TAB_MENU.REFRESH' | translate}}" icon="pi pi-refresh"
 						iconPos="left"></p-button>
 					<!-- <p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York"
 						label="{{'TAB_MENU.SHOW_DELETED' | translate}}" inputId="ny"></p-checkbox>-->
