@@ -33,6 +33,7 @@ export class TabMenuComponent implements OnInit {
 	subscription: Subscription;
 	groupListKaz: any;
 	shared: any;
+	disabledBtn = true;
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
@@ -88,14 +89,21 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	onCheckedGroup(event) {
+		this.disabledBtn = false;
 		this.checkedGroups.push(event)
 		this.checkedGroupCodes = event.source.value.code;
+
+
 
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
 		} else {
 			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes)
 			this.checkedGroupList.splice(a, 1)
+		}
+
+		if (this.checkedGroupList.length == 0) {
+			this.disabledBtn = true;
 		}
 	}
 

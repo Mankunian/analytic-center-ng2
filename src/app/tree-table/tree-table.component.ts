@@ -7,10 +7,9 @@ import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } f
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 
+
 import { WebsocketService } from '../services/websocket.service'
 import { ProgressbarService } from '../services/progressbar.service';
-import * as SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
 
 
 
@@ -47,8 +46,14 @@ export class TreeTableComponent implements OnInit {
 	constructor(public dialog: SliceOperationsModalComponent, private httpService: HttpService, private gridService: SlicesGridDataService, public dialogOperSlice: MatDialog, shared: SharedService, private progressbarService: ProgressbarService) {
 		this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
-			console.log(this.terrCode)
 		})
+
+		this.subscription = shared.subjSliceGroupKaz$.subscribe(sliceGroup => {
+			console.log(sliceGroup)
+			this.gridData = this.formatGridData(sliceGroup)['data']
+		})
+
+
 
 		progressbarService.messages.subscribe(msg => {
 			console.log("Response from websocket:" + msg)
@@ -71,6 +76,7 @@ export class TreeTableComponent implements OnInit {
 
 		this.loading = true
 		this.gridService.getSliceGroups().then((gridData) => {
+			console.log(gridData)
 			this.gridData = this.formatGridData(gridData)['data']
 			this.loading = false
 		});

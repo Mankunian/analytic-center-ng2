@@ -32,8 +32,6 @@ export class HttpService {
 			.then(response => <TreeNode[]>response);
 	}
 
-
-
 	getTerritories() {
 		return this.http.get(this.configUrl + '/territories')
 	}

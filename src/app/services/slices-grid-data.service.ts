@@ -8,11 +8,18 @@ import { TreeNode } from 'primeng/api';
 export class SlicesGridDataService {
 	// private httpUrl = 'https://18.140.232.52:8081/api/v1/RU/slices/parents'
 	private httpUrl = 'https://anal-centre.tk:8081/api/v1/RU/slices/parents'
+	private httpUrlKz = 'https://anal-centre.tk:8081/api/v1/KZ/slices/parents'
 
 	constructor(private http: HttpClient) { }
 
 	getSliceGroups() {
 		return this.http.get(this.httpUrl)
+			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			.then(response => <TreeNode[]>response);
+	}
+	getSliceGroupsKaz() {
+		return this.http.get(this.httpUrlKz)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);

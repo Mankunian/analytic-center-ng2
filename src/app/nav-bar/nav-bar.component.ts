@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from "../services/http.service";
 import { SharedService } from '../services/shared.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SlicesGridDataService } from '../services/slices-grid-data.service';
 
 
 
@@ -20,7 +21,8 @@ export class NavBarComponent implements OnInit {
 	selectedTerritory: any;
 	public terrValue: string;
 
-	constructor(private http: HttpService, private service: SharedService, public translate: TranslateService) {
+
+	constructor(private http: HttpService, private service: SharedService, public translate: TranslateService, private gridService: SlicesGridDataService) {
 		// translate.addLangs(['ru', 'kaz']);
 		translate.setDefaultLang('ru');
 
@@ -37,6 +39,12 @@ export class NavBarComponent implements OnInit {
 
 			this.http.getTerritoriesKz().subscribe((territoriesKaz) => {
 				this.territoryList = territoriesKaz;
+			})
+
+			this.gridService.getSliceGroupsKaz().then((gridData) => {
+				console.log(gridData)
+				// this.gridData = this.formatGridData(gridData)['data']
+				this.service.sendSliceGroupKaz(gridData)
 			})
 		}
 		if (lang == 'RU') {
