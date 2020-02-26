@@ -55,6 +55,12 @@ export class NavBarComponent implements OnInit {
 			this.http.getTerritories().subscribe((territoryRu) => {
 				this.territoryList = territoryRu
 			})
+
+			this.gridService.getSliceGroups().then((gridData) => {
+				console.log(gridData)
+				// this.gridData = this.formatGridData(gridData)['data']
+				this.service.sendSliceGroupKaz(gridData)
+			})
 		}
 	}
 
