@@ -5,6 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReportsModalComponent, ReportsModalContentComponent } from "../reports-modal/reports-modal.component";
 import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
 import { FormatGridDataService } from '../services/format-grid-data.service';
+import { SharedService } from "../services/shared.service";
+import { Subscription } from 'rxjs';
+
+import { WebsocketService } from '../services/websocket.service'
+import { ProgressbarService } from '../services/progressbar.service';
 
 @Component({
   selector: 'app-tree-table',
@@ -14,11 +19,20 @@ import { FormatGridDataService } from '../services/format-grid-data.service';
 })
 export class TreeTableComponent implements OnInit {
 
+  stompClient = null;
+	progress = 0;
+
+	subscription: Subscription;
+	terrCode: unknown;
   gridData: TreeNode[];
   cols: any[];
   loader: boolean;
   childrenNode: TreeNode[];
   @Input() checkDeleted: boolean
+  period: any;
+  sliceId: any;
+  historyList: Record<string, any>;
+  showTimeline: boolean;
 
   constructor(
     public reportsModalInstance: ReportsModalComponent,
@@ -26,9 +40,34 @@ export class TreeTableComponent implements OnInit {
     private formatGridDataService: FormatGridDataService,
     public dialogOperSlice: MatDialog,
     public reportsModal: MatDialog,
-  ) { }
+    public dialog: SliceOperationsModalComponent, shared: SharedService,
+    private progressbarService: ProgressbarService
+  ) {
+	  this.subscription = shared.subjTerrCode$.subscribe(val => {
+			this.terrCode = val;
+		})
+
+		this.subscription = shared.subjSliceGroupKaz$.subscribe(sliceGroup => {
+			console.log(sliceGroup)
+      this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
+		})
+		progressbarService.messages.subscribe(msg => {
+			console.log("Response from websocket:" + msg)
+		})
+}
 
   ngOnInit() {
+  	// progressBar
+		let interval = setInterval(() => {
+			this.progress = 75;
+			if (this.progress >= 100) {
+				this.progress = 100;
+				// this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
+				clearInterval(interval);
+			}
+		}, 5000);
+		// progressBar
+	
     this.loader = true
     this.httpService.getSliceGroups().then((gridData) => {
       this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
@@ -45,11 +84,25 @@ export class TreeTableComponent implements OnInit {
     ];
 	}
 	
-	openOperationSliceModal(){
-		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent);
-		dialogRef.afterClosed().subscribe(result => {
-			console.log(result)
+	openOperationSliceModal(rowEntity) {
+		this.period = rowEntity.period;
+		this.sliceId = rowEntity.id;
+		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
+			width: '1100px',
+			data: { sliceId: this.sliceId, period: this.period, terrCode: this.terrCode, statusCode: rowEntity.statusCode }
+		});
+
+		dialogRef.afterOpen().subscribe(result => {
+			this.httpService.getHistory(this.sliceId).subscribe((data) => {
+				this.historyList = data;
+				this.showTimeline = true;
+			})
 		})
+
+		dialogRef.afterClosed().subscribe(result => {
+		})
+
+
 	}
 
   openReportsModal(row) {

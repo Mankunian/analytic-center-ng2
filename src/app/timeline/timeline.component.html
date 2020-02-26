@@ -1,36 +1,44 @@
-<mat-toolbar style="text-align: center;">
-	<button mat-raised-button color="primary" (click)="backToTimeline()">Вернуться в таймлайн</button>
-	<button mat-raised-button color="primary">Удалить запись</button>
-	<button mat-raised-button color="primary" (click)="alternate = !alternate">Переключить альтернативу</button>
-	<button mat-raised-button color="primary" (click)="size = size + 10">Увеличить размер точки</button>
-	<button mat-raised-button color="primary" (click)="size = size - 10">Уменьшить размер точки</button>
-</mat-toolbar>
-<mgl-timeline *ngIf="showTimeline" [toggle]="toggle" [alternate]="alternate" [side]="side">
-  <mgl-timeline-entry *ngFor="let history of historyList; let i = index;" (click)="onExpandEntry(history)">
-    <mgl-timeline-entry-header (click)="onHeaderClick(history)">
-			<div>{{history.statusName}}</div>
-		</mgl-timeline-entry-header>
-    <mgl-timeline-entry-content>
-        <div>
-					<span>
-						<!-- {{history.statusCode}} -->
-					</span>
-				</div>
-				<div>
-					<span class="titleStyle">{{sliceCreator}}</span> 
-					{{history.personName}}
-				</div>
-				<div>
-					<span class="titleStyle">
-						{{sliceDate}}
-					</span>
-					{{history.statusDate}}
-				</div>
-    </mgl-timeline-entry-content>
-		<mgl-timeline-entry-dot [size]="size" style="text-align: center; background-color: #2196F3; color: darkblue; cursor: pointer;">
-		</mgl-timeline-entry-dot>
-  </mgl-timeline-entry>
-</mgl-timeline>
+<a class="backToHistory" *ngIf="showTableInAgreement" (click)="backToTimeline()">
+	< Назад к истории</a> <div class="col-md-12">
+		<div class="row" style="padding: 10px 0 0;">
+			<div class="col-md-6">
+				<p><span style="font-weight: bold;">№ среза:</span> {{injectValueToModal.sliceId}}</p>
 
+			</div>
+			<div class="col-md-6" style="text-align: right;">
+				<p><span style="font-weight: bold;">Период:</span> {{injectValueToModal.period}}</p>
+			</div>
+		</div>
+		</div>
 
-<app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement" [inputTableInAgreement]="showTableInAgreement"></app-grid-data-in-agreement>
+		<mgl-timeline style="overflow: auto;" *ngIf="showTimeline" [focusOnOpen]="onFocusOpened" [toggle]="toggle"
+			[side]="side">
+			<mgl-timeline-entry *ngFor="let history of historyList; let i = index; let last = last"
+				(click)="onExpandEntry($event, i)">
+				<mgl-timeline-entry-header [ngClass]="{onFocusOpened: last}" (click)="onHeaderClick(history, $event)">
+					<div>{{history.statusName}}</div>
+				</mgl-timeline-entry-header>
+
+				<mgl-timeline-entry-content [ngClass]="{onFocusOpened: last}">
+					<div>
+						<span class="titleStyle">{{sliceCreator}} </span>
+						{{history.personName}}
+					</div>
+					<div>
+						<span class="titleStyle">
+							{{sliceDate}}
+
+						</span>
+						{{history.statusDate}}
+					</div>
+				</mgl-timeline-entry-content>
+
+				<mgl-timeline-entry-dot [size]="size"
+					style="text-align: center; background-color: #2196F3; color: darkblue; cursor: pointer;">
+				</mgl-timeline-entry-dot>
+			</mgl-timeline-entry>
+		</mgl-timeline>
+
+		<app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement"
+			[inputTableInAgreement]="showTableInAgreement" [inputPersonName]="personName" [inputStatusDate]="statusDate">
+		</app-grid-data-in-agreement>

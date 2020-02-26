@@ -1,4 +1,3 @@
-
 <div class="row">
 	<div class="col-md-12">
 		<div class="row">
@@ -7,21 +6,37 @@
 			</div>
 			<div class="col-md-6">
 				<!-- <h2 style="float: right; text-align: right;" mat-dialog-title>Операция со срезами</h2> -->
-				<i style="float: right;" class="material-icons">
+				<i (click)="closeDialog()" style="float: right; cursor: pointer;" class="material-icons">
 					clear
-					</i>
+				</i>
 			</div>
 		</div>
 	</div>
 </div>
 
 <mat-dialog-content class="mat-typography">
-	<app-timeline></app-timeline>	
+	<app-timeline></app-timeline>
 	<app-grid-data-in-agreement></app-grid-data-in-agreement>
-  
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
-</mat-dialog-actions>
 
+</mat-dialog-content>
+<mat-dialog-actions>
+	<div class="col-md-6" *ngIf="!headTerritory">
+		<div *ngIf="btnInAgreement">
+			<button [disabled]="disableBtn" (click)="approveSlice()" mat-raised-button color="primary">Согласовать</button>
+			<button [disabled]="disableBtn" (click)="rejectInAgreement()" mat-raised-button color="primary">Отказать</button>
+		</div>
+	</div>
+	<div class="col-md-6" *ngIf="headTerritory">
+		<div *ngIf="btnInAgreement">
+			<button (click)="deleteSlice()" mat-flat-button color="primary">Удалить</button>
+			<button (click)="confirmSlice()" mat-flat-button color="primary">Утвердить</button>
+		</div>
+		<button (click)="sendToPreliminary()" *ngIf="btnDecided" mat-flat-button color="primary">Перевести в
+			предварительный</button>
+		<button (click)="sendToAgreement()" *ngIf="btnToAgreement" mat-flat-button color="primary">На согласование</button>
+	</div>
+	<div class="col-md-6" style="text-align: right;">
+		<button mat-dialog-close mat-raised-button color="warn">Отмена</button>
+	</div>
+	<!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+</mat-dialog-actions>

@@ -1,0 +1,14 @@
+<h1 style="text-align: center;" mat-dialog-title>Причина отказа в согласовании</h1>
+<div mat-dialog-content>
+	<div class="example-container">
+		<mat-form-field style="width: 100%;" appearance="outline">
+			<mat-label>Причина</mat-label>
+			<textarea style="height: 75px;" [(ngModel)]="reason" matInput placeholder="Напишите причину отказа"></textarea>
+		</mat-form-field>
+	</div>
+
+</div>
+<div mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close>Вернуться</button>
+	<button [disabled]="!reason" mat-raised-button (click)="saveEditReason(reason)">Сохранить</button>
+</div>
