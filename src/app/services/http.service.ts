@@ -22,7 +22,7 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + '/RU/slices/max');
 	}
 	getSlices(checkDeleted: boolean, groupCode, statusCode, year) {
-		return this.http.get(this.BASE_API_URL + '?deleted=' + checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year)
+		return this.http.get(this.BASE_API_URL + 'RU/slices' + '?deleted=' + checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
@@ -40,15 +40,15 @@ export class HttpService {
 
 
 	getHistory(sliceId: number) {
-		return this.http.get(this.BASE_API_URL + '/' + sliceId + 'RU/slices/history')
+		return this.http.get(this.BASE_API_URL + '/RU/slices/' + sliceId + '/history')
 	}
 
 	getDataGridInAgreement(sliceId: number, historyId: number) {
-		return this.http.get(this.BASE_API_URL + '/' + sliceId + '/history/' + historyId + '/approving')
+		return this.http.get(this.BASE_API_URL + '/RU/slices/' + sliceId + '/history/' + historyId + '/approving')
 	}
 
 	getReportsBySliceId(sliceId) {
-		return this.http.get(this.BASE_API_URL + '/reports?sliceId=' + sliceId)
+		return this.http.get(this.BASE_API_URL + 'RU/slices/reports?sliceId=' + sliceId)
 	}
 
 	getRegions() {
@@ -62,11 +62,12 @@ export class HttpService {
 	getGroupCommonChildren(searchPattern) {
 		return this.http.get(this.BASE_API_URL + '/governments/children?searchPattern=' + searchPattern)
 			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
 
 	getDepsByReportId(reportId) {
-		return this.http.get(this.BASE_API_URL + '/orgs?reportCode=' + reportId)
+		return this.http.get(this.BASE_API_URL + 'RU/slices/orgs?reportCode=' + reportId)
 	}
 
 	confirmSliceService(sliceId: number) {
@@ -113,7 +114,7 @@ export class HttpService {
 		});
 		let options = { headers: headers }
 
-		return this.http.post(this.BASE_API_URL + '/reports/createReports?repLang=' + lang, data, options)
+		return this.http.post(this.BASE_API_URL + 'RU/slices/reports/createReports?repLang=' + lang, data, options)
 	}
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
