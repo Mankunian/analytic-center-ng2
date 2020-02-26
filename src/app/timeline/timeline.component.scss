@@ -10,3 +10,19 @@ mat-toolbar button {
 mgl-timeline-entry-header{
 	cursor: pointer;
 }
+.backToHistory{
+	color: #2E86CD;
+}
+.backToHistory:hover{
+	text-decoration: underline;
+	color: #6384A2;
+	cursor: pointer;
+}
+
+.backgroundLast{
+	background-color:#007bff
+}
+
+.showBlock{
+	display: block;
+}

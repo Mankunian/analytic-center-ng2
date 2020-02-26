@@ -9,8 +9,7 @@ import { GlobalConfig } from '../global';
 @Component({
   selector: 'app-reports-modal',
   templateUrl: './reports-modal.component.html',
-  styleUrls: ['./reports-modal.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./reports-modal.component.scss']
 })
 export class ReportsModalComponent {
   constructor(public dialog: MatDialog, private http: HttpService) { }

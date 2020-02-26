@@ -7,12 +7,12 @@
   <ng-template pTemplate="colgroup" let-columns>
     <colgroup>
         <col style="width: 40px;">
-        <col style="width: 200px;">
-        <col style="width: 80px;">
-        <col style="width: 100px;">
-        <col style="width: 200px;">
-        <col style="width: 200px;">
-        <col style="width: 100px;">
+			<col style="width: 200px;">
+			<col style="width: 200px;">
+			<col style="width: 200px;">
+			<col style="width: 200px;">
+			<col style="width: 100px;">
+			<col style="width: 200px;">
     </colgroup>
   </ng-template>
   <ng-template pTemplate="header" let-columns>
@@ -39,13 +39,16 @@
           {{rowData.completed}}
         </td>
         <td style="text-align: center;">
-					<button (click)="openOperationSliceModal()" *ngIf="rowData.statusCode == '7' || rowData.statusCode == '1'" mat-flat-button color="primary">Операция со срезами</button>
-        </td>
+				<button (click)="openOperationSliceModal(rowData)"
+					*ngIf="rowData.statusCode == '7' || rowData.statusCode == '1' || rowData.statusCode == '2'" mat-flat-button
+					color="primary">Операция со срезами</button>
+			</td>
         <td>
           {{rowData.region}}
         </td>
         <td>
-          {{rowData.percentComplete}}
+          <p-progressBar *ngIf="rowData.statusCode == '0' || rowData.statusCode == '6'" [value]="rowData.percentComplete">
+				</p-progressBar>
         </td>
       </tr>
   </ng-template>
