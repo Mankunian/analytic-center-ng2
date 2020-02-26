@@ -28,13 +28,14 @@ export class TabMenuComponent implements OnInit {
 	selected = 0;
 	checkedGroups: any = [];
 	onTabSelectedIndex: number;
-  preloaderByOrderSlice: boolean;
-  checkDeleted = false
+	preloaderByOrderSlice: boolean;
+	checkDeleted = false
 
 	subscription: Subscription;
 	groupListKaz: any;
 	shared: any;
 	disabledBtn = true;
+	lang: string
 
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
@@ -50,6 +51,11 @@ export class TabMenuComponent implements OnInit {
 		this.subscription = shared.subjGroupListKaz$.subscribe(value => {
 			this.groupList = value;
 			console.log(this.groupList)
+			this.groupList.forEach(element => {
+				if (element.status == 2) {
+					element.disabledStatus = true;
+				}
+			});
 		})
 
 
@@ -62,7 +68,8 @@ export class TabMenuComponent implements OnInit {
 			groupList: this.formBuilder.array([])
 		});
 		setTimeout(() => {
-			this.httpService.getGroupList().subscribe((data) => {
+			this.lang = "RU";
+			this.httpService.getGroupList(this.lang).subscribe((data) => {
 
 				this.groupList = data;
 				this.groupList.forEach(element => {

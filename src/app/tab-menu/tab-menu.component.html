@@ -7,19 +7,22 @@
 						iconPos="left"></p-button>
 					<!-- <p-checkbox class="showDeletedCheckbox" icon="pi pi-check" name="group1" value="New York"
 						label="{{'TAB_MENU.SHOW_DELETED' | translate}}" inputId="ny"></p-checkbox>-->
-					<mat-checkbox class="showDeletedCheckbox" [(ngModel)]="checkDeleted" name="isDeleted">{{'TAB_MENU.SHOW_DELETED' | translate}}</mat-checkbox>				
-        </div>
-        <div id="sliceGrd"><app-tree-table [checkDeleted]=checkDeleted></app-tree-table></div>
-      </mat-tab>
-      <mat-tab label="Сформировать">
-        <div class="orderSliceContent">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12" style="float: none; margin: 0 auto;">
-                <h2>Сформировать срез</h2>
-              </div>
-              <div class="col-md-6">
-                <form [formGroup]="groupListFormGroup">
+					<mat-checkbox class="showDeletedCheckbox" [(ngModel)]="checkDeleted" name="isDeleted">
+						{{'TAB_MENU.SHOW_DELETED' | translate}}</mat-checkbox>
+				</div>
+				<div id="sliceGrd">
+					<app-tree-table [checkDeleted]=checkDeleted></app-tree-table>
+				</div>
+			</mat-tab>
+			<mat-tab label="{{'TAB_MENU.TO_FORM' | translate}}">
+				<div class="orderSliceContent">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12" style="float: none; margin: 0 auto;">
+								<h2>{{'TAB_MENU.TO_FORM_SLICE' | translate}}</h2>
+							</div>
+							<div class="col-md-6">
+								<form [formGroup]="groupListFormGroup">
 									<div class="box">
 										<mat-checkbox color="primary" [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)"
 											*ngFor="let group of groupList; let i = index" [value]="group">{{group.name}}</mat-checkbox>
