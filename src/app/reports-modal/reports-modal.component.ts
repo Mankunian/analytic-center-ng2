@@ -121,6 +121,7 @@ export class ReportsModalContentComponent {
 
   getReportInfoByCode(groupCode): any {
     if (this.reportGroups != undefined && this.reportGroups) {
+      console.log("TCL: ReportsModalContentComponent -> this.reportGroups", this.reportGroups)
       return this.reportGroups.find(item => item.code == groupCode)
     }
   }
@@ -231,15 +232,21 @@ export class ReportsModalContentComponent {
   getSelectedReportsList() {
     let counter = 0
     this.selectedReportsList = []
+
     if (this.requestedReports.common != undefined && this.requestedReports.common.length > 0) {
       let self = this
-      self.requestedReports.common[this.selectedGroupCode].forEach(function(element, index) {
-        self.selectedReportsList[counter] = "1П - " + element.name;
+      let reportInfo = this.getReportInfoByCode(this.selectedGroupCode)
+
+      self.requestedReports.common[this.selectedGroupCode].forEach(function (element, index) {        
+        self.selectedReportsList[counter] = {
+          report: reportInfo,
+          region: element
+        }
         self.selectedReportsQuery[counter] = {
           sliceId: self.sliceId,
           reportCode: self.selectedGroupCode,
           govCode: element.searchPattern
-        };
+        }
         counter++;
       });
     }
@@ -282,7 +289,15 @@ export class ReportsModalContentComponent {
   removeSelectedReport = function (key, item) {
     this.selectedReportsList.splice(key, 1)
     this.selectedReportsQuery.splice(key, 1)
-    console.log(key, item);
+    
+    if (this.isGroupCommon) {
+      let row = item.region,
+          groupCode = item.report.code
+
+      this.selectedCommonNodesArray[groupCode].splice(this.selectedCommonNodesArray[groupCode].indexOf(row), 1);
+      this.selectedCommonNodesArray[groupCode] = [...this.selectedCommonNodesArray[groupCode]];
+      this.requestedReports.common = this.selectedCommonNodesArray
+    }
 
     // let reportCode = item.report.code,
     //   regionCode = item.region.code,
@@ -319,6 +334,7 @@ export class ReportsModalContentComponent {
     } else {
       this.http.generateReports(selectedLang, reportsSlice).subscribe((data) => {
         this.showReports(data, counterFrom);
+        console.log("TCL: ReportsModalContentComponent -> generateReports -> this.showReports", data)
         counterFrom += 2
         this.getReportSplices(counterFrom)
       })
@@ -345,47 +361,54 @@ export class ReportsModalContentComponent {
     counterKz = counterFrom,
     reportDownloadUrl = "",
     reportDownloadName = "",
-    reportErrMsgMissing = "Отсутствует шаблон отчета",
-    reportErrMsg = "Ошибка при формировании данного отчета";
+    errMsgMissing = "Отсутствует шаблон отчета",
+    errMsg = "Ошибка при формировании данного отчета";
     
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let self = this
-    reportValues.forEach(function (element) {
+    reportValues.forEach(function (element, index) {
+    console.log("TCL: ReportsModalContentComponent -> showReports -> element", element)
+    console.log("TCL: ReportsModalContentComponent -> showReports -> index", index)
       if (element.value == -1) {
         reportDownloadUrl = "#";
-        reportDownloadName = reportErrMsgMissing;
+        reportDownloadName = errMsgMissing;
       } else if (element.value == -2) {
         reportDownloadUrl = "#";
-        reportDownloadName = reportErrMsg;
+        reportDownloadName = errMsg;
       } else {
         reportDownloadUrl = self.BASE_API_URL + "/reports/" + element.value + "/download";
-        if (element.lang === "RU") {
-          if (self.isGroupCommon) {
-            reportDownloadName = self.selectedReportsList[counter]
-          } else {
-            reportDownloadName = self.selectedReportsList[counter].report.name + ' - '
-              + self.selectedReportsList[counter].region.name + ' - '
-              + self.selectedReportsList[counter].department.data.name
-          }
-          counter++;
-        } else if (element.lang === "KZ") {
-          if (self.isGroupCommon) {
-            reportDownloadName = self.selectedReportsList[counterKz]
-          } else {
-            reportDownloadName = self.selectedReportsList[counterKz].report.name + ' - '
-              + self.selectedReportsList[counterKz].region.name + ' - '
-              + self.selectedReportsList[counterKz].department.data.name + ' - [kaz]'
-          }
-          counterKz++;
-        }
+        reportDownloadName = self.generateReportName(index+counterFrom)
+        // if (element.lang === "RU") {
+        //   console.log(self.selectedReportsList);
+        //   reportDownloadName = self.generateReportName(counter)
+        //   counter++;
+        // } else if (element.lang === "KZ") {
+        //   reportDownloadName = self.generateReportName(counterKz)
+        //   counterKz++;
+        // }
       }
 
       let readyReportItem = {
         url: reportDownloadUrl,
         name: reportDownloadName,
       };
-      self.readyReports.push(readyReportItem);
+      self.readyReports.push(readyReportItem)
     });
+  }
+
+  generateReportName(index: number) {
+    let name,
+        delimiter = ' - '
+    
+    if (this.isGroupCommon) {
+      name = this.selectedReportsList[index].report.name + delimiter + this.selectedReportsList[index].region.name
+    } else {
+      name = this.selectedReportsList[index].report.name + delimiter
+      + this.selectedReportsList[index].region.name + delimiter
+      + this.selectedReportsList[index].department.data.name + delimiter + '[kaz]'
+    }
+
+    return name
   }
 
   checkLang() {

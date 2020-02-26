@@ -49,8 +49,8 @@
                 <ul>
                   <li *ngFor="let item of selectedReportsList; let i = index">
                     <i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, item)"></i>
-                    <span class="requested-report-item" *ngIf="!isGroupCommon">{{item.report.name}} - {{item.region.name}} - {{item.department.data.name}}</span>
-                    <span class="requested-report-item" *ngIf="isGroupCommon">{{ item | truncate : 55 }}</span>
+                    <span class="requested-report-item">{{item.report.name}} - {{item.region.name}} - {{item.department?.data.name}}</span>
+                    <!-- <span class="requested-report-item" *ngIf="isGroupCommon">{{ item | truncate : 55 }}</span> -->
                   </li>
                 </ul>
               </div>
