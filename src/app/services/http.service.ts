@@ -38,6 +38,10 @@ export class HttpService {
 		return this.http.get(this.configUrl + '/territories')
 	}
 
+	getTerritoriesKz() {
+		return this.http.get(this.configUrlKz + '/territories')
+	}
+
 	getHistory(sliceId: number) {
 		return this.http.get(this.configUrl + '/' + sliceId + '/history')
 	}

@@ -32,7 +32,20 @@ export class NavBarComponent implements OnInit {
 		console.log(lang)
 		if (lang == 'KZ') {
 			this.http.getGroupListKz().subscribe((groupListKaz) => {
-				this.service.sendGroupListKaz(groupListKaz)
+				this.service.sendGroupListLang(groupListKaz)
+			})
+
+			this.http.getTerritoriesKz().subscribe((territoriesKaz) => {
+				this.territoryList = territoriesKaz;
+			})
+		}
+		if (lang == 'RU') {
+			this.http.getGroupList().subscribe((groupListRu) => {
+				this.service.sendGroupListLang(groupListRu)
+			})
+
+			this.http.getTerritories().subscribe((territoryRu) => {
+				this.territoryList = territoryRu
 			})
 		}
 	}
