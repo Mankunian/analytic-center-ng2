@@ -1,0 +1,19 @@
+.reportsModalLink {
+  color: #337ab7;
+  cursor: pointer;
+}
+.loader {
+  height: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+.loader .bar {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  background-color: dodgerblue;
+  animation-name: loader-animation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
