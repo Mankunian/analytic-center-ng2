@@ -12,52 +12,52 @@ import { WebsocketService } from '../services/websocket.service'
 import { ProgressbarService } from '../services/progressbar.service';
 
 @Component({
-  selector: 'app-tree-table',
-  templateUrl: './tree-table.component.html',
-  styleUrls: ['./tree-table.component.scss'],
-  providers: [SliceOperationsModalComponent, ReportsModalComponent]
+	selector: 'app-tree-table',
+	templateUrl: './tree-table.component.html',
+	styleUrls: ['./tree-table.component.scss'],
+	providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
 
-  stompClient = null;
+	stompClient = null;
 	progress = 0;
 
 	subscription: Subscription;
 	terrCode: unknown;
-  gridData: TreeNode[];
-  cols: any[];
-  loader: boolean;
-  childrenNode: TreeNode[];
-  @Input() checkDeleted: boolean
-  period: any;
-  sliceId: any;
-  historyList: Record<string, any>;
-  showTimeline: boolean;
+	gridData: TreeNode[];
+	cols: any[];
+	loader: boolean;
+	childrenNode: TreeNode[];
+	@Input() checkDeleted: boolean
+	period: any;
+	sliceId: any;
+	historyList: Record<string, any>;
+	showTimeline: boolean;
 
-  constructor(
-    public reportsModalInstance: ReportsModalComponent,
-    private httpService: HttpService,
-    private formatGridDataService: FormatGridDataService,
-    public dialogOperSlice: MatDialog,
-    public reportsModal: MatDialog,
-    public dialog: SliceOperationsModalComponent, shared: SharedService,
-    private progressbarService: ProgressbarService
-  ) {
-	  this.subscription = shared.subjTerrCode$.subscribe(val => {
+	constructor(
+		public reportsModalInstance: ReportsModalComponent,
+		private httpService: HttpService,
+		private formatGridDataService: FormatGridDataService,
+		public dialogOperSlice: MatDialog,
+		public reportsModal: MatDialog,
+		public dialog: SliceOperationsModalComponent, shared: SharedService,
+		private progressbarService: ProgressbarService
+	) {
+		this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
 		})
 
-		this.subscription = shared.subjSliceGroupKaz$.subscribe(sliceGroup => {
+		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
 			console.log(sliceGroup)
-      this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
+			this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
 		})
 		progressbarService.messages.subscribe(msg => {
 			console.log("Response from websocket:" + msg)
 		})
-}
+	}
 
-  ngOnInit() {
-  	// progressBar
+	ngOnInit() {
+		// progressBar
 		let interval = setInterval(() => {
 			this.progress = 75;
 			if (this.progress >= 100) {
@@ -67,23 +67,23 @@ export class TreeTableComponent implements OnInit {
 			}
 		}, 5000);
 		// progressBar
-	
-    this.loader = true
-    this.httpService.getSliceGroups().then((gridData) => {
-      this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-      this.loader = false
-    });
 
-    this.cols = [
-      { field: 'name', header: 'Группы' },
-      { field: 'maxRecNum', header: 'На номер' },
-      { field: 'completed', header: 'Сформирован' },
-      { field: 'action', header: 'Действие' },
-      { field: 'region', header: 'По органу' },
-      { field: 'percentComplete', header: 'Прогресс' }
-    ];
+		this.loader = true
+		this.httpService.getSliceGroups().then((gridData) => {
+			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+			this.loader = false
+		});
+
+		this.cols = [
+			{ field: 'name', header: 'Группы' },
+			{ field: 'maxRecNum', header: 'На номер' },
+			{ field: 'completed', header: 'Сформирован' },
+			{ field: 'action', header: 'Действие' },
+			{ field: 'region', header: 'По органу' },
+			{ field: 'percentComplete', header: 'Прогресс' }
+		];
 	}
-	
+
 	openOperationSliceModal(rowEntity) {
 		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
@@ -105,40 +105,40 @@ export class TreeTableComponent implements OnInit {
 
 	}
 
-  openReportsModal(row) {
-    const sliceId = row.id
-    const slicePeriod = row.period
-    const sliceGroupCode = row.groupCode
-    
-    if (row.statusCode == "0" || row.statusCode == "6") {
-      alert('По данному статусу невозможно получить отчет!')
-    } else {
-      const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
-        data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode  },
-        height: '695px',
-        width: '1050px'
-      });
-      reportsModalRef.afterClosed().subscribe(result => {
-        // console.log(result)
-      })
-    }
+	openReportsModal(row) {
+		const sliceId = row.id
+		const slicePeriod = row.period
+		const sliceGroupCode = row.groupCode
+
+		if (row.statusCode == "0" || row.statusCode == "6") {
+			alert('По данному статусу невозможно получить отчет!')
+		} else {
+			const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
+				data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode },
+				height: '695px',
+				width: '1050px'
+			});
+			reportsModalRef.afterClosed().subscribe(result => {
+				// console.log(result)
+			})
+		}
 	}
 
-  onNodeExpand(event) {
-    if (event.node.parent != null) {
-      this.loader = true
-      const groupCode = event.node.parent.data.code,
-            statusCode = event.node.data.code,
-            year = event.node.data.statusYear
-      
-      this.httpService.getSlices(this.checkDeleted, groupCode, statusCode, year).then((data) => {
-        this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
-        event.node.children = this.childrenNode
-        //refresh the data
-        this.gridData = [...this.gridData];
-        this.loader = false
-      })
-    }
-  }
+	onNodeExpand(event) {
+		if (event.node.parent != null) {
+			this.loader = true
+			const groupCode = event.node.parent.data.code,
+				statusCode = event.node.data.code,
+				year = event.node.data.statusYear
+
+			this.httpService.getSlices(this.checkDeleted, groupCode, statusCode, year).then((data) => {
+				this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
+				event.node.children = this.childrenNode
+				//refresh the data
+				this.gridData = [...this.gridData];
+				this.loader = false
+			})
+		}
+	}
 
 }

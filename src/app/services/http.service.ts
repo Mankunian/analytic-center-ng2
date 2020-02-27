@@ -56,11 +56,11 @@ export class HttpService {
 	}
 
 	getGroupCommon() {
-		return this.http.get(this.BASE_API_URL + '/governments/parents')
+		return this.http.get(this.BASE_API_URL + 'RU/slices/governments/parents')
 	}
 
 	getGroupCommonChildren(searchPattern) {
-		return this.http.get(this.BASE_API_URL + '/governments/children?searchPattern=' + searchPattern)
+		return this.http.get(this.BASE_API_URL + 'RU/slices/governments/children?searchPattern=' + searchPattern)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);

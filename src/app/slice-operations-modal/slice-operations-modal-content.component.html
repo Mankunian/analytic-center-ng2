@@ -31,8 +31,9 @@
 			<button (click)="deleteSlice()" mat-flat-button color="primary">Удалить</button>
 			<button (click)="confirmSlice()" mat-flat-button color="primary">Утвердить</button>
 		</div>
-		<button (click)="sendToPreliminary()" *ngIf="btnDecided" mat-flat-button color="primary">Перевести в
-			предварительный</button>
+		<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
+		<!-- <button (click)="sendToPreliminary()" *ngIf="btnDecided" mat-flat-button color="primary">Перевести в
+			предварительный</button> -->
 		<button (click)="sendToAgreement()" *ngIf="btnToAgreement" mat-flat-button color="primary">На согласование</button>
 	</div>
 	<div class="col-md-6" style="text-align: right;">

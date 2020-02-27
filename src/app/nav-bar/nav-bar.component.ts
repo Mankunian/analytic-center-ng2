@@ -37,6 +37,11 @@ export class NavBarComponent implements OnInit {
 		this.http.getGroupList(lang).subscribe((groupList) => {
 			this.service.sendGroupListLang(groupList)
 		})
+
+		this.gridService.getSliceGroups(lang).then((gridData) => {
+			console.log(gridData)
+			this.service.sendSliceGroupLang(gridData)
+		})
 	}
 	// changeToKz(lang) {
 	// 	console.log(lang)
