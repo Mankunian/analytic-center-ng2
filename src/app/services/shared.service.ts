@@ -77,6 +77,7 @@ export class SharedService {
 		this.subGroupListKaz.next(groupListLang)
 	}
 
+	// for sharing lang
 	private subSliceGroupLang = new Subject();
 	subjSliceGroupLang$ = this.subSliceGroupLang.asObservable();
 

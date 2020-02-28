@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { ProgressbarService } from '../services/progressbar.service';
 	styleUrls: ['./tree-table.component.scss'],
 	providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
-export class TreeTableComponent implements OnInit {
+export class TreeTableComponent implements OnInit, OnChanges {
 
 	stompClient = null;
 	progress = 0;
@@ -28,7 +28,7 @@ export class TreeTableComponent implements OnInit {
 	cols: any[];
 	loader: boolean;
 	childrenNode: TreeNode[];
-	@Input() checkDeleted: boolean
+	@Input() checkDeleted: any;
 	period: any;
 	sliceId: any;
 	historyList: Record<string, any>;
@@ -56,6 +56,14 @@ export class TreeTableComponent implements OnInit {
 		})
 	}
 
+	ngOnChanges() {
+		this.loader = true
+		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+			this.loader = false
+		});
+	}
+
 	ngOnInit() {
 		// progressBar
 		let interval = setInterval(() => {
@@ -69,7 +77,7 @@ export class TreeTableComponent implements OnInit {
 		// progressBar
 
 		this.loader = true
-		this.httpService.getSliceGroups().then((gridData) => {
+		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
 			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
 			this.loader = false
 		});
@@ -140,5 +148,14 @@ export class TreeTableComponent implements OnInit {
 			})
 		}
 	}
+
+	// checkDeletedStatus(status) {
+	// 	this.loader = true
+	// 	this.httpService.getSliceGroups(status).then((gridData) => {
+	// 		console.log(gridData)
+	// 		this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+	// 		this.loader = false
+	// 	});
+	// }
 
 }

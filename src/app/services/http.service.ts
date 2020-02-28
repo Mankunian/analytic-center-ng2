@@ -27,8 +27,8 @@ export class HttpService {
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
-	getSliceGroups() {
-		return this.http.get(this.BASE_API_URL + 'RU/slices/parents')
+	getSliceGroups(checkDeleted) {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/parents' + '?deleted=' + checkDeleted)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);

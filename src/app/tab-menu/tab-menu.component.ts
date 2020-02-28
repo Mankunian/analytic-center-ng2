@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
 import { OrderSliceObj } from "../orderSliceObj";
@@ -8,7 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
-
 
 
 @Component({
@@ -38,18 +37,21 @@ export class TabMenuComponent implements OnInit {
 	disabledBtn = true;
 	lang: string
 
+	gridData: TreeNode[];
+
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, shared: SharedService) {
+	formatGridDataService: any;
+	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, getShared: SharedService) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
 
 		const browserLang = translate.getBrowserLang();
 		translate.use(browserLang.match(/ru|kaz|qaz/) ? browserLang : 'ru');
 
-		this.subscription = shared.subjGroupListKaz$.subscribe(value => {
+		this.subscription = getShared.subjGroupListKaz$.subscribe(value => {
 			this.groupList = value;
 			console.log(this.groupList)
 			this.groupList.forEach(element => {
@@ -89,8 +91,12 @@ export class TabMenuComponent implements OnInit {
 	refreshGridTable(status) {
 		console.log(status)
 		if (status) {
-			this.httpService.getSliceGroups()
+			// this.httpService.getSliceGroups()
 		}
+	}
+
+	showDeleted(checkDeleted: boolean) {
+		console.log(checkDeleted)
 	}
 
 	getSliceNumber() {
@@ -122,7 +128,7 @@ export class TabMenuComponent implements OnInit {
 		this.selected = event.index;
 	}
 
-	orderSlice(item: OrderSliceObj) {
+	orderSlice() {
 		this.dateFrom.value.setHours(0)
 		this.dateFrom.value.setMinutes(0)
 		this.dateFrom.value.setSeconds(0)
@@ -150,7 +156,7 @@ export class TabMenuComponent implements OnInit {
 			groups: this.checkedGroupList,
 		};
 
-		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
+		this.httpService.postOrderSlice(orderSliceObj).subscribe(() => {
 			this.preloaderByOrderSlice = true;
 			this.checkedGroups.forEach(element => {
 				element.source._checked = false; // uncheck all selected value after response
