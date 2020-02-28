@@ -77,7 +77,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/confirm', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/confirm', body, options)
 	}
 
 	deleteSliceService(sliceId: number) {
@@ -87,7 +87,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/delete', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/delete', body, options)
 	}
 
 	sendToPreliminaryService(sliceId: number) {
@@ -97,7 +97,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/preliminary', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/preliminary', body, options)
 	}
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
@@ -106,7 +106,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/send', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/send', body, options)
 	}
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
