@@ -6,8 +6,6 @@ import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { SaveEditReasonObj } from "../saveEditReasonObj";
 
-
-
 @Component({
 	selector: 'app-slice-operations-modal',
 	templateUrl: './slice-operations-modal.component.html',
@@ -15,10 +13,7 @@ import { SaveEditReasonObj } from "../saveEditReasonObj";
 })
 export class SliceOperationsModalComponent {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	constructor() {
-	}
-
-
+	constructor() {}
 }
 
 @Component({
@@ -156,10 +151,6 @@ export class SliceOperationsModalContentComponent {
 }
 
 
-
-
-
-
 @Component({
 	selector: 'app-edit-reason',
 	templateUrl: './edit-reason.component.html'
@@ -180,8 +171,6 @@ export class EditReasonComponent implements OnInit {
 	ngOnInit() {
 		this.objOfRejectionReason = this.data; // rowEntity slice from table
 	}
-
-
 
 	saveEditReason(reason) {
 		let SaveEditReasonObj = {
