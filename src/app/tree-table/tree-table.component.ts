@@ -47,7 +47,7 @@ export class TreeTableComponent implements OnInit {
 			this.terrCode = val;
 		})
 
-		this.subscription = shared.subjSliceGroupKaz$.subscribe(sliceGroup => {
+		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
 			console.log(sliceGroup)
       this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
 		})
