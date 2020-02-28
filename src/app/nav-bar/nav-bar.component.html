@@ -15,10 +15,10 @@
 				<!-- <h6>Выберите язык</h6> -->
 				<div class="switch-field">
 
-					<input #langSelect (change)="translate.use('ru'); changeToKz('RU')" type="radio" id="radio-three"
+					<input #langSelect (change)="translate.use('ru'); changeLang('RU')" type="radio" id="radio-three"
 						name="switch-two" value="ru" checked /><label for="radio-three">RUS</label>
 
-					<input #langSelect (change)="translate.use('kaz'); changeToKz('KZ')" type="radio" id="radio-four"
+					<input #langSelect (change)="translate.use('kaz'); changeLang('KZ')" type="radio" id="radio-four"
 						name="switch-two" value="kaz" /><label for="radio-four">KAZ</label>
 
 					<input #langSelect (change)="translate.use('qaz')" type="radio" id="radio-five" name="switch-two"

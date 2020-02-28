@@ -77,11 +77,11 @@ export class SharedService {
 		this.subGroupListKaz.next(groupListLang)
 	}
 
-	private subSliceGroupKaz = new Subject();
-	subjSliceGroupKaz$ = this.subSliceGroupKaz.asObservable();
+	private subSliceGroupLang = new Subject();
+	subjSliceGroupLang$ = this.subSliceGroupLang.asObservable();
 
-	sendSliceGroupKaz(sliceGroup: any) {
+	sendSliceGroupLang(sliceGroup: any) {
 		console.log(sliceGroup)
-		this.subSliceGroupKaz.next(sliceGroup)
+		this.subSliceGroupLang.next(sliceGroup)
 	}
 }

@@ -67,23 +67,23 @@ export class TreeTableComponent implements OnInit {
 			}
 		}, 5000);
 		// progressBar
-	
-    this.loader = true
-    this.httpService.getSliceGroups().then((gridData) => {
-      this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-      this.loader = false
-    });
 
-    this.cols = [
-      { field: 'name', header: 'Группы' },
-      { field: 'maxRecNum', header: 'На номер' },
-      { field: 'completed', header: 'Сформирован' },
-      { field: 'action', header: 'Действие' },
-      { field: 'region', header: 'По органу' },
-      { field: 'percentComplete', header: 'Прогресс' }
-    ];
+		this.loader = true
+		this.httpService.getSliceGroups().then((gridData) => {
+			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+			this.loader = false
+		});
+
+		this.cols = [
+			{ field: 'name', header: 'Группы' },
+			{ field: 'maxRecNum', header: 'На номер' },
+			{ field: 'completed', header: 'Сформирован' },
+			{ field: 'action', header: 'Действие' },
+			{ field: 'region', header: 'По органу' },
+			{ field: 'percentComplete', header: 'Прогресс' }
+		];
 	}
-	
+
 	openOperationSliceModal(rowEntity) {
 		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
@@ -125,21 +125,21 @@ export class TreeTableComponent implements OnInit {
     }
 	}
 
-  onNodeExpand(event) {
-    if (event.node.parent != null) {
-      this.loader = true
-      const groupCode = event.node.parent.data.code,
-            statusCode = event.node.data.code,
-            year = event.node.data.statusYear
-      
-      this.httpService.getSlices(this.checkDeleted, groupCode, statusCode, year).then((data) => {
-        this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
-        event.node.children = this.childrenNode
-        //refresh the data
-        this.gridData = [...this.gridData];
-        this.loader = false
-      })
-    }
-  }
+	onNodeExpand(event) {
+		if (event.node.parent != null) {
+			this.loader = true
+			const groupCode = event.node.parent.data.code,
+				statusCode = event.node.data.code,
+				year = event.node.data.statusYear
+
+			this.httpService.getSlices(this.checkDeleted, groupCode, statusCode, year).then((data) => {
+				this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
+				event.node.children = this.childrenNode
+				//refresh the data
+				this.gridData = [...this.gridData];
+				this.loader = false
+			})
+		}
+	}
 
 }

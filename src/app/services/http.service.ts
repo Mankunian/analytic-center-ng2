@@ -9,68 +9,66 @@ import { GlobalConfig } from '../global';
 	providedIn: 'root'
 })
 export class HttpService {
-  private BASE_API_URL = GlobalConfig.BASE_API_URL;
-  public BASE_API_URLKz = GlobalConfig.BASE_API_URL
+	private BASE_API_URL = GlobalConfig.BASE_API_URL;
+	public BASE_API_URLKz = GlobalConfig.BASE_API_URL
 
 	constructor(private http: HttpClient) { }
 
-	getGroupList() {
-		return this.http.get(this.BASE_API_URL + '/groups')
-	}
-	getGroupListKz() {
-		return this.http.get(this.BASE_API_URLKz + '/groups')
-	}
-	getSliceNumber() {
-		return this.http.get(this.BASE_API_URL + '/max');
-	}
-	getSlices(checkDeleted: boolean, groupCode, statusCode, year) {
-		return this.http.get(this.BASE_API_URL + '?deleted=' + checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year)
-    .toPromise()
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    .then(response => <TreeNode[]>response);
-  }
-  getSliceGroups() {
-    return this.http.get(this.BASE_API_URL+'/parents')
-    .toPromise()
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    .then(response => <TreeNode[]> response);
-	}
-	getTerritories() {
-		return this.http.get(this.BASE_API_URL + '/territories')
-	}
-	getTerritoriesKz() {
-		return this.http.get(this.BASE_API_URLKz + '/territories')
+	getGroupList(lang) {
+		return this.http.get(this.BASE_API_URL + lang + '/slices/groups')
 	}
 
+	getSliceNumber() {
+		return this.http.get(this.BASE_API_URL + '/RU/slices/max');
+	}
+	getSlices(checkDeleted: boolean, groupCode, statusCode, year) {
+		return this.http.get(this.BASE_API_URL + 'RU/slices' + '?deleted=' + checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year)
+			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			.then(response => <TreeNode[]>response);
+	}
+	getSliceGroups() {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/parents')
+			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			.then(response => <TreeNode[]>response);
+	}
+	getTerritories(lang: string) {
+		console.log(lang)
+		return this.http.get(this.BASE_API_URL + lang + '/slices/territories')
+	}
+
+
 	getHistory(sliceId: number) {
-		return this.http.get(this.BASE_API_URL + '/' + sliceId + '/history')
+		return this.http.get(this.BASE_API_URL + '/RU/slices/' + sliceId + '/history')
 	}
 
 	getDataGridInAgreement(sliceId: number, historyId: number) {
-		return this.http.get(this.BASE_API_URL + '/' + sliceId + '/history/' + historyId + '/approving')
-  }
-  
-  getReportsBySliceId(sliceId) {
-    return this.http.get(this.BASE_API_URL + '/reports?sliceId=' + sliceId)
-  }
+		return this.http.get(this.BASE_API_URL + '/RU/slices/' + sliceId + '/history/' + historyId + '/approving')
+	}
 
-  getRegions() {
-    return this.http.get(this.BASE_API_URL + '/regsTree')
-  }
-  
-  getGroupCommon() {
-    return this.http.get(this.BASE_API_URL + '/governments/parents')
-  }
-  
-  getGroupCommonChildren(searchPattern) {
-    return this.http.get(this.BASE_API_URL + '/governments/children?searchPattern='+searchPattern)
-      .toPromise()
-      .then(response => <TreeNode[]> response);
-  }
+	getReportsBySliceId(sliceId) {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/reports?sliceId=' + sliceId)
+	}
 
-  getDepsByReportId(reportId) {
-    return this.http.get(this.BASE_API_URL + '/orgs?reportCode=' + reportId)
-  }
+	getRegions() {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/regsTree')
+	}
+
+	getGroupCommon() {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/governments/parents')
+	}
+
+	getGroupCommonChildren(searchPattern) {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/governments/children?searchPattern=' + searchPattern)
+			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			.then(response => <TreeNode[]>response);
+	}
+
+	getDepsByReportId(reportId) {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/orgs?reportCode=' + reportId)
+	}
 
 	confirmSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
@@ -110,14 +108,14 @@ export class HttpService {
 		const body = {}
 		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/send', body, options)
 	}
-  generateReports(lang, data) {
-    let headers = new HttpHeaders({
+	generateReports(lang, data) {
+		let headers = new HttpHeaders({
 			'sessionKey': 'admin'
 		});
-    let options = { headers: headers }
+		let options = { headers: headers }
 
-    return this.http.post(this.BASE_API_URL + '/reports/createReports?repLang=' + lang, data, options)
-  }
+		return this.http.post(this.BASE_API_URL + 'RU/slices/reports/createReports?repLang=' + lang, data, options)
+	}
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
 			'sessionKey': 'admin'
@@ -127,7 +125,7 @@ export class HttpService {
 
 		const body = { startDate: orderSliceObj.startDate, endDate: orderSliceObj.endDate, maxRecNum: orderSliceObj.maxRecNum, groups: orderSliceObj.groups }
 		// console.log(body)
-		return this.http.post(this.BASE_API_URL, body, options);
+		return this.http.post(this.BASE_API_URL + '/RU/slices', body, options);
 	}
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
