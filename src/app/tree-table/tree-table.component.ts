@@ -122,6 +122,7 @@ export class TreeTableComponent implements OnInit, OnChanges {
 			alert('По данному статусу невозможно получить отчет!')
 		} else {
 			const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
+				disableClose: true,
 				data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode },
 				height: '695px',
 				width: '1050px'

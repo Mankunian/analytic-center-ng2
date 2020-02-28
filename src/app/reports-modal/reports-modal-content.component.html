@@ -49,7 +49,7 @@
                 <ul>
                   <li *ngFor="let item of selectedReportsList; let i = index">
                     <i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, item)"></i>
-                    <span class="requested-report-item">{{item.report.name}} - {{item.region.name}} - {{item.department?.data.name}}</span>
+                    <span class="requested-report-item">{{item.report.name}} - {{item.region.name}} - {{item.department?.name}}</span>
                     <!-- <span class="requested-report-item" *ngIf="isGroupCommon">{{ item | truncate : 55 }}</span> -->
                   </li>
                 </ul>
@@ -88,9 +88,7 @@
               </div>
             </div>
             <div class="col-sm-12" *ngIf="gridCommonDataArray != undefined">
-              <p-treeTable [value]="gridCommonDataArray[group.code]" [columns]="colsCommon" (onNodeExpand)="onNodeExpandGroupCommon($event)" 
-                          [lazy]="true" [loading]="loadingCommon" selectionMode="checkbox" [(selection)]="selectedCommonNodesArray[group.code]"
-                          dataKey="code" (onNodeSelect)="nodeCommonSelect($event, group.code)" (onNodeUnselect)="nodeCommonUnselect($event, group.code)" *ngIf="!loadingCommon" [resizableColumns]="true" [loadingIcon]="fa-spinner">
+              <p-treeTable [value]="gridCommonDataArray[group.code]" [columns]="colsCommon" (onNodeExpand)="onNodeExpandGroupCommon($event)" [lazy]="true" [loading]="loadingCommon" selectionMode="checkbox" [(selection)]="selectedCommonNodesArray[group.code]" dataKey="code" (onNodeSelect)="nodeCommonSelect($event, group.code)" (onNodeUnselect)="nodeCommonUnselect($event, group.code)" *ngIf="!loadingCommon" [resizableColumns]="true" [loadingIcon]="fa-spinner">
                 <ng-template pTemplate="colgroup" let-columns>
                   <colgroup>
                     <col style="width: 30px;">
@@ -134,9 +132,7 @@
             </div>
             <!-- Treetable grid for Regions -->
             <div class="col-sm-6" *ngIf="gridRegDataArray != undefined">
-              <p-treeTable [value]="gridRegDataArray[group.code]" [columns]="colsReg" (onNodeExpand)="onNodeExpand($event)" 
-                          [lazy]="true" [loading]="loadingReg" selectionMode="checkbox" [(selection)]="selectedRegNodesArray[group.code]" 
-                          dataKey="code" (onNodeSelect)="nodeRegSelect($event, group.code)" (onNodeUnselect)="nodeRegUnselect($event, group.code)" *ngIf="!loadingReg && !loading">
+              <p-treeTable [value]="gridRegDataArray[group.code]" [columns]="colsReg" [lazy]="true" [loading]="loadingReg" selectionMode="checkbox" [(selection)]="selectedRegNodesArray[group.code]" dataKey="code" (onNodeUnselect)="nodeRegUnselect($event, group.code)" *ngIf="!loadingReg && !loading">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th *ngFor="let col of columns">{{col.header}}</th>
@@ -146,7 +142,6 @@
                   <tr [ttSelectableRow]="rowNode">
                     <td *ngFor="let col of columns; let i = index">
                       <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                      <!-- <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox> -->
                       <p-checkbox [binary]="true" [ngModel]="isRowSelected(rowNode, group.code)" *ngIf="i == 0" (click)="toggleRowSelection(rowNode, group.code)"></p-checkbox>
                       {{rowData[col.field]}}
                     </td>
@@ -157,7 +152,7 @@
             <!-- END Treetable grid for Regions -->
             <!-- Treetable grid for Departments -->
             <div class="col-sm-6" *ngIf="gridDepDataArray != undefined">
-              <p-treeTable [value]="gridDepDataArray[group.code]" [columns]="colsDep" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox" [(selection)]="selectedDepNodesArray[group.code]" dataKey="code" (onNodeSelect)="nodeSelect($event, group.code)" (onNodeUnselect)="nodeUnselect($event, group.code)" *ngIf="!loading && !loadingReg">
+              <p-treeTable [value]="gridDepDataArray[group.code]" [columns]="colsDep" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox" [(selection)]="selectedDepNodesArray[group.code]" dataKey="code" *ngIf="!loading && !loadingReg">
                 {{group.name}}
                 <ng-template pTemplate="header" let-columns>
                   <tr>
@@ -165,10 +160,11 @@
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-                    <tr [ttSelectableRow]="rowNode">
-                      <td *ngFor="let col of columns; let i = index">
-                        <p-treeTableToggler [rowNode]="rowNode" *ngIf="i  == 0"></p-treeTableToggler>
-                        <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox>
+                  <tr [ttSelectableRow]="rowNode">
+                    <td *ngFor="let col of columns; let i = index">
+                      <!-- <p-treeTableToggler [rowNode]="rowNode" *ngIf="i  == 0"></p-treeTableToggler> -->
+                      <!-- <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox> -->
+                      <p-checkbox [binary]="true" [ngModel]="isRowSelectedDep(rowNode, group.code)" *ngIf="i == 0" (click)="toggleRowSelectionDep(rowNode, group.code)"></p-checkbox>
                         {{rowData[col.field]}}
                       </td>
                     </tr>
