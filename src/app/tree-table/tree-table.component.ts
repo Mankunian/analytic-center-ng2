@@ -101,8 +101,6 @@ export class TreeTableComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe(result => {
 		})
-
-
 	}
 
   openReportsModal(row) {

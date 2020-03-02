@@ -10,7 +10,6 @@ import { GlobalConfig } from '../global';
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
-	public BASE_API_URLKz = GlobalConfig.BASE_API_URL
 
 	constructor(private http: HttpClient) { }
 

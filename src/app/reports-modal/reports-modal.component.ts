@@ -186,12 +186,9 @@ export class ReportsModalContentComponent {
   }
 
   toggleRowSelection(rowNode: any, groupCode: any): void {
-    console.log("TCL: ReportsModalContentComponent -> rowNode", rowNode)
     if (this.isRowSelected(rowNode, groupCode)) {
       this.selectedRegNodesArray[groupCode].splice(this.selectedRegNodesArray[groupCode].indexOf(rowNode.node.data), 1);
     } else {
-      console.log("TCL: ReportsModalContentComponent -> this.selectedRegNodesArray", this.selectedRegNodesArray)
-      console.log("TCL: ReportsModalContentComponent -> groupCode", groupCode)
       this.selectedRegNodesArray[groupCode].push(rowNode.node.data);
     }
     this.selectedRegNodesArray[groupCode] = [...this.selectedRegNodesArray[groupCode]];
@@ -199,12 +196,9 @@ export class ReportsModalContentComponent {
   }
   
   toggleRowSelectionDep(rowNode: any, groupCode: any): void {
-    console.log("TCL: ReportsModalContentComponent -> rowNode", rowNode)
     if (this.isRowSelectedDep(rowNode, groupCode)) {
       this.selectedDepNodesArray[groupCode].splice(this.selectedDepNodesArray[groupCode].indexOf(rowNode.node.data), 1);
     } else {
-      console.log("TCL: ReportsModalContentComponent -> this.selectedDepNodesArray", this.selectedDepNodesArray)
-      console.log("TCL: ReportsModalContentComponent -> groupCode", groupCode)
       this.selectedDepNodesArray[groupCode].push(rowNode.node.data);
     }
     this.selectedDepNodesArray[groupCode] = [...this.selectedDepNodesArray[groupCode]];
@@ -275,7 +269,6 @@ export class ReportsModalContentComponent {
         element.forEach(region => {
           if (self.requestedReports.deps[regionsTabIndex] != undefined) {
             self.requestedReports.deps[regionsTabIndex].forEach((department) => {
-              console.log("TCL: ReportsModalContentComponent -> getSelectedReportsList -> department", department)
               self.selectedReportsList[counter] = {
                 report: reportInfo,
                 region: region,
@@ -293,7 +286,7 @@ export class ReportsModalContentComponent {
         });
       });
     }
-    if (this.selectedReportsList.length > 0) this.isReportsSelected = true
+    (this.selectedReportsList.length > 0) ? this.isReportsSelected = true : this.isReportsSelected = false
   }
 
   removeSelectedReport = function (key, item) {
@@ -342,7 +335,6 @@ export class ReportsModalContentComponent {
     } else {
       this.http.generateReports(selectedLang, reportsSlice).subscribe((data) => {
         this.showReports(data, counterFrom);
-        console.log("TCL: ReportsModalContentComponent -> generateReports -> this.showReports", data)
         counterFrom += 2
         this.getReportSplices(counterFrom)
       })
@@ -373,8 +365,6 @@ export class ReportsModalContentComponent {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let self = this
     reportValues.forEach(function (element, index) {
-    console.log("TCL: ReportsModalContentComponent -> showReports -> element", element)
-    console.log("TCL: ReportsModalContentComponent -> showReports -> index", index)
       if (element.value == -1) {
         reportDownloadUrl = "#";
         reportDownloadName = errMsgMissing;
