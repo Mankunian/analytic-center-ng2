@@ -33,7 +33,6 @@ export class HttpService {
 			.then(response => <TreeNode[]>response);
 	}
 	getTerritories(lang: string) {
-		console.log(lang)
 		return this.http.get(this.BASE_API_URL + lang + '/slices/territories')
 	}
 
@@ -71,7 +70,7 @@ export class HttpService {
 
 	confirmSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -81,7 +80,7 @@ export class HttpService {
 
 	deleteSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -91,7 +90,7 @@ export class HttpService {
 
 	sendToPreliminaryService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -100,7 +99,7 @@ export class HttpService {
 	}
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -109,7 +108,7 @@ export class HttpService {
 	}
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 		let options = { headers: headers }
 
@@ -117,7 +116,7 @@ export class HttpService {
 	}
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -129,7 +128,7 @@ export class HttpService {
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 		// console.log(saveEditReasonObj)
 
@@ -141,7 +140,7 @@ export class HttpService {
 
 	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }

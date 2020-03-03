@@ -286,7 +286,9 @@ export class ReportsModalContentComponent {
         });
       });
     }
-    (this.selectedReportsList.length > 0) ? this.isReportsSelected = true : this.isReportsSelected = false
+    (this.selectedReportsList.length > 0)
+      ? this.isReportsSelected = true
+      : this.isReportsSelected = false
   }
 
   removeSelectedReport = function (key, item) {
@@ -396,9 +398,15 @@ export class ReportsModalContentComponent {
     if (element.lang !== "RU") {
       langPostfix = delimiter + '[' + element.lang + ']';
     }
-    (this.selectedReportsList[index].report.name != undefined) ? reportName = this.selectedReportsList[index].report.name + delimiter : reportName = "";
-    (this.selectedReportsList[index].region.name != undefined) ? regionName = this.selectedReportsList[index].region.name : regionName = "";
-    (this.selectedReportsList[index].department != undefined) ? departmentName = delimiter + this.selectedReportsList[index].department.name : departmentName = "";
+    (this.selectedReportsList[index].report.name != undefined) 
+      ? reportName = this.selectedReportsList[index].report.name + delimiter 
+      : reportName = "";
+    (this.selectedReportsList[index].region.name != undefined) 
+      ? regionName = this.selectedReportsList[index].region.name 
+      : regionName = "";
+    (this.selectedReportsList[index].department != undefined) 
+      ? departmentName = delimiter + this.selectedReportsList[index].department.name 
+      : departmentName = "";
 
     return reportName + regionName + departmentName + langPostfix;
   }

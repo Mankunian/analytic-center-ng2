@@ -14,7 +14,7 @@ export class SharedService {
 
 	sendTerrCode(terrCode: string) {
 		this.subTerrCode.next(terrCode)
-		console.log(terrCode)
+		// console.log(terrCode)
 	}
 
 	// Show Table In Agreement

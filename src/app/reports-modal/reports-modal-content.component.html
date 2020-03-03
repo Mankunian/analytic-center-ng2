@@ -79,7 +79,7 @@
     </mat-tab>
     <!-- Treetable grid for groupCommon -->
     <ng-container *ngIf="isGroupCommon">
-      <mat-tab label="{{group.name}}" disabled="true" *ngFor="let group of reportGroups; let index = index">
+      <mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-12">
