@@ -8,7 +8,6 @@ import { FormatGridDataService } from '../services/format-grid-data.service';
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 
-import { WebsocketService } from '../services/websocket.service'
 import { ProgressbarService } from '../services/progressbar.service';
 
 @Component({
@@ -33,6 +32,7 @@ export class TreeTableComponent implements OnInit, OnChanges {
 	sliceId: any;
 	historyList: Record<string, any>;
 	showTimeline: boolean;
+	dataExpanded: any;
 
 	constructor(
 		public reportsModalInstance: ReportsModalComponent,
@@ -41,7 +41,7 @@ export class TreeTableComponent implements OnInit, OnChanges {
 		public dialogOperSlice: MatDialog,
 		public reportsModal: MatDialog,
 		public dialog: SliceOperationsModalComponent, shared: SharedService,
-		private progressbarService: ProgressbarService
+		progressbarService: ProgressbarService
 	) {
 		this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
@@ -100,14 +100,14 @@ export class TreeTableComponent implements OnInit, OnChanges {
 			data: { sliceId: this.sliceId, period: this.period, terrCode: this.terrCode, statusCode: rowEntity.statusCode }
 		});
 
-		dialogRef.afterOpen().subscribe(result => {
+		dialogRef.afterOpen().subscribe(() => {
 			this.httpService.getHistory(this.sliceId).subscribe((data) => {
 				this.historyList = data;
 				this.showTimeline = true;
 			})
 		})
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe(() => {
 		})
 
 
@@ -127,13 +127,15 @@ export class TreeTableComponent implements OnInit, OnChanges {
 				height: '695px',
 				width: '1050px'
 			});
-			reportsModalRef.afterClosed().subscribe(result => {
+			reportsModalRef.afterClosed().subscribe(() => {
 				// console.log(result)
 			})
 		}
 	}
 
 	onNodeExpand(event) {
+		this.dataExpanded = event.node;
+		console.log(this.dataExpanded)
 		if (event.node.parent != null) {
 			this.loader = true
 			const groupCode = event.node.parent.data.code,
@@ -150,13 +152,61 @@ export class TreeTableComponent implements OnInit, OnChanges {
 		}
 	}
 
-	// checkDeletedStatus(status) {
-	// 	this.loader = true
-	// 	this.httpService.getSliceGroups(status).then((gridData) => {
-	// 		console.log(gridData)
-	// 		this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-	// 		this.loader = false
-	// 	});
-	// }
+	refreshGridTable() {
+		this.loader = true;
+		if (this.dataExpanded !== undefined) {
+			this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+				this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+				console.log(this.gridData)
+				// eslint-disable-next-line @typescript-eslint/no-this-alias
+				let self = this;
+				this.gridData.forEach(function (value, key) {
+					// console.log(value.data.code)
+					// console.log(self.dataExpanded.data.code)
+					if (value.data.code === self.dataExpanded.data.code) {
+						console.log(true)
+						setTimeout(() => {
+							self.gridData[key]['expanded'] = true;
+							self.gridData = [...self.gridData];
+						}, 2000);
+					}
+				});
 
+			})
+		}
+		this.loader = false;
+		// this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+		// 	// this.loader = true;
+		// 	this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+		// 	this.gridData = [...this.gridData];
+		// 	// this.gridData[1]['expanded'] = true;
+		// 	// this.loader = false;
+		// 	//eslint-disable-next-line @typescript-eslint/no-this-alias
+		// 	let self = this;
+		// 	this.gridData.forEach(function (value, key) {
+
+		// 		if (value.data.code === self.dataExpanded.data.code) {
+		// 			console.log(key)
+		// 			self.loader = true;
+		// 			self.gridData[key]['expanded'] = false;
+		// 			// self.gridData[1]['expanded'] = true;
+		// 			console.log(self.gridData)
+		// 			setTimeout(() => {
+		// 				self.gridData[key]['expanded'] = true;
+		// 				console.log(self.gridData)
+		// 			}, 2000);
+
+
+		// 			// self.loader = false;
+
+		// 		}
+
+		// 	})
+		// 	this.loader = false
+
+
+		// });
+		// this.loader = false
+
+	}
 }

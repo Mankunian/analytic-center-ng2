@@ -11,176 +11,206 @@
 	</div>
 </div>
 <div class="row" *ngIf="contentLoading">
-  <div class="col-sm-12">
-    <div class="preloader-block">
-      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-    </div>
-  </div>
+	<div class="col-sm-12">
+		<div class="preloader-block">
+			<div class="lds-ring">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
 </div>
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
-	<mat-tab-group (selectedIndexChange)="tabChange($event)" mat-stretch-tabs animationDuration="5ms" [selectedIndex]="selected">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> Каталог
-      </ng-template>
-      <form class="example-form">
-        <div>
-          Статсрез на №
-          <mat-form-field appearance="fill" class="example-full-width">
-            <input [disabled]=true matInput value="{{data.sliceId}}">
-          </mat-form-field>
-          Отчетный период
-          <mat-form-field appearance="fill" class="example-full-width">
-            <input [disabled]=true matInput value="{{data.slicePeriod}}">
-          </mat-form-field>
-        </div>
-        <div>
-          <span class="lang-checkbox-label">Язык отчета</span>
-          <mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu">{{reportLangs.ru.name}}</mat-checkbox>
-          <mat-checkbox [(ngModel)]="reportLangs.kz.isSelected" name="langKz">{{reportLangs.kz.name}}</mat-checkbox>
-        </div>
-      </form>
-      <div class="reports-list">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-6">
-              <h3 mat-dialog-title>Запрошенные отчеты</h3>
-              <div class="selected-reports">
-                <ul>
-                  <li *ngFor="let item of selectedReportsList; let i = index">
-                    <i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, item)"></i>
-                    <span class="requested-report-item">{{item.report.name}} - {{item.region.name}} - {{item.department?.name}}</span>
-                    <!-- <span class="requested-report-item" *ngIf="isGroupCommon">{{ item | truncate : 55 }}</span> -->
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <h3 mat-dialog-title>Отчеты 
-                <span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">Получено {{readyReportsParts}}  из {{selectedReportsList.length}}</span>
-              </h3>
-              <div class="reports">
-                <div class="preloader-block ready-reports" *ngIf="isReportsLoading">
-                  <div class="lds-ring-readyReports">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
-                <ul *ngIf="!isReportsLoading">
-                  <li *ngFor="let item of readyReports"><a href="{{item.url}}" target="_blank">{{item.name | truncate : 55}}</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </mat-tab>
-    <!-- Treetable grid for groupCommon -->
-    <ng-container *ngIf="isGroupCommon">
-      <mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="preloader-block" *ngIf="loadingCommon">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-              </div>
-            </div>
-            <div class="col-sm-12" *ngIf="gridCommonDataArray != undefined">
-              <p-treeTable [value]="gridCommonDataArray[group.code]" [columns]="colsCommon" (onNodeExpand)="onNodeExpandGroupCommon($event)" [lazy]="true" [loading]="loadingCommon" selectionMode="checkbox" [(selection)]="selectedCommonNodesArray[group.code]" dataKey="code" (onNodeSelect)="nodeCommonSelect($event, group.code)" (onNodeUnselect)="nodeCommonUnselect($event, group.code)" *ngIf="!loadingCommon" [resizableColumns]="true" [loadingIcon]="fa-spinner">
-                <ng-template pTemplate="colgroup" let-columns>
-                  <colgroup>
-                    <col style="width: 30px;">
-                    <col style="width: 200px;">
-                    <col style="width: 200px;">
-                  </colgroup>
-                </ng-template>
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <th></th>
-                    <th *ngFor="let col of columns">{{col.header}}</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-                  <tr [ttSelectableRow]="rowNode">
-                    <td>
-                      <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                    </td>
-                    <td *ngFor="let col of columns; let i = index">
-                      <!-- <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler> -->
-                      <p-checkbox [binary]="true" [ngModel]="isRowSelectedCommon(rowNode, group.code)" *ngIf="i == 0" (click)="toggleRowSelectionCommon(rowNode, group.code)"></p-checkbox>
-                      {{rowData[col.field]}}
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-treeTable>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-    </ng-container>
-    <!-- END Treetable grid for GroupCommon -->
-    <ng-container *ngIf="!isGroupCommon">
-      <mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="preloader-block" *ngIf="loadingReg && loading">
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-              </div>
-            </div>
-            <!-- Treetable grid for Regions -->
-            <div class="col-sm-6" *ngIf="gridRegDataArray != undefined">
-              <p-treeTable [value]="gridRegDataArray[group.code]" [columns]="colsReg" [lazy]="true" [loading]="loadingReg" selectionMode="checkbox" [(selection)]="selectedRegNodesArray[group.code]" dataKey="code" (onNodeUnselect)="nodeRegUnselect($event, group.code)" *ngIf="!loadingReg && !loading">
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <th *ngFor="let col of columns">{{col.header}}</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-                  <tr [ttSelectableRow]="rowNode">
-                    <td *ngFor="let col of columns; let i = index">
-                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                      <p-checkbox [binary]="true" [ngModel]="isRowSelected(rowNode, group.code)" *ngIf="i == 0" (click)="toggleRowSelection(rowNode, group.code)"></p-checkbox>
-                      {{rowData[col.field]}}
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-treeTable>
-            </div>
-            <!-- END Treetable grid for Regions -->
-            <!-- Treetable grid for Departments -->
-            <div class="col-sm-6" *ngIf="gridDepDataArray != undefined">
-              <p-treeTable [value]="gridDepDataArray[group.code]" [columns]="colsDep" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox" [(selection)]="selectedDepNodesArray[group.code]" dataKey="code" *ngIf="!loading && !loadingReg">
-                {{group.name}}
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <th *ngFor="let col of columns">{{col.header}}</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-                  <tr [ttSelectableRow]="rowNode">
-                    <td *ngFor="let col of columns; let i = index">
-                      <!-- <p-treeTableToggler [rowNode]="rowNode" *ngIf="i  == 0"></p-treeTableToggler> -->
-                      <!-- <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox> -->
-                      <p-checkbox [binary]="true" [ngModel]="isRowSelectedDep(rowNode, group.code)" *ngIf="i == 0" (click)="toggleRowSelectionDep(rowNode, group.code)"></p-checkbox>
-                        {{rowData[col.field]}}
-                      </td>
-                    </tr>
-                </ng-template>
-              </p-treeTable>
-            </div>
-            <!-- END Treetable grid for Departments -->
-          </div>
-        </div>
-      </mat-tab>
-    </ng-container>
-  </mat-tab-group>
+	<mat-tab-group (selectedIndexChange)="tabChange($event)" mat-stretch-tabs animationDuration="5ms"
+		[selectedIndex]="selected">
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> Каталог
+			</ng-template>
+			<form class="example-form">
+				<div>
+					Статсрез на №
+					<mat-form-field appearance="fill" class="example-full-width">
+						<input [disabled]=true matInput value="{{data.sliceId}}">
+					</mat-form-field>
+					Отчетный период
+					<mat-form-field appearance="fill" class="example-full-width">
+						<input [disabled]=true matInput value="{{data.slicePeriod}}">
+					</mat-form-field>
+				</div>
+				<div>
+					<span class="lang-checkbox-label">Язык отчета</span>
+					<mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu">{{reportLangs.ru.name}}</mat-checkbox>
+					<mat-checkbox [(ngModel)]="reportLangs.kz.isSelected" name="langKz">{{reportLangs.kz.name}}</mat-checkbox>
+				</div>
+			</form>
+			<div class="reports-list">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6">
+							<h3 mat-dialog-title>Запрошенные отчеты</h3>
+							<div class="selected-reports">
+								<ul>
+									<li *ngFor="let item of selectedReportsList; let i = index">
+										<i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, item)"></i>
+										<span class="requested-report-item">{{item.report.name}} - {{item.region.name}} -
+											{{item.department?.name}}</span>
+										<!-- <span class="requested-report-item" *ngIf="isGroupCommon">{{ item | truncate : 55 }}</span> -->
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<h3 mat-dialog-title>Отчеты
+								<span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">Получено {{readyReportsParts}}
+									из {{selectedReportsList.length}}</span>
+							</h3>
+							<div class="reports">
+								<div class="preloader-block ready-reports" *ngIf="isReportsLoading">
+									<div class="lds-ring-readyReports">
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+									</div>
+								</div>
+								<ul *ngIf="!isReportsLoading">
+									<li *ngFor="let item of readyReports"><a href="{{item.url}}"
+											target="_blank">{{item.name | truncate : 55}}</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</mat-tab>
+		<!-- Treetable grid for groupCommon -->
+		<ng-container *ngIf="isGroupCommon">
+			<mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="preloader-block" *ngIf="loadingCommon">
+								<div class="lds-ring">
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12" *ngIf="gridCommonDataArray != undefined">
+							<p-treeTable [value]="gridCommonDataArray[group.code]" [columns]="colsCommon"
+								(onNodeExpand)="onNodeExpandGroupCommon($event)" [lazy]="true" [loading]="loadingCommon"
+								selectionMode="checkbox" [(selection)]="selectedCommonNodesArray[group.code]" dataKey="code"
+								(onNodeSelect)="nodeCommonSelect($event, group.code)"
+								(onNodeUnselect)="nodeCommonUnselect($event, group.code)" *ngIf="!loadingCommon"
+								[resizableColumns]="true" [loadingIcon]="fa-spinner">
+								<ng-template pTemplate="colgroup" let-columns>
+									<colgroup>
+										<col style="width: 30px;">
+										<col style="width: 200px;">
+										<col style="width: 200px;">
+									</colgroup>
+								</ng-template>
+								<ng-template pTemplate="header" let-columns>
+									<tr>
+										<th></th>
+										<th *ngFor="let col of columns">{{col.header}}</th>
+									</tr>
+								</ng-template>
+								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+									<tr [ttSelectableRow]="rowNode">
+										<td>
+											<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+										</td>
+										<td *ngFor="let col of columns; let i = index">
+											<!-- <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler> -->
+											<p-checkbox [binary]="true" [ngModel]="isRowSelectedCommon(rowNode, group.code)" *ngIf="i == 0"
+												(click)="toggleRowSelectionCommon(rowNode, group.code)"></p-checkbox>
+											{{rowData[col.field]}}
+										</td>
+									</tr>
+								</ng-template>
+							</p-treeTable>
+						</div>
+					</div>
+				</div>
+			</mat-tab>
+		</ng-container>
+		<!-- END Treetable grid for GroupCommon -->
+		<ng-container *ngIf="!isGroupCommon">
+			<mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="preloader-block" *ngIf="loadingReg && loading">
+								<div class="lds-ring">
+									<div></div>
+									<div></div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+						</div>
+						<!-- Treetable grid for Regions -->
+						<div class="col-sm-6" *ngIf="gridRegDataArray != undefined">
+							<p-treeTable [value]="gridRegDataArray[group.code]" [columns]="colsReg" [lazy]="true"
+								[loading]="loadingReg" selectionMode="checkbox" [(selection)]="selectedRegNodesArray[group.code]"
+								dataKey="code" (onNodeUnselect)="nodeRegUnselect($event, group.code)" *ngIf="!loadingReg && !loading">
+								<ng-template pTemplate="header" let-columns>
+									<tr>
+										<th *ngFor="let col of columns">{{col.header}}</th>
+									</tr>
+								</ng-template>
+								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+									<tr [ttSelectableRow]="rowNode">
+										<td *ngFor="let col of columns; let i = index">
+											<p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+											<p-checkbox [binary]="true" [ngModel]="isRowSelected(rowNode, group.code)" *ngIf="i == 0"
+												(click)="toggleRowSelection(rowNode, group.code)"></p-checkbox>
+											{{rowData[col.field]}}
+										</td>
+									</tr>
+								</ng-template>
+							</p-treeTable>
+						</div>
+						<!-- END Treetable grid for Regions -->
+						<!-- Treetable grid for Departments -->
+						<div class="col-sm-6" *ngIf="gridDepDataArray != undefined">
+							<p-treeTable [value]="gridDepDataArray[group.code]" [columns]="colsDep"
+								(onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox"
+								[(selection)]="selectedDepNodesArray[group.code]" dataKey="code" *ngIf="!loading && !loadingReg">
+								{{group.name}}
+								<ng-template pTemplate="header" let-columns>
+									<tr>
+										<th *ngFor="let col of columns">{{col.header}}</th>
+									</tr>
+								</ng-template>
+								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+									<tr [ttSelectableRow]="rowNode">
+										<td *ngFor="let col of columns; let i = index">
+											<!-- <p-treeTableToggler [rowNode]="rowNode" *ngIf="i  == 0"></p-treeTableToggler> -->
+											<!-- <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox> -->
+											<p-checkbox [binary]="true" [ngModel]="isRowSelectedDep(rowNode, group.code)" *ngIf="i == 0"
+												(click)="toggleRowSelectionDep(rowNode, group.code)"></p-checkbox>
+											{{rowData[col.field]}}
+										</td>
+									</tr>
+								</ng-template>
+							</p-treeTable>
+						</div>
+						<!-- END Treetable grid for Departments -->
+					</div>
+				</div>
+			</mat-tab>
+		</ng-container>
+	</mat-tab-group>
 </mat-dialog-content>
-<mat-dialog-actions  *ngIf="!contentLoading" align="end">
-  <button mat-button (click)=getReports() *ngIf="selected === 0">Получить</button>
-  <button mat-button (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
-  <button mat-button mat-dialog-close>Отмена</button>
+<mat-dialog-actions *ngIf="!contentLoading" align="end">
+	<button mat-button (click)=getReports() *ngIf="selected === 0">Получить</button>
+	<button mat-button (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
+	<button mat-button mat-dialog-close>Отмена</button>
 </mat-dialog-actions>
-

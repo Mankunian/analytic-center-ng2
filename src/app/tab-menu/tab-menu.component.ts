@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
+import { FormatGridDataService } from '../services/format-grid-data.service';
 
 
 @Component({
@@ -43,8 +44,8 @@ export class TabMenuComponent implements OnInit {
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-	formatGridDataService: any;
-	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, getShared: SharedService) {
+	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, getShared: SharedService, private formatGridDataService: FormatGridDataService,
+	) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
 
@@ -88,11 +89,16 @@ export class TabMenuComponent implements OnInit {
 		});
 	}
 
-	refreshGridTable(status) {
-		console.log(status)
-		if (status) {
-			// this.httpService.getSliceGroups()
-		}
+	refreshGridTable() {
+		console.log('refresh with expanded')
+		// this.loader = true
+		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+			console.log(this.gridData)
+			this.gridData[0]['expanded'] = true
+			// this.loader = false
+		});
+
 	}
 
 	showDeleted(checkDeleted: boolean) {

@@ -36,6 +36,8 @@
 			</td>
 			<td>
 				{{rowData.maxRecNum}}
+				<p-button (onClick)="refreshGridTable()" label="{{'TAB_MENU.REFRESH' | translate}}" icon="pi pi-refresh"
+					iconPos="left"></p-button>
 			</td>
 			<td>
 				{{rowData.completed}}
