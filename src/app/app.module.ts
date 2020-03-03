@@ -113,8 +113,17 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 	exports: [
 		MatInputModule
 	],
-	providers: [HttpService, SharedService, TimelineComponent],
+  providers: [
+    HttpService,
+    SharedService,
+    TimelineComponent,
+  ],
 	bootstrap: [AppComponent],
-	entryComponents: [SliceOperationsModalContentComponent, ReportsModalContentComponent, RejectionReasonContentComponent, EditReasonComponent]
+  entryComponents: [
+    SliceOperationsModalContentComponent,
+    ReportsModalContentComponent,
+    RejectionReasonContentComponent,
+    EditReasonComponent
+  ]
 })
 export class AppModule { }

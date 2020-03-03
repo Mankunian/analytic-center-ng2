@@ -8,8 +8,7 @@ import { FormatGridDataService } from '../services/format-grid-data.service';
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 
-import { WebsocketService } from '../services/websocket.service'
-import { ProgressbarService } from '../services/progressbar.service';
+// import { ProgressbarService } from '../services/progressbar.service';
 
 @Component({
   selector: 'app-tree-table',
@@ -40,20 +39,23 @@ export class TreeTableComponent implements OnInit {
     private formatGridDataService: FormatGridDataService,
     public dialogOperSlice: MatDialog,
     public reportsModal: MatDialog,
-    public dialog: SliceOperationsModalComponent, shared: SharedService,
-    private progressbarService: ProgressbarService
+    public dialog: SliceOperationsModalComponent,
+    shared: SharedService,
+    // private progressbarService: ProgressbarService
   ) {
 	  this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
 		})
 
 		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
-			console.log(sliceGroup)
+			// console.log(sliceGroup)
       this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
-		})
-		progressbarService.messages.subscribe(msg => {
-			console.log("Response from websocket:" + msg)
-		})
+    })
+    
+    // const link = websocket.connect('ws://18.140.232.52:8081/notifications', {sessionKey: "user0"})
+		// progressbarService.messages.subscribe(msg => {
+		// 	console.log("Response from websocket:" + msg)
+		// })
 }
 
   ngOnInit() {
