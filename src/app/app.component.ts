@@ -27,7 +27,7 @@ export class AppComponent {
     // let socket = new SockJS('https://anal-centre.tk:8081/notifications');
     // this.stompClient = Stomp.over(socket);
 
-    let socket = new SockJS('https://anal-centre.tk:8081/notifications');
+    let socket = new SockJS('http://anal-centre.tk:8081/notifications');
     this.stompClient = Stomp.over(socket);
 
     this.stompClient.connect({ sessionKey: "user0" }, function (frame) {

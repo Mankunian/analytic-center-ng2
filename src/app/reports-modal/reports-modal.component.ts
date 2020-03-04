@@ -375,7 +375,7 @@ export class ReportsModalContentComponent {
         reportDownloadName = errMsg;
       } else {
         reportDownloadUrl = self.BASE_API_URL + "/reports/" + element.value + "/download";
-        reportDownloadName = self.generateReportName(index+counterFrom, element)
+        reportDownloadName = self.generateReportName(element)
       }
 
       let readyReportItem = {
@@ -386,27 +386,43 @@ export class ReportsModalContentComponent {
     });
   }
 
-  generateReportName(index: number, element) {    
-    if (this.selectedReportsList[index] === undefined) return "false";
-    
+  generateReportName(element) {
+    // if (this.selectedReportsList[index] === undefined) return "false";
     let delimiter = ' - ',
       reportName,
       regionName,
       departmentName,
+      groupCode = element.reportCode,
+      orgCode = element.orgCode,
+      regCode = element.regCode,
+      govCode = element.govCode,
       langPostfix = "";
 
     if (element.lang !== "RU") {
       langPostfix = delimiter + '[' + element.lang + ']';
     }
-    (this.selectedReportsList[index].report.name != undefined) 
-      ? reportName = this.selectedReportsList[index].report.name + delimiter 
+    
+    let reportInfo = this.getReportInfoByCode(groupCode);
+    (reportInfo !== undefined)
+      ? reportName = reportInfo.name + delimiter
       : reportName = "";
-    (this.selectedReportsList[index].region.name != undefined) 
-      ? regionName = this.selectedReportsList[index].region.name 
+
+    if (this.isGroupCommon === true) {
+      let commonIndex = this.requestedReports.common[groupCode].findIndex(x => x.searchPattern === govCode);
+      (commonIndex !== -1)
+      ? regionName = this.requestedReports.common[groupCode][commonIndex].name
       : regionName = "";
-    (this.selectedReportsList[index].department != undefined) 
-      ? departmentName = delimiter + this.selectedReportsList[index].department.name 
+    } else {    
+      let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+      (regIndex !== -1)
+      ? regionName = this.requestedReports.regs[groupCode][regIndex].name
+      : regionName = "";
+
+      let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+      (depIndex !== -1)
+      ? departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name
       : departmentName = "";
+    }
 
     return reportName + regionName + departmentName + langPostfix;
   }
