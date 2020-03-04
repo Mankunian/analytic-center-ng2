@@ -4,9 +4,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { SharedService } from "../services/shared.service";
 
-
-
-
 @Component({
 	selector: 'app-timeline',
 	templateUrl: './timeline.component.html',

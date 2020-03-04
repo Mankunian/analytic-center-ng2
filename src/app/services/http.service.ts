@@ -10,7 +10,6 @@ import { GlobalConfig } from '../global';
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
-	public BASE_API_URLKz = GlobalConfig.BASE_API_URL
 
 	constructor(private http: HttpClient) { }
 
@@ -72,7 +71,7 @@ export class HttpService {
 
 	confirmSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -82,7 +81,7 @@ export class HttpService {
 
 	deleteSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -92,7 +91,7 @@ export class HttpService {
 
 	sendToPreliminaryService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -101,7 +100,7 @@ export class HttpService {
 	}
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -110,7 +109,7 @@ export class HttpService {
 	}
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 		let options = { headers: headers }
 
@@ -118,7 +117,7 @@ export class HttpService {
 	}
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }
@@ -130,7 +129,7 @@ export class HttpService {
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 		// console.log(saveEditReasonObj)
 
@@ -142,7 +141,7 @@ export class HttpService {
 
 	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'admin'
+			'sessionKey': 'user0'
 		});
 
 		let options = { headers: headers }

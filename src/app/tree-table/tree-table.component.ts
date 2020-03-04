@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
@@ -8,7 +8,7 @@ import { FormatGridDataService } from '../services/format-grid-data.service';
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 
-import { ProgressbarService } from '../services/progressbar.service';
+// import { ProgressbarService } from '../services/progressbar.service';
 
 @Component({
 	selector: 'app-tree-table',
@@ -16,7 +16,7 @@ import { ProgressbarService } from '../services/progressbar.service';
 	styleUrls: ['./tree-table.component.scss'],
 	providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
-export class TreeTableComponent implements OnInit, OnChanges {
+export class TreeTableComponent implements OnInit {
 
 	stompClient = null;
 	progress = 0;
@@ -41,28 +41,23 @@ export class TreeTableComponent implements OnInit, OnChanges {
 		private formatGridDataService: FormatGridDataService,
 		public dialogOperSlice: MatDialog,
 		public reportsModal: MatDialog,
-		public dialog: SliceOperationsModalComponent, shared: SharedService,
-		progressbarService: ProgressbarService
+		public dialog: SliceOperationsModalComponent,
+		shared: SharedService,
+		// progressbarService: ProgressbarService
 	) {
 		this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
 		})
 
 		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
-			console.log(sliceGroup)
+			// console.log(sliceGroup)
 			this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
 		})
-		progressbarService.messages.subscribe(msg => {
-			console.log("Response from websocket:" + msg)
-		})
-	}
 
-	ngOnChanges() {
-		this.loader = true
-		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
-			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-			this.loader = false
-		});
+		// const link = websocket.connect('ws://18.140.232.52:8081/notifications', {sessionKey: "user0"})
+		// progressbarService.messages.subscribe(msg => {
+		// 	console.log("Response from websocket:" + msg)
+		// })
 	}
 
 	ngOnInit() {
@@ -110,8 +105,6 @@ export class TreeTableComponent implements OnInit, OnChanges {
 
 		dialogRef.afterClosed().subscribe(() => {
 		})
-
-
 	}
 
 	openReportsModal(row) {
@@ -135,13 +128,6 @@ export class TreeTableComponent implements OnInit, OnChanges {
 	}
 
 	onNodeExpand(event) {
-		console.log(event.node)
-		this.expandedGroupCodes = event.node.data.code;
-		// adds an element to the array if it does not already exist using a comparer 
-		this.expandedGroupCodeList.indexOf(this.expandedGroupCodes) === -1 ? this.expandedGroupCodeList.push(this.expandedGroupCodes) : console.log("this item already exist")
-		console.log(this.expandedGroupCodeList)
-
-
 		if (event.node.parent != null) {
 			this.loader = true
 			const groupCode = event.node.parent.data.code,
@@ -159,10 +145,20 @@ export class TreeTableComponent implements OnInit, OnChanges {
 	}
 
 	refreshGridTable() {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		let self = this;
+		this.gridData.forEach(function (value, key) {
+			console.log(value)
+			if (value.expanded == true) {
+				// console.log(value)
+				console.log(value.data.code)
+				self.expandedGroupCodeList.push(value.data.code)
+			}
+
+		});
+		console.log(self.expandedGroupCodeList)
 		this.loader = true;
 		if (this.expandedGroupCodeList !== undefined) {
-			// eslint-disable-next-line @typescript-eslint/no-this-alias
-			let self = this;
 			this.expandedGroupCodeList.forEach(function (groupCodes) {
 				// console.log(groupCodes)
 				self.httpService.getSliceGroups(self.checkDeleted).then((gridData) => {
@@ -182,6 +178,21 @@ export class TreeTableComponent implements OnInit, OnChanges {
 				})
 			});
 			this.loader = false;
+		} else {
+			this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+				this.gridData = [...this.gridData]
+			});
 		}
+	}
+
+	showDeleted(checkDeleted: boolean) {
+		this.checkDeleted = checkDeleted;
+		this.loader = true
+		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+			this.loader = false
+		});
 	}
 }

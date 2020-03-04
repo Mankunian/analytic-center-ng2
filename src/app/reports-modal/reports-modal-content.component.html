@@ -23,8 +23,7 @@
 	</div>
 </div>
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
-	<mat-tab-group (selectedIndexChange)="tabChange($event)" mat-stretch-tabs animationDuration="5ms"
-		[selectedIndex]="selected">
+	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="selected">
 		<mat-tab>
 			<ng-template mat-tab-label>
 				<mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> Каталог
@@ -210,7 +209,8 @@
 	</mat-tab-group>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="!contentLoading" align="end">
-	<button mat-button (click)=getReports() *ngIf="selected === 0">Получить</button>
-	<button mat-button (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
-	<button mat-button mat-dialog-close>Отмена</button>
+	<button mat-flat-button color="primary" (click)=getReports() *ngIf="selected === 0"
+		[disabled]="!isReportsSelected">Получить</button>
+	<button mat-flat-button color="primary" (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
+	<button mat-flat-button color="primary" mat-dialog-close>Отмена</button>
 </mat-dialog-actions>

@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
-import { OrderSliceObj } from "../orderSliceObj";
+// import { OrderSliceObj } from "../orderSliceObj";
 import { TranslateService } from '@ngx-translate/core';
 // import { Subscription } from 'stompjs';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
 import { FormatGridDataService } from '../services/format-grid-data.service';
-
 
 @Component({
 	selector: 'app-tab-menu',
@@ -44,7 +43,12 @@ export class TabMenuComponent implements OnInit {
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, getShared: SharedService, private formatGridDataService: FormatGridDataService,
+	constructor(
+		private httpService: HttpService,
+		private formBuilder: FormBuilder,
+		public translate: TranslateService,
+		getShared: SharedService,
+		private formatGridDataService: FormatGridDataService
 	) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
@@ -62,11 +66,7 @@ export class TabMenuComponent implements OnInit {
 			});
 		})
 
-
 	}
-
-
-
 	ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([])
@@ -87,22 +87,6 @@ export class TabMenuComponent implements OnInit {
 		this.httpService.getSliceNumber().subscribe((data: SliceNumber) => {
 			this.max = data.value
 		});
-	}
-
-	refreshGridTable() {
-		console.log('refresh with expanded')
-		// this.loader = true
-		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
-			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-			console.log(this.gridData)
-			this.gridData[0]['expanded'] = true
-			// this.loader = false
-		});
-
-	}
-
-	showDeleted(checkDeleted: boolean) {
-		console.log(checkDeleted)
 	}
 
 	getSliceNumber() {
