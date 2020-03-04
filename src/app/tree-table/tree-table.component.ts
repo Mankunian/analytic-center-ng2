@@ -32,7 +32,8 @@ export class TreeTableComponent implements OnInit, OnChanges {
 	sliceId: any;
 	historyList: Record<string, any>;
 	showTimeline: boolean;
-	dataExpanded: any;
+	expandedGroupCodes: any;
+	expandedGroupCodeList: any = [];
 
 	constructor(
 		public reportsModalInstance: ReportsModalComponent,
@@ -134,8 +135,13 @@ export class TreeTableComponent implements OnInit, OnChanges {
 	}
 
 	onNodeExpand(event) {
-		this.dataExpanded = event.node;
-		console.log(this.dataExpanded)
+		console.log(event.node)
+		this.expandedGroupCodes = event.node.data.code;
+		// adds an element to the array if it does not already exist using a comparer 
+		this.expandedGroupCodeList.indexOf(this.expandedGroupCodes) === -1 ? this.expandedGroupCodeList.push(this.expandedGroupCodes) : console.log("this item already exist")
+		console.log(this.expandedGroupCodeList)
+
+
 		if (event.node.parent != null) {
 			this.loader = true
 			const groupCode = event.node.parent.data.code,
@@ -154,59 +160,28 @@ export class TreeTableComponent implements OnInit, OnChanges {
 
 	refreshGridTable() {
 		this.loader = true;
-		if (this.dataExpanded !== undefined) {
-			this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
-				this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-				console.log(this.gridData)
-				// eslint-disable-next-line @typescript-eslint/no-this-alias
-				let self = this;
-				this.gridData.forEach(function (value, key) {
-					// console.log(value.data.code)
-					// console.log(self.dataExpanded.data.code)
-					if (value.data.code === self.dataExpanded.data.code) {
-						console.log(true)
-						setTimeout(() => {
-							self.gridData[key]['expanded'] = true;
-							self.gridData = [...self.gridData];
-						}, 2000);
-					}
-				});
-
-			})
+		if (this.expandedGroupCodeList !== undefined) {
+			// eslint-disable-next-line @typescript-eslint/no-this-alias
+			let self = this;
+			this.expandedGroupCodeList.forEach(function (groupCodes) {
+				// console.log(groupCodes)
+				self.httpService.getSliceGroups(self.checkDeleted).then((gridData) => {
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+					self.gridData = self.formatGridDataService.formatGridData(gridData, true)['data']
+					// eslint-disable-next-line @typescript-eslint/no-this-alias
+					self.gridData.forEach(function (value, key) {
+						// console.error(value.data.code)
+						if (value.data.code === groupCodes) {
+							console.log(true)
+							setTimeout(() => {
+								self.gridData[key]['expanded'] = true;
+								self.gridData = [...self.gridData];
+							}, 2000);
+						}
+					});
+				})
+			});
+			this.loader = false;
 		}
-		this.loader = false;
-		// this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
-		// 	// this.loader = true;
-		// 	this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-		// 	this.gridData = [...this.gridData];
-		// 	// this.gridData[1]['expanded'] = true;
-		// 	// this.loader = false;
-		// 	//eslint-disable-next-line @typescript-eslint/no-this-alias
-		// 	let self = this;
-		// 	this.gridData.forEach(function (value, key) {
-
-		// 		if (value.data.code === self.dataExpanded.data.code) {
-		// 			console.log(key)
-		// 			self.loader = true;
-		// 			self.gridData[key]['expanded'] = false;
-		// 			// self.gridData[1]['expanded'] = true;
-		// 			console.log(self.gridData)
-		// 			setTimeout(() => {
-		// 				self.gridData[key]['expanded'] = true;
-		// 				console.log(self.gridData)
-		// 			}, 2000);
-
-
-		// 			// self.loader = false;
-
-		// 		}
-
-		// 	})
-		// 	this.loader = false
-
-
-		// });
-		// this.loader = false
-
 	}
 }

@@ -34,7 +34,7 @@ export class HttpService {
 			.then(response => <TreeNode[]>response);
 	}
 	getTerritories(lang: string) {
-		console.log(lang)
+		// console.log(lang)
 		return this.http.get(this.BASE_API_URL + lang + '/slices/territories')
 	}
 

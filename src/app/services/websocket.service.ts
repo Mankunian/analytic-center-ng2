@@ -15,17 +15,17 @@ export class WebsocketService {
 	public connect(url, options): Rx.Subject<MessageEvent> {
 		if (!this.subject) {
 			this.subject = this.create(url);
-			console.log("Successfully connected: " + url);
+			// console.log("Successfully connected: " + url);
 		}
 		return this.subject;
 	}
 
 	private create(url): Rx.Subject<MessageEvent> {
-		console.log(url)
+		// console.log(url)
 		let ws = new WebSocket(url);
 
 		let observable = Rx.Observable.create((obs: Rx.Observer<MessageEvent>) => {
-			console.log(obs)
+			// console.log(obs)
 			ws.onmessage = obs.next.bind(obs);
 			ws.onerror = obs.error.bind(obs);
 			ws.onclose = obs.complete.bind(obs);
