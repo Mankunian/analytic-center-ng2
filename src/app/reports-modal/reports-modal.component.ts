@@ -320,6 +320,17 @@ export class ReportsModalContentComponent {
 		}
 	};
 
+	/*=====  Get reports ======*/
+	getReports() {
+		let cntr = 0
+		this.readyReportsParts = 0
+		this.readyReportsTotal = 0
+		this.readyReports = []
+		this.isReportsLoading = true
+		this.getReportSplices(cntr)
+	}
+	/*=====  Get reports end ======*/
+
 	getReportSplices(counterFrom) {
 		let reportsSlice,
 			counterFromIn = counterFrom,
@@ -342,17 +353,6 @@ export class ReportsModalContentComponent {
 			})
 		}
 	}
-
-	/*=====  Get reports ======*/
-	getReports() {
-		let cntr = 0
-		this.readyReportsParts = 0
-		this.readyReportsTotal = 0
-		this.readyReports = []
-		this.isReportsLoading = true
-		this.getReportSplices(cntr)
-	}
-	/*=====  Get reports end ======*/
 
 	showReports(data, counterFrom) {
 		this.readyReportsParts += data.length

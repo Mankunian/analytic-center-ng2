@@ -34,6 +34,11 @@ export class TreeTableComponent implements OnInit {
 	showTimeline: boolean;
 	expandedGroupCodes: any;
 	expandedGroupCodeList: any = [];
+	expandedStatusList: any = [];
+	groupCode: any;
+	statusCode: any;
+	year: any;
+	statusData: any;
 
 	constructor(
 		public reportsModalInstance: ReportsModalComponent,
@@ -128,13 +133,14 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
+		console.log(event.node)
 		if (event.node.parent != null) {
 			this.loader = true
-			const groupCode = event.node.parent.data.code,
-				statusCode = event.node.data.code,
-				year = event.node.data.statusYear
+			this.groupCode = event.node.parent.data.code,
+				this.statusCode = event.node.data.code,
+				this.year = event.node.data.statusYear
 
-			this.httpService.getSlices(this.checkDeleted, groupCode, statusCode, year).then((data) => {
+			this.httpService.getSlices(this.checkDeleted, this.groupCode, this.statusCode, this.year).then((data) => {
 				this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
 				event.node.children = this.childrenNode
 				//refresh the data
@@ -145,46 +151,71 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	refreshGridTable() {
+		this.loader = true;
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let self = this;
-		this.gridData.forEach(function (value, key) {
-			console.log(value)
-			if (value.expanded == true) {
-				// console.log(value)
-				console.log(value.data.code)
-				self.expandedGroupCodeList.push(value.data.code)
-			}
-
-		});
-		console.log(self.expandedGroupCodeList)
-		this.loader = true;
-		if (this.expandedGroupCodeList !== undefined) {
-			this.expandedGroupCodeList.forEach(function (groupCodes) {
-				// console.log(groupCodes)
-				self.httpService.getSliceGroups(self.checkDeleted).then((gridData) => {
-					// eslint-disable-next-line @typescript-eslint/no-use-before-define
-					self.gridData = self.formatGridDataService.formatGridData(gridData, true)['data']
-					// eslint-disable-next-line @typescript-eslint/no-this-alias
-					self.gridData.forEach(function (value, key) {
-						// console.error(value.data.code)
-						if (value.data.code === groupCodes) {
-							console.log(true)
-							setTimeout(() => {
-								self.gridData[key]['expanded'] = true;
-								self.gridData = [...self.gridData];
-							}, 2000);
-						}
-					});
+		this.gridData.forEach(function (parent, key) {
+			// console.log(parent)
+			if (parent.expanded == true) {
+				self.expandedGroupCodeList.push(parent.data)
+				parent.children.forEach(function (child, key) {
+					// console.log(child)
+					if (child.expanded == true) {
+						console.log(child)
+						self.expandedStatusList.push(
+							{
+								'groupCode': child.parent.data.code,
+								'statusCode': child.data.code,
+								'statusYear': child.data.statusYear
+							}
+						)
+					}
 				})
-			});
-			this.loader = false;
-		} else {
-			this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-				this.gridData = [...this.gridData]
-			});
-		}
+				console.log(self.expandedStatusList)
+				self.expandedStatusList.forEach(element => {
+					console.log(element)
+					self.statusData = element;
+				});
+			}
+		})
+		// console.log(self.expandedGroupCodeList)
+		this.httpService.getSliceGroups(this.checkDeleted).then((data) => {
+			this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
+			this.gridData.forEach(function (groups, key) {
+				// console.log(groups)
+				// console.log(self.expandedGroupCodeList)
+				self.expandedGroupCodeList.forEach(function (value, key) {
+					if (groups.data.code === value.code) {
+						setTimeout(() => {
+							self.gridData[key]['expanded'] = true; // expand groups
+							// here need to expand by status
+							if (self.gridData[key]['expanded'] == true) {
+								console.log(true)
+								self.gridData[key].children.forEach(function (value, key) {
+									console.log(value.data)
+									// console.log(value.parent)
+									if (value.data.code == self.statusData.statusCode && value.data.statusYear == self.statusData.statusYear) {
+										// console.log(true)
+										// console.log(value)
+										self.httpService.getSlices(self.checkDeleted, self.statusData.groupCode, self.statusData.statusCode, self.statusData.statusYear).then((data) => {
+											self.childrenNode = self.formatGridDataService.formatGridData(data)['data']
+											self.childrenNode.forEach(function (child, key) {
+												console.log(child.data)
+												value.children[0].data = child.data;
+											})
+											console.log(value.children)
+										})
+										value['expanded'] = true;
+									}
+								})
+							}
+							self.gridData = [...self.gridData];
+						}, 2000);
+					}
+				});
+			})
+		})
+		this.loader = false;
 	}
 
 	showDeleted(checkDeleted: boolean) {
