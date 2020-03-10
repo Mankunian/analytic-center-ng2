@@ -48,7 +48,8 @@ export class TabMenuComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		public translate: TranslateService,
 		getShared: SharedService,
-		private formatGridDataService: FormatGridDataService
+		private formatGridDataService: FormatGridDataService,
+		private service: SharedService
 	) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
@@ -146,7 +147,9 @@ export class TabMenuComponent implements OnInit {
 			groups: this.checkedGroupList,
 		};
 
-		this.httpService.postOrderSlice(orderSliceObj).subscribe(() => {
+		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
+			console.log(data)
+			this.service.sendOrderSliceList(data)
 			this.preloaderByOrderSlice = true;
 			this.checkedGroups.forEach(element => {
 				element.source._checked = false; // uncheck all selected value after response

@@ -59,6 +59,11 @@ export class TreeTableComponent implements OnInit {
 			this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
 		})
 
+		this.subscription = shared.subjOrderSliceData$.subscribe(orderSliceList => {
+			console.log(orderSliceList)
+			this.refreshGridTableFromOrder(orderSliceList)
+		})
+
 		// const link = websocket.connect('ws://18.140.232.52:8081/notifications', {sessionKey: "user0"})
 		// progressbarService.messages.subscribe(msg => {
 		// 	console.log("Response from websocket:" + msg)
@@ -150,6 +155,26 @@ export class TreeTableComponent implements OnInit {
 		}
 	}
 
+	refreshGridTableFromOrder(orderSliceList) {
+		this.loader = true;
+		console.log(orderSliceList)
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		let self = this;
+		orderSliceList.forEach(function (orderListValue, key) {
+			console.log(key, orderListValue)
+			self.gridData.forEach(function (gridValue, key) {
+				// console.log(key,  gridValue)
+				if (gridValue.data.code === orderListValue.groupCode) {
+					// console.log(true)
+					// console.log(gridValue)
+					gridValue['expanded'] = true;
+					self.gridData = [...self.gridData]
+				}
+			})
+		})
+		this.loader = false;
+	}
+
 	refreshGridTable() {
 		this.loader = true;
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -205,6 +230,8 @@ export class TreeTableComponent implements OnInit {
 		})
 		this.loader = false;
 	}
+
+
 
 	showDeleted(checkDeleted: boolean) {
 		this.checkDeleted = checkDeleted;
