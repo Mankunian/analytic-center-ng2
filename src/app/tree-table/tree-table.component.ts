@@ -165,9 +165,22 @@ export class TreeTableComponent implements OnInit {
 			self.gridData.forEach(function (gridValue, key) {
 				// console.log(key,  gridValue)
 				if (gridValue.data.code === orderListValue.groupCode) {
-					// console.log(true)
-					// console.log(gridValue)
+
 					gridValue['expanded'] = true;
+					// console.log(gridValue)
+					gridValue.children.forEach(function (childValue, key) {
+
+						console.log(childValue.data.statusYear + '=' + orderListValue.year)
+
+						if (orderListValue.statusCode == '6' && childValue.data.statusYear == orderListValue.year) {
+							console.log(true)
+							childValue['expanded'] = true;
+
+							//todo ..........
+						}
+
+					})
+
 					self.gridData = [...self.gridData]
 				}
 			})
