@@ -159,14 +159,11 @@ export class TreeTableComponent implements OnInit {
 				self.expandedGroupCodeList.push(parent.data)
 				parent.children.forEach(function (child, key) {
 					if (child.expanded == true) {
-						console.log(child)
-						self.expandedStatusList.push(
-							{
-								'groupCode': child.parent.data.code,
-								'statusCode': child.data.code,
-								'statusYear': child.data.statusYear
-							}
-						)
+						self.expandedStatusList.push({
+							'groupCode': child.parent.data.code,
+							'statusCode': child.data.code,
+							'statusYear': child.data.statusYear
+						})
 					}
 				})
 			}
@@ -174,30 +171,29 @@ export class TreeTableComponent implements OnInit {
 		this.httpService.getSliceGroups(this.checkDeleted).then((data) => {
 			this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
 			this.gridData.forEach(function (groups, key) {
-				self.expandedGroupCodeList.forEach(function (value, key) {
-					if (groups.data.code === value.code) {
+				self.expandedGroupCodeList.forEach(function (groupValue, key) {
+					if (groups.data.code === groupValue.code) {
 						setTimeout(() => {
 							self.gridData[key]['expanded'] = true; // Раскрытие групп
 							// here need to expand by status
 							if (self.gridData[key]['expanded'] == true) { // Если есть группы которые были раскрыты. 
-								self.gridData[key].children.forEach(function (value, key) { // Пробегаемся по каждой группе которые были раскрыты изначально.
+								self.gridData[key].children.forEach(function (childrenValue, key) { // Пробегаемся по каждой группе которые были раскрыты изначально.
+
+									childrenValue.data.groupCode = groupValue.code
 									if (self.expandedStatusList) { // Если есть раскрытые срезы по СТАТУСАМ
-										console.log(value)
 										self.expandedStatusList.forEach(function (element) { // Пробегаемся по каждому статусу которые были раскрыты.
 											self.statusData = element; // Присваиваем к переменной каждый элемент Статусов.
 
-
-
-											if (value.data.code == self.statusData.statusCode && value.data.statusYear == self.statusData.statusYear) {
-
+											if (childrenValue.data.code == self.statusData.statusCode && childrenValue.data.statusYear == self.statusData.statusYear && childrenValue.data.groupCode == self.statusData.groupCode) {
+												console.log(true)
 												// Если статус, группа и год равны то присваиваем expanded
 												self.httpService.getSlices(self.checkDeleted, self.statusData.groupCode, self.statusData.statusCode, self.statusData.statusYear).then((data) => {
 													self.childrenNode = self.formatGridDataService.formatGridData(data)['data']
 													self.childrenNode.forEach(function (child, key) {
-														value.children[0].data = child.data;
+														childrenValue.children[0].data = child.data;
 													})
 												})
-												value['expanded'] = true;
+												childrenValue['expanded'] = true;
 											}
 										})
 									}
