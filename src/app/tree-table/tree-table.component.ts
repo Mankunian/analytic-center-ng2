@@ -182,9 +182,14 @@ export class TreeTableComponent implements OnInit {
 							if (self.gridData[key]['expanded'] == true) { // Если есть группы которые были раскрыты. 
 								self.gridData[key].children.forEach(function (value, key) { // Пробегаемся по каждой группе которые были раскрыты изначально.
 									if (self.expandedStatusList) { // Если есть раскрытые срезы по СТАТУСАМ
+										console.log(value)
 										self.expandedStatusList.forEach(function (element) { // Пробегаемся по каждому статусу которые были раскрыты.
 											self.statusData = element; // Присваиваем к переменной каждый элемент Статусов.
+
+
+
 											if (value.data.code == self.statusData.statusCode && value.data.statusYear == self.statusData.statusYear) {
+
 												// Если статус, группа и год равны то присваиваем expanded
 												self.httpService.getSlices(self.checkDeleted, self.statusData.groupCode, self.statusData.statusCode, self.statusData.statusYear).then((data) => {
 													self.childrenNode = self.formatGridDataService.formatGridData(data)['data']
