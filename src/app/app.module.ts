@@ -20,6 +20,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import { MatToolbarModule } from '@angular/material';
@@ -30,6 +32,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 // import { HttpClientModule } from '@angular/common/http';
 import { ProgressBarModule } from 'primeng/progressbar';
 
@@ -101,6 +105,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		MatToolbarModule,
 		DialogModule,
 		ProgressBarModule,
+		ProgressSpinnerModule,
+		MatProgressSpinnerModule,
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,
