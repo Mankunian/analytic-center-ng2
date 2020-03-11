@@ -4,6 +4,8 @@ import { OrderSliceObj } from "./../orderSliceObj";
 import { SaveEditReasonObj } from "./../saveEditReasonObj";
 import { TreeNode } from 'primeng/api';
 import { GlobalConfig } from '../global';
+import { Subject } from 'rxjs';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -12,6 +14,11 @@ export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
 
 	constructor(private http: HttpClient) { }
+
+	private subLang = new Subject();
+	subjLang$ = this.subLang.asObservable();
+
+
 
 	getGroupList(lang) {
 		return this.http.get(this.BASE_API_URL + lang + '/slices/groups')

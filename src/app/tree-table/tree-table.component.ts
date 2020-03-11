@@ -64,10 +64,18 @@ export class TreeTableComponent implements OnInit {
 			this.refreshGridTableFromOrder(orderSliceList)
 		})
 
-		// const link = websocket.connect('ws://18.140.232.52:8081/notifications', {sessionKey: "user0"})
-		// progressbarService.messages.subscribe(msg => {
-		// 	console.log("Response from websocket:" + msg)
-		// })
+		this.subscription = shared.subjProgressbarWs$.subscribe(progressbarList => {
+			console.log(progressbarList)
+			console.log(this.gridData)
+			// this.gridData.forEach(function (gridData, key) {
+			// 	gridData.children.forEach(function (children, key) {
+			// 		if (children.data.code == '0') {
+			// 			console.log(true)
+			// 		}
+			// 	})
+			// })
+		})
+
 	}
 
 	ngOnInit() {

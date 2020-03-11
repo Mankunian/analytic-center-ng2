@@ -94,4 +94,12 @@ export class SharedService {
 	sendOrderSliceList(orderSliceList: any) {
 		this.subOrderSliceData.next(orderSliceList)
 	}
+
+	//for sharing progressbar-websocket list to tree-table component
+	private subProgressbarWs = new Subject();
+	subjProgressbarWs$ = this.subProgressbarWs.asObservable();
+
+	sendProgressBarValue(progressbarWsList: any) {
+		this.subProgressbarWs.next(progressbarWsList)
+	}
 }

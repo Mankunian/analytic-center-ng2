@@ -30,6 +30,9 @@ export class NavBarComponent implements OnInit {
 
 	changeLang(lang) {
 		console.log(lang)
+		// this.http.changeLang(lang)
+
+
 		this.http.getTerritories(lang).subscribe((territories) => {
 			this.territoryList = territories;
 		})
