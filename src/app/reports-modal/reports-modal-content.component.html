@@ -11,11 +11,16 @@
 	</div>
 </div>
 <div class="row" *ngIf="contentLoading">
-  <div class="col-sm-12">
-    <div class="preloader-block">
-      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-    </div>
-  </div>
+	<div class="col-sm-12">
+		<div class="preloader-block">
+			<div class="lds-ring">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	</div>
 </div>
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
 	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="selected">
@@ -178,9 +183,9 @@
     </ng-container>
   </mat-tab-group>
 </mat-dialog-content>
-<mat-dialog-actions  *ngIf="!contentLoading" align="end">
-  <button mat-flat-button color="primary" (click)=getReports() *ngIf="selected === 0" [disabled]="!isReportsSelected">Получить</button>
-  <button mat-flat-button color="primary" (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
-  <button mat-flat-button color="primary" mat-dialog-close>Отмена</button>
+<mat-dialog-actions *ngIf="!contentLoading" align="end">
+	<button mat-flat-button color="primary" (click)=getReports() *ngIf="selected === 0"
+		[disabled]="!isReportsSelected">Получить</button>
+	<button mat-flat-button color="primary" (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
+	<button mat-flat-button color="primary" mat-dialog-close>Отмена</button>
 </mat-dialog-actions>
-

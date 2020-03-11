@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
-import { OrderSliceObj } from "../orderSliceObj";
+// import { OrderSliceObj } from "../orderSliceObj";
 import { TranslateService } from '@ngx-translate/core';
 // import { Subscription } from 'stompjs';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
-
-
+import { FormatGridDataService } from '../services/format-grid-data.service';
 
 @Component({
 	selector: 'app-tab-menu',
@@ -38,18 +37,27 @@ export class TabMenuComponent implements OnInit {
 	disabledBtn = true;
 	lang: string
 
+	gridData: TreeNode[];
+
 	dateFrom = new FormControl(new Date(1577859165 * 1000));
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-	constructor(private httpService: HttpService, private formBuilder: FormBuilder, public translate: TranslateService, shared: SharedService) {
+	constructor(
+		private httpService: HttpService,
+		private formBuilder: FormBuilder,
+		public translate: TranslateService,
+		getShared: SharedService,
+		private formatGridDataService: FormatGridDataService,
+		private service: SharedService
+	) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
 
 		const browserLang = translate.getBrowserLang();
 		translate.use(browserLang.match(/ru|kaz|qaz/) ? browserLang : 'ru');
 
-		this.subscription = shared.subjGroupListKaz$.subscribe(value => {
+		this.subscription = getShared.subjGroupListKaz$.subscribe(value => {
 			this.groupList = value;
 			console.log(this.groupList)
 			this.groupList.forEach(element => {
@@ -59,11 +67,7 @@ export class TabMenuComponent implements OnInit {
 			});
 		})
 
-
 	}
-
-
-
 	ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([])
@@ -84,13 +88,6 @@ export class TabMenuComponent implements OnInit {
 		this.httpService.getSliceNumber().subscribe((data: SliceNumber) => {
 			this.max = data.value
 		});
-	}
-
-	refreshGridTable(status) {
-		console.log(status)
-		if (status) {
-			this.httpService.getSliceGroups()
-		}
 	}
 
 	getSliceNumber() {
@@ -122,7 +119,7 @@ export class TabMenuComponent implements OnInit {
 		this.selected = event.index;
 	}
 
-	orderSlice(item: OrderSliceObj) {
+	orderSlice() {
 		this.dateFrom.value.setHours(0)
 		this.dateFrom.value.setMinutes(0)
 		this.dateFrom.value.setSeconds(0)
@@ -151,6 +148,8 @@ export class TabMenuComponent implements OnInit {
 		};
 
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
+			console.log(data)
+			this.service.sendOrderSliceList(data)
 			this.preloaderByOrderSlice = true;
 			this.checkedGroups.forEach(element => {
 				element.source._checked = false; // uncheck all selected value after response

@@ -15,29 +15,30 @@
 </div>
 
 <mat-dialog-content class="mat-typography">
+	<div class="text-center" *ngIf="!historyValue">
+		<!-- <mat-spinner style="margin: 0 auto;"></mat-spinner> -->
+		<p-progressSpinner></p-progressSpinner>
+	</div>
 	<app-timeline></app-timeline>
 	<app-grid-data-in-agreement></app-grid-data-in-agreement>
-
 </mat-dialog-content>
+
 <mat-dialog-actions>
 	<div class="col-md-6" *ngIf="!headTerritory">
 		<div *ngIf="btnInAgreement">
-			<button [disabled]="disableBtn" (click)="approveSlice()" mat-raised-button color="primary">Согласовать</button>
-			<button [disabled]="disableBtn" (click)="rejectInAgreement()" mat-raised-button color="primary">Отказать</button>
+			<p-button [disabled]="disableBtn" (click)="approveSlice()" label="Согласовать"></p-button>
+			<p-button [disabled]="disableBtn" (click)="rejectInAgreement()" label="Отказать"></p-button>
 		</div>
 	</div>
 	<div class="col-md-6" *ngIf="headTerritory">
 		<div *ngIf="btnInAgreement">
-			<button (click)="deleteSlice()" mat-flat-button color="primary">Удалить</button>
-			<button (click)="confirmSlice()" mat-flat-button color="primary">Утвердить</button>
+			<button style="margin-right: 10px;" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
+			<button (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
 		</div>
 		<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
-		<!-- <button (click)="sendToPreliminary()" *ngIf="btnDecided" mat-flat-button color="primary">Перевести в
-			предварительный</button> -->
-		<button (click)="sendToAgreement()" *ngIf="btnToAgreement" mat-flat-button color="primary">На согласование</button>
+		<p-button (click)="sendToAgreement()" *ngIf="btnToAgreement" label="На согласование"></p-button>
 	</div>
 	<div class="col-md-6" style="text-align: right;">
 		<button mat-dialog-close mat-raised-button color="warn">Отмена</button>
 	</div>
-	<!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
 </mat-dialog-actions>

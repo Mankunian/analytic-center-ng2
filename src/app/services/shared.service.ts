@@ -77,11 +77,21 @@ export class SharedService {
 		this.subGroupListKaz.next(groupListLang)
 	}
 
+	// for sharing lang
 	private subSliceGroupLang = new Subject();
 	subjSliceGroupLang$ = this.subSliceGroupLang.asObservable();
 
 	sendSliceGroupLang(sliceGroup: any) {
 		console.log(sliceGroup)
 		this.subSliceGroupLang.next(sliceGroup)
+	}
+
+
+	//for sharing order slice data to tree-table component
+	private subOrderSliceData = new Subject();
+	subjOrderSliceData$ = this.subOrderSliceData.asObservable();
+
+	sendOrderSliceList(orderSliceList: any) {
+		this.subOrderSliceData.next(orderSliceList)
 	}
 }

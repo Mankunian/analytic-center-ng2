@@ -26,13 +26,14 @@ export class HttpService {
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
-	getSliceGroups() {
-		return this.http.get(this.BASE_API_URL + 'RU/slices/parents')
+	getSliceGroups(checkDeleted) {
+		return this.http.get(this.BASE_API_URL + 'RU/slices/parents' + '?deleted=' + checkDeleted)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
 	getTerritories(lang: string) {
+		// console.log(lang)
 		return this.http.get(this.BASE_API_URL + lang + '/slices/territories')
 	}
 
@@ -75,7 +76,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/confirm', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/confirm', body, options)
 	}
 
 	deleteSliceService(sliceId: number) {
@@ -85,7 +86,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/delete', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/delete', body, options)
 	}
 
 	sendToPreliminaryService(sliceId: number) {
@@ -95,7 +96,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/preliminary', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/preliminary', body, options)
 	}
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
@@ -104,7 +105,7 @@ export class HttpService {
 
 		let options = { headers: headers }
 		const body = {}
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/send', body, options)
+		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/send', body, options)
 	}
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
@@ -123,7 +124,7 @@ export class HttpService {
 
 		const body = { startDate: orderSliceObj.startDate, endDate: orderSliceObj.endDate, maxRecNum: orderSliceObj.maxRecNum, groups: orderSliceObj.groups }
 		// console.log(body)
-		return this.http.post(this.BASE_API_URL + '/RU/slices', body, options);
+		return this.http.post(this.BASE_API_URL + 'RU/slices', body, options);
 	}
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
