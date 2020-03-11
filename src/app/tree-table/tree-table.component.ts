@@ -67,13 +67,7 @@ export class TreeTableComponent implements OnInit {
 		this.subscription = shared.subjProgressbarWs$.subscribe(progressbarList => {
 			console.log(progressbarList)
 			console.log(this.gridData)
-			// this.gridData.forEach(function (gridData, key) {
-			// 	gridData.children.forEach(function (children, key) {
-			// 		if (children.data.code == '0') {
-			// 			console.log(true)
-			// 		}
-			// 	})
-			// })
+			//TODO
 		})
 
 	}
