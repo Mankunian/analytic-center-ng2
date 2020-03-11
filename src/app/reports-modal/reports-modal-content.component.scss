@@ -3,16 +3,8 @@
   margin-top: 1px;
   margin-right: 2px;
 }
-.mat-tab-label {
-  min-width: 100px;
-}
 .reports-list {
   min-height: 300px;
-}
-::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
-  min-width: 0!important;
-  padding: 0px!important;
-  margin: 0px!important;
 }
 .even-row {
   background-color: #1CA979 !important;
@@ -118,7 +110,7 @@
   }
 }
 .preloader-block {
-  height: 372px;
+  height: auto;
 }
 .preloader-block.ready-reports {
   height: auto;
@@ -179,51 +171,22 @@
   }
 }
 .mat-dialog-content { min-height: 500px; }
+
+/* Styles for tab labels */
 .tab-reports .mat-tab-label {
-  padding: 10px 15px !important;
-}
-
-/* Styles for tab labels */
-.mat-tab-label {
   min-width: 25px !important;
-  padding: 5px;
+  padding: 10px;
   background-color: transparent;
-  color: red;
-  font-weight: 700;
+  // font-weight: 700;
 }
 /* Styles for the active tab label */
-.mat-tab-label.mat-tab-label-active {
+.tab-reports .mat-tab-label.mat-tab-label-active {
   min-width: 25px !important;
-  padding: 5px;
+  padding: 10px;
   background-color: transparent;
-  color: red;
-  font-weight: 700;
+  // font-weight: 700;
 }
 /* Styles for the ink bar */
-.mat-ink-bar {
+.tab-reports .mat-ink-bar {
   background-color: green;
-}
-
-
-/* Styles for tab labels */
-.mat-tab-label {
-    min-width: 25px !important;
-    padding: 5px;
-    background-color: transparent;
-    color: red;
-    font-weight: 700;
-}
-
-/* Styles for the active tab label */
-.mat-tab-label.mat-tab-label-active {
-    min-width: 25px !important;
-    padding: 5px;
-    background-color: transparent;
-    color: red;
-    font-weight: 700;
-}
-
-/* Styles for the ink bar */
-.mat-ink-bar {
-    background-color: green;
 }
