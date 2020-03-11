@@ -17,10 +17,7 @@ import { Subscription } from 'rxjs';
 	providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
-
-	stompClient = null;
 	progress = 0;
-
 	subscription: Subscription;
 	terrCode: unknown;
 	gridData: TreeNode[];
@@ -55,19 +52,12 @@ export class TreeTableComponent implements OnInit {
 		})
 
 		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
-			// console.log(sliceGroup)
 			this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
 		})
 
 		this.subscription = shared.subjOrderSliceData$.subscribe(orderSliceList => {
-			console.log(orderSliceList)
 			this.refreshGridTableFromOrder(orderSliceList)
 		})
-
-		// const link = websocket.connect('ws://18.140.232.52:8081/notifications', {sessionKey: "user0"})
-		// progressbarService.messages.subscribe(msg => {
-		// 	console.log("Response from websocket:" + msg)
-		// })
 	}
 
 	ngOnInit() {
@@ -138,7 +128,6 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
-		console.log(event.node)
 		if (event.node.parent != null) {
 			this.loader = true
 			this.groupCode = event.node.parent.data.code,
@@ -218,7 +207,6 @@ export class TreeTableComponent implements OnInit {
 												// Если статус, группа и год равны то присваиваем expanded
 												self.httpService.getSlices(self.checkDeleted, self.statusData.groupCode, self.statusData.statusCode, self.statusData.statusYear).then((data) => {
 													self.childrenNode = self.formatGridDataService.formatGridData(data)['data']
-													console.log(self.childrenNode)
 													childrenValue.children = self.childrenNode
 													self.gridData = [...self.gridData];
 												})

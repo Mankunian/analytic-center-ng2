@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { HttpService } from "../services/http.service";
 import { SliceNumber } from "../sliceNumber";
-// import { OrderSliceObj } from "../orderSliceObj";
 import { TranslateService } from '@ngx-translate/core';
-// import { Subscription } from 'stompjs';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
@@ -43,23 +41,22 @@ export class TabMenuComponent implements OnInit {
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
-	constructor(
+
+  constructor(
 		private httpService: HttpService,
 		private formBuilder: FormBuilder,
 		public translate: TranslateService,
-		getShared: SharedService,
+		public getShared: SharedService,
 		private formatGridDataService: FormatGridDataService,
 		private service: SharedService
 	) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
-
 		const browserLang = translate.getBrowserLang();
 		translate.use(browserLang.match(/ru|kaz|qaz/) ? browserLang : 'ru');
 
 		this.subscription = getShared.subjGroupListKaz$.subscribe(value => {
 			this.groupList = value;
-			console.log(this.groupList)
 			this.groupList.forEach(element => {
 				if (element.status == 2) {
 					element.disabledStatus = true;
@@ -100,8 +97,6 @@ export class TabMenuComponent implements OnInit {
 		this.disabledBtn = false;
 		this.checkedGroups.push(event)
 		this.checkedGroupCodes = event.source.value.code;
-
-
 
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
@@ -148,7 +143,6 @@ export class TabMenuComponent implements OnInit {
 		};
 
 		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
-			console.log(data)
 			this.service.sendOrderSliceList(data)
 			this.preloaderByOrderSlice = true;
 			this.checkedGroups.forEach(element => {

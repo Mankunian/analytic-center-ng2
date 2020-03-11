@@ -17,26 +17,31 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + lang + '/slices/groups')
 	}
 
+  getUsers() {
+		return this.http.get('./assets/json/users.json')
+	}
+
 	getSliceNumber() {
 		return this.http.get(this.BASE_API_URL + '/RU/slices/max');
-	}
+  }
+  
 	getSlices(checkDeleted: boolean, groupCode, statusCode, year) {
 		return this.http.get(this.BASE_API_URL + 'RU/slices' + '?deleted=' + checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
-	}
+  }
+  
 	getSliceGroups(checkDeleted) {
 		return this.http.get(this.BASE_API_URL + 'RU/slices/parents' + '?deleted=' + checkDeleted)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
-	}
+  }
+  
 	getTerritories(lang: string) {
-		// console.log(lang)
 		return this.http.get(this.BASE_API_URL + lang + '/slices/territories')
 	}
-
 
 	getHistory(sliceId: number) {
 		return this.http.get(this.BASE_API_URL + '/RU/slices/' + sliceId + '/history')
@@ -97,7 +102,8 @@ export class HttpService {
 		let options = { headers: headers }
 		const body = {}
 		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/preliminary', body, options)
-	}
+  }
+  
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
 			'sessionKey': 'user0'
@@ -106,7 +112,8 @@ export class HttpService {
 		let options = { headers: headers }
 		const body = {}
 		return this.http.put(this.BASE_API_URL + 'RU/slices/' + sliceId + '/send', body, options)
-	}
+  }
+  
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
 			'sessionKey': 'user0'
@@ -114,7 +121,8 @@ export class HttpService {
 		let options = { headers: headers }
 
 		return this.http.post(this.BASE_API_URL + 'RU/slices/reports/createReports?repLang=' + lang, data, options)
-	}
+  }
+  
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
 			'sessionKey': 'user0'
@@ -149,5 +157,4 @@ export class HttpService {
 		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
 
 	}
-
 }
