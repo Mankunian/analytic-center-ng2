@@ -157,30 +157,23 @@ export class TreeTableComponent implements OnInit {
 
 	refreshGridTableFromOrder(orderSliceList) {
 		this.loader = true;
-		console.log(orderSliceList)
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let self = this;
 		orderSliceList.forEach(function (orderListValue, key) {
-			console.log(key, orderListValue)
 			self.gridData.forEach(function (gridValue, key) {
-				// console.log(key,  gridValue)
 				if (gridValue.data.code === orderListValue.groupCode) {
-
 					gridValue['expanded'] = true;
-					// console.log(gridValue)
 					gridValue.children.forEach(function (childValue, key) {
-
-						console.log(childValue.data.statusYear + '=' + orderListValue.year)
-
 						if (orderListValue.statusCode == '6' && childValue.data.statusYear == orderListValue.year) {
-							console.log(true)
+							self.loader = true;
+							self.httpService.getSlices(self.checkDeleted, orderListValue.groupCode, orderListValue.statusCode, orderListValue.year).then((data) => {
+								self.childrenNode = self.formatGridDataService.formatGridData(data)['data'];
+								childValue.children = self.childrenNode
+								self.gridData = [...self.gridData];
+							})
 							childValue['expanded'] = true;
-
-							//todo ..........
 						}
-
 					})
-
 					self.gridData = [...self.gridData]
 				}
 			})
@@ -243,8 +236,6 @@ export class TreeTableComponent implements OnInit {
 		})
 		this.loader = false;
 	}
-
-
 
 	showDeleted(checkDeleted: boolean) {
 		this.checkDeleted = checkDeleted;

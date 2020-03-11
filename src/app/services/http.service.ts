@@ -124,7 +124,7 @@ export class HttpService {
 
 		const body = { startDate: orderSliceObj.startDate, endDate: orderSliceObj.endDate, maxRecNum: orderSliceObj.maxRecNum, groups: orderSliceObj.groups }
 		// console.log(body)
-		return this.http.post(this.BASE_API_URL + '/RU/slices', body, options);
+		return this.http.post(this.BASE_API_URL + 'RU/slices', body, options);
 	}
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
