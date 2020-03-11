@@ -50,7 +50,6 @@
                   <li *ngFor="let item of selectedReportsList; let i = index">
                     <i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, item)"></i>
                     <span class="requested-report-item">{{item.report.name}} - {{item.region.name}} - {{item.department?.name}}</span>
-                    <!-- <span class="requested-report-item" *ngIf="isGroupCommon">{{ item | truncate : 55 }}</span> -->
                   </li>
                 </ul>
               </div>
@@ -122,7 +121,7 @@
     </ng-container>
     <!-- END Treetable grid for GroupCommon -->
     <ng-container *ngIf="!isGroupCommon">
-      <mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
+      <mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index" [disabled]='loading && loadingReg'>
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-12">
@@ -153,7 +152,8 @@
             <!-- Treetable grid for Departments -->
             <div class="col-sm-6" *ngIf="gridDepDataArray != undefined">
               <p-treeTable [value]="gridDepDataArray[group.code]" [columns]="colsDep" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox" [(selection)]="selectedDepNodesArray[group.code]" dataKey="code" *ngIf="!loading && !loadingReg">
-                {{group.name}}
+                <!-- {{group.name}} -->
+                {{group.code}}
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th *ngFor="let col of columns">{{col.header}}</th>

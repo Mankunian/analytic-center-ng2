@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { HttpService } from '../services/http.service'
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TreeNode } from 'primeng/api';
@@ -12,13 +12,17 @@ import { GlobalConfig } from '../global';
   styleUrls: ['./reports-modal.component.scss']
 })
 export class ReportsModalComponent {
-  constructor(public dialog: MatDialog, private http: HttpService) { }
+  constructor(
+    public dialog: MatDialog,
+    private http: HttpService
+  ) { }
 }
 
 @Component({
   selector: 'app-reports-modal-content',
   templateUrl: './reports-modal-content.component.html',
-  styleUrls: ['./reports-modal-content.component.scss']
+  styleUrls: ['./reports-modal-content.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 
 export class ReportsModalContentComponent {
@@ -98,11 +102,6 @@ export class ReportsModalContentComponent {
     if (this.groupCode == 100) {
       this.isGroupCommon = true
     }
-
-    this.http.getReportsBySliceId(this.sliceId).subscribe((data) => {
-      this.reportGroups = data;
-      this.contentLoading = false
-    })
     
     this.colsDep = [
       { field: 'code', header: 'И/н', width: '100px' },
@@ -118,6 +117,41 @@ export class ReportsModalContentComponent {
       { field: 'searchPattern', header: 'Код органа', width: '30%' },
       { field: 'name', header: 'Наименование', width: '70%' }
     ];
+
+    this.http.getReportsBySliceId(this.sliceId).subscribe((data) => {
+      this.reportGroups = data;
+
+      if (this.isGroupCommon) {
+        this.reportGroups.forEach(element => {
+          let groupCode = element.code
+          this.http.getGroupCommon().subscribe((data) => {
+            this.gridCommonData = this.formatGridService.formatGrid(data, false)['data']
+            this.gridCommonDataArray[groupCode] = this.gridCommonData
+            this.selectedCommonNodesArray[groupCode] = []
+          })
+        });
+        this.contentLoading = false
+      } else {
+        this.reportGroups.forEach(element => {
+          let groupCode = element.code
+          console.log("ReportsModalContentComponent -> ngOnInit -> groupCode", groupCode)
+          this.http.getDepsByReportId(groupCode).subscribe((data) => {
+            this.gridDepData = this.formatGridDataService.formatGridData(data)['data']
+            this.gridDepDataArray[groupCode] = this.gridDepData
+            this.selectedDepNodesArray[groupCode] = []
+            console.log("ReportsModalContentComponent -> ngOnInit -> this.gridDepDataArray[groupCode]", this.gridDepDataArray[groupCode])
+          })
+          this.http.getRegions().subscribe((data) => {
+            this.gridRegData = this.formatGridDataService.formatGridData([data])['data']
+            this.gridRegData[0]['expanded'] = true // Раскрываем первую ветку по умолчанию
+            this.gridRegDataArray[groupCode] = this.gridRegData
+            this.selectedRegNodesArray[groupCode] = []
+          })
+        });
+      }
+
+      this.contentLoading = false
+    })
   }
 
   getReportInfoByCode(groupCode): any {
@@ -127,41 +161,9 @@ export class ReportsModalContentComponent {
   }
 
   tabChange(index: number) {
-    this.selected = index // current tab index
-    if (index != 0) {
-      this.selectedGroupCode = this.reportGroups[index - 1].code
-      if (! this.tabLoadedData[index]) {
-        this.loading = true
-        this.loadingReg = true
-        
-        if (this.isGroupCommon) {
-          this.loadingCommon = true
-          
-          this.http.getGroupCommon().subscribe((data) => {
-            this.gridCommonData = this.formatGridService.formatGrid(data, false)['data']
-            this.gridCommonDataArray[this.selectedGroupCode] = this.gridCommonData
-            this.selectedCommonNodesArray[this.selectedGroupCode] = []
-            this.loadingCommon = false
-          })
-        } else {
-          this.http.getDepsByReportId(this.selectedGroupCode).subscribe((data) => {
-            this.gridDepData = this.formatGridDataService.formatGridData(data)['data']
-            this.gridDepDataArray[this.selectedGroupCode] = this.gridDepData
-            this.selectedDepNodesArray[this.selectedGroupCode] = []
-            this.loading = false
-          })
-          
-          this.http.getRegions().subscribe((data) => {
-            this.gridRegData = this.formatGridDataService.formatGridData([data])['data']
-            this.gridRegData[0]['expanded'] = true // Раскрываем первую ветку по умолчанию
-            this.gridRegDataArray[this.selectedGroupCode] = this.gridRegData
-            this.selectedRegNodesArray[this.selectedGroupCode] = []
-            this.loadingReg = false
-          })
-        }
-
-        this.tabLoadedData[index] = true
-      }
+    this.selected = index // current tab index, used in openFirstTab()
+    if (this.selected != 0) {
+      this.selectedGroupCode = this.reportGroups[this.selected - 1].code
     } else {
       this.getSelectedReportsList()
     }
@@ -347,14 +349,14 @@ export class ReportsModalContentComponent {
       return false
     } else {
       this.http.generateReports(selectedLang, reportsSlice).subscribe((data) => {
-        this.showReports(data, counterFrom);
+        this.showReports(data);
         counterFrom += 2
         this.getReportSplices(counterFrom)
       })
     }
   }
   
-  showReports(data, counterFrom) {
+  showReports(data) {
     this.readyReportsParts += data.length
     this.isReportsLoading = false
     
@@ -366,7 +368,7 @@ export class ReportsModalContentComponent {
     
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let self = this
-    reportValues.forEach(function (element, index) {
+    reportValues.forEach(function (element) {
       if (element.value == -1) {
         reportDownloadUrl = "#";
         reportDownloadName = errMsgMissing;
@@ -387,7 +389,6 @@ export class ReportsModalContentComponent {
   }
 
   generateReportName(element) {
-    // if (this.selectedReportsList[index] === undefined) return "false";
     let delimiter = ' - ',
       reportName,
       regionName,

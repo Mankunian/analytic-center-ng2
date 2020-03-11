@@ -54,6 +54,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { TruncatePipe } from './pipes/truncate.pipe';
 
+import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
+import { rxStompConfig } from './rx-stomp.config';
+import { MessagesComponent } from './messages/messages.component';
+import { SocketStatusComponent } from './socket-status/socket-status.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
 	return new TranslateHttpLoader(httpClient);
 }
@@ -74,6 +81,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		RejectionReasonContentComponent,
 		EditReasonComponent,
 		TruncatePipe,
+		MessagesComponent,
+		SocketStatusComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -100,7 +109,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		MglTimelineModule,
 		MatToolbarModule,
 		DialogModule,
-		ProgressBarModule,
+    ProgressBarModule,
+    ToastModule,
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,
@@ -117,6 +127,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HttpService,
     SharedService,
     TimelineComponent,
+    MessageService,
+    {
+      provide: InjectableRxStompConfig,
+      useValue: rxStompConfig
+    },
+    {
+      provide: RxStompService,
+      useFactory: rxStompServiceFactory,
+      deps: [InjectableRxStompConfig]
+    }
   ],
 	bootstrap: [AppComponent],
   entryComponents: [
