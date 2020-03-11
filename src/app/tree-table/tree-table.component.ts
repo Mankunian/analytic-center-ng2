@@ -159,26 +159,33 @@ export class TreeTableComponent implements OnInit {
 		this.loader = true;
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let self = this;
-		orderSliceList.forEach(function (orderListValue, key) {
-			self.gridData.forEach(function (gridValue, key) {
-				if (gridValue.data.code === orderListValue.groupCode) {
-					gridValue['expanded'] = true;
-					gridValue.children.forEach(function (childValue, key) {
-						if (orderListValue.statusCode == '6' && childValue.data.statusYear == orderListValue.year) {
-							self.loader = true;
-							self.httpService.getSlices(self.checkDeleted, orderListValue.groupCode, orderListValue.statusCode, orderListValue.year).then((data) => {
-								self.childrenNode = self.formatGridDataService.formatGridData(data)['data'];
-								childValue.children = self.childrenNode
-								self.gridData = [...self.gridData];
+
+		setTimeout(() => {
+			this.httpService.getSliceGroups(this.checkDeleted).then((data) => {
+				this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
+				orderSliceList.forEach(function (orderListValue, key) {
+					self.gridData.forEach(function (gridValue, key) {
+						if (gridValue.data.code === orderListValue.groupCode) {
+							gridValue['expanded'] = true;
+							gridValue.children.forEach(function (childValue, key) {
+								if (orderListValue.statusCode == '6' && childValue.data.statusYear == orderListValue.year) {
+									// self.loader = true;
+									self.httpService.getSlices(self.checkDeleted, orderListValue.groupCode, orderListValue.statusCode, orderListValue.year).then((data) => {
+										self.childrenNode = self.formatGridDataService.formatGridData(data)['data'];
+										childValue.children = self.childrenNode
+										self.gridData = [...self.gridData];
+									})
+									childValue['expanded'] = true;
+								}
 							})
-							childValue['expanded'] = true;
+							self.gridData = [...self.gridData]
+							self.loader = false;
 						}
 					})
-					self.gridData = [...self.gridData]
-				}
-			})
-		})
-		this.loader = false;
+				})
+			});
+			// this.loader = false;
+		}, 500);
 	}
 
 	refreshGridTable() {
