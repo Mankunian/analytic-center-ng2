@@ -17,10 +17,7 @@ import { Subscription } from 'rxjs';
 	providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
-
-	stompClient = null;
 	progress = 0;
-
 	subscription: Subscription;
 	terrCode: unknown;
 	gridData: TreeNode[];
@@ -55,12 +52,10 @@ export class TreeTableComponent implements OnInit {
 		})
 
 		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
-			// console.log(sliceGroup)
 			this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
 		})
 
 		this.subscription = shared.subjOrderSliceData$.subscribe(orderSliceList => {
-			console.log(orderSliceList)
 			this.refreshGridTableFromOrder(orderSliceList)
 		})
 
@@ -85,7 +80,7 @@ export class TreeTableComponent implements OnInit {
 		// progressBar
 
 		this.loader = true
-		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+		this.httpService.getSliceGroups().then((gridData) => {
 			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
 			this.loader = false
 		});
@@ -115,8 +110,8 @@ export class TreeTableComponent implements OnInit {
 			})
 		})
 
-		dialogRef.afterClosed().subscribe(() => {
-		})
+		// dialogRef.afterClosed().subscribe(() => {
+		// })
 	}
 
 	openReportsModal(row) {
@@ -140,7 +135,6 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
-		console.log(event.node)
 		if (event.node.parent != null) {
 			this.loader = true
 			this.groupCode = event.node.parent.data.code,
@@ -163,13 +157,13 @@ export class TreeTableComponent implements OnInit {
 		let self = this;
 
 		setTimeout(() => {
-			this.httpService.getSliceGroups(this.checkDeleted).then((data) => {
+			this.httpService.getSliceGroups().then((data) => {
 				this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
-				orderSliceList.forEach(function (orderListValue, key) {
-					self.gridData.forEach(function (gridValue, key) {
+				orderSliceList.forEach(function (orderListValue) {
+					self.gridData.forEach(function (gridValue) {
 						if (gridValue.data.code === orderListValue.groupCode) {
 							gridValue['expanded'] = true;
-							gridValue.children.forEach(function (childValue, key) {
+							gridValue.children.forEach(function (childValue) {
 								if (orderListValue.statusCode == '6' && childValue.data.statusYear == orderListValue.year) {
 									// self.loader = true;
 									self.httpService.getSlices(self.checkDeleted, orderListValue.groupCode, orderListValue.statusCode, orderListValue.year).then((data) => {
@@ -194,10 +188,10 @@ export class TreeTableComponent implements OnInit {
 		this.loader = true;
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let self = this;
-		this.gridData.forEach(function (parent, key) {
+		this.gridData.forEach(function (parent) {
 			if (parent.expanded == true) {
 				self.expandedGroupCodeList.push(parent.data)
-				parent.children.forEach(function (child, key) {
+				parent.children.forEach(function (child) {
 					if (child.expanded == true) {
 						self.expandedStatusList.push({
 							'groupCode': child.parent.data.code,
@@ -206,19 +200,18 @@ export class TreeTableComponent implements OnInit {
 						})
 					}
 				})
-
 			}
 		})
 
-		this.httpService.getSliceGroups(this.checkDeleted).then((data) => {
+		this.httpService.getSliceGroups().then((data) => {
 			this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
 			this.gridData.forEach(function (groups, key1) {
-				self.expandedGroupCodeList.forEach(function (groupValue, key) {
+				self.expandedGroupCodeList.forEach(function (groupValue) {
 					if (groups.data.code === groupValue.code) {
 						setTimeout(() => {
 							self.gridData[key1]['expanded'] = true; // Раскрытие групп
 							if (self.gridData[key1]['expanded'] == true) { // Если есть группы которые были раскрыты. 
-								self.gridData[key1].children.forEach(function (childrenValue, key) { // Пробегаемся по каждой группе которые были раскрыты изначально.
+								self.gridData[key1].children.forEach(function (childrenValue) { // Пробегаемся по каждой группе которые были раскрыты изначально.
 									childrenValue.data.groupCode = groupValue.code
 									if (self.expandedStatusList.length > 0) { // Если есть раскрытые срезы по СТАТУСАМ
 										self.expandedStatusList.forEach(function (element) { // Пробегаемся по каждому статусу которые были раскрыты.
@@ -227,7 +220,6 @@ export class TreeTableComponent implements OnInit {
 												// Если статус, группа и год равны то присваиваем expanded
 												self.httpService.getSlices(self.checkDeleted, self.statusData.groupCode, self.statusData.statusCode, self.statusData.statusYear).then((data) => {
 													self.childrenNode = self.formatGridDataService.formatGridData(data)['data']
-													console.log(self.childrenNode)
 													childrenValue.children = self.childrenNode
 													self.gridData = [...self.gridData];
 												})
@@ -247,9 +239,10 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	showDeleted(checkDeleted: boolean) {
+		this.httpService.showDeleted(checkDeleted)
 		this.checkDeleted = checkDeleted;
 		this.loader = true
-		this.httpService.getSliceGroups(this.checkDeleted).then((gridData) => {
+		this.httpService.getSliceGroups().then((gridData) => {
 			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
 			this.loader = false
 		});

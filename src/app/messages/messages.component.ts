@@ -3,9 +3,8 @@ import { RxStompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
 import { SharedService } from '../services/shared.service';
-
+import { HttpService } from '../services/http.service';
 
 @Component({
 	selector: 'app-messages',
@@ -16,14 +15,26 @@ import { SharedService } from '../services/shared.service';
 export class MessagesComponent implements OnInit, OnDestroy {
 	public receivedMessages: string[] = [];
 	private topicSubscription: Subscription;
-	private messageLifetime = 60000
+	private subscription: Subscription;
+	private terrCode: any;
 	private auth = { sessionKey: 'user0' }
+	private users;
 
 	constructor(
 		private rxStompService: RxStompService,
 		private messageService: MessageService,
-		private sharedService: SharedService
-	) { }
+		private shared: SharedService,
+		private http: HttpService,
+	) {
+		this.subscription = shared.subjTerrCode$.subscribe(val => {
+			this.terrCode = val;
+			console.log("TreeTableComponent -> this.terrCode", this.terrCode)
+		})
+		this.http.getUsers().subscribe((users) => {
+			this.users = users
+			console.log("MessagesComponent -> this.users", this.users)
+		})
+	}
 
 	ngOnInit() {
 		//Подписка на уведомления для всех пользователей, по этому каналу будут приходить
@@ -51,9 +62,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 	}
 
 	addSingle(message) {
-		this.messageService.add({ sticky: true, severity: 'info', summary: 'Info Message', detail: message });
-		console.log(JSON.parse(message))
-		this.sharedService.sendProgressBarValue(JSON.parse(message))
+		this.messageService.add({ severity: 'info', summary: 'Info Message', detail: message });
+		this.shared.sendProgressBarValue(JSON.parse(message))
 	}
 
 	addMultiple(messages) {
@@ -67,3 +77,5 @@ export class MessagesComponent implements OnInit, OnDestroy {
 		this.messageService.clear();
 	}
 }
+
+

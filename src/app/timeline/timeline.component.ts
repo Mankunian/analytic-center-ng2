@@ -40,7 +40,12 @@ export class TimelineComponent {
 	approveAndRejectBtnDisable: boolean;
 
 
-	constructor(private http: HttpService, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService, private dataService: SharedService) {
+  constructor(
+    private http: HttpService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    shared: SharedService,
+    private dataService: SharedService
+  ) {
 		this.subscription = shared.subjHistoryValue$.subscribe(value => {
 			this.historyList = value;
 		})
@@ -51,7 +56,6 @@ export class TimelineComponent {
 	}
 
 	ngOnInit() {
-
 		this.injectValueToModal = this.data;
 		if (this.injectValueToModal.terrCode == '19000090') {
 			this.GP = true;
@@ -60,7 +64,6 @@ export class TimelineComponent {
 			this.historyList = data;
 			this.historyListLength = this.historyList.length;
 			this.lastElemHistoryList = this.historyList[this.historyListLength - 1];
-			console.log(this.lastElemHistoryList)
 
 			this.dataService.sendHistoryId(this.lastElemHistoryList)
 

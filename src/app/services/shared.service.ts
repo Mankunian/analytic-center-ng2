@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-
-
 @Injectable({
 	providedIn: 'root'
 })
@@ -14,7 +12,6 @@ export class SharedService {
 
 	sendTerrCode(terrCode: string) {
 		this.subTerrCode.next(terrCode)
-		// console.log(terrCode)
 	}
 
 	// Show Table In Agreement
@@ -26,8 +23,6 @@ export class SharedService {
 		this.subTable.next(showTable)
 	}
 
-
-
 	// HistoryList update 
 	private subHistoryValue = new Subject();
 	subjHistoryValue$ = this.subHistoryValue.asObservable()
@@ -35,7 +30,6 @@ export class SharedService {
 
 	sendHistoryList(historyValue: any) {
 		this.subHistoryValue.next(historyValue)
-		console.log(historyValue)
 	}
 
 	//history Id to Edit Rejection Reason Modal
@@ -43,37 +37,30 @@ export class SharedService {
 	subjHistoryId$ = this.subHistoryId.asObservable()
 
 	sendHistoryId(historyId: any) {
-		console.log(historyId)
 		this.subHistoryId.next(historyId)
 	}
-
 
 	//grid-in-agreement
 	private subGridInAgreement = new Subject();
 	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
 	sendGridInAgreement(gridData: any) {
-		console.log(gridData)
 		this.subGridInAgreement.next(gridData)
 	}
-
 
 	// approve and reject btn status for disable
 	private subBtnStatus = new Subject();
 	subjBtnStatus$ = this.subBtnStatus.asObservable();
 
 	approveAndRejectBtnStatus(btnStatus: any) {
-		console.log(btnStatus)
 		this.subBtnStatus.next(btnStatus)
 	}
-
 
 	// Список групп на КАЗ во вкладке "Сформировать срез" 
 	private subGroupListKaz = new Subject();
 	subjGroupListKaz$ = this.subGroupListKaz.asObservable();
 
 	sendGroupListLang(groupListLang: any) {
-		console.log(groupListLang)
 		this.subGroupListKaz.next(groupListLang)
 	}
 
@@ -82,10 +69,8 @@ export class SharedService {
 	subjSliceGroupLang$ = this.subSliceGroupLang.asObservable();
 
 	sendSliceGroupLang(sliceGroup: any) {
-		console.log(sliceGroup)
 		this.subSliceGroupLang.next(sliceGroup)
 	}
-
 
 	//for sharing order slice data to tree-table component
 	private subOrderSliceData = new Subject();

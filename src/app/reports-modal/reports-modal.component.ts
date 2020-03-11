@@ -134,12 +134,10 @@ export class ReportsModalContentComponent {
       } else {
         this.reportGroups.forEach(element => {
           let groupCode = element.code
-          console.log("ReportsModalContentComponent -> ngOnInit -> groupCode", groupCode)
           this.http.getDepsByReportId(groupCode).subscribe((data) => {
             this.gridDepData = this.formatGridDataService.formatGridData(data)['data']
             this.gridDepDataArray[groupCode] = this.gridDepData
             this.selectedDepNodesArray[groupCode] = []
-            console.log("ReportsModalContentComponent -> ngOnInit -> this.gridDepDataArray[groupCode]", this.gridDepDataArray[groupCode])
           })
           this.http.getRegions().subscribe((data) => {
             this.gridRegData = this.formatGridDataService.formatGridData([data])['data']
