@@ -111,8 +111,14 @@ export class TreeTableComponent implements OnInit {
 			})
 		})
 
-		// dialogRef.afterClosed().subscribe(() => {
-		// })
+		dialogRef.afterClosed().subscribe(() => {
+			console.log('closed')
+			this.loader = true
+			this.httpService.getSliceGroups().then((gridData) => {
+				this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+				this.loader = false
+			});
+		})
 	}
 
 	openReportsModal(row) {
