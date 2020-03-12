@@ -7,6 +7,8 @@ import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } f
 import { FormatGridDataService } from '../services/format-grid-data.service';
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
+import { GlobalConfig } from "../../../src/app/global";
+// import { STATUS_CODES } from 'http';
 
 @Component({
 	selector: 'app-tree-table',
@@ -15,6 +17,7 @@ import { Subscription } from 'rxjs';
 	providers: [SliceOperationsModalComponent, ReportsModalComponent]
 })
 export class TreeTableComponent implements OnInit {
+	public STATUS_CODES = GlobalConfig.STATUS_CODES
 	progress = 0;
 	subscription: Subscription;
 	terrCode: unknown;
@@ -66,6 +69,7 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		console.log(this.STATUS_CODES.WAITING_FOR_PROCESSING)
 		// progressBar
 		let interval = setInterval(() => {
 			this.progress = 75;
@@ -147,7 +151,6 @@ export class TreeTableComponent implements OnInit {
 			})
 		}
 	}
-
 	refreshGridTableFromOrder(orderSliceList) {
 		this.loader = true;
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -161,7 +164,7 @@ export class TreeTableComponent implements OnInit {
 						if (gridValue.data.code === orderListValue.groupCode) {
 							gridValue['expanded'] = true;
 							gridValue.children.forEach(function (childValue) {
-								if (orderListValue.statusCode == '6' && childValue.data.statusYear == orderListValue.year) {
+								if (orderListValue.statusCode == self.STATUS_CODES.WAITING_FOR_PROCESSING && childValue.data.statusYear == orderListValue.year) {
 									// self.loader = true;
 									self.httpService.getSlices(orderListValue.groupCode, orderListValue.statusCode, orderListValue.year).then((data) => {
 										self.childrenNode = self.formatGridDataService.formatGridData(data)['data'];
