@@ -32,7 +32,6 @@ export class NavBarComponent implements OnInit {
 	ngOnInit() {
 		this.httpService.getTerritories().subscribe((data: Territory) => {
 			this.territoryList = data;
-			console.log("NavBarComponent -> ngOnInit -> this.territoryList", this.territoryList)
 		})
 		this.selectedTerritory = '19000090';
 		this.sharedService.sendTerrCode(this.selectedTerritory)
