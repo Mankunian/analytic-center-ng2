@@ -1,5 +1,5 @@
 <div class="sliceContent">
-	<p-button (onClick)="refreshGridTable(checkDeleted)" label="{{'TAB_MENU.REFRESH' | translate}}" icon="pi pi-refresh"
+	<p-button (onClick)="refreshGridTable()" label="{{'TAB_MENU.REFRESH' | translate}}" icon="pi pi-refresh"
 		iconPos="left"></p-button>
 	<mat-checkbox (change)="showDeleted(checkDeleted)" class="showDeletedCheckbox" [(ngModel)]="checkDeleted"
 		name="isDeleted">

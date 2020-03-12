@@ -79,4 +79,29 @@ export class SharedService {
 	sendOrderSliceList(orderSliceList: any) {
 		this.subOrderSliceData.next(orderSliceList)
 	}
+
+	//for sharing progressbar-websocket list to tree-table component
+	private subProgressbarWs = new Subject();
+	subjProgressbarWs$ = this.subProgressbarWs.asObservable();
+
+	sendProgressBarValue(progressbarWsList: any) {
+		this.subProgressbarWs.next(progressbarWsList)
+	}
+
+
+	private subChangeLang = new Subject();
+	subjChangeLang$ = this.subChangeLang.asObservable();
+
+	changeLangService(changeLang: any) {
+		console.log(changeLang)
+		this.subChangeLang.next(changeLang)
+	}
+
+	private subCheckDeleted = new Subject();
+	subjCheckDeleted$ = this.subCheckDeleted.asObservable();
+
+	showDeletedService(checkDeleted: any) {
+		console.log(checkDeleted)
+		this.subCheckDeleted.next(checkDeleted)
+	}
 }

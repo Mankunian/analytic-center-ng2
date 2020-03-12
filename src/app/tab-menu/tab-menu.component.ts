@@ -42,7 +42,7 @@ export class TabMenuComponent implements OnInit {
 
 	sliceNumber: SliceNumber;
 
-  constructor(
+	constructor(
 		private httpService: HttpService,
 		private formBuilder: FormBuilder,
 		public translate: TranslateService,
@@ -70,9 +70,7 @@ export class TabMenuComponent implements OnInit {
 			groupList: this.formBuilder.array([])
 		});
 		setTimeout(() => {
-			this.lang = "RU";
-			this.httpService.getGroupList(this.lang).subscribe((data) => {
-
+			this.httpService.getGroupList().subscribe((data) => {
 				this.groupList = data;
 				this.groupList.forEach(element => {
 					if (element.status == 2) {
