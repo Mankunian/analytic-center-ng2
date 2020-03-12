@@ -49,7 +49,7 @@ export class NavBarComponent implements OnInit {
 		this.lang = 'RU'
 		this.http.getTerritories(this.lang).subscribe((data: Territory) => {
 			this.territoryList = data;
-      console.log("NavBarComponent -> ngOnInit -> this.territoryList", this.territoryList)
+      // console.log("NavBarComponent -> ngOnInit -> this.territoryList", this.territoryList)
 		})
 		this.selectedTerritory = '19000090';
 		this.service.sendTerrCode(this.selectedTerritory)
