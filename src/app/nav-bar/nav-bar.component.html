@@ -1,26 +1,38 @@
 <header>
 	<div class="container-fluid">
 		<div class="row">
-				<div class="col-md-4" style="display: flex;"> 
-					<a class="logo" href="#">
-						<img src="../../assets/img/logo.jpg" class="img-responsive">
-					</a>
-					<span class="logo-text">КОМИТЕТ ПРАВОВОЙ СТАТИСТИКИ И СПЕЦИАЛЬНЫМ УЧЕТАМ
-						ГЕНЕРАЛЬНОЙ ПРОКУРАТУРЫ РЕСПУБЛИКИ КАЗАХСТАН</span>
+			<div class="col-md-5" style="display: flex;">
+				<a class="logo" href="#">
+					<img src="../../assets/img/logo.jpg" class="img-responsive">
+				</a>
+				<span class="logo-text">{{'HOME.PROJECT_TITLE1' | translate}} <br>
+					{{'HOME.PROJECT_TITLE2' | translate}}</span>
+			</div>
+			<div class="col-md-4 text-left">
+				<h1>{{'HOME.STAT_SREZ' | translate}}</h1>
+			</div>
+			<div class="col-md-3 text-right">
+				<div class="switch-field">
+					<input #langSelect (change)="translate.use('ru'); changeLang('RU')" type="radio" id="radio-three"
+						name="switch-two" value="ru" checked /><label for="radio-three">RUS</label>
+					<input #langSelect (change)="translate.use('kaz'); changeLang('KZ')" type="radio" id="radio-four"
+						name="switch-two" value="kaz" /><label for="radio-four">KAZ</label>
+					<input #langSelect (change)="translate.use('qaz')" type="radio" id="radio-five" name="switch-two"
+						value="qaz" /><label for="radio-five">QAZ</label>
 				</div>
-				<div class="col-md-4">
-					<h1>СТАТИСТИЧЕСКИЕ СРЕЗЫ </h1>
-				</div>
-				<div class="col-md-3">
-				</div>
+			</div>
 		</div>
 	</div>
 </header>
 
 <div class="main-navigation row">
-	<span>СТАТИСТИЧЕСКИЕ СРЕЗЫ</span>
-	<div style="float: right;">
-			
-	</div>
-</div>
-<br>
+	<span class="title">{{'HOME.STAT_SREZ' | translate}}</span>
+	<mat-form-field>
+		<mat-label style="color: #fff;">{{'HOME.CHOOSE_REGION' | translate}}</mat-label>
+		<select style="color: #fff;" [(ngModel)]="selectedTerritory" (change)="selectedTerr($event.target.value)"
+			matNativeControl required>
+			<option style="background-color: #1975C0;" *ngFor="let terr of territoryList" [value]="terr.code">{{terr.name}}
+			</option>
+		</select>
+	</mat-form-field>
+</div><br>

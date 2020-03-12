@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: "wss://anal-centre.tk:8081/notifications",
+  apiSocket: "https://18.140.232.52:8081/notifications",
 };
 
 /*
