@@ -232,8 +232,8 @@ export class TreeTableComponent implements OnInit {
 					}
 				});
 			})
+			this.loader = false;
 		})
-		this.loader = false;
 	}
 
 	showDeleted(checkDeleted: boolean) {
