@@ -29,6 +29,7 @@ export class SharedService {
 
 
 	sendHistoryList(historyValue: any) {
+		console.log(historyValue)
 		this.subHistoryValue.next(historyValue)
 	}
 

@@ -66,6 +66,17 @@ export class TreeTableComponent implements OnInit {
 			//TODO
 		})
 
+		this.subscription = shared.subjHistoryValue$.subscribe(historyValue => {
+			if (historyValue) {
+				this.loader = true
+				this.httpService.getSliceGroups().then((gridData) => {
+					this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+					console.log(this.gridData)
+					this.loader = false
+				});
+			}
+		})
+
 	}
 
 	ngOnInit() {
@@ -113,11 +124,7 @@ export class TreeTableComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe(() => {
 			console.log('closed')
-			this.loader = true
-			this.httpService.getSliceGroups().then((gridData) => {
-				this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-				this.loader = false
-			});
+
 		})
 	}
 
