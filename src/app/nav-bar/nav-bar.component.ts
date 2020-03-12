@@ -20,8 +20,8 @@ export class NavBarComponent implements OnInit {
 	public lang: string;
 
 	constructor(
-		private http: HttpService,
-		private service: SharedService,
+		private httpService: HttpService,
+		private sharedService: SharedService,
 		public translate: TranslateService
 	) {
 		translate.setDefaultLang('ru');
@@ -29,35 +29,34 @@ export class NavBarComponent implements OnInit {
 		translate.use(browserLang.match(/ru|kaz/) ? browserLang : 'ru');
 	}
 
-	changeLang(lang) {
-		console.log(lang)
-		this.http.changeLang(lang)
-
-		this.http.getTerritories().subscribe((territories) => {
-			this.territoryList = territories;
-		})
-
-		this.http.getGroupList().subscribe((groupList) => {
-			this.service.sendGroupListLang(groupList)
-		})
-
-		this.http.getSliceGroups().then((gridData) => {
-			this.service.sendSliceGroupLang(gridData)
-		})
-	}
-
 	ngOnInit() {
-		this.http.getTerritories().subscribe((data: Territory) => {
+		this.httpService.getTerritories().subscribe((data: Territory) => {
 			this.territoryList = data;
 			console.log("NavBarComponent -> ngOnInit -> this.territoryList", this.territoryList)
 		})
 		this.selectedTerritory = '19000090';
-		this.service.sendTerrCode(this.selectedTerritory)
+		this.sharedService.sendTerrCode(this.selectedTerritory)
 	}
 
 	selectedTerr(selectedTerr) {
 		this.selectedTerritory = selectedTerr;
-		this.service.sendTerrCode(this.selectedTerritory)
+		this.sharedService.sendTerrCode(this.selectedTerritory)
+	}
+
+	changeLang(lang: string) {
+		this.sharedService.changeLangService(lang)
+
+		this.httpService.getTerritories().subscribe((territories) => {
+			this.territoryList = territories;
+		})
+
+		this.httpService.getGroupList().subscribe((groupList) => {
+			this.sharedService.sendGroupListLang(groupList)
+		})
+
+		this.httpService.getSliceGroups().then((gridData) => {
+			this.sharedService.sendSliceGroupLang(gridData)
+		})
 	}
 
 }
