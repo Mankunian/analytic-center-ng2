@@ -71,7 +71,6 @@ export class TreeTableComponent implements OnInit {
 				this.loader = true
 				this.httpService.getSliceGroups().then((gridData) => {
 					this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
-					console.log(this.gridData)
 					this.loader = false
 				});
 			}
