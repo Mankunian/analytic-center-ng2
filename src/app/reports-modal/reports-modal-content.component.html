@@ -2,7 +2,7 @@
 	<div class="col-md-12">
 		<div class="row">
 			<div class="col-md-6">
-				<h2 mat-dialog-title>Получение отчетов</h2>
+				<h2 mat-dialog-title>{{'REPORTS_MODAL.GET_REPORTS' | translate}}</h2>
 			</div>
 			<div class="col-md-6">
 				<i style="float: right;" class="material-icons" [mat-dialog-close]="true">clear</i>
@@ -26,30 +26,32 @@
 	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="selected">
 		<mat-tab>
 			<ng-template mat-tab-label>
-				<mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> Каталог
+				<mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> {{'REPORTS_MODAL.CATALOG' | translate}}
 			</ng-template>
 			<form class="example-form">
 				<div>
-					Статсрез на №
+					{{'REPORTS_MODAL.SLICE_MAX' | translate}}
 					<mat-form-field appearance="fill" class="example-full-width">
 						<input [disabled]=true matInput value="{{data.sliceId}}">
 					</mat-form-field>
-					Отчетный период
+					{{'REPORTS_MODAL.REPORT_PERIOD' | translate}}
 					<mat-form-field appearance="fill" class="example-full-width">
 						<input [disabled]=true matInput value="{{data.slicePeriod}}">
 					</mat-form-field>
 				</div>
 				<div>
-					<span class="lang-checkbox-label">Язык отчета</span>
-					<mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu">{{reportLangs.ru.name}}</mat-checkbox>
-					<mat-checkbox [(ngModel)]="reportLangs.kz.isSelected" name="langKz">{{reportLangs.kz.name}}</mat-checkbox>
+					<span class="lang-checkbox-label">{{'REPORTS_MODAL.REPORT_LANG' | translate}}</span>
+					<mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu">
+						{{'REPORTS_MODAL.REPORT_RU' | translate}}</mat-checkbox>
+					<mat-checkbox [(ngModel)]="reportLangs.kz.isSelected" name="langKz">{{'REPORTS_MODAL.REPORT_KZ' | translate}}
+					</mat-checkbox>
 				</div>
 			</form>
 			<div class="reports-list">
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-sm-6">
-							<h3 mat-dialog-title>Запрошенные отчеты</h3>
+							<h3 mat-dialog-title>{{'REPORTS_MODAL.REQUESTED_REPORTS' | translate}}</h3>
 							<div class="selected-reports">
 								<ul>
 									<li *ngFor="let item of selectedReportsList; let i = index">
@@ -61,8 +63,10 @@
 							</div>
 						</div>
 						<div class="col-sm-6">
-							<h3 mat-dialog-title>Отчеты
-								<span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">Получено {{readyReportsParts}}
+							<h3 mat-dialog-title>{{'REPORTS_MODAL.REPORTS' | translate}}
+								<span class="readyReportsCounter"
+									*ngIf="selectedReportsList.length != 0">{{'REPORTS_MODAL.GOT_REPORTS' | translate}}
+									{{readyReportsParts}}
 									из {{selectedReportsList.length}}</span>
 							</h3>
 							<div class="reports">
@@ -211,7 +215,8 @@
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="!contentLoading" align="end">
 	<button mat-flat-button color="primary" (click)=getReports() *ngIf="selected === 0"
-		[disabled]="!isReportsSelected">Получить</button>
-	<button mat-flat-button color="primary" (click)=openFirstTab() *ngIf="selected !== 0">Получить</button>
-	<button mat-flat-button color="primary" mat-dialog-close>Отмена</button>
+		[disabled]="!isReportsSelected">{{'REPORTS_MODAL.BTN_GET_REPORTS' | translate}}</button>
+	<button mat-flat-button color="primary" (click)=openFirstTab()
+		*ngIf="selected !== 0">{{'REPORTS_MODAL.BTN_GET_REPORTS' | translate}}</button>
+	<button mat-flat-button color="primary" mat-dialog-close>{{'REPORTS_MODAL.BTN_CANCEL' | translate}}</button>
 </mat-dialog-actions>

@@ -25,5 +25,18 @@
 		"PERIOD": "Kezeń",
 		"SLICE_NUM": "Aralyq №",
 		"CANCEL": "Bas tartý"
+	},
+	"REPORTS_MODAL": {
+		"GET_REPORTS": "Получение отчетов",
+		"CATALOG": "Каталог",
+		"SLICE_MAX": "Статсрез на №",
+		"REPORT_PERIOD": "Отчетный период",
+		"REPORT_LANG": "Язык отчета",
+		"REPORT_RU": "Русский",
+		"REPORT_KZ": "Казахский",
+		"REQUESTED_REPORTS": "Запрошенные отчеты",
+		"REPORTS": "Отчеты",
+		"BTN_GET_REPORTS": "Получить",
+		"BTN_CANCEL": "Отмена"
 	}
 }

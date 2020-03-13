@@ -25,5 +25,19 @@
 		"PERIOD": "Кезең",
 		"SLICE_NUM": "Аралық №",
 		"CANCEL": "Бас тарту"
+	},
+	"REPORTS_MODAL": {
+		"GET_REPORTS": "Есеп алу",
+		"CATALOG": "Тізімдеме",
+		"SLICE_MAX": "Cтатаралық №-не",
+		"REPORT_PERIOD": "Есеп беру кезеңі",
+		"REPORT_LANG": "Есеп тілі",
+		"REPORT_RU": "Орысша",
+		"REPORT_KZ": "Қазақша",
+		"REQUESTED_REPORTS": "Сұралған есептер",
+		"REPORTS": "Есептер",
+		"BTN_GET_REPORTS": "Тізімді қарау",
+		"BTN_CANCEL": "Бас тарту",
+		"GOT_REPORTS": "Алынған есептер"
 	}
 }
