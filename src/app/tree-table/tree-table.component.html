@@ -39,7 +39,8 @@
 			<td>
 				{{rowData.name}}
 				<a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2"> <span
-						*ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> период {{rowData.period}}</span></a>
+						*ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> {{'TREE_TABLE.PERIOD' | translate}}
+						{{rowData.period}}</span></a>
 			</td>
 			<td>
 				{{rowData.maxRecNum}}
@@ -52,7 +53,7 @@
 			<td style="text-align: center;">
 				<p-button (click)="openOperationSliceModal(rowData)"
 					*ngIf="rowData.statusCode == '7' || rowData.statusCode == '1' || rowData.statusCode == '2' || rowData.statusCode == '3'"
-					label=" Операция со срезами"></p-button>
+					label="{{'TREE_TABLE.SLICE_OPERATION' | translate}}"></p-button>
 			</td>
 			<td>
 				{{rowData.region}}

@@ -15,5 +15,15 @@
 		"DATE_FROM": "Bastalǵan merzimi",
 		"DATE_TO": "Aıaqtalǵan merzimi",
 		"SLICE_MAX": "Stataralyq №-ne"
+	},
+	"TREE_TABLE": {
+		"PERIOD": "Kezeń",
+		"SLICE_OPERATION": "Aralyqtar operasıasy"
+	},
+	"SLICE_OPERATION_MODAL": {
+		"SLICE_OPERATION": "Aralyqtar operasıasy",
+		"PERIOD": "Kezeń",
+		"SLICE_NUM": "Aralyq №",
+		"CANCEL": "Bas tartý"
 	}
 }

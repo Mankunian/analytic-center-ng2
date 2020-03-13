@@ -35,6 +35,7 @@ export class SliceOperationsModalContentComponent {
 	// from shared service
 	historyValue: any;
 	disableBtn: any;
+	preloader: boolean;
 
 
 	constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpService, private service: SharedService, public dialogRef: MatDialogRef<SliceOperationsModalContentComponent>, public dialogEditRejection: MatDialog) {

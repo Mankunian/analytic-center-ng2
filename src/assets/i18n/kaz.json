@@ -15,5 +15,15 @@
 		"DATE_FROM": "Басталған мерзімі",
 		"DATE_TO": "Аяқталған мерзімі",
 		"SLICE_MAX": "Cтатаралық №-не"
+	},
+	"TREE_TABLE": {
+		"PERIOD": "Кезең",
+		"SLICE_OPERATION": "Аралықтар операциясы"
+	},
+	"SLICE_OPERATION_MODAL": {
+		"SLICE_OPERATION": "Аралықтар операциясы",
+		"PERIOD": "Кезең",
+		"SLICE_NUM": "Аралық №",
+		"CANCEL": "Бас тарту"
 	}
 }
