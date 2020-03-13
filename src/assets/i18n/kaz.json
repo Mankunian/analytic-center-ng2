@@ -1,0 +1,43 @@
+{
+	"HOME": {
+		"STAT_SREZ": "СТАТИСТИКАЛЫҚ АРАЛЫҚТАР",
+		"CHOOSE_LANG": "Тілді таңдаңыз",
+		"CHOOSE_REGION": "Регионды таңдаңыз",
+		"PROJECT_TITLE1": "ҚАЗАҚСТАН РЕСПУБЛИКАСЫ БАС ПРОКУРАТУРАСЫНЫҢ ",
+		"PROJECT_TITLE2": "ҚҰҚЫҚТЫҚ СТАТИСТИКА ЖӘНЕ АРНАЙЫ ЕСЕПКЕ АЛУ ЖӨНІНДЕГІ КОМИТЕТІ"
+	},
+	"TAB_MENU": {
+		"SLICES": "Аралықтар",
+		"TO_FORM": "Қалыптастыру",
+		"SHOW_DELETED": "Жойылған кесектерді көрсету",
+		"REFRESH": "Жаңарту",
+		"TO_FORM_SLICE": "Аралықты қалыптастыру",
+		"DATE_FROM": "Басталған мерзімі",
+		"DATE_TO": "Аяқталған мерзімі",
+		"SLICE_MAX": "Cтатаралық №-не"
+	},
+	"TREE_TABLE": {
+		"PERIOD": "Кезең",
+		"SLICE_OPERATION": "Аралықтар операциясы"
+	},
+	"SLICE_OPERATION_MODAL": {
+		"SLICE_OPERATION": "Аралықтар операциясы",
+		"PERIOD": "Кезең",
+		"SLICE_NUM": "Аралық №",
+		"CANCEL": "Бас тарту"
+	},
+	"REPORTS_MODAL": {
+		"GET_REPORTS": "Есеп алу",
+		"CATALOG": "Тізімдеме",
+		"SLICE_MAX": "Cтатаралық №-не",
+		"REPORT_PERIOD": "Есеп беру кезеңі",
+		"REPORT_LANG": "Есеп тілі",
+		"REPORT_RU": "Орысша",
+		"REPORT_KZ": "Қазақша",
+		"REQUESTED_REPORTS": "Сұралған есептер",
+		"REPORTS": "Есептер",
+		"BTN_GET_REPORTS": "Тізімді қарау",
+		"BTN_CANCEL": "Бас тарту",
+		"GOT_REPORTS": "Алынған есептер"
+	}
+}
