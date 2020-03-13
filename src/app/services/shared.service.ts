@@ -27,7 +27,6 @@ export class SharedService {
 	private subHistoryValue = new Subject();
 	subjHistoryValue$ = this.subHistoryValue.asObservable()
 
-
 	sendHistoryList(historyValue: any) {
 		this.subHistoryValue.next(historyValue)
 	}

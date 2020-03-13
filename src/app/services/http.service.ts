@@ -4,35 +4,26 @@ import { OrderSliceObj } from "./../orderSliceObj";
 import { SaveEditReasonObj } from "./../saveEditReasonObj";
 import { TreeNode } from 'primeng/api';
 import { GlobalConfig } from '../global';
-import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { SharedService } from './shared.service';
-
-
 
 @Injectable({
 	providedIn: 'root'
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
-	// private changeLang = 'RU';
-	// private checkDeleted = false;
 	changeLang: unknown = 'RU';
 	checkDeleted: unknown = false;
 	subscription: Subscription;
 
 	constructor(private http: HttpClient, shared: SharedService) {
 		this.subscription = shared.subjChangeLang$.subscribe(lang => {
-			console.log(lang)
 			this.changeLang = lang;
 		})
 		this.subscription = shared.subjCheckDeleted$.subscribe(checkDeleted => {
-			console.log(checkDeleted)
 			this.checkDeleted = checkDeleted
 		})
 	}
-
-
 
 	getGroupList() {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/groups')
