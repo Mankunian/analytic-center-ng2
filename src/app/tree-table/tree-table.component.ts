@@ -8,7 +8,6 @@ import { FormatGridDataService } from '../services/format-grid-data.service';
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 import { GlobalConfig } from "../../../src/app/global";
-// import { STATUS_CODES } from 'http';
 
 @Component({
 	selector: 'app-tree-table',
@@ -18,7 +17,6 @@ import { GlobalConfig } from "../../../src/app/global";
 })
 export class TreeTableComponent implements OnInit {
 	public STATUS_CODES = GlobalConfig.STATUS_CODES
-	progress = 0;
 	subscription: Subscription;
 	terrCode: unknown;
 	gridData: TreeNode[];
@@ -37,6 +35,9 @@ export class TreeTableComponent implements OnInit {
 	statusCode: any;
 	year: any;
 	statusData: any;
+	// percentValue: number;
+	percentValue = 0;
+
 
 	constructor(
 		public reportsModalInstance: ReportsModalComponent,
@@ -62,8 +63,7 @@ export class TreeTableComponent implements OnInit {
 
 		this.subscription = shared.subjProgressbarWs$.subscribe(progressbarList => {
 			console.log(progressbarList)
-			console.log(this.gridData)
-			//TODO
+			this.setPercentValue(progressbarList);
 		})
 
 		this.subscription = shared.subjHistoryValue$.subscribe(historyValue => {
@@ -79,17 +79,6 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.STATUS_CODES.WAITING_FOR_PROCESSING)
-		// progressBar
-		let interval = setInterval(() => {
-			this.progress = 75;
-			if (this.progress >= 100) {
-				this.progress = 100;
-				clearInterval(interval);
-			}
-		}, 5000);
-		// progressBar
-
 		this.loader = true
 		this.httpService.getSliceGroups().then((gridData) => {
 			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
@@ -104,6 +93,24 @@ export class TreeTableComponent implements OnInit {
 			{ field: 'region', header: 'По органу' },
 			{ field: 'percentComplete', header: 'Прогресс' }
 		];
+	}
+
+	onNodeExpand(event) {
+		if (event.node.parent != null) {
+			this.loader = true
+			this.groupCode = event.node.parent.data.code,
+				this.statusCode = event.node.data.code,
+				this.year = event.node.data.statusYear
+
+			this.httpService.getSlices(this.groupCode, this.statusCode, this.year).then((data) => {
+				this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
+				event.node.children = this.childrenNode;
+				//refresh the data
+				this.gridData = [...this.gridData];
+
+				this.loader = false
+			})
+		}
 	}
 
 	openOperationSliceModal(rowEntity) {
@@ -147,22 +154,6 @@ export class TreeTableComponent implements OnInit {
 		}
 	}
 
-	onNodeExpand(event) {
-		if (event.node.parent != null) {
-			this.loader = true
-			this.groupCode = event.node.parent.data.code,
-				this.statusCode = event.node.data.code,
-				this.year = event.node.data.statusYear
-
-			this.httpService.getSlices(this.groupCode, this.statusCode, this.year).then((data) => {
-				this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
-				event.node.children = this.childrenNode
-				//refresh the data
-				this.gridData = [...this.gridData];
-				this.loader = false
-			})
-		}
-	}
 	refreshGridTableFromOrder(orderSliceList) {
 		this.loader = true;
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -258,5 +249,17 @@ export class TreeTableComponent implements OnInit {
 			this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
 			this.loader = false
 		});
+	}
+
+	setPercentValue(progressbarList) {
+		if (this.childrenNode) {
+			this.childrenNode.forEach(function (childElement) {
+				progressbarList.forEach(function (progressElement) {
+					if (childElement.data.id === progressElement.sliceId) {
+						childElement.data.percentComplete = progressElement.percent;
+					}
+				})
+			})
+		}
 	}
 }

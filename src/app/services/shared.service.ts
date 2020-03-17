@@ -85,7 +85,8 @@ export class SharedService {
 	private subProgressbarWs = new Subject();
 	subjProgressbarWs$ = this.subProgressbarWs.asObservable();
 
-	sendProgressBarValue(progressbarWsList: any) {
+	sendProgressBarList(progressbarWsList: any) {
+		console.log(progressbarWsList)
 		this.subProgressbarWs.next(progressbarWsList)
 	}
 
