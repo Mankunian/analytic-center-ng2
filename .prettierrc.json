@@ -1,0 +1,24 @@
+{
+	"useTabs": false,
+	"printWidth": 120,
+	"tabWidth": 2,
+	"trailingComma": "es5",
+	"jsxBracketSameLine": false,
+	"parser": "flow",
+  "semi": true,
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "tabWidth": 4
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "tabWidth": 2,
+        "quote-props": "as-needed"
+      }
+    }
+  ]
+}
