@@ -35,8 +35,6 @@ export class TreeTableComponent implements OnInit {
 	statusCode: any;
 	year: any;
 	statusData: any;
-	// percentValue: number;
-	percentValue = 0;
 
 
 	constructor(
@@ -205,8 +203,6 @@ export class TreeTableComponent implements OnInit {
 				})
 			}
 		})
-
-
 		this.httpService.getSliceGroups().then((data) => {
 			this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
 			this.gridData.forEach(function (groups, groupKey) {
