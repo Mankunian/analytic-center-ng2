@@ -19,9 +19,20 @@
 }
 
 .sliceContent{
-	margin: 15px;
+	margin: 15px 0;
+	// margin-left: 0;
+
 }
 
 .sliceContent .showDeletedCheckbox{
 	float: right;
+}
+
+.ui-button-raised{
+	border-radius: 0 !important;
+}
+
+::ng-deep .mat-checkbox mat-checkbox-checked {
+	border-color: violet;
+	background-color: blue;
 }

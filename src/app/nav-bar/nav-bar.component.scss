@@ -18,20 +18,20 @@ header{
 
 .logo-text{
 	display: inline-block;
-	vertical-align: middle;
-	color: #2B6AB9;
-	font-size: 11px;
-	font-weight: 700;
+  vertical-align: middle;
+  color: #2b6ab9;
+  font-size: 12px;
+  font-weight: 600;
 	padding: 15px 13px;
 }
 
 header h1{
-		color: #134179;
-		text-transform: uppercase;
-		font-weight: 700;
-		font-size: 30px;
-		// text-align: center;
-		margin-top: 15px;
+	color: #134179;
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 30px;
+	text-align: left;
+	margin-top: 15px;
 		// margin-bottom: 10px;
 }
 
@@ -70,7 +70,7 @@ header h1{
 	padding: 7px 20px 0 20px;
 	right: 100px;
 	// left: 100px;
-	border-radius: 3px 3px 0 0;
+	border-radius: 0;
 	cursor: pointer;
 }
 
