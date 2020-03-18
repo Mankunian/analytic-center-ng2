@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../services/shared.service';
 import { HttpService } from '../services/http.service';
+import { GlobalConfig } from '../global';
 
 @Component({
   selector: 'app-messages',
@@ -17,7 +18,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   private topicSubscription: Subscription;
   private subscription: Subscription;
   private terrCode
-  private authUser = 'user0';
+  private authUser = GlobalConfig.BASE_AUTH_USER
   private users;
 
   constructor(
@@ -74,7 +75,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   subscribe(authUser?) {
     //Подписка на уведомления для всех пользователей, по этому каналу будут приходить
     //рассылки общего характера предназначенный для всех пользователей
-    console.log("MessagesComponent -> ngOnInit -> this.authUser", authUser)
     this.topicSubscription = this.rxStompService.watch('/topic/notifications', {'sessionKey': authUser}).subscribe((message: Message) => {
       console.log("received public: ", message.body)
       this.addSingle(message.body)
@@ -82,7 +82,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     
     this.topicSubscription = this.rxStompService.watch('/topic/sliceCompletion', {'sessionKey': authUser}).subscribe((message: Message) => {
       console.log("slices: ", message.body)
-      // this.addSingle(message.body)
     });
     
     //Подписка на индивидуальные уведомления, по этому каналу будут приходить уведомдения,

@@ -1,15 +1,15 @@
 import { InjectableRxStompConfig } from "@stomp/ng2-stompjs";
-import { environment } from "src/environments/environment";
 import * as SockJS from "sockjs-client";
+import { GlobalConfig } from "./global";
 
 export const rxStompConfig: InjectableRxStompConfig = {
   // Which server?
-  brokerURL: environment.apiSocket,
+  brokerURL: GlobalConfig.SOCKET_URL + "/notifications",
 
   // Headers
   // Typical keys: login, passcode, host
   connectHeaders: {
-    sessionKey: "user0",
+    sessionKey: GlobalConfig.BASE_AUTH_USER,
   },
 
   // How often to heartbeat?
@@ -20,10 +20,10 @@ export const rxStompConfig: InjectableRxStompConfig = {
   // Wait in milliseconds before attempting auto reconnect
   // Set to 0 to disable
   // Typical value 500 (500 milli seconds)
-  reconnectDelay: 500,
+  reconnectDelay: 10000,
 
   webSocketFactory: () => {
-    return new SockJS(environment.apiSocket);
+    return new SockJS(GlobalConfig.SOCKET_URL + "/notifications");
   },
 
   // Will log diagnostics on console

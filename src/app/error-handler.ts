@@ -1,10 +1,12 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GlobalErrorHandler implements ErrorHandler {
+export class GlobalErrorHandler implements OnInit {
+
+  ngOnInit() {  }
 
   getClientMessage(error: Error): string {
     if (!navigator.onLine) {
@@ -25,9 +27,9 @@ export class GlobalErrorHandler implements ErrorHandler {
     // handle stack trace
     return 'stack';
   }
-  
-  handleError(error) {
-    console.log("GlobalErrorHandler -> handleError -> error", error)
-    alert(error)
-  }
+
+  // handleError(error) {
+  //   console.log("GlobalErrorHandler -> handleError -> error", error)
+  //   alert(error)
+  // }
 }
