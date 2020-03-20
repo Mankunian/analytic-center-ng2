@@ -51,15 +51,18 @@
 				{{rowData.completed}}
 			</td>
 			<td style="text-align: center;">
+
 				<p-button (click)="openOperationSliceModal(rowData)"
-					*ngIf="rowData.statusCode == '7' || rowData.statusCode == '1' || rowData.statusCode == '2' || rowData.statusCode == '3'"
+					*ngIf="rowData.statusCode == STATUS_CODES.IN_AGREEMENT || rowData.statusCode == STATUS_CODES.APPROVED || rowData.statusCode == STATUS_CODES.PRELIMINARY || rowData.statusCode == STATUS_CODES.DELETED"
 					label="{{'TREE_TABLE.SLICE_OPERATION' | translate}}"></p-button>
 			</td>
 			<td>
 				{{rowData.region}}
 			</td>
 			<td>
-				<p-progressBar *ngIf="rowData.statusCode == '0' || rowData.statusCode == '6'" [value]="rowData.percentComplete">
+				<p-progressBar
+					*ngIf="rowData.statusCode == STATUS_CODES.IN_PROCESSING || rowData.statusCode == STATUS_CODES.WAITING_FOR_PROCESSING"
+					[value]="rowData.percentComplete">
 				</p-progressBar>
 			</td>
 		</tr>
