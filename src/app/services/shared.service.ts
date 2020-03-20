@@ -27,9 +27,7 @@ export class SharedService {
 	private subHistoryValue = new Subject();
 	subjHistoryValue$ = this.subHistoryValue.asObservable()
 
-
 	sendHistoryList(historyValue: any) {
-		console.log(historyValue)
 		this.subHistoryValue.next(historyValue)
 	}
 
@@ -90,12 +88,10 @@ export class SharedService {
 		this.subProgressbarWs.next(progressbarWsList)
 	}
 
-
 	private subChangeLang = new Subject();
 	subjChangeLang$ = this.subChangeLang.asObservable();
 
 	changeLangService(changeLang: any) {
-		console.log(changeLang)
 		this.subChangeLang.next(changeLang)
 	}
 
@@ -103,7 +99,6 @@ export class SharedService {
 	subjCheckDeleted$ = this.subCheckDeleted.asObservable();
 
 	showDeletedService(checkDeleted: any) {
-		console.log(checkDeleted)
 		this.subCheckDeleted.next(checkDeleted)
 	}
 }

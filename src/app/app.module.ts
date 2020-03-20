@@ -8,7 +8,6 @@ import { TabMenuComponent } from './tab-menu/tab-menu.component';
 import { TreeTableComponent } from './tree-table/tree-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 // MaterialDesign library
 import { MatInputModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material';
@@ -21,7 +20,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 
 import { MglTimelineModule } from 'angular-mgl-timeline';
 import { MatToolbarModule } from '@angular/material';
@@ -40,7 +38,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
 // Services
 import { HttpService } from "./services/http.service";
 import { SharedService } from "./services/shared.service";
-
 
 // Data table
 import { TreeTableModule } from 'primeng/treetable';
@@ -64,11 +61,11 @@ import { MessagesComponent } from './messages/messages.component';
 import { SocketStatusComponent } from './socket-status/socket-status.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+// import { GlobalErrorHandler } from './error-handler';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
 	return new TranslateHttpLoader(httpClient);
 }
-
 
 @NgModule({
 	declarations: [
@@ -138,15 +135,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		ReportsModalComponent,
 		SliceOperationsModalComponent,
     MessageService,
-    {
-      provide: InjectableRxStompConfig,
-      useValue: rxStompConfig
-    },
-    {
-      provide: RxStompService,
-      useFactory: rxStompServiceFactory,
-      deps: [InjectableRxStompConfig]
-    }
+    {provide: InjectableRxStompConfig, useValue: rxStompConfig},
+    { provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
+    // [{provide: ErrorHandler, useClass: GlobalErrorHandler}]
   ],
 	bootstrap: [AppComponent],
 	entryComponents: [

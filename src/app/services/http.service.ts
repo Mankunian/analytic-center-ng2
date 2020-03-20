@@ -4,35 +4,49 @@ import { OrderSliceObj } from "./../orderSliceObj";
 import { SaveEditReasonObj } from "./../saveEditReasonObj";
 import { TreeNode } from 'primeng/api';
 import { GlobalConfig } from '../global';
-import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { SharedService } from './shared.service';
-
-
 
 @Injectable({
 	providedIn: 'root'
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
-	// private changeLang = 'RU';
-	// private checkDeleted = false;
+  private baseAuthUser = GlobalConfig.BASE_AUTH_USER
 	changeLang: unknown = 'RU';
 	checkDeleted: unknown = false;
-	subscription: Subscription;
+  subscription: Subscription;
+  private users;
+  private terrCode;
 
 	constructor(private http: HttpClient, shared: SharedService) {
 		this.subscription = shared.subjChangeLang$.subscribe(lang => {
-			console.log(lang)
 			this.changeLang = lang;
 		})
 		this.subscription = shared.subjCheckDeleted$.subscribe(checkDeleted => {
-			console.log(checkDeleted)
 			this.checkDeleted = checkDeleted
-		})
+    })
+    this.getUsers()
+    .subscribe(
+        successData => {
+          this.users = successData;
+          console.log("HttpService -> constructor -> this.users", this.users)
+        },
+        error => {
+          console.log("getUsers -> error", error)
+        },
+      () => { // when complete
+        this.subscription = shared.subjTerrCode$.subscribe(userRole => {
+          this.terrCode = userRole;
+          this.users.forEach(element => {
+            if (element[this.terrCode] != undefined) {
+              this.baseAuthUser = element[this.terrCode];
+            }
+          });
+        })
+      }
+    );
 	}
-
-
 
 	getGroupList() {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/groups')
@@ -97,7 +111,7 @@ export class HttpService {
 
 	confirmSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
@@ -107,7 +121,7 @@ export class HttpService {
 
 	deleteSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
@@ -117,7 +131,7 @@ export class HttpService {
 
 	sendToPreliminaryService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
@@ -127,7 +141,7 @@ export class HttpService {
 
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
@@ -137,7 +151,7 @@ export class HttpService {
 
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 		let options = { headers: headers }
 
@@ -146,35 +160,48 @@ export class HttpService {
 
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
 
-		const body = { startDate: orderSliceObj.startDate, endDate: orderSliceObj.endDate, maxRecNum: orderSliceObj.maxRecNum, groups: orderSliceObj.groups }
-		// console.log(body)
-		return this.http.post(this.BASE_API_URL + this.changeLang + '/slices', body, options);
+    const body = {
+      startDate: orderSliceObj.startDate,
+      endDate: orderSliceObj.endDate,
+      maxRecNum: orderSliceObj.maxRecNum,
+      groups: orderSliceObj.groups
+    }
+
+    return this.http.post(this.BASE_API_URL + this.changeLang + '/slices', body, options);
 	}
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
-		const body = { historyId: saveEditReasonObj.historyId, approveCode: saveEditReasonObj.approveCode, territoryCode: saveEditReasonObj.territoryCode, msg: saveEditReasonObj.msg };
-		console.log(body)
+    const body = {
+      historyId: saveEditReasonObj.historyId,
+      approveCode: saveEditReasonObj.approveCode,
+      territoryCode: saveEditReasonObj.territoryCode,
+      msg: saveEditReasonObj.msg
+    };
 		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
 	}
 
 	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': 'user0'
+			'sessionKey': this.baseAuthUser
 		});
 
 		let options = { headers: headers }
-		const body = { historyId: saveEditReasonObj.historyId, approveCode: saveEditReasonObj.approveCode, territoryCode: saveEditReasonObj.territoryCode, msg: saveEditReasonObj.msg };
+    const body = {
+      historyId: saveEditReasonObj.historyId,
+      approveCode: saveEditReasonObj.approveCode,
+      territoryCode: saveEditReasonObj.territoryCode,
+      msg: saveEditReasonObj.msg
+    };
 		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
-
 	}
 }
