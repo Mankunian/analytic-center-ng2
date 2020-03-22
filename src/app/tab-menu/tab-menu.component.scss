@@ -107,3 +107,30 @@ p-calendar .dateFrom{
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
+
+
+// custom style component
+
+
+::ng-deep .mat-tab-label {
+  background-color: #F2F3F4 !important;
+  // border-radius: 0.5 solid !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+}
+
+::ng-deep .mat-tab-label-active {
+  background-color: #EAEBED !important;
+  color: #1975C0 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  opacity: 1 !important;
+  // border-bottom: none;
+}
+
+::ng-deep .mat-tab-header {
+  border-bottom: 10px #eaebed solid;
+}
+
+::ng-deep .mat-ink-bar {
+  background-color: #EAEBED !important;}
