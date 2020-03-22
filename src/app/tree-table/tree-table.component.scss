@@ -46,3 +46,18 @@
   border-radius: 0 !important;
   border: 1px solid;
 }
+
+
+
+::ng-deep body .ui-treetable .ui-treetable-thead > tr > th {
+  background-color: #DAECF4 !important;
+  border: 1px solid #94C0D2;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr:nth-child(even) {
+  background-color: #DAECF4 !important;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td{
+  border: 1px solid #94C0D2;
+}
