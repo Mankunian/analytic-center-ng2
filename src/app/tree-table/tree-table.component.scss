@@ -61,3 +61,7 @@
 ::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td{
   border: 1px solid #94C0D2;
 }
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td .ui-treetable-toggler{
+  color: #134179;
+}
