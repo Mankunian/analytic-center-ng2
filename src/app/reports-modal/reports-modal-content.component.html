@@ -1,3 +1,18 @@
+<!-- Preloader -->
+<div class="row" *ngIf="contentLoading">
+  <div class="col-sm-12">
+    <div class="preloader-block">
+      <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Preloader -->
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="row">
@@ -10,24 +25,12 @@
 		</div>
 	</div>
 </div>
-<div class="row" *ngIf="contentLoading">
-	<div class="col-sm-12">
-		<div class="preloader-block">
-			<div class="lds-ring">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-			</div>
-		</div>
-	</div>
-</div>
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
 	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="selected">
 		<mat-tab>
 			<ng-template mat-tab-label>
 				<mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> {{'REPORTS_MODAL.CATALOG' | translate}}
-			</ng-template>
+      </ng-template>
 			<form class="example-form">
 				<div>
 					{{'REPORTS_MODAL.SLICE_MAX' | translate}}

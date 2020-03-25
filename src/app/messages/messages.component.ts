@@ -6,7 +6,9 @@ import { MessageService } from 'primeng/api';
 import { SharedService } from '../services/shared.service';
 import { HttpService } from '../services/http.service';
 import { GlobalConfig } from '../global';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
+// eslint-disable-next-line prettier/prettier
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -26,18 +28,19 @@ export class MessagesComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     public shared: SharedService,
     private http: HttpService,
+    private errorHandler: ErrorHandlerService,
   ) {
   }
   
   ngOnInit() {
     this.http.getUsers()
     .subscribe(
-        successData => {
-          this.users = successData
-        },
-        error => {
-          console.log("MessagesComponent -> ngOnInit -> error", error)
-        },
+      successData => {
+        this.users = successData
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      },
       () => { // when complete
         this.subscription = this.shared.subjTerrCode$.subscribe(userRole => {
           this.terrCode = userRole;
@@ -65,12 +68,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.messageService.add({severity:'info', summary:'Info Message', detail: message});
   }
     
-  addMultiple(messages) {
-    this.messageService.addAll([
-      { severity: 'success', summary: 'Service Message', detail: 'Via MessageService' },
-      { severity: 'info', summary: 'Info Message', detail: 'Via MessageService' }
-    ]);
-  }
+  // addMultiple(messages) {
+  //   this.messageService.addAll([
+  //     { severity: 'success', summary: 'Service Message', detail: 'Via MessageService' },
+  //     { severity: 'info', summary: 'Info Message', detail: 'Via MessageService' }
+  //   ]);
+  // }
 
 	subscribe(authUser?) {
 		//Подписка на уведомления для всех пользователей, по этому каналу будут приходить

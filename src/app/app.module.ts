@@ -61,7 +61,6 @@ import { MessagesComponent } from './messages/messages.component';
 import { SocketStatusComponent } from './socket-status/socket-status.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-// import { GlobalErrorHandler } from './error-handler';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
 	return new TranslateHttpLoader(httpClient);
@@ -137,7 +136,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     MessageService,
     {provide: InjectableRxStompConfig, useValue: rxStompConfig},
     { provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
-    // [{provide: ErrorHandler, useClass: GlobalErrorHandler}]
   ],
 	bootstrap: [AppComponent],
 	entryComponents: [

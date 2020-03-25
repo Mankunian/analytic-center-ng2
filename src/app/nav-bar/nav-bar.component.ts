@@ -2,6 +2,7 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { HttpService } from "../services/http.service";
 import { SharedService } from '../services/shared.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
 export interface Territory {
 	code: string;
@@ -22,7 +23,8 @@ export class NavBarComponent implements OnInit {
 	constructor(
 		private httpService: HttpService,
 		private sharedService: SharedService,
-		public translate: TranslateService
+    public translate: TranslateService,
+    public errorHandler: ErrorHandlerService
 	) {
 		translate.setDefaultLang('ru');
 		const browserLang = translate.getBrowserLang();
@@ -30,9 +32,14 @@ export class NavBarComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.httpService.getTerritories().subscribe((data: Territory) => {
-			this.territoryList = data;
-		})
+    this.httpService.getTerritories().subscribe(
+      (data: Territory) => {
+        this.territoryList = data;
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 		this.selectedTerritory = '19000090';
 		this.sharedService.sendTerrCode(this.selectedTerritory)
 	}
@@ -45,17 +52,32 @@ export class NavBarComponent implements OnInit {
 	changeLang(lang: string) {
 		this.sharedService.changeLangService(lang)
 
-		this.httpService.getTerritories().subscribe((territories) => {
-			this.territoryList = territories;
-		})
+    this.httpService.getTerritories().subscribe(
+      (territories) => {
+        this.territoryList = territories;
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 
-		this.httpService.getGroupList().subscribe((groupList) => {
-			this.sharedService.sendGroupListLang(groupList)
-		})
+    this.httpService.getGroupList().subscribe(
+      (groupList) => {
+        this.sharedService.sendGroupListLang(groupList)
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 
-		this.httpService.getSliceGroups().then((gridData) => {
-			this.sharedService.sendSliceGroupLang(gridData)
-		})
+    this.httpService.getSliceGroups().then(
+      (gridData) => {
+        this.sharedService.sendSliceGroupLang(gridData)
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 	}
 
 }
