@@ -19,6 +19,7 @@ export class SliceOperationsModalComponent {
 @Component({
 	selector: 'app-slice-operations-modal-content',
 	templateUrl: './slice-operations-modal-content.component.html',
+	styleUrls: ['./slice-operations-modal.component.scss'],
 	providers: [TimelineComponent]
 })
 

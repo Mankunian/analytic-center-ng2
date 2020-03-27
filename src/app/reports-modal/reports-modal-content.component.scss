@@ -172,6 +172,24 @@
 }
 .mat-dialog-content { min-height: 560px; }
 
+
+
+.headerReports {
+  // background-color: #214878;
+  background-color: #214878;
+    border: none;
+    padding: 10px 5px 10px 15px;
+    padding-top: 6px;
+}
+
+.headerReports h2{
+  color: #fff;
+  margin: 0;
+}
+.headerReports .material-icons {
+  color: #fff;
+}
+
 /* Styles for tab labels */
 .tab-reports .mat-tab-label {
   min-width: 25px !important;
@@ -196,21 +214,7 @@
   background-color: green;
 }
 
-.headerReports {
-  // background-color: #214878;
-  background-color: #214878;
-    border: none;
-    padding: 10px 5px 10px 15px;
-    padding-top: 6px;
-}
 
-.headerReports h2{
-  color: #fff;
-  margin: 0;
-}
-.headerReports .material-icons {
-  color: #fff;
-}
 
 .mat-dialog-container{
   transform: none;
@@ -219,7 +223,7 @@
   border-radius: 0;
 }
 .tab-reports .mat-tab-labels{
-  margin: 0 15px;
+  margin: 10px 15px -1px;
 }
 
 .tab-reports .mat-tab-label{
@@ -236,12 +240,17 @@
 
 .tab-reports .mat-tab-header{
   border-bottom: none;
+  background: #E8EDED;
 }
 
 .tab-reports .mat-tab-label-content{
   font-weight: 500;
 }
 .example-form .title-form{
+  color: #214878;
+}
+
+.example-form .lang-form span{
   color: #214878;
 }
 
@@ -266,5 +275,8 @@
 }
 .mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary{
   background: #2272BE;
+}
 
+.mat-dialog-title{
+  margin-bottom: 0;
 }

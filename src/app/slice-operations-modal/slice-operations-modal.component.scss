@@ -7,3 +7,25 @@ p-button .margin {
 	}
 	
 }
+.mat-dialog-container{
+	transform: none;
+	padding: 0;
+	overflow-x: hidden;
+	border-radius: 0;
+  }
+
+  .headerReports {
+	// background-color: #214878;
+	background-color: #214878;
+	  border: none;
+	  padding: 10px 5px 10px 15px;
+	  padding-top: 6px;
+  }
+  
+  .headerReports h2{
+	color: #fff;
+	margin: 0;
+  }
+  .headerReports .material-icons {
+	color: #fff;
+  }
