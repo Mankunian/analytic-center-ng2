@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,7 +61,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { SocketStatusComponent } from './socket-status/socket-status.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { GlobalErrorHandler } from './error-handler';
+// import { GlobalErrorHandler } from './error-handler';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
 	return new TranslateHttpLoader(httpClient);
@@ -137,7 +137,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     MessageService,
     {provide: InjectableRxStompConfig, useValue: rxStompConfig},
     { provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
-    [{provide: ErrorHandler, useClass: GlobalErrorHandler}]
+    // [{provide: ErrorHandler, useClass: GlobalErrorHandler}]
   ],
 	bootstrap: [AppComponent],
 	entryComponents: [

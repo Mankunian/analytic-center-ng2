@@ -20,19 +20,44 @@
 
 .sliceContent{
 	margin: 15px 0;
-	// margin-left: 0;
-
 }
 
 .sliceContent .showDeletedCheckbox{
-	float: right;
+  float: right;
+  font-weight: 500;
 }
 
-.ui-button-raised{
-	border-radius: 0 !important;
+.refreshTable{
+  border-radius: 0;
+  min-width: 100px;
+}
+// custom style primeNg
+::ng-deep .mat-checkbox-inner-container{
+  width: 25px !important;
+  height: 25px !important;
 }
 
-::ng-deep .mat-checkbox mat-checkbox-checked {
-	border-color: violet;
-	background-color: blue;
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #1975C0 !important;
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  background-color: #F3F3F3 !important;
+  border-radius: 0 !important;
+  border: 1px solid;
+}
+
+
+
+::ng-deep body .ui-treetable .ui-treetable-thead > tr > th {
+  background-color: #DAECF4 !important;
+  border: 1px solid #94C0D2;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr:nth-child(even) {
+  background-color: #DAECF4 !important;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td{
+  border: 1px solid #94C0D2;
 }
