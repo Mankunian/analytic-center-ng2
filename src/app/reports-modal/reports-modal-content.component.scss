@@ -269,11 +269,14 @@
 }
 
 .mat-dialog-actions .mat-button-base+.mat-button-base{
-  background: #2272BE;
+	background: #2272BE;
+	border-radius: 0;
 }
 
 .mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary{
-  background: #2272BE;
+	background: #2272BE;
+	border-radius: 0;
+
 }
 
 .mat-dialog-title{
