@@ -1,0 +1,67 @@
+.reportsModalLink {
+  color: #337ab7;
+  cursor: pointer;
+}
+.loader {
+  height: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+.loader .bar {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  background-color: dodgerblue;
+  animation-name: loader-animation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.sliceContent{
+	margin: 15px 0;
+}
+
+.sliceContent .showDeletedCheckbox{
+  float: right;
+  font-weight: 500;
+}
+
+.refreshTable{
+  border-radius: 0;
+  min-width: 100px;
+}
+// custom style primeNg
+::ng-deep .mat-checkbox-inner-container{
+  width: 25px !important;
+  height: 25px !important;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #1975C0 !important;
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  background-color: #F3F3F3 !important;
+  border-radius: 0 !important;
+  border: 1px solid;
+}
+
+
+
+::ng-deep body .ui-treetable .ui-treetable-thead > tr > th {
+  background-color: #DAECF4 !important;
+  border: 1px solid #94C0D2;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr:nth-child(even) {
+  background-color: #DAECF4 !important;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td{
+  border: 1px solid #94C0D2;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td .ui-treetable-toggler{
+  color: #134179;
+}
