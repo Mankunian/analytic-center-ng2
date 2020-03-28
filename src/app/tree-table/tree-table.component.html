@@ -23,19 +23,19 @@
 		</colgroup>
 	</ng-template>
 	<ng-template pTemplate="header" let-columns>
-		<tr class="header">
-			<th style="background-color: #DAECF4;"></th>
-			<th style="background-color: #DAECF4;" *ngFor="let col of cols">
+		<tr>
+			<th></th>
+			<th style="color: #003f59;" *ngFor="let col of cols">
 				{{col.header}}
 			</th>
 		</tr>
 	</ng-template>
 	<ng-template pTemplate="body" let-rowNode let-rowData="rowData">
 		<tr>
-			<td>
+			<td style="color: red;">
 				<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
 			</td>
-			<td>
+			<td style="font-weight: 600; color: #003f59;">
 				{{rowData.name}}
 				<a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2"> <span
 						*ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> {{'TREE_TABLE.PERIOD' | translate}}

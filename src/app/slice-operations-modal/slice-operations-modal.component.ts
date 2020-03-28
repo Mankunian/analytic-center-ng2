@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { HttpService } from "../services/http.service";
 import { TimelineComponent } from "../../app/timeline/timeline.component";
@@ -19,6 +19,8 @@ export class SliceOperationsModalComponent {
 @Component({
 	selector: 'app-slice-operations-modal-content',
 	templateUrl: './slice-operations-modal-content.component.html',
+	styleUrls: ['./slice-operations-modal-content.component.scss'],
+	encapsulation: ViewEncapsulation.None,
 	providers: [TimelineComponent]
 })
 

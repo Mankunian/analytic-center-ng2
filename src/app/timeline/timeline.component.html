@@ -1,16 +1,17 @@
 <a class="backToHistory" *ngIf="showTableInAgreement" (click)="backToTimeline()">
-	< Назад к истории</a> <div class="col-md-12">
-		<div class="row" style="padding: 10px 0 0;">
-			<div class="col-md-6">
-				<p><span style="font-weight: bold;">{{'SLICE_OPERATION_MODAL.SLICE_NUM' | translate}}:</span>
-					{{injectValueToModal.sliceId}}</p>
+	< Назад к истории</a>
+		<div class="col-md-12">
+			<div class="row" style="padding: 10px 0 0;">
+				<div class="col-md-6">
+					<p><span style="font-weight: bold;">{{'SLICE_OPERATION_MODAL.SLICE_NUM' | translate}}:</span>
+						{{injectValueToModal.sliceId}}</p>
 
+				</div>
+				<div class="col-md-6" style="text-align: right;">
+					<p><span style="font-weight: bold;">{{'SLICE_OPERATION_MODAL.PERIOD' | translate}}:</span>
+						{{injectValueToModal.period}}</p>
+				</div>
 			</div>
-			<div class="col-md-6" style="text-align: right;">
-				<p><span style="font-weight: bold;">{{'SLICE_OPERATION_MODAL.PERIOD' | translate}}:</span>
-					{{injectValueToModal.period}}</p>
-			</div>
-		</div>
 		</div>
 
 		<mgl-timeline style="overflow: auto;" *ngIf="showTimeline" [focusOnOpen]="onFocusOpened" [toggle]="toggle"

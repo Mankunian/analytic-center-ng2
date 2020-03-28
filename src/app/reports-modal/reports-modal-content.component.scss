@@ -170,7 +170,23 @@
     transform: rotate(360deg);
   }
 }
-.mat-dialog-content { min-height: 500px; }
+.mat-dialog-content { min-height: 560px; }
+
+.headerReports {
+  background-color: #214878;
+  border: none;
+  padding: 10px 5px 10px 15px;
+  padding-top: 6px;
+}
+
+.headerReports h2{
+  color: #fff;
+  margin: 0;
+}
+
+.headerReports .material-icons {
+  color: #fff;
+}
 
 /* Styles for tab labels */
 .tab-reports .mat-tab-label {
@@ -179,14 +195,87 @@
   background-color: transparent;
   // font-weight: 700;
 }
+
 /* Styles for the active tab label */
 .tab-reports .mat-tab-label.mat-tab-label-active {
   min-width: 25px !important;
+  border: 1px solid #dcd5d5;
+  background-color: white!important;
   padding: 10px;
-  background-color: transparent;
-  // font-weight: 700;
+  border-radius: 5px;
 }
+
 /* Styles for the ink bar */
 .tab-reports .mat-ink-bar {
   background-color: green;
+}
+
+.mat-dialog-container{
+  transform: none;
+  padding: 0;
+  overflow-x: hidden;
+  border-radius: 0;
+}
+
+.tab-reports .mat-tab-labels{
+  margin: 10px 15px -1px;
+}
+
+.tab-reports .mat-tab-label{
+  margin: 0 3px;
+  background: #D4DDE1 !important;
+  border: 1px solid #dcd5d5;
+  color: #1975C0 !important;
+  border-radius: 5px;
+}
+
+.example-form{
+  margin: 10px;
+}
+
+.tab-reports .mat-tab-header{
+  border-bottom: none;
+  background: #E8EDED;
+}
+
+.tab-reports .mat-tab-label-content{
+  font-weight: 500;
+}
+.example-form .title-form{
+  color: #214878;
+}
+
+.example-form .lang-form span{
+  color: #214878;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex{
+  border-radius: 4px 4px 0 0;
+    margin: 15px 0;
+    background: #E8EDED !important;
+    padding: .0.75em 0 .75em;
+}
+
+.mat-checkbox label {
+  margin: 0 15px;
+}
+
+.reports-list h3 {
+  color: #214878;
+}
+
+.mat-dialog-actions{
+  padding: 8px 15px;
+}
+
+.mat-dialog-actions .mat-button-base+.mat-button-base{
+  background: #2272BE;
+}
+
+.mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary{
+  background: #2272BE;
+}
+
+.mat-dialog-title{
+  margin-bottom: 0;
 }
