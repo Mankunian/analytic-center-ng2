@@ -5,6 +5,7 @@ import { TreeNode } from 'primeng/api';
 import { FormatGridDataService } from '../services/format-grid-data.service';
 import { FormatGridService } from '../services/format-grid.service';
 import { GlobalConfig } from '../global';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
 
 @Component({
@@ -13,7 +14,10 @@ import { GlobalConfig } from '../global';
 	styleUrls: ['./reports-modal.component.scss']
 })
 export class ReportsModalComponent {
-	constructor(public dialog: MatDialog, private http: HttpService) { }
+  constructor(
+    public dialog: MatDialog,
+    private http: HttpService
+  ) { }
 }
 
 @Component({
@@ -24,36 +28,29 @@ export class ReportsModalComponent {
 })
 
 export class ReportsModalContentComponent {
-
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
 	sliceId: any
 	slicePeriod: any
-	checked_kz = false
-	checked_ru = true
 	reportGroups: any
 	colsDep: any[]
 	colsReg: any[]
 	colsCommon: any[]
-	loading: boolean
-	loadingReg: boolean
 	loadingCommon: boolean
 	isReportsLoading: boolean
-	tabLoadedData: any = []
-	selectedGroupCode: any
+  selectedGroupCode: any
+  
 	gridDepData: TreeNode[]
 	gridDepDataArray: any = []
 	gridRegData: TreeNode[]
 	gridCommonData: TreeNode[]
 	childrenNode: TreeNode[]
-	gridRegDataArray: any = []
+  
+  gridRegDataArray: any = []
 	gridCommonDataArray: any = []
-	selectedRegNodes: TreeNode[]
-	selectedRegNodesArray: any = []
-	selectedCommonNodes: TreeNode[]
+  
+  selectedRegNodesArray: any = []
 	selectedCommonNodesArray: any = []
-	selectedDepNodes: TreeNode[]
 	selectedDepNodesArray: any = []
-	selectedNodesArray: any = { 'deps': [], 'regs': [], 'common': [] }
 	requestedReports: any = { 'deps': [], 'regs': [] }
 	selectedReportsList: any = []
 	selectedReportsQuery: any = []
@@ -72,23 +69,22 @@ export class ReportsModalContentComponent {
 			isInterfaceLang: false,
 		},
 	};
-	reportsLoading: boolean;
-	readyReportsTotal = 0;
 	readyReportsParts = 0;
 	sliceSize = 2;
 	isReportsSelected = false
 	selected = 0
-	showGetReportsBtn = false
 	contentLoading = false
 	groupCode: any;
-	isGroupCommon = false
-	prevIndex: number
+  isGroupCommon = false
+  checkedAllDep = true
+  checkedDeps = []
 
 	constructor(
 		private http: HttpService,
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private formatGridDataService: FormatGridDataService,
-		private formatGridService: FormatGridService
+    private formatGridService: FormatGridService,
+    public errorHandler: ErrorHandlerService
 	) { }
 
 	ngOnInit() {
@@ -116,38 +112,58 @@ export class ReportsModalContentComponent {
 			{ field: 'name', header: 'Наименование', width: '70%' }
 		];
 
-		this.http.getReportsBySliceId(this.sliceId).subscribe((data) => {
-			this.reportGroups = data;
+    this.http.getReportsBySliceId(this.sliceId).subscribe(
+      (data) => {
+        this.reportGroups = data;
 
-			if (this.isGroupCommon) {
-				this.reportGroups.forEach(element => {
-					let groupCode = element.code
-					this.http.getGroupCommon().subscribe((data) => {
-						this.gridCommonData = this.formatGridService.formatGrid(data, false)['data']
-						this.gridCommonDataArray[groupCode] = this.gridCommonData
-						this.selectedCommonNodesArray[groupCode] = []
-					})
-				});
-				this.contentLoading = false
-			} else {
-				this.reportGroups.forEach(element => {
-					let groupCode = element.code
-					this.http.getDepsByReportId(groupCode).subscribe((data) => {
-						this.gridDepData = this.formatGridDataService.formatGridData(data)['data']
-						this.gridDepDataArray[groupCode] = this.gridDepData
-						this.selectedDepNodesArray[groupCode] = []
-					})
-					this.http.getRegions().subscribe((data) => {
-						this.gridRegData = this.formatGridDataService.formatGridData([data])['data']
-						this.gridRegData[0]['expanded'] = true // Раскрываем первую ветку по умолчанию
-						this.gridRegDataArray[groupCode] = this.gridRegData
-						this.selectedRegNodesArray[groupCode] = []
-					})
-				});
-			}
+        if (this.isGroupCommon) {
+          this.reportGroups.forEach(element => {
+            let groupCode = element.code
+            this.http.getGroupCommon().subscribe(
+              (data) => {
+                this.gridCommonData = this.formatGridService.formatGrid(data, false)['data']
+                this.gridCommonDataArray[groupCode] = this.gridCommonData
+                this.selectedCommonNodesArray[groupCode] = []
+              },
+              error => {
+                this.errorHandler.alertError(error)
+              }
+            )
+          });
+          this.contentLoading = false
+        } else {
+          this.reportGroups.forEach(element => {
+            let groupCode = element.code
+            this.http.getDepsByReportId(groupCode).subscribe(
+              (data) => {
+                this.gridDepData = this.formatGridDataService.formatGridData(data)['data']
+                this.gridDepDataArray[groupCode] = this.gridDepData
+                this.selectedDepNodesArray[groupCode] = []
+              },
+              error => {
+                this.errorHandler.alertError(error)
+              }
+            )
+            this.http.getRegions().subscribe(
+              (data) => {
+                this.gridRegData = this.formatGridDataService.formatGridData([data])['data']
+                this.gridRegData[0]['expanded'] = true // Раскрываем первую ветку по умолчанию
+                this.gridRegDataArray[groupCode] = this.gridRegData
+                this.selectedRegNodesArray[groupCode] = []
+              },
+              error => {
+                this.errorHandler.alertError(error)
+              }
+            )
+          });
+        }
 
-			this.contentLoading = false
-		})
+        this.contentLoading = false
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 	}
 
 	getReportInfoByCode(groupCode): any {
@@ -191,14 +207,15 @@ export class ReportsModalContentComponent {
 		}
 		this.selectedRegNodesArray[groupCode] = [...this.selectedRegNodesArray[groupCode]];
 		this.requestedReports.regs = this.selectedRegNodesArray
-	}
+  }
 
 	toggleRowSelectionDep(rowNode: any, groupCode: any): void {
 		if (this.isRowSelectedDep(rowNode, groupCode)) {
 			this.selectedDepNodesArray[groupCode].splice(this.selectedDepNodesArray[groupCode].indexOf(rowNode.node.data), 1);
 		} else {
-			this.selectedDepNodesArray[groupCode].push(rowNode.node.data);
+      this.selectedDepNodesArray[groupCode].push(rowNode.node.data);
 		}
+    console.log("ReportsModalContentComponent -> toggleRowSelectionDep -> this.selectedDepNodesArray", this.selectedDepNodesArray)
 		this.selectedDepNodesArray[groupCode] = [...this.selectedDepNodesArray[groupCode]];
 		this.requestedReports.deps = this.selectedDepNodesArray
 	}
@@ -212,7 +229,15 @@ export class ReportsModalContentComponent {
 
 		this.selectedCommonNodesArray[groupCode] = [...this.selectedCommonNodesArray[groupCode]];
 		this.requestedReports.common = this.selectedCommonNodesArray
-	}
+  }
+  
+  selectAllRows(groupCode: any): void {
+    console.log(this.checkedAllDep);
+    console.log(this.checkedDeps);
+    console.log("ReportsModalContentComponent -> selectAllRows -> this.selectedDepNodesArray[groupCode]", this.selectedDepNodesArray[groupCode])
+    console.log("ReportsModalContentComponent -> selectAllRows -> this.gridDepDataArray[groupCode]", this.gridDepDataArray[groupCode])
+    console.log("ReportsModalContentComponent -> selectAllRows -> groupCode", groupCode)
+  }
 
 	onNodeExpandGroupCommon(event) {
 		let node = event.node
@@ -220,13 +245,18 @@ export class ReportsModalContentComponent {
 			this.loadingCommon = true
 			const searchPattern = node.data.searchPattern
 
-			this.http.getGroupCommonChildren(searchPattern).then((data) => {
-				this.childrenNode = this.formatGridService.formatGrid(data, true)['data']
-				node.children = this.childrenNode
-				//refresh the data
-				this.gridCommonData = [...this.gridCommonData];
-				this.loadingCommon = false
-			})
+      this.http.getGroupCommonChildren(searchPattern).then(
+        (data) => {
+          this.childrenNode = this.formatGridService.formatGrid(data, true)['data']
+          node.children = this.childrenNode
+          //refresh the data
+          this.gridCommonData = [...this.gridCommonData];
+          this.loadingCommon = false
+        },
+        error => {
+          this.errorHandler.alertError(error)
+        }
+      )
 		}
 	}
 
@@ -235,17 +265,17 @@ export class ReportsModalContentComponent {
 		this.selectedReportsList = []
 
 		if (this.requestedReports.common != undefined && this.requestedReports.common.length > 0) {
-			let self = this
+			// let self = this
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode)
 
-			self.requestedReports.common[this.selectedGroupCode].forEach(function (element, index) {
-				self.selectedReportsList[counter] = {
+			this.requestedReports.common[this.selectedGroupCode].forEach( (element, index) => {
+				this.selectedReportsList[counter] = {
 					report: reportInfo,
 					region: element
 				}
-				self.selectedReportsQuery[counter] = {
-					sliceId: self.sliceId,
-					reportCode: self.selectedGroupCode,
+				this.selectedReportsQuery[counter] = {
+					sliceId: this.sliceId,
+					reportCode: this.selectedGroupCode,
 					govCode: element.searchPattern
 				}
 				counter++;
@@ -322,7 +352,6 @@ export class ReportsModalContentComponent {
 	getReports() {
 		let cntr = 0
 		this.readyReportsParts = 0
-		this.readyReportsTotal = 0
 		this.readyReports = []
 		this.isReportsLoading = true
 		this.getReportSplices(cntr)
@@ -344,11 +373,16 @@ export class ReportsModalContentComponent {
 		if (reportsSlice.length === 0) {
 			return false
 		} else {
-			this.http.generateReports(selectedLang, reportsSlice).subscribe((data) => {
-				this.showReports(data);
-				counterFrom += 2
-				this.getReportSplices(counterFrom)
-			})
+      this.http.generateReports(selectedLang, reportsSlice).subscribe(
+        (data) => {
+          this.showReports(data);
+          counterFrom += 2
+          this.getReportSplices(counterFrom)
+        },
+        error => {
+          this.errorHandler.alertError(error)
+        }
+      )
 		}
 	}
 

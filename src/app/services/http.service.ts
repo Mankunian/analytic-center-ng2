@@ -7,15 +7,16 @@ import { GlobalConfig } from '../global';
 import { Subscription } from 'rxjs';
 import { SharedService } from './shared.service';
 
+// eslint-disable-next-line prettier/prettier
 @Injectable({
 	providedIn: 'root'
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
   private baseAuthUser = GlobalConfig.BASE_AUTH_USER
-	changeLang: unknown = 'RU';
-	checkDeleted: unknown = false;
-  subscription: Subscription;
+	public changeLang: unknown = 'RU';
+	public checkDeleted: unknown = false;
+  public subscription: Subscription;
   private users;
   private terrCode;
 
