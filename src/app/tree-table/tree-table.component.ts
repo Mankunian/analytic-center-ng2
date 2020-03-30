@@ -131,7 +131,7 @@ export class TreeTableComponent implements OnInit {
 		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
 		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
-			width: '1100px',
+			width: '1100px',			
 			data: { sliceId: this.sliceId, period: this.period, terrCode: this.terrCode, statusCode: rowEntity.statusCode }
 		});
 
