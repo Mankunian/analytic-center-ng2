@@ -1,14 +1,10 @@
 <!-- Preloader -->
-<div class="row" *ngIf="contentLoading">
-  <div class="col-sm-12">
-    <div class="preloader-block">
-      <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
+<div class="preloader-block" *ngIf="contentLoading">
+  <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
 </div>
 <!-- END Preloader -->
@@ -174,7 +170,6 @@
 								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
 									<tr [ttSelectableRow]="rowNode">
 										<td *ngFor="let col of columns; let i = index">
-											<p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
 											<p-checkbox [binary]="true" [ngModel]="isRowSelected(rowNode, group.code)" *ngIf="i == 0"
 												(click)="toggleRowSelection(rowNode, group.code)"></p-checkbox>
 											{{rowData[col.field]}}
@@ -188,21 +183,23 @@
 						<div class="col-sm-6" *ngIf="gridDepDataArray != undefined">
 							<p-treeTable [value]="gridDepDataArray[group.code]" [columns]="colsDep"
 								(onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loading" selectionMode="checkbox"
-								[(selection)]="selectedDepNodesArray[group.code]" dataKey="code" *ngIf="!loading && !loadingReg">
-								<!-- {{group.name}} -->
-								{{group.code}}
+                [(selection)]="selectedDepNodesArray[group.code]" dataKey="code" *ngIf="!loading && !loadingReg">
 								<ng-template pTemplate="header" let-columns>
-									<tr>
+                  <tr>
+                    <th>
+                      <p-treeTableHeaderCheckbox></p-treeTableHeaderCheckbox>
+                      <span style="margin-left: .25em; vertical-align: middle">Toggle All</span>
+                      <p-checkbox [binary]="true" (click)="selectAllRows(group.code)" [(ngModel)]="checkedAllDep"></p-checkbox>
+                    </th>
 										<th *ngFor="let col of columns">{{col.header}}</th>
 									</tr>
 								</ng-template>
 								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
 									<tr [ttSelectableRow]="rowNode">
+                    <td>
+                      <p-checkbox [binary]="true" (click)="toggleRowSelectionDep(rowNode, group.code)" [(ngModel)]="checkedDeps"></p-checkbox>
+                    </td>
 										<td *ngFor="let col of columns; let i = index">
-											<!-- <p-treeTableToggler [rowNode]="rowNode" *ngIf="i  == 0"></p-treeTableToggler> -->
-											<!-- <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox> -->
-											<p-checkbox [binary]="true" [ngModel]="isRowSelectedDep(rowNode, group.code)" *ngIf="i == 0"
-												(click)="toggleRowSelectionDep(rowNode, group.code)"></p-checkbox>
 											{{rowData[col.field]}}
 										</td>
 									</tr>

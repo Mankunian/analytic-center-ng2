@@ -37,15 +37,18 @@ export class ReportsModalContentComponent {
 	colsCommon: any[]
 	loadingCommon: boolean
 	isReportsLoading: boolean
-	selectedGroupCode: any
+  selectedGroupCode: any
+  
 	gridDepData: TreeNode[]
 	gridDepDataArray: any = []
 	gridRegData: TreeNode[]
 	gridCommonData: TreeNode[]
 	childrenNode: TreeNode[]
-	gridRegDataArray: any = []
+  
+  gridRegDataArray: any = []
 	gridCommonDataArray: any = []
-	selectedRegNodesArray: any = []
+  
+  selectedRegNodesArray: any = []
 	selectedCommonNodesArray: any = []
 	selectedDepNodesArray: any = []
 	requestedReports: any = { 'deps': [], 'regs': [] }
@@ -72,7 +75,9 @@ export class ReportsModalContentComponent {
 	selected = 0
 	contentLoading = false
 	groupCode: any;
-	isGroupCommon = false
+  isGroupCommon = false
+  checkedAllDep = true
+  checkedDeps = []
 
 	constructor(
 		private http: HttpService,
@@ -202,14 +207,15 @@ export class ReportsModalContentComponent {
 		}
 		this.selectedRegNodesArray[groupCode] = [...this.selectedRegNodesArray[groupCode]];
 		this.requestedReports.regs = this.selectedRegNodesArray
-	}
+  }
 
 	toggleRowSelectionDep(rowNode: any, groupCode: any): void {
 		if (this.isRowSelectedDep(rowNode, groupCode)) {
 			this.selectedDepNodesArray[groupCode].splice(this.selectedDepNodesArray[groupCode].indexOf(rowNode.node.data), 1);
 		} else {
-			this.selectedDepNodesArray[groupCode].push(rowNode.node.data);
+      this.selectedDepNodesArray[groupCode].push(rowNode.node.data);
 		}
+    console.log("ReportsModalContentComponent -> toggleRowSelectionDep -> this.selectedDepNodesArray", this.selectedDepNodesArray)
 		this.selectedDepNodesArray[groupCode] = [...this.selectedDepNodesArray[groupCode]];
 		this.requestedReports.deps = this.selectedDepNodesArray
 	}
@@ -223,7 +229,15 @@ export class ReportsModalContentComponent {
 
 		this.selectedCommonNodesArray[groupCode] = [...this.selectedCommonNodesArray[groupCode]];
 		this.requestedReports.common = this.selectedCommonNodesArray
-	}
+  }
+  
+  selectAllRows(groupCode: any): void {
+    console.log(this.checkedAllDep);
+    console.log(this.checkedDeps);
+    console.log("ReportsModalContentComponent -> selectAllRows -> this.selectedDepNodesArray[groupCode]", this.selectedDepNodesArray[groupCode])
+    console.log("ReportsModalContentComponent -> selectAllRows -> this.gridDepDataArray[groupCode]", this.gridDepDataArray[groupCode])
+    console.log("ReportsModalContentComponent -> selectAllRows -> groupCode", groupCode)
+  }
 
 	onNodeExpandGroupCommon(event) {
 		let node = event.node
@@ -251,17 +265,17 @@ export class ReportsModalContentComponent {
 		this.selectedReportsList = []
 
 		if (this.requestedReports.common != undefined && this.requestedReports.common.length > 0) {
-			let self = this
+			// let self = this
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode)
 
-			self.requestedReports.common[this.selectedGroupCode].forEach(function (element, index) {
-				self.selectedReportsList[counter] = {
+			this.requestedReports.common[this.selectedGroupCode].forEach( (element, index) => {
+				this.selectedReportsList[counter] = {
 					report: reportInfo,
 					region: element
 				}
-				self.selectedReportsQuery[counter] = {
-					sliceId: self.sliceId,
-					reportCode: self.selectedGroupCode,
+				this.selectedReportsQuery[counter] = {
+					sliceId: this.sliceId,
+					reportCode: this.selectedGroupCode,
 					govCode: element.searchPattern
 				}
 				counter++;

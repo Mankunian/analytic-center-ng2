@@ -11,7 +11,7 @@ export class ErrorHandlerService {
     console.log("ErrorHandlerService -> alertError -> errMsg", errMsg);
 
     (errMsg != undefined)
-      ? alert("Ошибка:" + errMsg) 
+      ? alert(errMsg.error.errMsg) 
       : alert("Произошла ошибка на сервере.")
   }
 }
