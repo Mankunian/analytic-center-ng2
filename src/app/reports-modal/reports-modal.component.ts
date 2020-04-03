@@ -268,7 +268,7 @@ export class ReportsModalContentComponent {
 			// let self = this
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode)
 
-			this.requestedReports.common[this.selectedGroupCode].forEach( (element, index) => {
+			this.requestedReports.common[this.selectedGroupCode].forEach( (element) => {
 				this.selectedReportsList[counter] = {
 					report: reportInfo,
 					region: element
