@@ -6,6 +6,7 @@ import { FormatGridDataService } from '../services/format-grid-data.service';
 import { FormatGridService } from '../services/format-grid.service';
 import { GlobalConfig } from '../global';
 import { ErrorHandlerService } from '../services/error-handler.service';
+import { group } from '@angular/animations';
 
 @Component({
 	selector: 'app-reports-modal',
@@ -35,18 +36,14 @@ export class ReportsModalContentComponent {
 	colsReg: any[]
 	colsCommon: any[]
   selectedGroupCode: any
-  
-  childrenNode: TreeNode[]
-  
   gridData = { 'deps': [] as any, 'regs': [] as any, 'common': [] as any }
-	gridDepDataArray: any = []
-  gridRegDataArray: any = []
-	gridCommonDataArray: any = []
-  
+  childrenNode: TreeNode[]
+
 	requestedReports = { 'deps': [], 'regs': [], 'common': [] }
 	selectedReportsList: any = []
 	selectedReportsQuery: any = []
-	readyReports: any = []
+  readyReports: any = []
+  selectAllStatus = { 'deps': [], 'regs': [], 'common': [] }
 	reportLangs = {
 		ru: {
 			name: "Русский",
@@ -64,7 +61,7 @@ export class ReportsModalContentComponent {
 	readyReportsParts = 0;
 	sliceSize = 2;
 	isReportsSelected = false
-	selected = 0
+	tabIndex = 0
   contentLoading = false
   loadingCommon: boolean
   isReportsLoading: boolean
@@ -72,8 +69,8 @@ export class ReportsModalContentComponent {
   isGroupCommon = false
 
 	constructor(
-		private http: HttpService,
 		@Inject(MAT_DIALOG_DATA) public data: any,
+		private http: HttpService,
 		private formatGridDataService: FormatGridDataService,
     private formatGridService: FormatGridService,
     public errorHandler: ErrorHandlerService
@@ -90,18 +87,18 @@ export class ReportsModalContentComponent {
 		}
 
 		this.colsDep = [
-			{ field: 'code', header: 'И/н', width: '100px' },
-			{ field: 'name', header: 'Ведомство', width: '200px' }
+			{ field: 'code', header: 'И/н' },
+			{ field: 'name', header: 'Ведомство' }
 		];
 
 		this.colsReg = [
-			{ field: 'code', header: 'И/н', width: '100px' },
-			{ field: 'name', header: 'Регион/Орган', width: '200px' }
+			{ field: 'code', header: 'И/н' },
+			{ field: 'name', header: 'Регион/Орган' }
 		];
 
 		this.colsCommon = [
-			{ field: 'searchPattern', header: 'Код органа', width: '30%' },
-			{ field: 'name', header: 'Наименование', width: '70%' }
+			{ field: 'searchPattern', header: 'Код органа' },
+			{ field: 'name', header: 'Наименование' }
 		];
 
     this.http.getReportsBySliceId(this.sliceId).subscribe(
@@ -114,6 +111,7 @@ export class ReportsModalContentComponent {
             this.http.getGroupCommon().subscribe(
               (data) => {
                 this.gridData.common[groupCode] = this.formatGridService.formatGrid(data, false)['data']
+                this.requestedReports.common[groupCode] = []
               },
               error => {
                 this.errorHandler.alertError(error)
@@ -127,15 +125,17 @@ export class ReportsModalContentComponent {
             this.http.getDepsByReportId(groupCode).subscribe(
               (data) => {
                 this.gridData.deps[groupCode] = this.formatGridDataService.formatGridData(data)['data']
+                this.requestedReports.deps[groupCode] = []
               },
               error => {
                 this.errorHandler.alertError(error)
               }
-            )
-            this.http.getRegions().subscribe(
-              (data) => {
-                this.gridData.regs[groupCode] = this.formatGridDataService.formatGridData([data])['data']
-                this.gridData.regs[groupCode][0]['expanded'] = true // Раскрываем первую ветку по умолчанию
+              )
+              this.http.getRegions().subscribe(
+                (data) => {
+                  this.gridData.regs[groupCode] = this.formatGridDataService.formatGridData([data])['data']
+                  this.gridData.regs[groupCode][0]['expanded'] = true // Раскрываем первую ветку по умолчанию
+                  this.requestedReports.regs[groupCode] = []
               },
               error => {
                 this.errorHandler.alertError(error)
@@ -159,16 +159,36 @@ export class ReportsModalContentComponent {
 	}
 
 	tabChange(index: number) {
-		this.selected = index // current tab index, used in openFirstTab()
-		if (this.selected != 0) {
-			this.selectedGroupCode = this.reportGroups[this.selected - 1].code
+		this.tabIndex = index // current tab index, used in openFirstTab()
+		if (this.tabIndex != 0) {
+			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code
 		} else {
 			this.getSelectedReportsList()
 		}
 	}
   
-  selectAllRows(groupCode: any): void {
-    console.log("ReportsModalContentComponent -> selectAllRows -> groupCode", groupCode)
+  selectAllRows(groupCode, requestedReports, gridData, selectAllStatus): void {
+    // Clear selected reports list
+    requestedReports[groupCode].length = 0
+    // Check status of SelectAll checkbox of current group. True means Select all from this group
+    if (selectAllStatus[groupCode]) {
+      this.pushSelectedAllRows(groupCode, gridData[groupCode], requestedReports)
+    }
+    // Update grid data and selected reports list
+    gridData = [...gridData]
+    requestedReports[groupCode] = [...requestedReports[groupCode]]
+  }
+
+  pushSelectedAllRows(groupCode, gridData, requestedReports) {
+    gridData.forEach(rowNode => {
+      if (!rowNode.children) {
+        requestedReports[groupCode].push(rowNode.data)
+      } else {
+        requestedReports[groupCode].push(rowNode.data)
+        console.log("ReportsModalContentComponent -> pushSelectedAllRows -> rowNode.children", rowNode.children)
+        this.pushSelectedAllRows(groupCode, rowNode.children, requestedReports)
+      }
+    });
   }
 
 	onNodeExpandGroupCommon(event) {
@@ -258,7 +278,8 @@ export class ReportsModalContentComponent {
 		if (this.isGroupCommon) {
 			let row = item.region
 
-			this.requestedReports.common[groupCode].splice(this.requestedReports.common[groupCode].indexOf(row), 1);
+      this.requestedReports.common[groupCode].splice(this.requestedReports.common[groupCode].indexOf(row), 1);
+      this.gridData.common[groupCode] = [...this.gridData.common[groupCode]]
 			this.requestedReports.common[groupCode] = [...this.requestedReports.common[groupCode]];
 		} else {
 			let regionCode = item.region.code,
@@ -266,11 +287,13 @@ export class ReportsModalContentComponent {
 
 			if (this.selectedReportsQuery.findIndex(x => x.orgCode === departmentCode) === -1) {
 				this.requestedReports.deps[groupCode].splice(this.requestedReports.deps[groupCode].indexOf(regionCode), 1);
-				this.requestedReports.deps[groupCode] = [...this.requestedReports.deps[groupCode]];
+        this.gridData.deps[groupCode] = [...this.gridData.deps[groupCode]];
+        this.requestedReports.deps[groupCode] = [...this.requestedReports.deps[groupCode]];
 			}
 
 			if (this.selectedReportsQuery.findIndex(x => x.regCode === regionCode) === -1) {
 				this.requestedReports.regs[groupCode].splice(this.requestedReports.regs[groupCode].indexOf(regionCode), 1);
+				this.gridData.regs[groupCode].splice(this.gridData.regs[groupCode].indexOf(regionCode), 1);
 				this.requestedReports.regs[groupCode] = [...this.requestedReports.regs[groupCode]];
 			}
 		}
@@ -407,6 +430,6 @@ export class ReportsModalContentComponent {
 	}
 
 	openFirstTab() {
-		this.selected = (0)
+		this.tabIndex = (0)
 	}
 }

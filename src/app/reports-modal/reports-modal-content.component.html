@@ -155,16 +155,19 @@
 							<p-treeTable [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true" dataKey="code">
 								<ng-template pTemplate="header" let-columns>
 									<tr>
+                    <th>
+                      <p-checkbox [binary]="true" (click)="selectAllRows(group.code, requestedReports.regs, gridData.regs, selectAllStatus.regs)" [(ngModel)]="selectAllStatus.regs[group.code]"></p-checkbox>
+                    </th>
 										<th *ngFor="let col of columns">{{col.header}}</th>
 									</tr>
 								</ng-template>
 								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
 									<tr [ttSelectableRow]="rowNode">
-										<td *ngFor="let col of columns; let i = index">
-                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                      <p-checkbox [(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data" *ngIf="i == 0"></p-checkbox>
-											{{rowData[col.field]}}
-										</td>
+										<td>
+                      <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                      <p-checkbox [(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data"></p-checkbox>
+                    </td>
+                    <td *ngFor="let col of columns">{{rowData[col.field]}}</td>
 									</tr>
 								</ng-template>
 							</p-treeTable>
@@ -175,12 +178,9 @@
 							<p-treeTable [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code">
 								<ng-template pTemplate="header" let-columns>
                   <tr>
-                    <!-- <th>
-                      <p-treeTableHeaderCheckbox></p-treeTableHeaderCheckbox>
-                      <span style="margin-left: .25em; vertical-align: middle">Toggle All</span>
-                      <p-checkbox [binary]="true" (click)="selectAllRows(group.code)" [(ngModel)]="checkedAllDep"></p-checkbox>
-                    </th> -->
-                    <th></th>
+                    <th>
+                      <p-checkbox [binary]="true" (click)="selectAllRows(group.code, requestedReports.deps, gridData.deps, selectAllStatus.deps)" [(ngModel)]="selectAllStatus.deps[group.code]"></p-checkbox>
+                    </th>
 										<th *ngFor="let col of columns">{{col.header}}</th>
 									</tr>
 								</ng-template>
