@@ -7,7 +7,6 @@ import { FormatGridService } from '../services/format-grid.service';
 import { GlobalConfig } from '../global';
 import { ErrorHandlerService } from '../services/error-handler.service';
 
-
 @Component({
 	selector: 'app-reports-modal',
 	templateUrl: './reports-modal.component.html',
@@ -35,23 +34,16 @@ export class ReportsModalContentComponent {
 	colsDep: any[]
 	colsReg: any[]
 	colsCommon: any[]
-	loadingCommon: boolean
-	isReportsLoading: boolean
   selectedGroupCode: any
   
-	gridDepData: TreeNode[]
-	gridDepDataArray: any = []
-	gridRegData: TreeNode[]
-	gridCommonData: TreeNode[]
-	childrenNode: TreeNode[]
+  childrenNode: TreeNode[]
   
+  gridData = { 'deps': [] as any, 'regs': [] as any, 'common': [] as any }
+	gridDepDataArray: any = []
   gridRegDataArray: any = []
 	gridCommonDataArray: any = []
   
-  selectedRegNodesArray: any = []
-	selectedCommonNodesArray: any = []
-	selectedDepNodesArray: any = []
-	requestedReports: any = { 'deps': [], 'regs': [] }
+	requestedReports = { 'deps': [], 'regs': [], 'common': [] }
 	selectedReportsList: any = []
 	selectedReportsQuery: any = []
 	readyReports: any = []
@@ -73,11 +65,11 @@ export class ReportsModalContentComponent {
 	sliceSize = 2;
 	isReportsSelected = false
 	selected = 0
-	contentLoading = false
+  contentLoading = false
+  loadingCommon: boolean
+  isReportsLoading: boolean
 	groupCode: any;
   isGroupCommon = false
-  checkedAllDep = true
-  checkedDeps = []
 
 	constructor(
 		private http: HttpService,
@@ -121,9 +113,7 @@ export class ReportsModalContentComponent {
             let groupCode = element.code
             this.http.getGroupCommon().subscribe(
               (data) => {
-                this.gridCommonData = this.formatGridService.formatGrid(data, false)['data']
-                this.gridCommonDataArray[groupCode] = this.gridCommonData
-                this.selectedCommonNodesArray[groupCode] = []
+                this.gridData.common[groupCode] = this.formatGridService.formatGrid(data, false)['data']
               },
               error => {
                 this.errorHandler.alertError(error)
@@ -136,9 +126,7 @@ export class ReportsModalContentComponent {
             let groupCode = element.code
             this.http.getDepsByReportId(groupCode).subscribe(
               (data) => {
-                this.gridDepData = this.formatGridDataService.formatGridData(data)['data']
-                this.gridDepDataArray[groupCode] = this.gridDepData
-                this.selectedDepNodesArray[groupCode] = []
+                this.gridData.deps[groupCode] = this.formatGridDataService.formatGridData(data)['data']
               },
               error => {
                 this.errorHandler.alertError(error)
@@ -146,10 +134,8 @@ export class ReportsModalContentComponent {
             )
             this.http.getRegions().subscribe(
               (data) => {
-                this.gridRegData = this.formatGridDataService.formatGridData([data])['data']
-                this.gridRegData[0]['expanded'] = true // Раскрываем первую ветку по умолчанию
-                this.gridRegDataArray[groupCode] = this.gridRegData
-                this.selectedRegNodesArray[groupCode] = []
+                this.gridData.regs[groupCode] = this.formatGridDataService.formatGridData([data])['data']
+                this.gridData.regs[groupCode][0]['expanded'] = true // Раскрываем первую ветку по умолчанию
               },
               error => {
                 this.errorHandler.alertError(error)
@@ -180,62 +166,8 @@ export class ReportsModalContentComponent {
 			this.getSelectedReportsList()
 		}
 	}
-
-	isRowSelected(rowNode: any, groupCode: any): boolean {
-		if (this.selectedRegNodesArray[groupCode] != undefined) {
-			return this.selectedRegNodesArray[groupCode].indexOf(rowNode.node.data) >= 0;
-		}
-	}
-
-	isRowSelectedDep(rowNode: any, groupCode: any): boolean {
-		if (this.selectedDepNodesArray[groupCode] != undefined) {
-			return this.selectedDepNodesArray[groupCode].indexOf(rowNode.node.data) >= 0;
-		}
-	}
-
-	isRowSelectedCommon(rowNode: any, groupCode: any): boolean {
-		if (this.selectedCommonNodesArray[groupCode] != undefined) {
-			return this.selectedCommonNodesArray[groupCode].indexOf(rowNode.node.data) >= 0;
-		}
-	}
-
-	toggleRowSelection(rowNode: any, groupCode: any): void {
-		if (this.isRowSelected(rowNode, groupCode)) {
-			this.selectedRegNodesArray[groupCode].splice(this.selectedRegNodesArray[groupCode].indexOf(rowNode.node.data), 1);
-		} else {
-			this.selectedRegNodesArray[groupCode].push(rowNode.node.data);
-		}
-		this.selectedRegNodesArray[groupCode] = [...this.selectedRegNodesArray[groupCode]];
-		this.requestedReports.regs = this.selectedRegNodesArray
-  }
-
-	toggleRowSelectionDep(rowNode: any, groupCode: any): void {
-		if (this.isRowSelectedDep(rowNode, groupCode)) {
-			this.selectedDepNodesArray[groupCode].splice(this.selectedDepNodesArray[groupCode].indexOf(rowNode.node.data), 1);
-		} else {
-      this.selectedDepNodesArray[groupCode].push(rowNode.node.data);
-		}
-    console.log("ReportsModalContentComponent -> toggleRowSelectionDep -> this.selectedDepNodesArray", this.selectedDepNodesArray)
-		this.selectedDepNodesArray[groupCode] = [...this.selectedDepNodesArray[groupCode]];
-		this.requestedReports.deps = this.selectedDepNodesArray
-	}
-
-	toggleRowSelectionCommon(rowNode: any, groupCode: any): void {
-		if (this.isRowSelectedCommon(rowNode, groupCode)) {
-			this.selectedCommonNodesArray[groupCode].splice(this.selectedCommonNodesArray[groupCode].indexOf(rowNode.node.data), 1);
-		} else {
-			this.selectedCommonNodesArray[groupCode].push(rowNode.node.data);
-		}
-
-		this.selectedCommonNodesArray[groupCode] = [...this.selectedCommonNodesArray[groupCode]];
-		this.requestedReports.common = this.selectedCommonNodesArray
-  }
   
   selectAllRows(groupCode: any): void {
-    console.log(this.checkedAllDep);
-    console.log(this.checkedDeps);
-    console.log("ReportsModalContentComponent -> selectAllRows -> this.selectedDepNodesArray[groupCode]", this.selectedDepNodesArray[groupCode])
-    console.log("ReportsModalContentComponent -> selectAllRows -> this.gridDepDataArray[groupCode]", this.gridDepDataArray[groupCode])
     console.log("ReportsModalContentComponent -> selectAllRows -> groupCode", groupCode)
   }
 
@@ -249,8 +181,7 @@ export class ReportsModalContentComponent {
         (data) => {
           this.childrenNode = this.formatGridService.formatGrid(data, true)['data']
           node.children = this.childrenNode
-          //refresh the data
-          this.gridCommonData = [...this.gridCommonData];
+          this.gridData.common = [...this.gridData.common]; //refresh the data
           this.loadingCommon = false
         },
         error => {
@@ -322,28 +253,25 @@ export class ReportsModalContentComponent {
 	removeSelectedReport = function (key, item) {
 		this.selectedReportsList.splice(key, 1)
 		this.selectedReportsQuery.splice(key, 1)
-		let reportCode = item.report.code
+		let groupCode = item.report.code
 
 		if (this.isGroupCommon) {
 			let row = item.region
 
-			this.selectedCommonNodesArray[reportCode].splice(this.selectedCommonNodesArray[reportCode].indexOf(row), 1);
-			this.selectedCommonNodesArray[reportCode] = [...this.selectedCommonNodesArray[reportCode]];
-			this.requestedReports.common = this.selectedCommonNodesArray
+			this.requestedReports.common[groupCode].splice(this.requestedReports.common[groupCode].indexOf(row), 1);
+			this.requestedReports.common[groupCode] = [...this.requestedReports.common[groupCode]];
 		} else {
 			let regionCode = item.region.code,
 				departmentCode = item.department.code
 
 			if (this.selectedReportsQuery.findIndex(x => x.orgCode === departmentCode) === -1) {
-				this.selectedDepNodesArray[reportCode].splice(this.selectedDepNodesArray[reportCode].indexOf(regionCode), 1);
-				this.selectedDepNodesArray[reportCode] = [...this.selectedDepNodesArray[reportCode]];
-				this.requestedReports.deps = this.selectedDepNodesArray
+				this.requestedReports.deps[groupCode].splice(this.requestedReports.deps[groupCode].indexOf(regionCode), 1);
+				this.requestedReports.deps[groupCode] = [...this.requestedReports.deps[groupCode]];
 			}
 
 			if (this.selectedReportsQuery.findIndex(x => x.regCode === regionCode) === -1) {
-				this.selectedRegNodesArray[reportCode].splice(this.selectedRegNodesArray[reportCode].indexOf(regionCode), 1);
-				this.selectedRegNodesArray[reportCode] = [...this.selectedRegNodesArray[reportCode]];
-				this.requestedReports.regs = this.selectedRegNodesArray
+				this.requestedReports.regs[groupCode].splice(this.requestedReports.regs[groupCode].indexOf(regionCode), 1);
+				this.requestedReports.regs[groupCode] = [...this.requestedReports.regs[groupCode]];
 			}
 		}
 	};

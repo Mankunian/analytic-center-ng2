@@ -31,7 +31,7 @@ export class HttpService {
     .subscribe(
         successData => {
           this.users = successData;
-          console.log("HttpService -> constructor -> this.users", this.users)
+          // console.log("HttpService -> constructor -> this.users", this.users)
         },
         error => {
           console.log("getUsers -> error", error)
