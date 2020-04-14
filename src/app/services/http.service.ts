@@ -31,7 +31,7 @@ export class HttpService {
     .subscribe(
         successData => {
           this.users = successData;
-          console.log("HttpService -> constructor -> this.users", this.users)
+          // console.log("HttpService -> constructor -> this.users", this.users)
         },
         error => {
           console.log("getUsers -> error", error)
@@ -95,11 +95,11 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree')
 	}
 
-	getGroupCommon() {
+	getGroupERSOP() {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents')
 	}
 
-	getGroupCommonChildren(searchPattern) {
+	getGroupERSOPChildren(searchPattern) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions

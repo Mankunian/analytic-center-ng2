@@ -43,14 +43,11 @@
 			</td>
 			<td>
 				{{rowData.maxRecNum}}
-				<!-- <p-button (onClick)="refreshGridTable()" label="{{'TAB_MENU.REFRESH' | translate}}" icon="pi pi-refresh"
-					iconPos="left"></p-button> -->
 			</td>
 			<td>
 				{{rowData.completed}}
 			</td>
 			<td style="text-align: center;">
-
 				<p-button (click)="openOperationSliceModal(rowData)"
 					*ngIf="rowData.statusCode == STATUS_CODES.IN_AGREEMENT || rowData.statusCode == STATUS_CODES.APPROVED || rowData.statusCode == STATUS_CODES.PRELIMINARY || rowData.statusCode == STATUS_CODES.DELETED"
 					label="{{'TREE_TABLE.SLICE_OPERATION' | translate}}"></p-button>
