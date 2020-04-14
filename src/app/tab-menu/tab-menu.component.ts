@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
-import { FormatGridDataService } from '../services/format-grid-data.service';
 import { ErrorHandlerService } from '../services/error-handler.service';
 
 @Component({
@@ -48,7 +47,6 @@ export class TabMenuComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		public translate: TranslateService,
 		public getShared: SharedService,
-		private formatGridDataService: FormatGridDataService,
     private service: SharedService,
     public errorHandler: ErrorHandlerService
 	) {

@@ -1,51 +1,41 @@
 import { Injectable } from '@angular/core';
-import { TreeNode } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormatGridService {
-
-  childrenNode: TreeNode[]
-
   constructor() { }
-
-  formatGrid(dataArray, lazyloaded) {
-    let parentNode: TreeNode = { 'data': [] }
-    let childNode
   
-    dataArray.forEach(element => {
-      if (element.children != undefined && element.children.length != 0) {
-        childNode = this.formatGridChild(element.children)
-      } else {
-        if (lazyloaded) { // data loaded by expanding nodes 
-          childNode = undefined
-        } else { // initially loaded data
-          childNode = [{ 'data': {} }]
+  formatGridData(dataArray, treeView: boolean, lazyLoaded?: boolean) {
+    let result = []
+    
+    dataArray.forEach(region => {
+      let tmp: any = {
+        data: {}
+      };
+      if (treeView) {
+        tmp.children = []
+      }
+
+      Object.keys(region).forEach(prop => {
+        if (prop != 'children') {
+          tmp.data[prop] = region[prop];
+        } else { // prop == 'children'
+          if (lazyLoaded) {
+
+            if (region[prop].length) {
+              tmp.children = this.formatGridData(region[prop], true, true)
+            } else {
+              tmp.children = [{ data: {} }]
+            }
+
+          } else {
+            tmp.children = this.formatGridData(region[prop], true)
+          }
         }
-      }
-      parentNode.data.push({ 'data': this.removeChildren(element), 'children': childNode })
-    })
-    return parentNode
-  }
-  
-  formatGridChild(childArray) {
-    let childNodeArray = []
-
-    childArray.forEach(element => {
-      childNodeArray.push({ 'data': this.removeChildren(element), 'children': [{ 'data': {} }] })
+      })      
+      result.push(tmp);
     });
-    return childNodeArray
-  }
-
-  
-  removeChildren(data) {
-    let dataNode = Object.keys(data).reduce((object, key) => {
-      if (key !== 'children') {
-        object[key] = data[key]
-      }
-      return object // В переменной объекты отдельно, без children
-    }, {})
-    return dataNode
+    return result
   }
 }

@@ -4,11 +4,11 @@ import { HttpService } from "../services/http.service";
 import { MatDialog } from '@angular/material/dialog';
 import { ReportsModalComponent, ReportsModalContentComponent } from "../reports-modal/reports-modal.component";
 import { SliceOperationsModalComponent, SliceOperationsModalContentComponent } from "src/app/slice-operations-modal/slice-operations-modal.component";
-import { FormatGridDataService } from '../services/format-grid-data.service';
 import { SharedService } from "../services/shared.service";
 import { Subscription } from 'rxjs';
 import { GlobalConfig } from "../../../src/app/global";
 import { ErrorHandlerService } from '../services/error-handler.service';
+import { FormatGridService } from '../services/format-grid.service';
 
 @Component({
 	selector: 'app-tree-table',
@@ -37,15 +37,14 @@ export class TreeTableComponent implements OnInit {
 	year: any;
 	statusData: any;
 
-
 	constructor(
 		public reportsModalInstance: ReportsModalComponent,
 		private httpService: HttpService,
-		private formatGridDataService: FormatGridDataService,
+    private formatGridService: FormatGridService,
 		public dialogOperSlice: MatDialog,
 		public reportsModal: MatDialog,
 		public dialog: SliceOperationsModalComponent,
-		shared: SharedService,
+		public shared: SharedService,
     private sharedService: SharedService,
     public errorHandler: ErrorHandlerService
 	) {
@@ -54,7 +53,7 @@ export class TreeTableComponent implements OnInit {
 		})
 
 		this.subscription = shared.subjSliceGroupLang$.subscribe(sliceGroup => {
-			this.gridData = this.formatGridDataService.formatGridData(sliceGroup, true)['data']
+      this.getGridData(sliceGroup)
 		})
 
 		this.subscription = shared.subjOrderSliceData$.subscribe(orderSliceList => {
@@ -70,7 +69,7 @@ export class TreeTableComponent implements OnInit {
 				this.loader = true
         this.httpService.getSliceGroups().then(
           (gridData) => {
-            this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+            this.getGridData(gridData)
             this.loader = false
           },
           error => {
@@ -86,7 +85,7 @@ export class TreeTableComponent implements OnInit {
 		this.loader = true
     this.httpService.getSliceGroups().then(
       (gridData) => {
-        this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+        this.getGridData(gridData)
         this.loader = false
       },
       error => {
@@ -113,11 +112,8 @@ export class TreeTableComponent implements OnInit {
 
       this.httpService.getSlices(this.groupCode, this.statusCode, this.year).then(
         (data) => {
-          this.childrenNode = this.formatGridDataService.formatGridData(data)['data']
-          event.node.children = this.childrenNode;
-          //refresh the data
-          this.gridData = [...this.gridData];
-
+          event.node.children = this.formatGridService.formatGridData(data, false)
+          this.gridData = [...this.gridData]; //refresh the data
           this.loader = false
         },
         error => {
@@ -131,8 +127,14 @@ export class TreeTableComponent implements OnInit {
 		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
 		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
-			width: '1100px',			
-			data: { sliceId: this.sliceId, period: this.period, terrCode: this.terrCode, statusCode: rowEntity.statusCode }
+			width: '1100px',
+      data: {
+        sliceId: this.sliceId,
+        period: this.period,
+        terrCode: this.terrCode,
+        statusCode: rowEntity.statusCode
+      },
+      panelClass: 'slice-operations-modal'
 		});
 
 		dialogRef.afterOpen().subscribe(() => {
@@ -164,8 +166,9 @@ export class TreeTableComponent implements OnInit {
 			const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
 				disableClose: true,
 				data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode },
-				height: '695px',
-				width: '1050px'
+				height: '750px',
+        width: '1075px',
+        panelClass: 'reports-dialog'
 			});
 			reportsModalRef.afterClosed().subscribe(() => {
 				// console.log(result)
@@ -181,7 +184,7 @@ export class TreeTableComponent implements OnInit {
 		setTimeout(() => {
       this.httpService.getSliceGroups().then(
         (data) => {
-          this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
+          this.getGridData(data)
           orderSliceList.forEach(function (orderListValue) {
             self.gridData.forEach(function (gridValue) {
               if (gridValue.data.code === orderListValue.groupCode) {
@@ -191,7 +194,7 @@ export class TreeTableComponent implements OnInit {
                     // self.loader = true;
                     self.httpService.getSlices(orderListValue.groupCode, orderListValue.statusCode, orderListValue.year).then(
                       (data) => {
-                        self.childrenNode = self.formatGridDataService.formatGridData(data)['data'];
+                        self.childrenNode = self.formatGridService.formatGridData(data, false)
                         childValue.children = self.childrenNode
                         self.gridData = [...self.gridData];
                       },
@@ -232,10 +235,11 @@ export class TreeTableComponent implements OnInit {
 					}
 				})
 			}
-		})
+    })
+    
     this.httpService.getSliceGroups().then(
       (data) => {
-        this.gridData = this.formatGridDataService.formatGridData(data, true)['data']
+        this.getGridData(data)
         this.gridData.forEach(function (groups, groupKey) {
           self.expandedGroupCodeList.forEach(function (groupValue) {
             if (groups.data.code === groupValue.code) {
@@ -251,7 +255,7 @@ export class TreeTableComponent implements OnInit {
                           // Если статус, группа и год равны то присваиваем expanded
                           self.httpService.getSlices(self.statusData.groupCode, self.statusData.statusCode, self.statusData.statusYear).then(
                             (data) => {
-                              self.childrenNode = self.formatGridDataService.formatGridData(data)['data']
+                              self.childrenNode = self.formatGridService.formatGridData(data, false)
                               childrenValue.children = self.childrenNode
                               self.gridData = [...self.gridData];
                             },
@@ -283,7 +287,7 @@ export class TreeTableComponent implements OnInit {
 		this.loader = true
     this.httpService.getSliceGroups().then(
       (gridData) => {
-        this.gridData = this.formatGridDataService.formatGridData(gridData, true)['data']
+        this.getGridData(gridData)
         this.loader = false
       },
       error => {
@@ -302,5 +306,9 @@ export class TreeTableComponent implements OnInit {
 				})
 			})
 		}
-	}
+  }
+  
+  getGridData(gridData) {
+    this.gridData = this.formatGridService.formatGridData(gridData, true, true)
+  }
 }

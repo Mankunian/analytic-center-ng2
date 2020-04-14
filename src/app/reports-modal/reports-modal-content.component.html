@@ -8,33 +8,30 @@
   </div>
 </div>
 <!-- END Preloader -->
-
-<div class="row">
-	<div class="col-md-12">
-		<div class="row">
-			<div class="col-md-6">
-				<h2 mat-dialog-title>{{'REPORTS_MODAL.GET_REPORTS' | translate}}</h2>
-			</div>
-			<div class="col-md-6">
-				<i style="float: right;" class="material-icons" [mat-dialog-close]="true">clear</i>
-			</div>
-		</div>
-	</div>
+<div class="container-fluid">
+  <div class="row header-modal-reports">
+    <div class="col-md-6">
+      <h2 mat-dialog-title>{{'REPORTS_MODAL.GET_REPORTS' | translate}}</h2>
+    </div>
+    <div class="col-md-6">
+      <i style="float: right;" class="material-icons" [mat-dialog-close]="true">clear</i>
+    </div>
+  </div>
 </div>
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
-	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="selected">
+	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="tabIndex">
 		<mat-tab>
 			<ng-template mat-tab-label>
 				<mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> {{'REPORTS_MODAL.CATALOG' | translate}}
       </ng-template>
-			<form class="example-form">
+			<form class="reports-modal-form">
 				<div>
 					{{'REPORTS_MODAL.SLICE_MAX' | translate}}
-					<mat-form-field appearance="fill" class="example-full-width">
+					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]=true matInput value="{{data.sliceId}}">
 					</mat-form-field>
 					{{'REPORTS_MODAL.REPORT_PERIOD' | translate}}
-					<mat-form-field appearance="fill" class="example-full-width">
+					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]=true matInput value="{{data.slicePeriod}}">
 					</mat-form-field>
 				</div>
@@ -53,10 +50,10 @@
 							<h3 mat-dialog-title>{{'REPORTS_MODAL.REQUESTED_REPORTS' | translate}}</h3>
 							<div class="selected-reports">
 								<ul>
-									<li *ngFor="let item of selectedReportsList; let i = index">
-										<i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, item)"></i>
-										<span class="requested-report-item">{{item.report.name}} - {{item.region.name}} -
-											{{item.department?.name}}</span>
+									<li *ngFor="let selectedReport of selectedReportsList; let i = index">
+										<i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, selectedReport)"></i>
+										<span class="requested-report-item">{{selectedReport.report.name}} - {{selectedReport.region.name}} <span *ngIf="selectedReport.department">-</span>
+											{{selectedReport.department?.name}}</span>
 									</li>
 								</ul>
 							</div>
@@ -78,8 +75,7 @@
 									</div>
 								</div>
 								<ul *ngIf="!isReportsLoading">
-									<li *ngFor="let item of readyReports"><a href="{{item.url}}"
-											target="_blank">{{item.name | truncate : 55}}</a></li>
+									<li *ngFor="let item of readyReports"><a href="{{item.url}}" target="_blank">{{item.name | truncate : 55}}</a></li>
 								</ul>
 							</div>
 						</div>
@@ -87,13 +83,13 @@
 				</div>
 			</div>
 		</mat-tab>
-		<!-- Treetable grid for groupCommon -->
-		<ng-container *ngIf="isGroupCommon">
+		<!-- Treetable grid for groupERSOP -->
+		<ng-container *ngIf="isGroupERSOP">
 			<mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="preloader-block" *ngIf="loadingCommon">
+						<!-- <div class="col-sm-12">
+							<div class="preloader-block" *ngIf="loadingERSOP">
 								<div class="lds-ring">
 									<div></div>
 									<div></div>
@@ -101,9 +97,14 @@
 									<div></div>
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-12" *ngIf="gridData.common != undefined">
-							<p-treeTable [value]="gridData.common[group.code]" [columns]="colsCommon" [lazy]="true" [loading]="loadingCommon" dataKey="code" *ngIf="!loadingCommon" (onNodeExpand)="onNodeExpandGroupCommon($event)">
+            </div> -->
+            <div style="height: 5px; width: 100%; background: transparent">
+              <div *ngIf="loadingERSOP" class="loader">
+                <div class="bar"></div>
+              </div>
+            </div>
+						<div class="col-sm-12" *ngIf="gridData.ersop != undefined">
+							<p-treeTable [value]="gridData.ersop[group.code]" [columns]="colsERSOP" [lazy]="true" dataKey="code" (onNodeExpand)="onNodeExpandGroupERSOP($event, group.code)">
 								<ng-template pTemplate="colgroup" let-columns>
 									<colgroup>
 										<col style="width: 30px;">
@@ -113,7 +114,9 @@
 								</ng-template>
 								<ng-template pTemplate="header" let-columns>
 									<tr>
-										<th></th>
+										<th>
+                      <p-checkbox [binary]="true" (click)="selectAllRows(group.code, requestedReports.ersop, gridData.ersop, selectAllStatus.ersop)" [(ngModel)]="selectAllStatus.ersop[group.code]"></p-checkbox>
+                    </th>
 										<th *ngFor="let col of columns">{{col.header}}</th>
 									</tr>
 								</ng-template>
@@ -123,8 +126,7 @@
 											<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
 										</td>
 										<td *ngFor="let col of columns; let i = index">
-											<!-- <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler> -->
-											<p-checkbox [(ngModel)]="requestedReports.common[group.code]" [(value)]="rowNode.node.data" *ngIf="i == 0"></p-checkbox>
+                      <p-checkbox [(ngModel)]="requestedReports.ersop[group.code]" [(value)]="rowNode.node.data" *ngIf="i == 0 && (rowNode.node.data | json) != '{}'" (onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.ersop)"></p-checkbox>
 											{{rowData[col.field]}}
 										</td>
 									</tr>
@@ -135,8 +137,8 @@
 				</div>
 			</mat-tab>
 		</ng-container>
-		<!-- END Treetable grid for GroupCommon -->
-		<ng-container *ngIf="!isGroupCommon">
+		<!-- END Treetable grid for GroupERSOP -->
+		<ng-container *ngIf="!isGroupERSOP">
 			<mat-tab label="{{group.name}}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid">
 					<div class="row">
@@ -165,9 +167,9 @@
 									<tr [ttSelectableRow]="rowNode">
 										<td>
                       <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                      <p-checkbox [(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data"></p-checkbox>
+                      <p-checkbox [(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data" (onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.regs)"></p-checkbox>
                     </td>
-                    <td *ngFor="let col of columns">{{rowData[col.field]}}</td>
+                    <td *ngFor="let col of columns" [ngStyle]="{'width': col.width}">{{rowData[col.field]}}</td>
 									</tr>
 								</ng-template>
 							</p-treeTable>
@@ -175,21 +177,21 @@
 						<!-- END Treetable grid for Regions -->
 						<!-- Treetable grid for Departments -->
 						<div class="col-sm-6" *ngIf="gridData.deps != undefined">
-							<p-treeTable [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code">
+							<p-treeTable [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code" [resizableColumns]="true">
 								<ng-template pTemplate="header" let-columns>
                   <tr>
-                    <th>
+                    <th ttResizableColumn >
                       <p-checkbox [binary]="true" (click)="selectAllRows(group.code, requestedReports.deps, gridData.deps, selectAllStatus.deps)" [(ngModel)]="selectAllStatus.deps[group.code]"></p-checkbox>
                     </th>
-										<th *ngFor="let col of columns">{{col.header}}</th>
+										<th *ngFor="let col of columns" ttResizableColumn >{{col.header}}</th>
 									</tr>
 								</ng-template>
 								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
 									<tr [ttSelectableRow]="rowNode">
                     <td>
-                      <p-checkbox [(ngModel)]="requestedReports.deps[group.code]" [(value)]="rowNode.node.data"></p-checkbox>
+                      <p-checkbox [(ngModel)]="requestedReports.deps[group.code]" [(value)]="rowNode.node.data" (onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
                     </td>
-										<td *ngFor="let col of columns; let i = index">
+										<td *ngFor="let col of columns; let i = index" [ngStyle]="{'width': col.width}">
 											{{rowData[col.field]}}
 										</td>
 									</tr>
@@ -204,9 +206,9 @@
 	</mat-tab-group>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="!contentLoading" align="end">
-	<button mat-flat-button color="primary" (click)=getReports() *ngIf="selected === 0"
+	<button mat-flat-button color="primary" (click)=getReports() *ngIf="tabIndex === 0"
 		[disabled]="!isReportsSelected">{{'REPORTS_MODAL.BTN_GET_REPORTS' | translate}}</button>
 	<button mat-flat-button color="primary" (click)=openFirstTab()
-		*ngIf="selected !== 0">{{'REPORTS_MODAL.BTN_GET_REPORTS' | translate}}</button>
+		*ngIf="tabIndex !== 0">{{'REPORTS_MODAL.BTN_GET_REPORTS' | translate}}</button>
 	<button mat-flat-button color="primary" mat-dialog-close>{{'REPORTS_MODAL.BTN_CANCEL' | translate}}</button>
 </mat-dialog-actions>

@@ -157,7 +157,7 @@ export class SliceOperationsModalContentComponent {
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogEditRejection.open(EditReasonComponent, {
 			width: '500px',
-			data: [this.injectValueToModal, this.historyValue]
+      data: [this.injectValueToModal, this.historyValue]
 		})
 
 		dialogRef.afterClosed().subscribe(result => {
