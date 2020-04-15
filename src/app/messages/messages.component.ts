@@ -67,33 +67,26 @@ export class MessagesComponent implements OnInit, OnDestroy {
   addSingle(message) {
     this.messageService.add({severity:'info', summary:'Info Message', detail: message});
   }
-    
-  // addMultiple(messages) {
-  //   this.messageService.addAll([
-  //     { severity: 'success', summary: 'Service Message', detail: 'Via MessageService' },
-  //     { severity: 'info', summary: 'Info Message', detail: 'Via MessageService' }
-  //   ]);
-  // }
 
 	subscribe(authUser?) {
 		//Подписка на уведомления для всех пользователей, по этому каналу будут приходить
 		//рассылки общего характера предназначенный для всех пользователей
 		this.topicSubscription = this.rxStompService.watch('/topic/notifications', { 'sessionKey': authUser }).subscribe((message: Message) => {
-			// console.log("received public: ", message.body)
+			console.log("received public: ", message.body)
 			this.addSingle(message.body)
 		});
 
     this.topicSubscription = this.rxStompService
       .watch('/topic/sliceCompletion', { 'sessionKey': authUser })
       .subscribe((message: Message) => {
-        // console.log("slices: ", message.body)
+        console.log("slices: ", message.body)
         this.shared.sendProgressBarList(JSON.parse(message.body))
 		});
 
 		//Подписка на индивидуальные уведомления, по этому каналу будут приходить уведомдения,
 		//пероснально для пользователя, зависящие от того какие у пользователя права
 		this.topicSubscription = this.rxStompService.watch('/user/queue/notifications', { 'sessionKey': authUser }).subscribe((message: Message) => {
-			// console.log("received private: ", message.body)
+			console.log("received private: ", message.body)
 			this.addSingle(message.body)
 		});
 
