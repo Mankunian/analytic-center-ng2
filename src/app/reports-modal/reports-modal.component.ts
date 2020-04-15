@@ -65,6 +65,7 @@ export class ReportsModalContentComponent {
   isReportsLoading: boolean
 	groupCode: any;
   isGroupERSOP = false
+  gridScrollHeight = '450px'
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -84,18 +85,18 @@ export class ReportsModalContentComponent {
 		}
 
 		this.colsDep = [
-			{ field: 'code', header: 'И/н', width: '20%' },
-			{ field: 'name', header: 'Ведомство', width: '80%' }
+			{ field: 'code', header: 'И/н', width: '56px' },
+			{ field: 'name', header: 'Ведомство', width: 'auto' }
 		];
 
 		this.colsReg = [
-			{ field: 'code', header: 'И/н' },
-			{ field: 'name', header: 'Регион/Орган' }
+			{ field: 'code', header: 'И/н', width: '90px' },
+			{ field: 'name', header: 'Регион/Орган', width: 'auto' }
 		];
 
 		this.colsERSOP = [
-			{ field: 'searchPattern', header: 'Код органа' },
-			{ field: 'name', header: 'Наименование' }
+			{ field: 'searchPattern', header: 'Код органа', width: '160px' },
+			{ field: 'name', header: 'Наименование', width: 'auto' }
 		];
 
     // Get reports list by slice id to genereate tabs
