@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../services/shared.service';
 import { TreeNode } from 'primeng/api/treenode';
-import { FormatGridDataService } from '../services/format-grid-data.service';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
 @Component({
 	selector: 'app-tab-menu',
@@ -47,8 +47,8 @@ export class TabMenuComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		public translate: TranslateService,
 		public getShared: SharedService,
-		private formatGridDataService: FormatGridDataService,
-		private service: SharedService
+    private service: SharedService,
+    public errorHandler: ErrorHandlerService
 	) {
 		translate.addLangs(['ru', 'kaz', 'qaz']);
 		translate.setDefaultLang('ru');
@@ -70,25 +70,40 @@ export class TabMenuComponent implements OnInit {
 			groupList: this.formBuilder.array([])
 		});
 		setTimeout(() => {
-			this.httpService.getGroupList().subscribe((data) => {
-				this.groupList = data;
-				this.groupList.forEach(element => {
-					if (element.status == 2) {
-						element.disabledStatus = true;
-					}
-				});
-			})
+      this.httpService.getGroupList().subscribe(
+        (data) => {
+          this.groupList = data;
+          this.groupList.forEach(element => {
+            if (element.status == 2) {
+              element.disabledStatus = true;
+            }
+          });
+        },
+        error => {
+          this.errorHandler.alertError(error)
+        }
+      )
 		});
 
-		this.httpService.getSliceNumber().subscribe((data: SliceNumber) => {
-			this.max = data.value
-		});
+    this.httpService.getSliceNumber().subscribe(
+      (data: SliceNumber) => {
+        this.max = data.value
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    );
 	}
 
 	getSliceNumber() {
-		this.httpService.getSliceNumber().subscribe((data: SliceNumber) => {
-			this.max = data.value
-		})
+    this.httpService.getSliceNumber().subscribe(
+      (data: SliceNumber) => {
+        this.max = data.value
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 	}
 
 	onCheckedGroup(event) {
@@ -140,16 +155,20 @@ export class TabMenuComponent implements OnInit {
 			groups: this.checkedGroupList,
 		};
 
-		this.httpService.postOrderSlice(orderSliceObj).subscribe((data) => {
-			this.service.sendOrderSliceList(data)
-			this.preloaderByOrderSlice = true;
-			this.checkedGroups.forEach(element => {
-				element.source._checked = false; // uncheck all selected value after response
-			});
-			this.checkedGroupList.length = 0; // clear checkbox array after response
-			this.selected = 0; // transfer to Home Tab after response
-			this.preloaderByOrderSlice = false;
-		})
-
+    this.httpService.postOrderSlice(orderSliceObj).subscribe(
+      (data) => {
+        this.service.sendOrderSliceList(data)
+        this.preloaderByOrderSlice = true;
+        this.checkedGroups.forEach(element => {
+          element.source._checked = false; // uncheck all selected value after response
+        });
+        this.checkedGroupList.length = 0; // clear checkbox array after response
+        this.selected = 0; // transfer to Home Tab after response
+        this.preloaderByOrderSlice = false;
+      },
+      error => {
+        this.errorHandler.alertError(error)
+      }
+    )
 	}
 }

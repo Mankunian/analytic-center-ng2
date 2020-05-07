@@ -21,24 +21,24 @@ export class GridDataInAgreementComponent {
 	@Input() inputStatusDate: string;
 	terrCode: string;
 
-	constructor(private http: HttpService, public dialogRejectionReason: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
+	constructor(public dialogRejectionReason: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() { }
 
 	openRejectionReasonModal(rowEntity) {
-		this.terrCode = this.data.terrCode;
-		console.log(rowEntity);
-		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+    this.terrCode = this.data.terrCode;
+    
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogRejectionReason.open(RejectionReasonContentComponent, {
 			width: '500px',
 			data: { msgReason: rowEntity.msg, terrCode: this.terrCode }
-		});
+    });
+    
 		dialogRef.afterClosed().subscribe(result => {
 			console.log('modal closed')
 		})
 	}
-
 }
 
 @Component({
@@ -50,12 +50,14 @@ export class RejectionReasonContentComponent {
 	injectValueToModal: any;
 	subscription: Subscription;
 	headTerritory: boolean;
-	constructor(@Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
+  
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
 		this.subscription = shared.subjHistoryValue$.subscribe(val => {
 			console.log(val)
 		})
 	}
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
+  
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
 		this.injectValueToModal = this.data;
 		console.log(this.injectValueToModal)

@@ -23,36 +23,6 @@
           }
         }
       ]
-    },
-    {
-        "data":{
-            "name":"Pictures",
-            "size":"150kb",
-            "type":"Folder"
-        },
-        "children":[
-            {
-                "data":{
-                    "name":"barcelona.jpg",
-                    "size":"90kb",
-                    "type":"Picture"
-                }
-            },
-            {
-                "data":{
-                    "name":"primeui.png",
-                    "size":"30kb",
-                    "type":"Picture"
-                }
-            },
-            {
-                "data":{
-                    "name":"optimus.jpg",
-                    "size":"30kb",
-                    "type":"Picture"
-                }
-            }
-        ]
     }
   ]
 }

@@ -7,15 +7,16 @@ import { GlobalConfig } from '../global';
 import { Subscription } from 'rxjs';
 import { SharedService } from './shared.service';
 
+// eslint-disable-next-line prettier/prettier
 @Injectable({
 	providedIn: 'root'
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
   private baseAuthUser = GlobalConfig.BASE_AUTH_USER
-	changeLang: unknown = 'RU';
-	checkDeleted: unknown = false;
-  subscription: Subscription;
+	public changeLang: unknown = 'RU';
+	public checkDeleted: unknown = false;
+  public subscription: Subscription;
   private users;
   private terrCode;
 
@@ -30,7 +31,7 @@ export class HttpService {
     .subscribe(
         successData => {
           this.users = successData;
-          console.log("HttpService -> constructor -> this.users", this.users)
+          // console.log("HttpService -> constructor -> this.users", this.users)
         },
         error => {
           console.log("getUsers -> error", error)
@@ -94,11 +95,11 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree')
 	}
 
-	getGroupCommon() {
+	getGroupERSOP() {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents')
 	}
 
-	getGroupCommonChildren(searchPattern) {
+	getGroupERSOPChildren(searchPattern) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
