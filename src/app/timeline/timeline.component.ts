@@ -40,6 +40,7 @@ export class TimelineComponent {
 
 	// to shared service
 	approveAndRejectBtnDisable: boolean;
+	headerInfoObj: any;
 
 
 	constructor(
@@ -72,6 +73,12 @@ export class TimelineComponent {
 				this.dataService.sendHistoryId(this.lastElemHistoryList)
 
 				if (this.lastElemHistoryList.statusCode == '7') {
+					this.headerInfoObj = {
+						'personName': this.lastElemHistoryList.personName,
+						'statusDate': this.lastElemHistoryList.statusDate
+					}
+					console.log(this.headerInfoObj)
+					this.dataService.sendHeaderInfo(this.headerInfoObj)
 
 					this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe(
 						(data) => {
@@ -123,6 +130,7 @@ export class TimelineComponent {
 
 			this.personName = historyValue.personName;
 			this.statusDate = historyValue.statusDate;
+
 
 			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe(
 				(data) => {

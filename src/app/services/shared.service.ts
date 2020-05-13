@@ -88,18 +88,29 @@ export class SharedService {
 		// console.log(progressbarWsList)
 		this.subProgressbarWs.next(progressbarWsList)
 	}
-
+	/////////////////////////////
 	private subChangeLang = new Subject();
 	subjChangeLang$ = this.subChangeLang.asObservable();
 
 	changeLangService(changeLang: any) {
 		this.subChangeLang.next(changeLang)
 	}
-
+	////////////////////////////////////
 	private subCheckDeleted = new Subject();
 	subjCheckDeleted$ = this.subCheckDeleted.asObservable();
 
 	showDeletedService(checkDeleted: any) {
 		this.subCheckDeleted.next(checkDeleted)
 	}
+
+	// header info in agreement status data grid
+	private subGridAgreementHeaderInfo = new Subject();
+	subjGridAgreementHeaderInfo$ = this.subGridAgreementHeaderInfo.asObservable();
+
+	sendHeaderInfo(headerInfoObj: any) {
+		console.log(headerInfoObj)
+		this.subGridAgreementHeaderInfo.next(headerInfoObj)
+	}
+
+
 }

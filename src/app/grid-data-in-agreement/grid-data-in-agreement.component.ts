@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedService } from '../services/shared.service';
 import { Subscription } from 'rxjs';
 import { DataAgreement } from '../grid-data-in-agreement/data'
+import { ThrowStmt } from '@angular/compiler';
 
 
 
@@ -20,12 +21,10 @@ export class GridDataInAgreementComponent {
 
 	@Input() inputTimeline: boolean;
 	@Input() inputTableInAgreement: boolean;
-	@Input() inputPersonName: string;
-	@Input() inputStatusDate: string;
 	terrCode: string;
+	personName: string;
+	statusDate: string;
 	subscription: Subscription;
-	// gridListInAgreement: any;
-	// @Input() inputDataGridInAgreement: any = [];
 
 	constructor(public dialogRejectionReason: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any, shared: SharedService) {
 		this.subscription = shared.subjGridInAgreement$.subscribe(value => {
@@ -39,10 +38,20 @@ export class GridDataInAgreementComponent {
 				{ field: 'personName', header: 'ФИО' }
 			];
 		})
+
+
+		this.subscription = shared.subjGridAgreementHeaderInfo$.subscribe(value => {
+			this.getHeaderInfoObj(value)
+		})
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
+	}
+
+	getHeaderInfoObj(value) {
+		this.personName = value.personName;
+		this.statusDate = value.statusDate;
 	}
 
 	getGridDataInAgreement(value) {
