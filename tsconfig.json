@@ -1,28 +1,23 @@
 {
-	"compileOnSave": false,
-	"compilerOptions": {
-		"baseUrl": "./",
-		"outDir": "./dist/out-tsc",
-		"sourceMap": true,
-		"declaration": false,
-		"downlevelIteration": true,
-		"experimentalDecorators": true,
-		"module": "esnext",
-		"moduleResolution": "node",
-		"importHelpers": true,
-		"emitDecoratorMetadata": true,
-		"target": "es5",
-		"typeRoots": [
-			"node_modules/@types",
-			"./typings.d.ts"
-		],
-		"lib": [
-			"es2019",
-			"dom"
-		]
-	},
-	"angularCompilerOptions": {
-		"fullTemplateTypeCheck": true,
-		"strictInjectionParameters": true
-	}
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "emitDecoratorMetadata": true,
+        "target": "es5",
+        "skipLibCheck": true,
+        "typeRoots": ["node_modules/@types", "./typings.d.ts"],
+        "lib": ["es2019", "dom"]
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
+    }
 }

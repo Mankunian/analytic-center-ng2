@@ -24,7 +24,7 @@ export class TreeTableComponent implements OnInit {
 	cols: any[];
 	loader: boolean;
 	childrenNode: TreeNode[];
-	@Input() checkDeleted: any;
+  @Input() checkDeleted: any;
 	period: any;
 	sliceId: any;
 	historyList: Record<string, any>;
@@ -35,7 +35,8 @@ export class TreeTableComponent implements OnInit {
 	groupCode: any;
 	statusCode: any;
 	year: any;
-	statusData: any;
+  statusData: any;
+  tableIndentSize = 15
 
 	constructor(
 		public reportsModalInstance: ReportsModalComponent,
@@ -104,6 +105,7 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
+    console.log("TreeTableComponent -> onNodeExpand -> event", event)
 		if (event.node.parent != null) {
 			this.loader = true
 			this.groupCode = event.node.parent.data.code,

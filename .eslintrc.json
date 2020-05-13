@@ -20,6 +20,7 @@
   ],
   "rules": {
     "no-var": "error",
+    "no-empty-function": "off",
     "@typescript-eslint/explicit-member-accessibility": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-explicit-any": 0,
