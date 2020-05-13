@@ -22,8 +22,10 @@
 		<mat-dialog-actions>
 			<div class="col-md-6" *ngIf="!headTerritory">
 				<div *ngIf="btnInAgreement">
-					<p-button [disabled]="disableBtn" (click)="approveSlice()" label="Согласовать"></p-button>
-					<p-button [disabled]="disableBtn" (click)="rejectInAgreement()" label="Отказать"></p-button>
+					<button style="margin: 0 5px;" class="marginbtn" pButton type="button" [disabled]="disableBtn"
+						(click)="approveSlice()" label="Согласовать"></button>
+					<button class="marginBtn" pButton type="button" [disabled]="disableBtn" (click)="rejectInAgreement()"
+						label="Отказать"></button>
 				</div>
 			</div>
 			<div class="col-md-6" *ngIf="headTerritory">

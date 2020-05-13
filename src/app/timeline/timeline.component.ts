@@ -19,6 +19,7 @@ export class TimelineComponent {
 	expandEnabled = true;
 	side = 'left';
 	sliceCreator: string;
+	errorMsg: string;
 	sliceDate: string;
 	showTableInAgreement: boolean;
 	showTimeline: boolean;
@@ -41,13 +42,13 @@ export class TimelineComponent {
 	approveAndRejectBtnDisable: boolean;
 
 
-  constructor(
-    private http: HttpService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    shared: SharedService,
-    private dataService: SharedService,
-    public errorHandler: ErrorHandlerService
-  ) {
+	constructor(
+		private http: HttpService,
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		shared: SharedService,
+		private dataService: SharedService,
+		public errorHandler: ErrorHandlerService
+	) {
 		this.subscription = shared.subjHistoryValue$.subscribe(value => {
 			this.historyList = value;
 		})
@@ -62,40 +63,40 @@ export class TimelineComponent {
 		if (this.injectValueToModal.terrCode == '19000090') {
 			this.GP = true;
 		}
-    this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
-      (data) => {
-        this.historyList = data;
-        this.historyListLength = this.historyList.length;
-        this.lastElemHistoryList = this.historyList[this.historyListLength - 1];
+		this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
+			(data) => {
+				this.historyList = data;
+				this.historyListLength = this.historyList.length;
+				this.lastElemHistoryList = this.historyList[this.historyListLength - 1];
 
-        this.dataService.sendHistoryId(this.lastElemHistoryList)
+				this.dataService.sendHistoryId(this.lastElemHistoryList)
 
-        if (this.lastElemHistoryList.statusCode == '7') {
-          this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe(
-            (data) => {
-              this.gridListInAgreement = data;
-              this.gridListInAgreement.forEach(element => {
-                if (element.territoryCode == this.injectValueToModal.terrCode) {
-                  if (element.approveName !== null) {
-                    this.approveAndRejectBtnDisable = true;
-                    this.dataService.approveAndRejectBtnStatus(this.approveAndRejectBtnDisable)
-                  }
-                }
-              });
-            },
-            error => {
-              this.errorHandler.alertError(error)
-            }
-          )
-          this.showTableInAgreement = true;
-        } else {
-          this.showTimeline = true;
-        }
-      },
-      error => {
-        this.errorHandler.alertError(error)
-      }
-    )
+				if (this.lastElemHistoryList.statusCode == '7') {
+					this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe(
+						(data) => {
+							this.gridListInAgreement = data;
+							this.gridListInAgreement.forEach(element => {
+								if (element.territoryCode == this.injectValueToModal.terrCode) {
+									if (element.approveName !== null) {
+										this.approveAndRejectBtnDisable = true;
+										this.dataService.approveAndRejectBtnStatus(this.approveAndRejectBtnDisable)
+									}
+								}
+							});
+						},
+						error => {
+							this.errorHandler.alertError(error)
+						}
+					)
+					this.showTableInAgreement = true;
+				} else {
+					this.showTimeline = true;
+				}
+			},
+			error => {
+				this.errorHandler.alertError(error)
+			}
+		)
 	}
 
 	entries = [
@@ -106,13 +107,13 @@ export class TimelineComponent {
 	]
 
 	onHeaderClick(historyValue, event) {
-		if (historyValue.statusCode == "2") {
+		if (historyValue.statusCode == "2") { //Предварительный 
 			this.sliceCreator = 'Задачу выставил:'
-			this.sliceDate = 'Время начала формирования:'
-		} else if (historyValue.statusCode == "1") {
+			this.sliceDate = 'Время перевода в предварительный:'
+		} else if (historyValue.statusCode == "1") { // Утвержден
 			this.sliceCreator = 'Срез утвердил:';
 			this.sliceDate = 'Время утверждения среза:'
-		} else if (historyValue.statusCode == "7") {
+		} else if (historyValue.statusCode == "7") { // На согласовании
 			this.sliceCreator = 'Срез отправил на согласование:'
 			this.sliceDate = 'Время отправки на согласование среза:'
 			this.showTableInAgreement = true;
@@ -121,21 +122,21 @@ export class TimelineComponent {
 			this.personName = historyValue.personName;
 			this.statusDate = historyValue.statusDate;
 
-      this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe(
-        (data) => {
-          this.gridListInAgreement = data;
-        },
-        error => {
-          this.errorHandler.alertError(error)
-        }
-      )
-		} else if (historyValue.statusCode == "3") {
+			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe(
+				(data) => {
+					this.gridListInAgreement = data;
+				},
+				error => {
+					this.errorHandler.alertError(error)
+				}
+			)
+		} else if (historyValue.statusCode == "3") { // Удален
 			this.sliceCreator = 'Срез удалил:'
 			this.sliceDate = 'Время удаления среза:'
 		} else if (historyValue.statusCode == "5") { // сформирован с ошибкой
-			this.sliceCreator = 'Задачу выставил:'
-			this.sliceDate = 'Время выставления задачи:'
-			this.sliceDate = 'Время начала формирования'
+			this.sliceCreator = 'Заказал срез:'
+			this.errorMsg = 'Сообщение об ошибке:'
+
 		}
 
 		if (!this.expandEnabled) {
