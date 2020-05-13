@@ -52,7 +52,15 @@
     <tr>
       <td><p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler></td>
       <td class="treetable-groups">
-        <span class="folder-icon" [ngStyle]="{ 'margin-left.px': tableIndentSize * rowNode.level }"></span>
+        <span
+          class="folder-icon"
+          [ngClass]="{
+            folderIconOpen: rowNode.node.expanded,
+            folderIconClose: !rowNode.node.expanded,
+            folderIconHide: rowNode.level == 2
+          }"
+          [ngStyle]="{ 'margin-left.px': tableIndentSize * rowNode.level }"
+        ></span>
         {{ rowData.name }}
         <a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2">
           <span *ngIf="rowData.id"> №{{ rowData.id }} </span>
