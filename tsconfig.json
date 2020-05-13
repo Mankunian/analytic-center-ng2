@@ -11,7 +11,7 @@
         "moduleResolution": "node",
         "importHelpers": true,
         "emitDecoratorMetadata": true,
-        "target": "es2015",
+        "target": "es5",
         "skipLibCheck": true,
         "typeRoots": ["node_modules/@types", "./typings.d.ts"],
         "lib": ["es2019", "dom"]
