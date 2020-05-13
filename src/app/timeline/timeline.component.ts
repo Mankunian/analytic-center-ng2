@@ -72,9 +72,11 @@ export class TimelineComponent {
 				this.dataService.sendHistoryId(this.lastElemHistoryList)
 
 				if (this.lastElemHistoryList.statusCode == '7') {
+
 					this.http.getDataGridInAgreement(this.lastElemHistoryList.sliceId, this.lastElemHistoryList.id).subscribe(
 						(data) => {
 							this.gridListInAgreement = data;
+							this.dataService.sendGridInAgreement(this.gridListInAgreement)
 							this.gridListInAgreement.forEach(element => {
 								if (element.territoryCode == this.injectValueToModal.terrCode) {
 									if (element.approveName !== null) {

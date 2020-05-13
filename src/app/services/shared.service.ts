@@ -39,11 +39,12 @@ export class SharedService {
 		this.subHistoryId.next(historyId)
 	}
 
-	//grid-in-agreement
+	//Таблица в модалке Операция со срезами со статусом На согласовании
 	private subGridInAgreement = new Subject();
 	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
 	sendGridInAgreement(gridData: any) {
+		// console.log(gridData)
 		this.subGridInAgreement.next(gridData)
 	}
 

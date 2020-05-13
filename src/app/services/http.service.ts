@@ -13,12 +13,12 @@ import { SharedService } from './shared.service';
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
-  private baseAuthUser = GlobalConfig.BASE_AUTH_USER
+	private baseAuthUser = GlobalConfig.BASE_AUTH_USER
 	public changeLang: unknown = 'RU';
 	public checkDeleted: unknown = false;
-  public subscription: Subscription;
-  private users;
-  private terrCode;
+	public subscription: Subscription;
+	private users;
+	private terrCode;
 
 	constructor(private http: HttpClient, shared: SharedService) {
 		this.subscription = shared.subjChangeLang$.subscribe(lang => {
@@ -26,27 +26,27 @@ export class HttpService {
 		})
 		this.subscription = shared.subjCheckDeleted$.subscribe(checkDeleted => {
 			this.checkDeleted = checkDeleted
-    })
-    this.getUsers()
-    .subscribe(
-        successData => {
-          this.users = successData;
-          // console.log("HttpService -> constructor -> this.users", this.users)
-        },
-        error => {
-          console.log("getUsers -> error", error)
-        },
-      () => { // when complete
-        this.subscription = shared.subjTerrCode$.subscribe(userRole => {
-          this.terrCode = userRole;
-          this.users.forEach(element => {
-            if (element[this.terrCode] != undefined) {
-              this.baseAuthUser = element[this.terrCode];
-            }
-          });
-        })
-      }
-    );
+		})
+		this.getUsers()
+			.subscribe(
+				successData => {
+					this.users = successData;
+					// console.log("HttpService -> constructor -> this.users", this.users)
+				},
+				error => {
+					console.log("getUsers -> error", error)
+				},
+				() => { // when complete
+					this.subscription = shared.subjTerrCode$.subscribe(userRole => {
+						this.terrCode = userRole;
+						this.users.forEach(element => {
+							if (element[this.terrCode] != undefined) {
+								this.baseAuthUser = element[this.terrCode];
+							}
+						});
+					})
+				}
+			);
 	}
 
 	getGroupList() {
@@ -166,14 +166,14 @@ export class HttpService {
 
 		let options = { headers: headers }
 
-    const body = {
-      startDate: orderSliceObj.startDate,
-      endDate: orderSliceObj.endDate,
-      maxRecNum: orderSliceObj.maxRecNum,
-      groups: orderSliceObj.groups
-    }
+		const body = {
+			startDate: orderSliceObj.startDate,
+			endDate: orderSliceObj.endDate,
+			maxRecNum: orderSliceObj.maxRecNum,
+			groups: orderSliceObj.groups
+		}
 
-    return this.http.post(this.BASE_API_URL + this.changeLang + '/slices', body, options);
+		return this.http.post(this.BASE_API_URL + this.changeLang + '/slices', body, options);
 	}
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
@@ -182,12 +182,12 @@ export class HttpService {
 		});
 
 		let options = { headers: headers }
-    const body = {
-      historyId: saveEditReasonObj.historyId,
-      approveCode: saveEditReasonObj.approveCode,
-      territoryCode: saveEditReasonObj.territoryCode,
-      msg: saveEditReasonObj.msg
-    };
+		const body = {
+			historyId: saveEditReasonObj.historyId,
+			approveCode: saveEditReasonObj.approveCode,
+			territoryCode: saveEditReasonObj.territoryCode,
+			msg: saveEditReasonObj.msg
+		};
 		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
 	}
 
@@ -197,12 +197,12 @@ export class HttpService {
 		});
 
 		let options = { headers: headers }
-    const body = {
-      historyId: saveEditReasonObj.historyId,
-      approveCode: saveEditReasonObj.approveCode,
-      territoryCode: saveEditReasonObj.territoryCode,
-      msg: saveEditReasonObj.msg
-    };
+		const body = {
+			historyId: saveEditReasonObj.historyId,
+			approveCode: saveEditReasonObj.approveCode,
+			territoryCode: saveEditReasonObj.territoryCode,
+			msg: saveEditReasonObj.msg
+		};
 		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
 	}
 }

@@ -10,7 +10,27 @@
 </div>
 
 
-<table class="table" *ngIf="inputTableInAgreement">
+<p-table [value]="dataAgreement">
+	<ng-template pTemplate="header">
+		<tr>
+			<th *ngFor="let col of cols">
+				{{col.header}}
+			</th>
+		</tr>
+	</ng-template>
+
+	<ng-template pTemplate="body" let-dataAgreement>
+		<tr>
+			<td>{{dataAgreement.territoryName}}</td>
+			<td>{{dataAgreement.approveDate}}</td>
+			<td>{{dataAgreement.approveName}}</td>
+			<td>{{dataAgreement.personName}}</td>
+		</tr>
+	</ng-template>
+</p-table>
+
+
+<!-- <table class="table" *ngIf="inputTableInAgreement">
 	<thead>
 		<tr>
 			<th scope="col">{{gridTitle[0]}}</th>
@@ -19,7 +39,7 @@
 			<th scope="col">{{gridTitle[3]}}</th>
 		</tr>
 	</thead>
-	<tbody *ngFor="let a of inputDataGridInAgreement">
+	<tbody *ngFor="let a of gridListInAgreement">
 		<tr>
 			<th scope="row">{{a.territoryName}}</th>
 			<td>{{a.approveDate}}</td>
@@ -31,4 +51,4 @@
 			<td>{{a.personName}}</td>
 		</tr>
 	</tbody>
-</table>
+</table> -->
