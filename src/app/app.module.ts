@@ -31,6 +31,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TableModule } from 'primeng/table';
 
 // import { HttpClientModule } from '@angular/common/http';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -109,10 +110,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		MglTimelineModule,
 		MatToolbarModule,
 		DialogModule,
-    ProgressBarModule,
-    ToastModule,
+		ProgressBarModule,
+		ToastModule,
 		ProgressBarModule,
 		ProgressSpinnerModule,
+		TableModule,
 		MatProgressSpinnerModule,
 		TranslateModule.forRoot({
 			loader: {
@@ -126,17 +128,17 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 	exports: [
 		MatInputModule
 	],
-  providers: [
-    HttpService,
-    SharedService,
-    TimelineComponent,
-    TreeTableComponent,
+	providers: [
+		HttpService,
+		SharedService,
+		TimelineComponent,
+		TreeTableComponent,
 		ReportsModalComponent,
 		SliceOperationsModalComponent,
-    MessageService,
-    {provide: InjectableRxStompConfig, useValue: rxStompConfig},
-    { provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
-  ],
+		MessageService,
+		{ provide: InjectableRxStompConfig, useValue: rxStompConfig },
+		{ provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
+	],
 	bootstrap: [AppComponent],
 	entryComponents: [
 		SliceOperationsModalContentComponent,

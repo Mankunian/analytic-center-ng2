@@ -1,16 +1,36 @@
 <div *ngIf="inputTableInAgreement" class="col-md-12" style="background-color: #E6E6E6;">
 	<div class="row" style="padding: 10px 0 0;">
 		<div class="col-md-6">
-			<p><span style="font-weight: bold;">Срез отправил на согласование: </span> {{inputPersonName}}</p>
+			<p><span style="font-weight: bold;">Срез отправил на согласование: </span> {{personName}}</p>
 		</div>
 		<div class="col-md-6" style="text-align: right;">
-			<p><span style="font-weight: bold;">Время отправки на согласование среза:</span> {{inputStatusDate}}</p>
+			<p><span style="font-weight: bold;">Время отправки на согласование среза:</span> {{statusDate}}</p>
 		</div>
 	</div>
 </div>
 
 
-<table class="table" *ngIf="inputTableInAgreement">
+<p-table [value]="dataAgreement">
+	<ng-template pTemplate="header">
+		<tr>
+			<th *ngFor="let col of cols">
+				{{col.header}}
+			</th>
+		</tr>
+	</ng-template>
+
+	<ng-template pTemplate="body" let-dataAgreement>
+		<tr>
+			<td>{{dataAgreement.territoryName}}</td>
+			<td>{{dataAgreement.approveDate}}</td>
+			<td>{{dataAgreement.approveName}}</td>
+			<td>{{dataAgreement.personName}}</td>
+		</tr>
+	</ng-template>
+</p-table>
+
+
+<!-- <table class="table" *ngIf="inputTableInAgreement">
 	<thead>
 		<tr>
 			<th scope="col">{{gridTitle[0]}}</th>
@@ -19,7 +39,7 @@
 			<th scope="col">{{gridTitle[3]}}</th>
 		</tr>
 	</thead>
-	<tbody *ngFor="let a of inputDataGridInAgreement">
+	<tbody *ngFor="let a of gridListInAgreement">
 		<tr>
 			<th scope="row">{{a.territoryName}}</th>
 			<td>{{a.approveDate}}</td>
@@ -31,4 +51,4 @@
 			<td>{{a.personName}}</td>
 		</tr>
 	</tbody>
-</table>
+</table> -->

@@ -5,7 +5,10 @@
 	border-radius: 0;
 }
 
-.mat-dialog-content { min-height: 560px; font-size: 15px;}
+.mat-dialog-content { 
+	// min-height: 560px; 
+	font-size: 15px;
+}
 
 .headerReports {
   background-color: #214878;
@@ -36,7 +39,6 @@ mgl-timeline{
 }
 
 .footerReports{
-  // background-color: #214878;
   padding: 5px;
   height: 65px;
 }

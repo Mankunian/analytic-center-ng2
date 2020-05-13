@@ -27,12 +27,19 @@
 						<span class="titleStyle">{{sliceCreator}} </span>
 						{{history.personName}}
 					</div>
-					<div>
+					<div [hidden]="history.statusCode == '5'">
 						<span class="titleStyle">
 							{{sliceDate}}
 
 						</span>
 						{{history.statusDate}}
+					</div>
+					<div *ngIf="history.statusCode == '5'">
+						<span class="titleStyle">
+							{{errorMsg}}
+
+						</span>
+						{{history.msg}}
 					</div>
 				</mgl-timeline-entry-content>
 
@@ -42,6 +49,7 @@
 			</mgl-timeline-entry>
 		</mgl-timeline>
 
-		<app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement"
+
+		<!-- <app-grid-data-in-agreement [inputDataGridInAgreement]="gridListInAgreement"
 			[inputTableInAgreement]="showTableInAgreement" [inputPersonName]="personName" [inputStatusDate]="statusDate">
-		</app-grid-data-in-agreement>
+		</app-grid-data-in-agreement> -->
