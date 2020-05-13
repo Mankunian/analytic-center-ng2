@@ -37,9 +37,16 @@
 			</td>
 			<td style="font-weight: 600; color: #003f59;">
 				{{rowData.name}}
-				<a (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2"> <span
-						*ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period"> {{'TREE_TABLE.PERIOD' | translate}}
+				<a [hidden]="rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR" (click)="openReportsModal(rowData)"
+					class="reportsModalLink" *ngIf="rowNode.level == 2"> <span *ngIf="rowData.id">№{{rowData.id}}</span> <span
+						*ngIf="rowData.period"> {{'TREE_TABLE.PERIOD' | translate}}
 						{{rowData.period}}</span></a>
+				<div class="reportsModalLink"
+					*ngIf="rowNode.level == 2 && rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR">
+					<span *ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period">
+						{{'TREE_TABLE.PERIOD' | translate}}
+						{{rowData.period}}</span>
+				</div>
 			</td>
 			<td>
 				{{rowData.maxRecNum}}
@@ -49,7 +56,7 @@
 			</td>
 			<td style="text-align: center;">
 				<p-button (click)="openOperationSliceModal(rowData)"
-					*ngIf="rowData.statusCode == STATUS_CODES.IN_AGREEMENT || rowData.statusCode == STATUS_CODES.APPROVED || rowData.statusCode == STATUS_CODES.PRELIMINARY || rowData.statusCode == STATUS_CODES.DELETED"
+					*ngIf="rowData.statusCode == STATUS_CODES.IN_AGREEMENT || rowData.statusCode == STATUS_CODES.APPROVED || rowData.statusCode == STATUS_CODES.PRELIMINARY || rowData.statusCode == STATUS_CODES.DELETED || rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR"
 					label="{{'TREE_TABLE.SLICE_OPERATION' | translate}}"></p-button>
 			</td>
 			<td>
