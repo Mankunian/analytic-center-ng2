@@ -7,6 +7,11 @@
   width: 100%;
   overflow: hidden;
 }
+.loader-wrapper {
+  height: 5px;
+  width: 100%;
+  background: transparent;
+}
 .loader .bar {
   position: relative;
   height: 5px;
@@ -17,11 +22,19 @@
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
-
+.text-align-center {
+  text-align: center;
+}
+.text-align-right {
+  text-align: right;
+}
 .sliceContent {
   margin: 15px 0;
 }
-
+.treetable-headers {
+  color: #003f59;
+  text-align: center;
+}
 .sliceContent .showDeletedCheckbox {
   float: right;
   font-weight: 500;
