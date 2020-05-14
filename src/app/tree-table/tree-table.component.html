@@ -53,12 +53,12 @@
 					class="reportsModalLink" *ngIf="rowNode.level == 2"> <span *ngIf="rowData.id">№{{rowData.id}}</span> <span
 						*ngIf="rowData.period"> {{'TREE_TABLE.PERIOD' | translate}}
 						{{rowData.period}}</span></a>
-				<div class="reportsModalLink"
+				<span class="reportsModalLink"
 					*ngIf="rowNode.level == 2 && rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR">
 					<span *ngIf="rowData.id">№{{rowData.id}}</span> <span *ngIf="rowData.period">
 						{{'TREE_TABLE.PERIOD' | translate}}
 						{{rowData.period}}</span>
-				</div>
+				</span>
 			</td>
 			<td>
 				{{ rowData.maxRecNum }}

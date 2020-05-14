@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -44,7 +45,7 @@ export class SharedService {
 	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
 	sendGridInAgreement(gridData: any) {
-		// console.log(gridData)
+		console.log(gridData)
 		this.subGridInAgreement.next(gridData)
 	}
 
