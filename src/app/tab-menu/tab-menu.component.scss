@@ -1,66 +1,61 @@
-mat-tab-group{
-	padding: 0 15px;
+mat-tab-group {
+  padding: 0 15px;
 }
 
-
-
-.orderSliceContent{
-	margin: 15px;
-	text-align: center !important;
-	// height: 100vh;
+.orderSliceContent {
+  margin: 15px;
+  text-align: center !important;
+  // height: 100vh;
 }
-.orderSliceContent h2{
-	text-transform: uppercase;
+.orderSliceContent h2 {
+  text-transform: uppercase;
 }
 
-
-mat-checkbox{
-	float: right;
+mat-checkbox {
+  float: right;
 }
 
-.box{
-	display: grid;
-	/* background: #fff; */
-	border: 2px solid #000;
-	border-radius: 5px;
-	padding: 12px;
+.box {
+  display: grid;
+  /* background: #fff; */
+  border: 2px solid #000;
+  border-radius: 5px;
+  padding: 12px;
 }
 
-.box mat-checkbox{
-	text-align: left;
+.box mat-checkbox {
+  text-align: left;
 }
 
-
-
-mat-form-field{
-	width: 100%;
+mat-form-field {
+  width: 100%;
 }
 
-.orderSlice{
-	width: 100%;
+.orderSlice {
+  width: 100%;
 }
 
 .example-full-width {
-	// width: 80%;
-	float: left;
+  // width: 80%;
+  float: left;
 }
 
-.forms mat-icon{
-	width: 20%;
-	float: right;
-	margin-top: 20px;
+.forms mat-icon {
+  width: 20%;
+  float: right;
+  margin-top: 20px;
 }
 
-p-calendar{
-	overflow: hidden;
+p-calendar {
+  overflow: hidden;
 }
 
-mat-tab-body-content{
-	overflow: hidden;
+mat-tab-body-content {
+  overflow: hidden;
 }
 
-p-calendar .dateFrom{
-	margin-bottom: 25px;
+p-calendar .dateFrom {
+  margin-bottom: 25px;
 }
 
 @keyframes loader-animation {
@@ -95,20 +90,18 @@ p-calendar .dateFrom{
   animation-timing-function: ease-in-out;
 }
 
-
 // custom style component
 
-
 ::ng-deep .mat-tab-label {
-  background-color: #F2F3F4 !important;
+  background-color: #f2f3f4 !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   min-width: 90px !important;
 }
 
 ::ng-deep .mat-tab-label-active {
-  background-color: #EAEBED !important;
-  color: #1975C0 !important;
+  background-color: #eaebed !important;
+  color: #1975c0 !important;
   font-weight: 500 !important;
   text-transform: uppercase !important;
   opacity: 1 !important;
@@ -119,4 +112,5 @@ p-calendar .dateFrom{
 }
 
 ::ng-deep .mat-ink-bar {
-  background-color: #EAEBED !important;}
+  background-color: #eaebed !important;
+}
