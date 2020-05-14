@@ -108,7 +108,6 @@ export class TreeTableComponent implements OnInit {
   }
 
   onNodeExpand(event) {
-    console.log("TreeTableComponent -> onNodeExpand -> event", event);
     if (event.node.parent != null) {
       this.loader = true;
       (this.groupCode = event.node.parent.data.code),
@@ -165,7 +164,11 @@ export class TreeTableComponent implements OnInit {
     const slicePeriod = row.period;
     const sliceGroupCode = row.groupCode;
 
-    if (row.statusCode == "0" || row.statusCode == "6") {
+    if (
+      row.statusCode == this.STATUS_CODES.IN_PROCESSING ||
+      row.statusCode == this.STATUS_CODES.FORMED_WITH_ERROR ||
+      row.statusCode == this.STATUS_CODES.WAITING_FOR_PROCESSING
+    ) {
       alert("По данному статусу невозможно получить отчет!");
     } else {
       const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
