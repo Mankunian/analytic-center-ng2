@@ -1,28 +1,28 @@
 mat-toolbar button {
-	margin-right: 15px;
+  margin-right: 15px;
 }
 
-.titleStyle{
-	font-weight: 700;
-	// font-style: italic;
+.titleStyle {
+  font-weight: 700;
+  // font-style: italic;
 }
 
-mgl-timeline-entry-header{
-	cursor: pointer;
+mgl-timeline-entry-header {
+  cursor: pointer;
 }
-.backToHistory{
-	color: #2E86CD;
+.backToHistory {
+  color: #2e86cd;
 }
-.backToHistory:hover{
-	text-decoration: underline;
-	color: #6384A2;
-	cursor: pointer;
-}
-
-.backgroundLast{
-	background-color:#007bff
+.backToHistory:hover {
+  text-decoration: underline;
+  color: #6384a2;
+  cursor: pointer;
 }
 
-.showBlock{
-	display: block;
+.backgroundLast {
+  background-color: #007bff;
+}
+
+.showBlock {
+  display: block;
 }
