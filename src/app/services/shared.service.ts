@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -44,7 +45,7 @@ export class SharedService {
 	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
 	sendGridInAgreement(gridData: any) {
-		// console.log(gridData)
+		console.log(gridData)
 		this.subGridInAgreement.next(gridData)
 	}
 
@@ -110,6 +111,15 @@ export class SharedService {
 	sendHeaderInfo(headerInfoObj: any) {
 		console.log(headerInfoObj)
 		this.subGridAgreementHeaderInfo.next(headerInfoObj)
+	}
+
+	//share visible status of table in agreement
+	private subGridAgreementVisibleStatus = new Subject();
+	subjGridAgreementVisibleStatus$ = this.subGridAgreementVisibleStatus.asObservable();
+
+	sendVisibleTableInAgreement(status: any) {
+		console.log(status)
+		this.subGridAgreementVisibleStatus.next(status)
 	}
 
 

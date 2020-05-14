@@ -44,33 +44,3 @@
 		</mat-dialog-actions>
 	</div>
 </div>
-
-
-
-<!-- <mat-dialog-content class="mat-typography">
-	<div class="text-center" *ngIf="!historyValue || preloader">
-		<p-progressSpinner></p-progressSpinner>
-	</div>
-	<app-timeline></app-timeline>
-	<app-grid-data-in-agreement></app-grid-data-in-agreement>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-	<div class="col-md-6" *ngIf="!headTerritory">
-		<div *ngIf="btnInAgreement">
-			<p-button [disabled]="disableBtn" (click)="approveSlice()" label="Согласовать"></p-button>
-			<p-button [disabled]="disableBtn" (click)="rejectInAgreement()" label="Отказать"></p-button>
-		</div>
-	</div>
-	<div class="col-md-6" *ngIf="headTerritory">
-		<div *ngIf="btnInAgreement">
-			<button style="margin-right: 10px;" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
-			<button (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
-		</div>
-		<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
-		<p-button (click)="sendToAgreement()" *ngIf="btnToAgreement" label="На согласование"></p-button>
-	</div>
-	<div class="col-md-6" style="text-align: right;">
-		<button mat-dialog-close mat-raised-button color="warn">{{'SLICE_OPERATION_MODAL.CANCEL' | translate}}</button>
-	</div>
-</mat-dialog-actions> -->
