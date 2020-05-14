@@ -57,7 +57,6 @@ export class GridDataInAgreementComponent {
 
 	getGridDataInAgreement(value) {
 		this.dataAgreement = value;
-		console.log(this.dataAgreement)
 	}
 
 	openRejectionReasonModal(rowEntity) {
@@ -70,7 +69,7 @@ export class GridDataInAgreementComponent {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log('modal closed')
+			console.log(result)
 		})
 	}
 }

@@ -9,3 +9,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   overflow-x: hidden;
   border-radius: 0;
 }
+
+body .ui-table .ui-table-tbody > tr:nth-child(even){
+	background-color: #daecf4 !important;
+  border: 1px solid #94c0d2 !important;
+}
+
+body .ui-table .ui-table-thead > tr > th {
+	background-color: #daecf4 !important;
+  border: 1px solid #94c0d2 !important;
+}
