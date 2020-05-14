@@ -52,17 +52,10 @@
           [ngStyle]="{ 'margin-left.px': tableIndentSize * rowNode.level }"
         ></span>
         {{ rowData.name }}
-        <a [hidden]="rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR" (click)="openReportsModal(rowData)" class="reportsModalLink" *ngIf="rowNode.level == 2">
+        <a class="reportsModalLink" (click)="openReportsModal(rowData)" *ngIf="rowNode.level == 2">
           <span *ngIf="rowData.id">№{{ rowData.id }}</span>
-          <span *ngIf="rowData.period"> {{ "TREE_TABLE.PERIOD" | translate }} {{ rowData.period }}</span></a
-        >
-        <span class="reportsModalLink" *ngIf="rowNode.level == 2 && rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR">
-          <span *ngIf="rowData.id">№{{ rowData.id }}</span>
-          <span *ngIf="rowData.period">
-            {{ "TREE_TABLE.PERIOD" | translate }}
-            {{ rowData.period }}</span
-          >
-        </span>
+          <span *ngIf="rowData.period"> {{ "TREE_TABLE.PERIOD" | translate }} {{ rowData.period }}</span>
+        </a>
       </td>
       <!-- На номер -->
       <td class="text-align-right">
