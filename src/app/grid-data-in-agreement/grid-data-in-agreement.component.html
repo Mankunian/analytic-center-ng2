@@ -23,7 +23,11 @@
 		<tr>
 			<td>{{dataAgreement.territoryName}}</td>
 			<td>{{dataAgreement.approveDate}}</td>
-			<td>{{dataAgreement.approveName}}</td>
+			<td>
+				<a (click)="openRejectionReasonModal(dataAgreement)" class="underline" style="color: red;"
+					*ngIf="dataAgreement.approveCode =='2'">{{dataAgreement.approveName}}</a>
+				<span *ngIf="dataAgreement.approveCode == '1'">{{dataAgreement.approveName}}</span>
+			</td>
 			<td>{{dataAgreement.personName}}</td>
 		</tr>
 	</ng-template>
