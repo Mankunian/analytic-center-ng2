@@ -1,103 +1,126 @@
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+/* eslint-disable prettier/prettier */
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+	providedIn: 'root'
 })
 export class SharedService {
-  // Territory code
-  private subTerrCode = new Subject();
-  subjTerrCode$ = this.subTerrCode.asObservable();
 
-  sendTerrCode(terrCode: string) {
-    this.subTerrCode.next(terrCode);
-  }
+	// Territory code
+	private subTerrCode = new Subject();
+	subjTerrCode$ = this.subTerrCode.asObservable();
 
-  // Show Table In Agreement
-  private subTable = new Subject();
-  subjTable$ = this.subTable.asObservable();
+	sendTerrCode(terrCode: string) {
+		this.subTerrCode.next(terrCode)
+	}
 
-  showTableAgreement(showTable: boolean) {
-    console.log("показать таблицу " + showTable);
-    this.subTable.next(showTable);
-  }
+	// Show Table In Agreement
+	private subTable = new Subject();
+	subjTable$ = this.subTable.asObservable();
 
-  // HistoryList update
-  private subHistoryValue = new Subject();
-  subjHistoryValue$ = this.subHistoryValue.asObservable();
+	showTableAgreement(showTable: boolean) {
+		console.log('показать таблицу ' + showTable)
+		this.subTable.next(showTable)
+	}
 
-  sendHistoryList(historyValue: any) {
-    this.subHistoryValue.next(historyValue);
-  }
+	// HistoryList update 
+	private subHistoryValue = new Subject();
+	subjHistoryValue$ = this.subHistoryValue.asObservable()
 
-  //history Id to Edit Rejection Reason Modal
-  private subHistoryId = new Subject();
-  subjHistoryId$ = this.subHistoryId.asObservable();
+	sendHistoryList(historyValue: any) {
+		this.subHistoryValue.next(historyValue)
+	}
 
-  sendHistoryId(historyId: any) {
-    this.subHistoryId.next(historyId);
-  }
+	//history Id to Edit Rejection Reason Modal
+	private subHistoryId = new Subject();
+	subjHistoryId$ = this.subHistoryId.asObservable()
 
-  //grid-in-agreement
-  private subGridInAgreement = new Subject();
-  subjGridInAgreement$ = this.subGridInAgreement.asObservable();
+	sendHistoryId(historyId: any) {
+		this.subHistoryId.next(historyId)
+	}
 
-  sendGridInAgreement(gridData: any) {
-    this.subGridInAgreement.next(gridData);
-  }
+	//Таблица в модалке Операция со срезами со статусом На согласовании
+	private subGridInAgreement = new Subject();
+	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
-  // approve and reject btn status for disable
-  private subBtnStatus = new Subject();
-  subjBtnStatus$ = this.subBtnStatus.asObservable();
+	sendGridInAgreement(gridData: any) {
+		console.log(gridData)
+		this.subGridInAgreement.next(gridData)
+	}
 
-  approveAndRejectBtnStatus(btnStatus: any) {
-    this.subBtnStatus.next(btnStatus);
-  }
+	// approve and reject btn status for disable
+	private subBtnStatus = new Subject();
+	subjBtnStatus$ = this.subBtnStatus.asObservable();
 
-  // Список групп на КАЗ во вкладке "Сформировать срез"
-  private subGroupListKaz = new Subject();
-  subjGroupListKaz$ = this.subGroupListKaz.asObservable();
+	approveAndRejectBtnStatus(btnStatus: any) {
+		this.subBtnStatus.next(btnStatus)
+	}
 
-  sendGroupListLang(groupListLang: any) {
-    this.subGroupListKaz.next(groupListLang);
-  }
+	// Список групп на КАЗ во вкладке "Сформировать срез" 
+	private subGroupListKaz = new Subject();
+	subjGroupListKaz$ = this.subGroupListKaz.asObservable();
 
-  // for sharing lang
-  private subSliceGroupLang = new Subject();
-  subjSliceGroupLang$ = this.subSliceGroupLang.asObservable();
+	sendGroupListLang(groupListLang: any) {
+		this.subGroupListKaz.next(groupListLang)
+	}
 
-  sendSliceGroupLang(sliceGroup: any) {
-    this.subSliceGroupLang.next(sliceGroup);
-  }
+	// for sharing lang
+	private subSliceGroupLang = new Subject();
+	subjSliceGroupLang$ = this.subSliceGroupLang.asObservable();
 
-  //for sharing order slice data to tree-table component
-  private subOrderSliceData = new Subject();
-  subjOrderSliceData$ = this.subOrderSliceData.asObservable();
+	sendSliceGroupLang(sliceGroup: any) {
+		this.subSliceGroupLang.next(sliceGroup)
+	}
 
-  sendOrderSliceList(orderSliceList: any) {
-    this.subOrderSliceData.next(orderSliceList);
-  }
+	//for sharing order slice data to tree-table component
+	private subOrderSliceData = new Subject();
+	subjOrderSliceData$ = this.subOrderSliceData.asObservable();
 
-  //for sharing progressbar-websocket list to tree-table component
-  private subProgressbarWs = new Subject();
-  subjProgressbarWs$ = this.subProgressbarWs.asObservable();
+	sendOrderSliceList(orderSliceList: any) {
+		this.subOrderSliceData.next(orderSliceList)
+	}
 
-  sendProgressBarList(progressbarWsList: any) {
-    // console.log(progressbarWsList)
-    this.subProgressbarWs.next(progressbarWsList);
-  }
+	//for sharing progressbar-websocket list to tree-table component
+	private subProgressbarWs = new Subject();
+	subjProgressbarWs$ = this.subProgressbarWs.asObservable();
 
-  private subChangeLang = new Subject();
-  subjChangeLang$ = this.subChangeLang.asObservable();
+	sendProgressBarList(progressbarWsList: any) {
+		// console.log(progressbarWsList)
+		this.subProgressbarWs.next(progressbarWsList)
+	}
+	/////////////////////////////
+	private subChangeLang = new Subject();
+	subjChangeLang$ = this.subChangeLang.asObservable();
 
-  changeLangService(changeLang: any) {
-    this.subChangeLang.next(changeLang);
-  }
+	changeLangService(changeLang: any) {
+		this.subChangeLang.next(changeLang)
+	}
+	////////////////////////////////////
+	private subCheckDeleted = new Subject();
+	subjCheckDeleted$ = this.subCheckDeleted.asObservable();
 
-  private subCheckDeleted = new Subject();
-  subjCheckDeleted$ = this.subCheckDeleted.asObservable();
+	showDeletedService(checkDeleted: any) {
+		this.subCheckDeleted.next(checkDeleted)
+	}
 
-  showDeletedService(checkDeleted: any) {
-    this.subCheckDeleted.next(checkDeleted);
-  }
+	// header info in agreement status data grid
+	private subGridAgreementHeaderInfo = new Subject();
+	subjGridAgreementHeaderInfo$ = this.subGridAgreementHeaderInfo.asObservable();
+
+	sendHeaderInfo(headerInfoObj: any) {
+		console.log(headerInfoObj)
+		this.subGridAgreementHeaderInfo.next(headerInfoObj)
+	}
+
+	//share visible status of table in agreement
+	private subGridAgreementVisibleStatus = new Subject();
+	subjGridAgreementVisibleStatus$ = this.subGridAgreementVisibleStatus.asObservable();
+
+	sendVisibleTableInAgreement(status: any) {
+		console.log(status)
+		this.subGridAgreementVisibleStatus.next(status)
+	}
+
+
 }

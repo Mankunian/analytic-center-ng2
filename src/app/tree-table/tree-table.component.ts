@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Component, OnInit, Input } from "@angular/core";
 import { TreeNode } from "primeng/api";
 import { HttpService } from "../services/http.service";
@@ -128,6 +129,7 @@ export class TreeTableComponent implements OnInit {
   }
 
   openOperationSliceModal(rowEntity) {
+    console.log(rowEntity);
     this.period = rowEntity.period;
     this.sliceId = rowEntity.id;
     const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {

@@ -1,72 +1,46 @@
 <div mat-dialog-title class="row">
-  <div class="col-md-12 headerReports">
-    <div class="row">
-      <div class="col-md-6">
-        <h2 mat-dialog-title>{{ "SLICE_OPERATION_MODAL.SLICE_OPERATION" | translate }}</h2>
-      </div>
-      <div class="col-md-6">
-        <i style="float: right;" class="material-icons" [mat-dialog-close]="true">clear</i>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-12 contentReports">
-    <mat-dialog-content>
-      <div class="text-center progressSpinner" *ngIf="!historyValue || preloader">
-        <p-progressSpinner></p-progressSpinner>
-      </div>
-      <app-timeline></app-timeline>
-      <app-grid-data-in-agreement></app-grid-data-in-agreement>
-    </mat-dialog-content>
-  </div>
-  <div class="col-md-12 footerReports">
-    <mat-dialog-actions>
-      <div class="col-md-6" *ngIf="!headTerritory">
-        <div *ngIf="btnInAgreement">
-          <p-button [disabled]="disableBtn" (click)="approveSlice()" label="Согласовать"></p-button>
-          <p-button [disabled]="disableBtn" (click)="rejectInAgreement()" label="Отказать"></p-button>
-        </div>
-      </div>
-      <div class="col-md-6" *ngIf="headTerritory">
-        <div *ngIf="btnInAgreement">
-          <button style="margin-right: 10px;" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
-          <button (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
-        </div>
-        <p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
-        <p-button (click)="sendToAgreement()" *ngIf="btnToAgreement" label="На согласование"></p-button>
-      </div>
-      <div class="col-md-6" style="text-align: right;">
-        <!-- <button class="cancelBtn" mat-dialog-close
+	<div class="col-md-12 headerReports">
+		<div class="row">
+			<div class="col-md-6">
+				<h2 mat-dialog-title>{{'SLICE_OPERATION_MODAL.SLICE_OPERATION' | translate}}</h2>
+			</div>
+			<div class="col-md-6">
+				<i style="float: right;" class="material-icons" [mat-dialog-close]="true">clear</i>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 contentReports">
+		<mat-dialog-content>
+			<div class="text-center progressSpinner" *ngIf="!historyValue || preloader">
+				<p-progressSpinner></p-progressSpinner>
+			</div>
+			<app-timeline></app-timeline>
+			<app-grid-data-in-agreement></app-grid-data-in-agreement>
+		</mat-dialog-content>
+	</div>
+	<div class="col-md-12 footerReports">
+		<mat-dialog-actions>
+			<div class="col-md-6" *ngIf="!headTerritory">
+				<div *ngIf="btnInAgreement">
+					<button style="margin: 0 5px;" class="marginbtn" pButton type="button" [disabled]="disableBtn"
+						(click)="approveSlice()" label="Согласовать"></button>
+					<button class="marginBtn" pButton type="button" [disabled]="disableBtn" (click)="rejectInAgreement()"
+						label="Отказать"></button>
+				</div>
+			</div>
+			<div class="col-md-6" *ngIf="headTerritory">
+				<div *ngIf="btnInAgreement">
+					<button style="margin-right: 10px;" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
+					<button (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
+				</div>
+				<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
+				<p-button (click)="sendToAgreement()" *ngIf="btnToAgreement" label="На согласование"></p-button>
+			</div>
+			<div class="col-md-6" style="text-align: right;">
+				<!-- <button class="cancelBtn" mat-dialog-close
 					mat-raised-button>{{'SLICE_OPERATION_MODAL.CANCEL' | translate}}</button> -->
-        <p-button [mat-dialog-close]="true" label="{{ 'SLICE_OPERATION_MODAL.CANCEL' | translate }}"></p-button>
-      </div>
-    </mat-dialog-actions>
-  </div>
+				<p-button [mat-dialog-close]="true" label="{{'SLICE_OPERATION_MODAL.CANCEL' | translate}}"></p-button>
+			</div>
+		</mat-dialog-actions>
+	</div>
 </div>
-
-<!-- <mat-dialog-content class="mat-typography">
-	<div class="text-center" *ngIf="!historyValue || preloader">
-		<p-progressSpinner></p-progressSpinner>
-	</div>
-	<app-timeline></app-timeline>
-	<app-grid-data-in-agreement></app-grid-data-in-agreement>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-	<div class="col-md-6" *ngIf="!headTerritory">
-		<div *ngIf="btnInAgreement">
-			<p-button [disabled]="disableBtn" (click)="approveSlice()" label="Согласовать"></p-button>
-			<p-button [disabled]="disableBtn" (click)="rejectInAgreement()" label="Отказать"></p-button>
-		</div>
-	</div>
-	<div class="col-md-6" *ngIf="headTerritory">
-		<div *ngIf="btnInAgreement">
-			<button style="margin-right: 10px;" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
-			<button (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
-		</div>
-		<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
-		<p-button (click)="sendToAgreement()" *ngIf="btnToAgreement" label="На согласование"></p-button>
-	</div>
-	<div class="col-md-6" style="text-align: right;">
-		<button mat-dialog-close mat-raised-button color="warn">{{'SLICE_OPERATION_MODAL.CANCEL' | translate}}</button>
-	</div>
-</mat-dialog-actions> -->
