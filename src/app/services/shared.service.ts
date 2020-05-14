@@ -113,5 +113,14 @@ export class SharedService {
 		this.subGridAgreementHeaderInfo.next(headerInfoObj)
 	}
 
+	//share visible status of table in agreement
+	private subGridAgreementVisibleStatus = new Subject();
+	subjGridAgreementVisibleStatus$ = this.subGridAgreementVisibleStatus.asObservable();
+
+	sendVisibleTableInAgreement(status: any) {
+		console.log(status)
+		this.subGridAgreementVisibleStatus.next(status)
+	}
+
 
 }

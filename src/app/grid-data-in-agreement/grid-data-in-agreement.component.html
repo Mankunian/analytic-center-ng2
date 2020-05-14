@@ -1,37 +1,39 @@
-<div *ngIf="inputTableInAgreement" class="col-md-12" style="background-color: #E6E6E6;">
-	<div class="row" style="padding: 10px 0 0;">
-		<div class="col-md-6">
-			<p><span style="font-weight: bold;">Срез отправил на согласование: </span> {{personName}}</p>
-		</div>
-		<div class="col-md-6" style="text-align: right;">
-			<p><span style="font-weight: bold;">Время отправки на согласование среза:</span> {{statusDate}}</p>
+<div [hidden]="!showTable">
+	<div class="col-md-12" style="background-color: #E6E6E6;">
+		<div class="row" style="padding: 10px 0 0;">
+			<div class="col-md-6">
+				<p><span style="font-weight: bold;">Срез отправил на согласование: </span> {{personName}}</p>
+			</div>
+			<div class="col-md-6" style="text-align: right;">
+				<p><span style="font-weight: bold;">Время отправки на согласование среза:</span> {{statusDate}}</p>
+			</div>
 		</div>
 	</div>
+
+
+	<p-table [value]="dataAgreement">
+		<ng-template pTemplate="header">
+			<tr>
+				<th *ngFor="let col of cols">
+					{{col.header}}
+				</th>
+			</tr>
+		</ng-template>
+
+		<ng-template pTemplate="body" let-dataAgreement>
+			<tr>
+				<td>{{dataAgreement.territoryName}}</td>
+				<td>{{dataAgreement.approveDate}}</td>
+				<td>
+					<a (click)="openRejectionReasonModal(dataAgreement)" class="underline" style="color: red;"
+						*ngIf="dataAgreement.approveCode =='2'">{{dataAgreement.approveName}}</a>
+					<span *ngIf="dataAgreement.approveCode == '1'">{{dataAgreement.approveName}}</span>
+				</td>
+				<td>{{dataAgreement.personName}}</td>
+			</tr>
+		</ng-template>
+	</p-table>
 </div>
-
-
-<p-table [value]="dataAgreement">
-	<ng-template pTemplate="header">
-		<tr>
-			<th *ngFor="let col of cols">
-				{{col.header}}
-			</th>
-		</tr>
-	</ng-template>
-
-	<ng-template pTemplate="body" let-dataAgreement>
-		<tr>
-			<td>{{dataAgreement.territoryName}}</td>
-			<td>{{dataAgreement.approveDate}}</td>
-			<td>
-				<a (click)="openRejectionReasonModal(dataAgreement)" class="underline" style="color: red;"
-					*ngIf="dataAgreement.approveCode =='2'">{{dataAgreement.approveName}}</a>
-				<span *ngIf="dataAgreement.approveCode == '1'">{{dataAgreement.approveName}}</span>
-			</td>
-			<td>{{dataAgreement.personName}}</td>
-		</tr>
-	</ng-template>
-</p-table>
 
 
 <!-- <table class="table" *ngIf="inputTableInAgreement">

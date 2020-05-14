@@ -99,6 +99,7 @@ export class TimelineComponent {
 						}
 					);
 					this.showTableInAgreement = true;
+					this.dataService.sendVisibleTableInAgreement(this.showTableInAgreement);
 				} else {
 					this.showTimeline = true;
 				}
@@ -130,13 +131,12 @@ export class TimelineComponent {
 			this.sliceCreator = "Срез отправил на согласование:";
 			this.sliceDate = "Время отправки на согласование среза:";
 			this.showTableInAgreement = true;
+			this.dataService.sendVisibleTableInAgreement(this.showTableInAgreement);
 			this.showTimeline = false;
 
 			this.personName = historyValue.personName;
 			this.statusDate = historyValue.statusDate;
 
-			console.log(historyValue.sliceId)
-			console.log(historyValue.id)
 			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe(
 				data => {
 					this.gridListInAgreement = data;
@@ -164,6 +164,7 @@ export class TimelineComponent {
 	backToTimeline() {
 		this.showTimeline = true;
 		this.showTableInAgreement = false;
+		this.dataService.sendVisibleTableInAgreement(this.showTableInAgreement);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
