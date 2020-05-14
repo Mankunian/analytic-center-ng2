@@ -27,5 +27,11 @@ module.exports = {
         useTabs: true,
       },
     },
+    {
+      files: "*.html",
+      options: {
+        printWidth: 200,
+      },
+    },
   ],
 };

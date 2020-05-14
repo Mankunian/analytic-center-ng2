@@ -14,7 +14,7 @@
   min-height: 300px;
 }
 .even-row {
-  background-color: #1CA979 !important;
+  background-color: #1ca979 !important;
   color: #ffffff !important;
 }
 .lang-checkbox-label {
@@ -45,7 +45,7 @@
   margin-right: 8px;
   cursor: pointer;
   opacity: 0.6;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }
 .remove-icon:hover {
   opacity: 1;
@@ -185,7 +185,7 @@
 .header-modal-reports > .row {
   padding: 10px 0;
 }
-.header-modal-reports h2{
+.header-modal-reports h2 {
   color: #fff;
 }
 .header-modal-reports .material-icons {
@@ -201,7 +201,7 @@
 .tab-reports .mat-tab-label.mat-tab-label-active {
   min-width: 25px !important;
   border: 1px solid #dcd5d5;
-  background-color: white!important;
+  background-color: white !important;
   padding: 10px;
   border-radius: 5px;
 }
@@ -209,38 +209,38 @@
 .tab-reports .mat-ink-bar {
   background-color: green;
 }
-.tab-reports .mat-tab-labels{
+.tab-reports .mat-tab-labels {
   padding: 10px 15px 0px;
 }
-.tab-reports .mat-tab-label{
+.tab-reports .mat-tab-label {
   margin: 0 3px;
-  background: #D4DDE1 !important;
+  background: #d4dde1 !important;
   border: 1px solid #dcd5d5;
-  color: #1975C0 !important;
+  color: #1975c0 !important;
   border-radius: 5px;
 }
 .reports-modal-form {
   margin: 10px;
 }
-.tab-reports .mat-tab-header{
+.tab-reports .mat-tab-header {
   border-bottom: none;
-  background: #E8EDED;
+  background: #e8eded;
   margin-bottom: 15px;
 }
-.tab-reports .mat-tab-label-content{
+.tab-reports .mat-tab-label-content {
   font-weight: 500;
 }
-.example-form .title-form{
+.example-form .title-form {
   color: #214878;
 }
-.example-form .lang-form span{
+.example-form .lang-form span {
   color: #214878;
 }
-.mat-form-field-appearance-fill .mat-form-field-flex{
+.mat-form-field-appearance-fill .mat-form-field-flex {
   border-radius: 4px 4px 0 0;
   margin: 15px 0;
-  background: #E8EDED !important;
-  padding: .0.75em 0 .75em;
+  background: #e8eded !important;
+  padding: 0.75em 0 0.75em;
 }
 .mat-checkbox label {
   margin: 0 15px;
@@ -248,18 +248,21 @@
 .reports-list h3 {
   color: #214878;
 }
-.mat-dialog-actions{
+.mat-dialog-actions {
   padding: 8px 15px;
 }
-.mat-dialog-actions .mat-button-base+.mat-button-base{
-	background: #2272BE;
-	border-radius: 0;
+.mat-dialog-actions .mat-button-base + .mat-button-base {
+  background: #2272be;
+  border-radius: 0;
 }
-.mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary{
-	background: #2272BE;
-	border-radius: 0;
+.mat-fab.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-mini-fab.mat-primary,
+.mat-raised-button.mat-primary {
+  background: #2272be;
+  border-radius: 0;
 }
-.mat-dialog-title{
+.mat-dialog-title {
   margin-bottom: 0;
 }
 .loader {
@@ -283,6 +286,10 @@
 .reports-modal-form .reports-modal-form-label {
   margin-right: 15px;
 }
-.reports-modal-form .ng-tns-c5-8 {
-  margin-right: 25px;
+.reports-modal-form-label-period {
+  margin-left: 25px;
+}
+.reports-modal-form .mat-form-field-infix {
+  padding: 0 10px;
+  border: none;
 }
