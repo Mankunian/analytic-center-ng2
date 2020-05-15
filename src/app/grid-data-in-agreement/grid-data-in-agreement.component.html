@@ -12,6 +12,18 @@
 
 
 	<p-table [value]="dataAgreement">
+		<ng-template pTemplate="colgroup" let-columns>
+			<colgroup>
+				<!-- Терр.управление -->
+				<col style="width: 70px;" />
+				<!-- Дата/время -->
+				<col style="width: 30px;" />
+				<!-- Статус -->
+				<col style="width: 30px;" />
+				<!-- Фио -->
+				<col style="width: 40px;" />
+			</colgroup>
+		</ng-template>
 		<ng-template pTemplate="header">
 			<tr>
 				<th *ngFor="let col of cols">
