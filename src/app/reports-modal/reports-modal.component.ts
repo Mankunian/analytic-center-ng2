@@ -61,7 +61,7 @@ export class ReportsModalContentComponent {
   isReportsLoading: boolean;
   groupCode: any;
   isGroupERSOP = false;
-  gridScrollHeight = "450px";
+  gridScrollHeight = "400px";
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
