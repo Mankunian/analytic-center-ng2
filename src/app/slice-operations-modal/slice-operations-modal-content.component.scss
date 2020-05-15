@@ -8,6 +8,7 @@
 .mat-dialog-content { 
 	// min-height: 560px; 
 	font-size: 15px;
+	max-height: 80vh;
 }
 
 .headerReports {
@@ -46,4 +47,8 @@ mgl-timeline{
 
 body .ui-button{
   border-radius: 0 !important;
+}
+
+.cdk-overlay-pane{
+	height: 690px;
 }
