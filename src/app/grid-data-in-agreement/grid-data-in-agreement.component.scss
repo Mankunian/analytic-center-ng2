@@ -3,3 +3,7 @@ a.underline:hover{
 	cursor: pointer;
 }
 
+::ng-deep body .ui-table-wrapper{
+	overflow-y: scroll;
+    max-height: 400px;
+}

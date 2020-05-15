@@ -11,6 +11,12 @@
 	// max-height: 80vh;
 }
 
+.contentReports .mat-dialog-content{
+	min-height: 560px;
+	// overflow: hidden;
+	margin: 0 -15px;
+}
+
 .headerReports {
   background-color: #214878;
   border: none;
