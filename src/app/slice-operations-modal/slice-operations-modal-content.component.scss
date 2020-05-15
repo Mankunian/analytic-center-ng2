@@ -8,7 +8,13 @@
 .mat-dialog-content { 
 	// min-height: 560px; 
 	font-size: 15px;
-	max-height: 80vh;
+	// max-height: 80vh;
+}
+
+.contentReports .mat-dialog-content{
+	min-height: 560px;
+	// overflow: hidden;
+	margin: 0 -15px;
 }
 
 .headerReports {
