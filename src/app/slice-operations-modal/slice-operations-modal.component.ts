@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { SharedService } from "../services/shared.service";
 import { SaveEditReasonObj } from "../saveEditReasonObj";
 import { ErrorHandlerService } from "../services/error-handler.service";
+import { GlobalConfig } from "../global";
 
 @Component({
   selector: "app-slice-operations-modal",
@@ -25,6 +26,7 @@ export class SliceOperationsModalComponent {
   providers: [TimelineComponent],
 })
 export class SliceOperationsModalContentComponent {
+  public STATUS_CODES = GlobalConfig.STATUS_CODES;
   injectValueToModal: any;
   headTerritory: boolean;
   btnInAgreement: boolean;
@@ -59,15 +61,15 @@ export class SliceOperationsModalContentComponent {
   ngOnInit() {
     this.injectValueToModal = this.data;
 
-    if (this.injectValueToModal.statusCode == "7") {
+    if (this.injectValueToModal.statusCode == this.STATUS_CODES.IN_AGREEMENT) {
       this.btnInAgreement = true;
       this.showTableInAgreement = true;
       this.service.showTableAgreement(this.showTableInAgreement);
     }
-    if (this.injectValueToModal.statusCode == "1") {
+    if (this.injectValueToModal.statusCode == this.STATUS_CODES.APPROVED) {
       this.btnDecided = true;
     }
-    if (this.injectValueToModal.statusCode == "2") {
+    if (this.injectValueToModal.statusCode == this.STATUS_CODES.PRELIMINARY) {
       this.btnToAgreement = true;
     }
     if (this.injectValueToModal.terrCode == "19000090") {

@@ -1,15 +1,15 @@
-.slice-operations-modal .mat-dialog-container{
-	transform: none;
-	padding: 0;
-	overflow: hidden;
-	border-radius: 0;
+.slice-operations-modal .mat-dialog-container {
+  transform: none;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 0;
 }
 
-.mat-dialog-content { 
-	// min-height: 560px; 
-	font-size: 15px;
-	max-height: 80vh;
-}
+// .mat-dialog-content {
+// 	// min-height: 560px;
+// 	font-size: 15px;
+// 	max-height: 80vh;
+// }
 
 .headerReports {
   background-color: #214878;
@@ -17,38 +17,37 @@
   padding: 10px;
 }
 
-.headerReports h2{
+.headerReports h2 {
   color: #fff;
   margin: 0;
 }
 .headerReports .material-icons {
-color: #fff;
+  color: #fff;
 }
 .mat-dialog-title {
   margin-bottom: 0;
 }
 
-.progressSpinner{
-  text-align: center!important;
+.progressSpinner {
+  text-align: center !important;
   position: absolute;
   top: 40%;
   left: 45%;
 }
 
-mgl-timeline{
+mgl-timeline {
   padding: 0;
 }
 
-.footerReports{
+.footerReports {
   padding: 5px;
   height: 65px;
 }
 
-
-body .ui-button{
+body .ui-button {
   border-radius: 0 !important;
 }
 
-.cdk-overlay-pane{
-	// height: 690px;
+.cdk-overlay-pane {
+  // height: 690px;
 }
