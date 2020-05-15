@@ -174,7 +174,8 @@ export class TreeTableComponent implements OnInit {
       const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
         disableClose: true,
         data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode },
-        height: "750px",
+        height: "90vh",
+        maxHeight: "620px",
         width: "1075px",
         panelClass: "reports-dialog",
       });
