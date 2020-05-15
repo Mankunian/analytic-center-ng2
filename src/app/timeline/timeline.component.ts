@@ -119,9 +119,22 @@ export class TimelineComponent {
 
 	onHeaderClick(historyValue, event) {
 		if (historyValue.statusCode == "2") {
-			//Предварительный
-			this.sliceCreator = "Задачу выставил:";
-			this.sliceDate = "Время перевода в предварительный:";
+			this.historyList.forEach((element, index) => {
+				if (element.id == historyValue.id) {
+					console.log(index, element)
+					if (index == 0) {
+						//Предварительный
+						this.sliceCreator = "Задачу выставил:";
+						this.sliceDate = "Время перевода в предварительный:";
+					} else {
+						this.sliceCreator = "Сделал предварительным:";
+						this.sliceDate = "Время перевода в предварительный:";
+					}
+				}
+			});
+
+
+
 		} else if (historyValue.statusCode == "1") {
 			// Утвержден
 			this.sliceCreator = "Срез утвердил:";
