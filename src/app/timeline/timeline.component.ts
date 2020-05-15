@@ -118,7 +118,6 @@ export class TimelineComponent {
 	];
 
 	onHeaderClick(historyValue, event) {
-		// console.log(historyValue)
 		if (historyValue.statusCode == "2") {
 			this.historyList.forEach((element, index) => {
 				if (element.id == historyValue.id) {
