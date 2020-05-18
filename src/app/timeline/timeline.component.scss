@@ -7,36 +7,58 @@ mat-toolbar button {
   // font-style: italic;
 }
 
-mgl-timeline-entry-header {
-  cursor: pointer;
-}
 .backToHistory {
   color: #2e86cd;
 }
+
 .backToHistory:hover {
   text-decoration: underline;
   color: #6384a2;
   cursor: pointer;
 }
 
-.backgroundLast {
-  background-color: #007bff;
-}
-
 .showBlock {
   display: block;
 }
 
-mgl-timeline{
-	// background-color: #E6E6E6;
+.backgroundLast {
+  background-color: #007bff;
 }
 
-// mgl-timeline-entry-header{
-// 	margin: 0 10px;
-// 	background-color: #fff;
-// 	padding: 0;
-// }
+mgl-timeline-entry-header {
+	cursor: pointer;
+	padding: 15px;
+}
+
+mgl-timeline{
+	background-color: #E6E6E6;
+	// overflow-y: scroll;
+}
+
+mgl-timeline-entry .mgl-timeline-entry-card .mgl-timeline-entry-card-header{
+	background-color: #ffffff !important;
+}
 
 mgl-timeline-entry-content{
 	font-style: italic;
+}
+
+mgl-timeline-entry .mgl-timeline-entry-card .mgl-timeline-entry-card-header{
+	background-color: none !important;
+}	
+
+.statusName{
+	background-color: #fff !important;
+}
+
+mgl-timeline .mgl-timeline-line{
+	background-color: #4F4F4F !important;
+	width: 6px !important;
+}
+
+mgl-timeline-entry-dot{
+    // background-color: #28a745 !important; 
+    // width: 20px !important;
+    // height: 20px !important;
+    
 }
