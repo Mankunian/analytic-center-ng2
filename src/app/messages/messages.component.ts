@@ -80,7 +80,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.topicSubscription = this.rxStompService
       .watch("/topic/sliceCompletion", { sessionKey: authUser })
       .subscribe((message: Message) => {
-        console.log("slices: ", message.body);
+        // console.log("slices: ", message.body);
         this.shared.sendProgressBarList(JSON.parse(message.body));
       });
 

@@ -61,7 +61,7 @@ export class ReportsModalContentComponent {
   isReportsLoading: boolean;
   groupCode: any;
   isGroupERSOP = false;
-  gridScrollHeight = "450px";
+  gridScrollHeight = "400px";
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -122,7 +122,6 @@ export class ReportsModalContentComponent {
                     this.errorHandler.alertError(error);
                   },
                   () => {
-                    console.log(`departments loaded`);
                     this.contentLoading = false;
                   }
                 );
@@ -133,9 +132,6 @@ export class ReportsModalContentComponent {
             },
             error => {
               this.errorHandler.alertError(error);
-            },
-            () => {
-              console.log(`regions loaded`);
             }
           );
         }
@@ -195,11 +191,18 @@ export class ReportsModalContentComponent {
     if (this.tabIndex != 0) {
       this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
     } else {
-      this.getSelectedReportsList();
+      if (this.isReportsSelectedFn()) {
+        this.generateSelectedReportsList();
+      }
     }
   }
 
   onChangeCheckboxStatus(event, groupCode, selectAllStatus) {
+    // Calls after every checkbox change. Check for matching regions and deps, or selected ERSOP
+    // Returns true if selections ready for report generating
+    this.isReportsSelectedFn() ? (this.isReportsSelected = true) : (this.isReportsSelected = false);
+
+    // Check select all checkbox status
     if (selectAllStatus[groupCode] && !event) {
       selectAllStatus[groupCode] = false;
     }
@@ -231,34 +234,27 @@ export class ReportsModalContentComponent {
     });
   }
 
-  getSelectedReportsList() {
+  isReportsSelectedFn(): boolean {
+    if (
+      (this.requestedReports.regs[this.selectedGroupCode] !== undefined &&
+        this.requestedReports.regs[this.selectedGroupCode].length !== 0 &&
+        this.requestedReports.deps[this.selectedGroupCode] !== undefined &&
+        this.requestedReports.deps[this.selectedGroupCode].length !== 0) ||
+      // if groups is ERSOP
+      (this.requestedReports.ersop[this.selectedGroupCode] !== undefined &&
+        this.requestedReports.ersop[this.selectedGroupCode].length !== 0)
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  generateSelectedReportsList() {
     let counter = 0;
     this.selectedReportsList = [];
 
-    if (this.requestedReports.ersop != undefined && this.requestedReports.ersop.length > 0) {
-      // let self = this
-      let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
-
-      this.requestedReports.ersop[this.selectedGroupCode].forEach(element => {
-        this.selectedReportsList[counter] = {
-          report: reportInfo,
-          region: element,
-        };
-        this.selectedReportsQuery[counter] = {
-          sliceId: this.sliceId,
-          reportCode: this.selectedGroupCode,
-          govCode: element.searchPattern,
-        };
-        counter++;
-      });
-    }
-
-    if (
-      this.requestedReports.regs.length > 0 &&
-      this.requestedReports.regs.length != undefined &&
-      this.requestedReports.deps.length > 0 &&
-      this.requestedReports.deps.length != undefined
-    ) {
+    if (!this.isGroupERSOP) {
       this.readyReportsParts = 0;
 
       this.requestedReports.regs.forEach((element, index) => {
@@ -270,6 +266,7 @@ export class ReportsModalContentComponent {
         element.forEach(region => {
           if (self.requestedReports.deps[regionsTabIndex] != undefined) {
             self.requestedReports.deps[regionsTabIndex].forEach(department => {
+              console.log("ReportsModalContentComponent -> generateSelectedReportsList -> department", department);
               self.selectedReportsList[counter] = {
                 report: reportInfo,
                 region: region,
@@ -286,8 +283,23 @@ export class ReportsModalContentComponent {
           }
         });
       });
+    } else {
+      // if group is ERSOP
+      let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
+
+      this.requestedReports.ersop[this.selectedGroupCode].forEach(element => {
+        this.selectedReportsList[counter] = {
+          report: reportInfo,
+          region: element,
+        };
+        this.selectedReportsQuery[counter] = {
+          sliceId: this.sliceId,
+          reportCode: this.selectedGroupCode,
+          govCode: element.searchPattern,
+        };
+        counter++;
+      });
     }
-    this.selectedReportsList.length > 0 ? (this.isReportsSelected = true) : (this.isReportsSelected = false);
   }
 
   removeSelectedReport = function(index, selectedReport) {
@@ -319,15 +331,20 @@ export class ReportsModalContentComponent {
         this.requestedReports.regs[groupCode] = [...this.requestedReports.regs[groupCode]];
       }
     }
+
+    if (this.selectedReportsList.length === 0) this.isReportsSelected = false;
   };
 
   /*=====  Get reports ======*/
   getReports() {
+    this.openFirstTab();
     let cntr = 0;
     this.readyReportsParts = 0;
     this.readyReports = [];
     this.isReportsLoading = true;
-    this.getReportSplices(cntr);
+    setTimeout(() => {
+      this.getReportSplices(cntr);
+    }, 0);
   }
   /*=====  Get reports end ======*/
 
@@ -342,6 +359,7 @@ export class ReportsModalContentComponent {
       this.isReportsLoading = false;
     }
   }
+
   generateReports(reportsSlice: any, selectedLang, counterFrom) {
     if (reportsSlice.length === 0) {
       return false;
@@ -409,10 +427,7 @@ export class ReportsModalContentComponent {
     let reportInfo = this.getReportInfoByCode(groupCode);
     reportInfo !== undefined ? (reportName = reportInfo.name + delimiter) : (reportName = "");
 
-    if (this.isGroupERSOP === true) {
-      let commonIndex = this.requestedReports.ersop[groupCode].findIndex(x => x.searchPattern === govCode);
-      commonIndex !== -1 ? (regionName = this.requestedReports.ersop[groupCode][commonIndex].name) : (regionName = "");
-    } else {
+    if (!this.isGroupERSOP) {
       let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
       regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
 
@@ -420,6 +435,10 @@ export class ReportsModalContentComponent {
       depIndex !== -1
         ? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
         : (departmentName = "");
+    } else {
+      let commonIndex = this.requestedReports.ersop[groupCode].findIndex(x => x.searchPattern === govCode);
+      commonIndex !== -1 ? (regionName = this.requestedReports.ersop[groupCode][commonIndex].name) : (regionName = "");
+      departmentName = "";
     }
 
     return reportName + regionName + departmentName + langPostfix;

@@ -21,9 +21,7 @@
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
   <mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="tabIndex">
     <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> {{ "REPORTS_MODAL.CATALOG" | translate }}
-      </ng-template>
+      <ng-template mat-tab-label> <mat-icon class="reports-catalog-tab-icon">folder_open</mat-icon> {{ "REPORTS_MODAL.CATALOG" | translate }} </ng-template>
       <form class="reports-modal-form">
         <div>
           <span class="reports-modal-form-label">{{ "REPORTS_MODAL.SLICE_MAX" | translate }}</span>
@@ -37,12 +35,8 @@
         </div>
         <div>
           <span class="lang-checkbox-label">{{ "REPORTS_MODAL.REPORT_LANG" | translate }}</span>
-          <mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu">
-            {{ "REPORTS_MODAL.REPORT_RU" | translate }}</mat-checkbox
-          >
-          <mat-checkbox [(ngModel)]="reportLangs.kz.isSelected" name="langKz"
-            >{{ "REPORTS_MODAL.REPORT_KZ" | translate }}
-          </mat-checkbox>
+          <mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu"> {{ "REPORTS_MODAL.REPORT_RU" | translate }}</mat-checkbox>
+          <mat-checkbox [(ngModel)]="reportLangs.kz.isSelected" name="langKz">{{ "REPORTS_MODAL.REPORT_KZ" | translate }} </mat-checkbox>
         </div>
       </form>
       <div class="reports-list">
@@ -55,8 +49,7 @@
                   <li *ngFor="let selectedReport of selectedReportsList; let i = index">
                     <i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, selectedReport)"></i>
                     <span class="requested-report-item"
-                      >{{ selectedReport.report.name }} - {{ selectedReport.region.name }}
-                      <span *ngIf="selectedReport.department">-</span> {{ selectedReport.department?.name }}</span
+                      >{{ selectedReport.report.name }} - {{ selectedReport.region.name }} <span *ngIf="selectedReport.department">- {{ selectedReport.department?.name }}</span></span
                     >
                   </li>
                 </ul>
@@ -65,11 +58,9 @@
             <div class="col-sm-6">
               <h3 mat-dialog-title>
                 {{ "REPORTS_MODAL.REPORTS" | translate }}
-                <span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0"
-                  >{{ "REPORTS_MODAL.GOT_REPORTS" | translate }}
-                  {{ readyReportsParts }}
-                  из {{ selectedReportsList.length }}</span
-                >
+                <span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">
+                  {{ "REPORTS_MODAL.GOT_REPORTS" | translate }} {{ readyReportsParts }} из {{ selectedReportsList.length }}
+                </span>
               </h3>
               <div class="reports">
                 <div class="preloader-block ready-reports" *ngIf="isReportsLoading">
@@ -94,7 +85,7 @@
     <!-- Treetable grid for groupERSOP -->
     <ng-container *ngIf="isGroupERSOP">
       <mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
-        <div class="container-fluid">
+        <div class="container-fluid custom-class">
           <div class="row">
             <div style="height: 5px; width: 100%; background: transparent">
               <div *ngIf="loadingERSOP" class="loader">
@@ -116,9 +107,7 @@
                     <th style="width: 70px">
                       <p-checkbox
                         [binary]="true"
-                        (click)="
-                          selectAllRows(group.code, requestedReports.ersop, gridData.ersop, selectAllStatus.ersop)
-                        "
+                        (click)="selectAllRows(group.code, requestedReports.ersop, gridData.ersop, selectAllStatus.ersop)"
                         [(ngModel)]="selectAllStatus.ersop[group.code]"
                       ></p-checkbox>
                     </th>
@@ -164,14 +153,7 @@
             </div>
             <!-- Treetable grid for Regions -->
             <div class="col-sm-6" *ngIf="gridData.regs != undefined">
-              <p-treeTable
-                [value]="gridData.regs[group.code]"
-                [columns]="colsReg"
-                [lazy]="true"
-                dataKey="code"
-                [scrollable]="true"
-                scrollHeight="{{ gridScrollHeight }}"
-              >
+              <p-treeTable [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true" dataKey="code" [scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 100px">
@@ -202,13 +184,7 @@
             <!-- END Treetable grid for Regions -->
             <!-- Treetable grid for Departments -->
             <div class="col-sm-6" *ngIf="gridData.deps != undefined">
-              <p-treeTable
-                [value]="gridData.deps[group.code]"
-                [columns]="colsDep"
-                dataKey="code"
-                [scrollable]="true"
-                scrollHeight="{{ gridScrollHeight }}"
-              >
+              <p-treeTable [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code" [scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th style="width: 45px">
@@ -245,11 +221,11 @@
   </mat-tab-group>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="!contentLoading" align="end">
-  <button mat-flat-button color="primary" (click)="getReports()" *ngIf="tabIndex === 0" [disabled]="!isReportsSelected">
+  <button mat-flat-button color="primary" (click)="getReports()" [disabled]="!isReportsSelected">
     {{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
   </button>
-  <button mat-flat-button color="primary" (click)="openFirstTab()" *ngIf="tabIndex !== 0">
+  <!-- <button mat-flat-button color="primary" (click)="openFirstTab()" *ngIf="tabIndex !== 0">
     {{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
-  </button>
+  </button> -->
   <button mat-flat-button color="primary" mat-dialog-close>{{ "REPORTS_MODAL.BTN_CANCEL" | translate }}</button>
 </mat-dialog-actions>
