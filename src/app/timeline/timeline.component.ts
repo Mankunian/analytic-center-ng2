@@ -132,9 +132,6 @@ export class TimelineComponent {
 					}
 				}
 			});
-
-
-
 		} else if (historyValue.statusCode == "1") {
 			// Утвержден
 			this.sliceCreator = "Срез утвердил:";
@@ -149,6 +146,14 @@ export class TimelineComponent {
 
 			this.personName = historyValue.personName;
 			this.statusDate = historyValue.statusDate;
+
+			this.headerInfoObj = {
+				personName: this.personName,
+				statusDate: this.statusDate,
+			};
+
+			this.dataService.sendHeaderInfo(this.headerInfoObj);
+
 
 			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe(
 				data => {
