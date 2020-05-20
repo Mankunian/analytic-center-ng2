@@ -126,7 +126,14 @@
                         *ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
                         (onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.ersop)"
                       ></p-checkbox>
-                      {{ rowData[col.field] }}
+                      <span
+                        [ngStyle]="{
+                          width: col.width,
+                          'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
+                        }"
+                      >
+                        {{ rowData[col.field] }}
+                      </span>
                     </td>
                   </tr>
                 </ng-template>
@@ -176,7 +183,9 @@
                         (onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.regs)"
                       ></p-checkbox>
                     </td>
-                    <td *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ rowData[col.field] }}</td>
+                    <td *ngFor="let col of columns" [ngStyle]="{ width: col.width, 'padding-left.px': rowNode.level === 0 ? regionTableIndent : regionTableIndent * rowNode.level }">
+                      {{ rowData[col.field] }}
+                    </td>
                   </tr>
                 </ng-template>
               </p-treeTable>

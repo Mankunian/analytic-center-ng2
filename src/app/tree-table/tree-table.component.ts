@@ -155,7 +155,7 @@ export class TreeTableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      console.log("closed");
+      console.log("openOperationSliceModal closed");
     });
   }
 
@@ -166,7 +166,6 @@ export class TreeTableComponent implements OnInit {
 
     if (
       row.statusCode == this.STATUS_CODES.IN_PROCESSING ||
-      row.statusCode == this.STATUS_CODES.FORMED_WITH_ERROR ||
       row.statusCode == this.STATUS_CODES.WAITING_FOR_PROCESSING
     ) {
       alert("По данному статусу невозможно получить отчет!");
@@ -180,7 +179,7 @@ export class TreeTableComponent implements OnInit {
         panelClass: "reports-dialog",
       });
       reportsModalRef.afterClosed().subscribe(() => {
-        // console.log(result)
+        console.log("result");
       });
     }
   }
