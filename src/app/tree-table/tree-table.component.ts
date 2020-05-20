@@ -166,7 +166,6 @@ export class TreeTableComponent implements OnInit {
 
     if (
       row.statusCode == this.STATUS_CODES.IN_PROCESSING ||
-      row.statusCode == this.STATUS_CODES.FORMED_WITH_ERROR ||
       row.statusCode == this.STATUS_CODES.WAITING_FOR_PROCESSING
     ) {
       alert("По данному статусу невозможно получить отчет!");

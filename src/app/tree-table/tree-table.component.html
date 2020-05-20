@@ -40,7 +40,7 @@
       <td>
         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
       </td>
-      <!-- Группы -->
+      <!-- Группы/Срезы -->
       <td class="treetable-groups">
         <span
           class="folder-icon"
@@ -52,10 +52,14 @@
           [ngStyle]="{ 'margin-left.px': tableIndentSize * rowNode.level }"
         ></span>
         {{ rowData.name }}
-        <a class="reportsModalLink" (click)="openReportsModal(rowData)" *ngIf="rowNode.level == 2">
+        <a *ngIf="rowNode.level == 2 && rowData.statusCode !== STATUS_CODES.FORMED_WITH_ERROR" class="reportsModalLink" (click)="openReportsModal(rowData)">
           <span *ngIf="rowData.id">№{{ rowData.id }}</span>
           <span *ngIf="rowData.period"> {{ "TREE_TABLE.PERIOD" | translate }} {{ rowData.period }}</span>
         </a>
+        <span *ngIf="rowNode.level == 2 && rowData.statusCode === STATUS_CODES.FORMED_WITH_ERROR" class="reportsModalLink reportsModalLink-name">
+          <span *ngIf="rowData.id">№{{ rowData.id }}</span>
+          <span *ngIf="rowData.period"> {{ "TREE_TABLE.PERIOD" | translate }} {{ rowData.period }}</span>
+        </span>
       </td>
       <!-- На номер -->
       <td class="text-align-right">
