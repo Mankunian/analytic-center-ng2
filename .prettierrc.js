@@ -6,6 +6,7 @@ module.exports = {
   endOfLine: "auto",
   jsxBracketSameLine: false,
   semi: true,
+  trailingComma: "es5",
   overrides: [
     {
       files: "*.md",
