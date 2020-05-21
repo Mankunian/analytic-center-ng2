@@ -345,13 +345,10 @@ export class ReportsModalContentComponent {
     setTimeout(() => {
       this.getReportSplices(cntr);
     }, 0);
-
-    console.log("get reports: 0");
   }
   /*=====  Get reports end ======*/
 
   getReportSplices(counterFrom) {
-    console.log("getReportSplices: 1", counterFrom);
     let reportsSlice,
       counterFromIn = counterFrom,
       selectedLang = this.checkLang();
@@ -364,7 +361,6 @@ export class ReportsModalContentComponent {
   }
 
   generateReports(reportsSlice: any, selectedLang, counterFrom) {
-    console.log("generateReports: 2");
     if (reportsSlice.length === 0) {
       return false;
     } else {
@@ -409,13 +405,11 @@ export class ReportsModalContentComponent {
         url: reportDownloadUrl,
         name: reportDownloadName,
       };
-      console.log("showReports: 3", readyReportItem);
       self.readyReports.push(readyReportItem);
     });
   }
 
   generateReportName(element) {
-    console.log("generateReportName");
     let delimiter = " - ",
       reportName,
       regionName,
