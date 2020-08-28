@@ -153,7 +153,7 @@
 							</div>
 						</div>
 						<!-- Treetable grid for Regions -->
-						<div class="col-sm-6" *ngIf="gridData.regs != undefined">
+						<div class="col-sm-6" *ngIf="gridData.regs != undefined" [ngClass]="{'col-sm-12': hideColsDepTable}">
 							<p-treeTable [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true" dataKey="code"
 								[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
 								<ng-template pTemplate="header" let-columns>
@@ -186,7 +186,8 @@
 						</div>
 						<!-- END Treetable grid for Regions -->
 						<!-- Treetable grid for Departments -->
-						<div class="col-sm-6" *ngIf="gridData.deps != undefined">
+						<div class="col-sm-6" *ngIf="gridData.deps != undefined && !hideColsDepTable">
+
 							<p-treeTable [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code" [scrollable]="true"
 								scrollHeight="{{ gridScrollHeight }}">
 								<ng-template pTemplate="header" let-columns>
