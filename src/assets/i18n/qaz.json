@@ -1,0 +1,42 @@
+{
+	"HOME": {
+		"STAT_SREZ": "STATISTIKALYQ ARALYQTAR",
+		"CHOOSE_LANG": "Tildi tańdańyz",
+		"CHOOSE_REGION": "Regıondy tańdańyz",
+		"PROJECT_TITLE1": "QAZAQSTAN RESPÝBLIKASY BAS PROKÝRATÝRASYNYŃ ",
+		"PROJECT_TITLE2": "QUQYQTYQ STATISTIKA JÁNE ARNAIY ESEPKE ALÝ JÓNİNDEGİ KOMITETİ"
+	},
+	"TAB_MENU": {
+		"SLICES": "Aralyqtar",
+		"TO_FORM": "Qalyptastyrý",
+		"SHOW_DELETED": "Joıylǵan aralyqtardy kórsetý",
+		"REFRESH": "Jańartý",
+		"TO_FORM_SLICE": "Aralyqty qalyptastyrý",
+		"DATE_FROM": "Bastalǵan merzimi",
+		"DATE_TO": "Aıaqtalǵan merzimi",
+		"SLICE_MAX": "Stataralyq №-ne"
+	},
+	"TREE_TABLE": {
+		"PERIOD": "Kezeń",
+		"SLICE_OPERATION": "Aralyqtar operasıasy"
+	},
+	"SLICE_OPERATION_MODAL": {
+		"SLICE_OPERATION": "Aralyqtar operasıasy",
+		"PERIOD": "Kezeń",
+		"SLICE_NUM": "Aralyq №",
+		"CANCEL": "Bas tartý"
+	},
+	"REPORTS_MODAL": {
+		"GET_REPORTS": "Получение отчетов",
+		"CATALOG": "Каталог",
+		"SLICE_MAX": "Статсрез на №",
+		"REPORT_PERIOD": "Отчетный период",
+		"REPORT_LANG": "Язык отчета",
+		"REPORT_RU": "Русский",
+		"REPORT_KZ": "Казахский",
+		"REQUESTED_REPORTS": "Запрошенные отчеты",
+		"REPORTS": "Отчеты",
+		"BTN_GET_REPORTS": "Получить",
+		"BTN_CANCEL": "Отмена"
+	}
+}

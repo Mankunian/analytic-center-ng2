@@ -1,0 +1,50 @@
+<a class="backToHistory" *ngIf="showTableInAgreement" (click)="backToTimeline()">
+	< Назад к истории</a>
+		<div class="col-md-12">
+			<div class="row" style="padding: 10px 0 0;">
+				<div class="col-md-6">
+					<p><span style="font-weight: bold;">{{'SLICE_OPERATION_MODAL.SLICE_NUM' | translate}}:</span>
+						{{injectValueToModal.sliceId}}</p>
+
+				</div>
+				<div class="col-md-6" style="text-align: right;">
+					<p><span style="font-weight: bold;">{{'SLICE_OPERATION_MODAL.PERIOD' | translate}}:</span>
+						{{injectValueToModal.period}}</p>
+				</div>
+			</div>
+		</div>
+
+		<mgl-timeline class="mgl-timeline" style="overflow: auto;" *ngIf="showTimeline" [focusOnOpen]="onFocusOpened"
+			[toggle]="toggle" [side]="side">
+			<mgl-timeline-entry *ngFor="let history of historyList; let i = index; let last = last"
+				(click)="onExpandEntry($event, i)">
+				<mgl-timeline-entry-header [ngClass]="{onFocusOpened: last}" (click)="onHeaderClick(history, $event)">
+					<div class="statusName">{{history.statusName}}</div>
+				</mgl-timeline-entry-header>
+
+				<mgl-timeline-entry-content [ngClass]="{onFocusOpened: last}">
+					<div>
+						<span class="titleStyle">{{sliceCreator}} </span>
+						{{history.personName}}
+					</div>
+					<div [hidden]="history.statusCode == '5'">
+						<span class="titleStyle">
+							{{sliceDate}}
+
+						</span>
+						{{history.statusDate}}
+					</div>
+					<div *ngIf="history.statusCode == '5'">
+						<span class="titleStyle">
+							{{errorMsg}}
+
+						</span>
+						{{history.msg}}
+					</div>
+				</mgl-timeline-entry-content>
+
+				<mgl-timeline-entry-dot [size]="size"
+					style="text-align: center; background-color: #2196F3; color: darkblue; cursor: pointer;">
+				</mgl-timeline-entry-dot>
+			</mgl-timeline-entry>
+		</mgl-timeline>

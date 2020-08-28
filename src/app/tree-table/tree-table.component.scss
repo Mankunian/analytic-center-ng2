@@ -1,0 +1,110 @@
+.reportsModalLink {
+  color: #337ab7;
+  cursor: pointer;
+}
+.reportsModalLink-name {
+  color: #000;
+  cursor: default;
+}
+.loader {
+  height: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+.loader-wrapper {
+  height: 5px;
+  width: 100%;
+  background: transparent;
+}
+.loader .bar {
+  position: relative;
+  height: 5px;
+  width: 100%;
+  background-color: dodgerblue;
+  animation-name: loader-animation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.text-align-center {
+  text-align: center;
+}
+.text-align-right {
+  text-align: right;
+}
+.sliceContent {
+  margin: 15px 0;
+}
+.treetable-headers {
+  color: #003f59;
+  text-align: center;
+}
+.sliceContent .showDeletedCheckbox {
+  float: right;
+  font-weight: 500;
+}
+
+.refreshTable {
+  border-radius: 0;
+  min-width: 100px;
+}
+// custom style primeNg
+::ng-deep body .ui-corner-all{
+	border-radius: 0;
+}
+
+::ng-deep .mat-checkbox-inner-container {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #1975c0 !important;
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  background-color: #f3f3f3 !important;
+  border-radius: 0 !important;
+  border: 1px solid;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-thead > tr > th {
+  background-color: #daecf4 !important;
+  border: 1px solid #94c0d2;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr:nth-child(even) {
+  background-color: #daecf4 !important;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td {
+  border: 1px solid #94c0d2;
+}
+
+::ng-deep body .ui-treetable .ui-treetable-tbody > tr > td .ui-treetable-toggler {
+  color: #134179;
+}
+.folder-icon {
+  content: "";
+  position: static;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  -webkit-background-size: contain;
+  background-size: contain;
+}
+.folderIconOpen {
+  background-image: url("../../assets/img/folder-op.png");
+}
+.folderIconClose {
+  background-image: url("../../assets/img/folder-cl.png");
+}
+.folderIconHide {
+  background-image: none;
+}
+.treetable-groups {
+  font-weight: 600;
+  color: #003f59;
+}

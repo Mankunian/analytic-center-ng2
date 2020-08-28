@@ -1,0 +1,8 @@
+# Ignoring files
+# Sometimes you have files that should not be formatted: auto-generated source files, saved snapshots, etc. You can list file masks to ignore in file .prettierignore. For example, to ignore all JavaScript files in snapshots folders use
+
+# EXAMPLE
+
+## do not run Prettier against JavaScript files
+## in "snapshots/" folders
+# **/snapshots/*.js
