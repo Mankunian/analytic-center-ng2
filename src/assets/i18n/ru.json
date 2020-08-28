@@ -1,0 +1,43 @@
+{
+	"HOME": {
+		"STAT_SREZ": "СТАТИСТИЧЕСКИЕ СРЕЗЫ",
+		"CHOOSE_LANG": "Выберите язык",
+		"CHOOSE_REGION": "Выберите регион",
+		"PROJECT_TITLE1": "КОМИТЕТ ПО ПРАВОВОЙ СТАТИСТИКЕ И СПЕЦИАЛЬНЫМ УЧЕТАМ",
+		"PROJECT_TITLE2": "ГЕНЕРАЛЬНОЙ ПРОКУРАТУРЫ РЕСПУБЛИКИ КАЗАХСТАН"
+	},
+	"TAB_MENU": {
+		"SLICES": "Срезы",
+		"TO_FORM": "Сформировать",
+		"SHOW_DELETED": "Показать удаленные",
+		"REFRESH": "Обновить",
+		"TO_FORM_SLICE": "Сформировать срез",
+		"DATE_FROM": "Дата начала отчета",
+		"DATE_TO": "Дата окончания отчета",
+		"SLICE_MAX": "Статсрез на №"
+	},
+	"TREE_TABLE": {
+		"PERIOD": "период",
+		"SLICE_OPERATION": "Операция со срезами"
+	},
+	"SLICE_OPERATION_MODAL": {
+		"SLICE_OPERATION": "Операция со срезами",
+		"PERIOD": "период",
+		"SLICE_NUM": "№ среза",
+		"CANCEL": "Отмена"
+	},
+	"REPORTS_MODAL": {
+		"GET_REPORTS": "Получение отчетов",
+		"CATALOG": "Каталог",
+		"SLICE_MAX": "Статсрез на №",
+		"REPORT_PERIOD": "Отчетный период",
+		"REPORT_LANG": "Язык отчета",
+		"REPORT_RU": "Русский",
+		"REPORT_KZ": "Казахский",
+		"REQUESTED_REPORTS": "Запрошенные отчеты",
+		"REPORTS": "Отчеты",
+		"BTN_GET_REPORTS": "Получить",
+		"BTN_CANCEL": "Отмена",
+		"GOT_REPORTS": "Получено"
+	}
+}

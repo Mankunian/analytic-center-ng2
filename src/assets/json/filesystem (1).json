@@ -1,0 +1,28 @@
+{
+  "data":
+  [
+    {
+      "data":{
+        "name":"Documents",
+        "size":"75kb",
+        "type":"Folder"
+      },
+      "children":[
+        {
+          "data":{
+            "name":"Work",
+            "size":"55kb",
+            "type":"Folder"
+          }
+        },
+        {
+          "data":{
+            "name":"Home",
+            "size":"20kb",
+            "type":"Folder"
+          }
+        }
+      ]
+    }
+  ]
+}

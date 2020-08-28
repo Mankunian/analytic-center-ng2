@@ -1,15 +1,15 @@
 .selector-for-some-widget {
-  box-sizing: content-box;
+	box-sizing: content-box;
 }
 header{
 	padding: 13px 20px;
 }
 
 .logo{
-		// width: 100px;
-    display: inline-block;
-    vertical-align: middle;
-    // margin-right: 10px;
+	// width: 100px;
+	display: inline-block;
+	vertical-align: middle;
+	// margin-right: 10px;
 }
 
 .logo img {
@@ -20,28 +20,28 @@ header{
 	display: inline-block;
 	vertical-align: middle;
 	color: #2B6AB9;
-	font-size: 11px;
-	font-weight: 700;
+	font-size: 12px;
+	font-weight: 600;
 	padding: 15px 13px;
 }
 
 header h1{
-		color: #134179;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 30px;
-		text-align: center;
-		margin-top: 15px;
+	color: #134179;
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 30px;
+	text-align: left;
+	margin-top: 15px;
 		// margin-bottom: 10px;
 }
 
 .main-navigation{
 		background-color: #134179;
-    height: 40px;
-    position: relative;
+		height: 40px;
+		position: relative;
 }
 
-.main-navigation span{
+.main-navigation span.title{
 	background: #1975C0;
 	position: absolute;
 	bottom: 0;
@@ -55,4 +55,80 @@ header h1{
 	left: 100px;
 	border-radius: 3px 3px 0 0;
 	cursor: pointer;
+}
+.main-navigation mat-form-field{
+	background: #1975C0;
+	position: absolute;
+	bottom: 0;
+	width: 350px;
+	// color: #fff;
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: 400;
+	height: 50px;
+	display: block;
+	padding: 7px 20px 0 20px;
+	right: 100px;
+	// left: 100px;
+	// border-radius: 3px 3px 0 0;
+	cursor: pointer;
+}
+
+.mat-select-value{
+	color: #fff;
+}
+
+.lang-switcher {
+  margin: 25px 0 0;
+}
+
+.lang-switcher a {
+  border: 1px solid;
+  padding: 10px;
+}
+
+.lang-switcher a:checked {
+  background: #fc0;
+}
+
+/* change lang custom radio button */
+
+.switch-field {
+  display: flex;
+  margin-bottom: 36px;
+	overflow: hidden;
+	
+	float: right;
+  margin-top: 20px;
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  /* background-color: #e4e4e4; */
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  padding: 8px 16px;
+  margin-right: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label {
+  background-color: #e4e4e4;
+  box-shadow: none;
 }

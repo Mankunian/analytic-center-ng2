@@ -1,4 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { height: 100%; overflow-x: hidden; overflow-y: auto; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-dialog-container{
+  transform: none;
+  padding: 0;
+  overflow-x: hidden;
+  border-radius: 0;
+}
+
+body .ui-table .ui-table-tbody > tr:nth-child(even){
+	background-color: #daecf4 !important;
+  // border: 1px solid #94c0d2 !important;
+}
+
+body .ui-table .ui-table-thead > tr > th {
+	background-color: #daecf4 !important;
+	border: 2px solid #94c0d2 !important;
+	text-align: center;
+}
+
+
+body .ui-table .ui-table-tbody > tr > td{
+	border: 2px solid #94c0d2 !important;
+}
