@@ -238,7 +238,7 @@ export class ReportsModalContentComponent {
 						alert('Данные отсутствуют')
 						// this.loadingCourtReport = true;
 						this.generateGridCourtReport()
-						// this.loadingCourtReport = false
+						this.loadingCourtReport = false
 					} else {
 						event.node.children = this.formatGridService.formatGridData(data, false);
 						this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]]; //refresh the data
