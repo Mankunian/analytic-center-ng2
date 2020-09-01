@@ -1,0 +1,96 @@
+<div class="sliceContent">
+  <button pButton (click)="refreshGridTable()" class="refreshTable" icon="pi pi-refresh" iconPos="left"></button>
+  <mat-checkbox color="primary" (change)="showDeleted(checkDeleted)" class="showDeletedCheckbox" [(ngModel)]="checkDeleted" name="isDeleted"> {{ "TAB_MENU.SHOW_DELETED" | translate }}</mat-checkbox>
+</div>
+<div class="loader-wrapper">
+  <div *ngIf="loader" class="loader">
+    <div class="bar"></div>
+  </div>
+</div>
+<p-treeTable [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loader" [showLoader]="false">
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <!-- treeTableToggler -->
+      <col style="width: 4%;" />
+      <!-- Группы -->
+      <col style="width: 40%;" />
+      <!-- На номер -->
+      <col style="width: 6%;" />
+      <!-- Сформирован -->
+      <col style="width: 10%;" />
+      <!-- Действие -->
+      <col style="width: 13%;" />
+      <!-- По органу -->
+      <col style="width: 6%;" />
+      <!-- Прогресс -->
+      <col style="width: 15%;" />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th></th>
+      <th class="treetable-headers" *ngFor="let col of cols">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+    <tr>
+      <!-- treeTableToggler -->
+      <td>
+        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+      </td>
+      <!-- Группы/Срезы -->
+      <td class="treetable-groups">
+        <span
+          class="folder-icon"
+          [ngClass]="{
+            folderIconOpen: rowNode.node.expanded,
+            folderIconClose: !rowNode.node.expanded,
+            folderIconHide: rowNode.level == 2
+          }"
+          [ngStyle]="{ 'margin-left.px': tableIndentSize * rowNode.level }"
+        ></span>
+        {{ rowData.name }}
+        <a *ngIf="rowNode.level == 2 && rowData.statusCode !== STATUS_CODES.FORMED_WITH_ERROR" class="reportsModalLink" (click)="openReportsModal(rowData)">
+          <span *ngIf="rowData.id">№{{ rowData.id }}</span>
+          <span *ngIf="rowData.period"> {{ "TREE_TABLE.PERIOD" | translate }} {{ rowData.period }}</span>
+        </a>
+        <span *ngIf="rowNode.level == 2 && rowData.statusCode === STATUS_CODES.FORMED_WITH_ERROR" class="reportsModalLink reportsModalLink-name">
+          <span *ngIf="rowData.id">№{{ rowData.id }}</span>
+          <span *ngIf="rowData.period"> {{ "TREE_TABLE.PERIOD" | translate }} {{ rowData.period }}</span>
+        </span>
+      </td>
+      <!-- На номер -->
+      <td class="text-align-right">
+        {{ rowData.maxRecNum }}
+      </td>
+      <!-- Сформирован -->
+      <td>
+        {{ rowData.completed }}
+      </td>
+      <!-- Действие -->
+      <td class="text-align-center">
+        <p-button
+          (click)="openOperationSliceModal(rowData)"
+          *ngIf="
+            rowData.statusCode == STATUS_CODES.IN_AGREEMENT ||
+            rowData.statusCode == STATUS_CODES.APPROVED ||
+            rowData.statusCode == STATUS_CODES.PRELIMINARY ||
+            rowData.statusCode == STATUS_CODES.DELETED ||
+            rowData.statusCode == STATUS_CODES.FORMED_WITH_ERROR
+          "
+          label="{{ 'TREE_TABLE.SLICE_OPERATION' | translate }}"
+        ></p-button>
+      </td>
+      <!-- По органу -->
+      <td>
+        {{ rowData.region }}
+      </td>
+      <!-- Прогресс -->
+      <td>
+        <p-progressBar *ngIf="rowData.statusCode == STATUS_CODES.IN_PROCESSING || rowData.statusCode == STATUS_CODES.WAITING_FOR_PROCESSING" [value]="rowData.percentComplete"> </p-progressBar>
+      </td>
+    </tr>
+  </ng-template>
+</p-treeTable>
