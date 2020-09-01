@@ -29,15 +29,16 @@ export class ReportsModalContentComponent {
 	colsDep: any[];
 	colsReg: any[];
 	colsERSOP: any[];
+	colsCourtReport: any[];
 	selectedGroupCode: any;
-	gridData = { deps: [] as any, regs: [] as any, ersop: [] as any };
+	gridData = { deps: [] as any, regs: [] as any, ersop: [] as any, courtReport: [] as any };
 	childrenNode: TreeNode[];
 
-	requestedReports = { deps: [], regs: [], ersop: [] };
+	requestedReports = { deps: [], regs: [], ersop: [], courtReport: [] };
 	selectedReportsList: any = [];
 	selectedReportsQuery: any = [];
 	readyReports: any = [];
-	selectAllStatus = { deps: [], regs: [], ersop: [] };
+	selectAllStatus = { deps: [], regs: [], ersop: [], courtReport: [] };
 	reportLangs = {
 		ru: {
 			name: "Русский",
@@ -58,9 +59,11 @@ export class ReportsModalContentComponent {
 	tabIndex = 0;
 	contentLoading = false;
 	loadingERSOP: boolean;
+	loadingCourtReport: boolean;
 	isReportsLoading: boolean;
 	groupCode: any;
-	isGroupERSOP = false;
+	isGroupERSOP = false; // Группа отчетов ЕРСОП
+	isGroupCourtReport = false; // Группа отчетов о работе суда
 	gridScrollHeight = "400px";
 	regionTableIndent = 12;
 	hideColsDepTable: boolean;
@@ -78,8 +81,10 @@ export class ReportsModalContentComponent {
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
-		if (this.groupCode == 100) {
+		if (this.groupCode == GlobalConfig.REPORT_GROUPS.ERSOP) { // Если группа отчетов ЕРСОП
 			this.isGroupERSOP = true;
+		} else if (this.groupCode == GlobalConfig.REPORT_GROUPS.COURT_REPORTS) { // Если группа отчетов о работе суда
+			this.isGroupCourtReport = true;
 		}
 
 
@@ -98,13 +103,22 @@ export class ReportsModalContentComponent {
 			{ field: "name", header: "Наименование", width: "auto" },
 		];
 
+		this.colsCourtReport = [
+			{ field: "searchPattern", header: "Код органа", width: "180px" },
+			{ field: "name", header: "Наименование", width: "auto" },
+
+		]
+
 		// Get reports list by slice id to genereate tabs
 		this.http.getReportsBySliceId(this.sliceId).subscribe(
 			reportGroups => {
 				this.reportGroups = reportGroups;
+				console.log(this.reportGroups)
 
 				if (this.isGroupERSOP) {
 					this.generateGridERSOP();
+				} else if (this.isGroupCourtReport) {
+					this.generateGridCourtReport();
 				} else {
 					// Get regions grid data
 					this.http.getRegions().subscribe(
@@ -114,10 +128,6 @@ export class ReportsModalContentComponent {
 
 							this.reportGroups.forEach(element => {
 								let groupCode = element.code;
-								// Here need to hide table 
-								if (groupCode == '510') {
-									this.hideColsDepTable = true;
-								}
 								// Get department grid data
 								this.http.getDepsByReportId(groupCode).subscribe(
 									departments => {
@@ -151,8 +161,9 @@ export class ReportsModalContentComponent {
 	generateGridERSOP() {
 		this.reportGroups.forEach(reportGroup => {
 			let groupCode = reportGroup.code;
+			console.log(groupCode)
 
-			this.http.getGroupERSOP().subscribe(
+			this.http.getGroupERSOP(GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP).subscribe(
 				data => {
 					this.gridData.ersop[groupCode] = this.formatGridService.formatGridData(data, true, true);
 					this.requestedReports.ersop[groupCode] = [];
@@ -167,22 +178,77 @@ export class ReportsModalContentComponent {
 		});
 	}
 
+	generateGridCourtReport() {
+		this.reportGroups.forEach(reportGroup => {
+			let groupCode = reportGroup.code;
+			console.log(groupCode)
+
+			this.http.getGroupCourtReport(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).subscribe(
+				data => {
+					this.gridData.courtReport[groupCode] = this.formatGridService.formatGridData(data, true, true);
+					this.requestedReports.courtReport[groupCode] = [];
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				},
+				() => {
+					this.contentLoading = false;
+				}
+			)
+
+		});
+	}
+
 	onNodeExpandGroupERSOP(event, groupCode) {
 		let node = event.node;
 		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
 			this.loadingERSOP = true;
 			const searchPattern = node.data.searchPattern;
 
-			this.http.getGroupERSOPChildren(searchPattern).then(
+			this.http.getGroupERSOPChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP).then(
 				data => {
-					event.node.children = this.formatGridService.formatGridData(data, false);
-					this.gridData.ersop[groupCode] = [...this.gridData.ersop[groupCode]]; //refresh the data
-					this.loadingERSOP = false;
+					if (data = []) {
+						alert('Данные отсутствуют')
+						this.generateGridERSOP()
+						this.loadingERSOP = false
+					}
+					else {
+						event.node.children = this.formatGridService.formatGridData(data, false);
+						this.gridData.ersop[groupCode] = [...this.gridData.ersop[groupCode]]; //refresh the data
+						this.loadingERSOP = false;
+					}
 				},
 				error => {
 					this.errorHandler.alertError(error);
 				}
 			);
+		}
+	}
+
+	onNodeExpandGroupCourtReport(event, groupCode) {
+		let node = event.node;
+		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
+			this.loadingCourtReport = true;
+			const searchPattern = node.data.searchPattern;
+
+			this.http.getGroupCourtReportChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
+				data => {
+					console.log(data)
+					if (data = []) {
+						alert('Данные отсутствуют')
+						this.generateGridCourtReport()
+						this.loadingCourtReport = false
+					} else {
+						event.node.children = this.formatGridService.formatGridData(data, false);
+						this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]]; //refresh the data
+						this.loadingCourtReport = false;
+					}
+
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				}
+			)
 		}
 	}
 
@@ -193,9 +259,12 @@ export class ReportsModalContentComponent {
 	}
 
 	tabChange(index: number) {
+		console.log(index)
 		this.tabIndex = index; // current tab index, used in openFirstTab()
 		if (this.tabIndex != 0) {
+			console.log(this.reportGroups)
 			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
+			console.log(this.selectedGroupCode)
 		} else {
 			if (this.isReportsSelectedFn()) {
 				this.generateSelectedReportsList();
@@ -241,6 +310,7 @@ export class ReportsModalContentComponent {
 	}
 
 	isReportsSelectedFn(): boolean {
+
 		if (
 			(this.requestedReports.regs[this.selectedGroupCode] !== undefined &&
 				this.requestedReports.regs[this.selectedGroupCode].length !== 0 &&
@@ -248,11 +318,13 @@ export class ReportsModalContentComponent {
 				this.requestedReports.deps[this.selectedGroupCode].length !== 0) ||
 			// if groups is ERSOP
 			(this.requestedReports.ersop[this.selectedGroupCode] !== undefined &&
-				this.requestedReports.ersop[this.selectedGroupCode].length !== 0)
+				this.requestedReports.ersop[this.selectedGroupCode].length !== 0) ||
+			//if groups is CourtReport
+			(this.requestedReports.courtReport[this.selectedGroupCode] !== undefined &&
+				this.requestedReports.courtReport[this.selectedGroupCode].length !== 0)
 		) {
 			return true;
 		}
-
 		return false;
 	}
 
@@ -260,13 +332,19 @@ export class ReportsModalContentComponent {
 		let counter = 0;
 		this.selectedReportsList = [];
 
-		if (!this.isGroupERSOP) {
-			this.readyReportsParts = 0;
 
+		if (!this.isGroupERSOP && !this.isGroupCourtReport) {
+			this.readyReportsParts = 0;
+			console.log(this.requestedReports.regs)
+			this.requestedReports.regs.forEach((element, index) => {
+				console.log(element, index)
+				let regionsTabIndex = index;
+				let reportInfo = this.getReportInfoByCode(regionsTabIndex);
+				console.log(reportInfo)
+			})
 			this.requestedReports.regs.forEach((element, index) => {
 				let regionsTabIndex = index;
 				let reportInfo = this.getReportInfoByCode(regionsTabIndex);
-
 				// eslint-disable-next-line @typescript-eslint/no-this-alias
 				let self = this;
 				element.forEach(region => {
@@ -288,10 +366,9 @@ export class ReportsModalContentComponent {
 					}
 				});
 			});
-		} else {
+		} else if (this.isGroupERSOP) {
 			// if group is ERSOP
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
-
 			this.requestedReports.ersop[this.selectedGroupCode].forEach(element => {
 				this.selectedReportsList[counter] = {
 					report: reportInfo,
@@ -302,6 +379,22 @@ export class ReportsModalContentComponent {
 					reportCode: this.selectedGroupCode,
 					govCode: element.searchPattern,
 				};
+				console.log(this.selectedReportsQuery)
+				counter++;
+			});
+		} else if (this.isGroupCourtReport) {
+			// if group is Court Report
+			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
+			this.requestedReports.courtReport[this.selectedGroupCode].forEach(element => {
+				this.selectedReportsList[counter] = {
+					report: reportInfo,
+					region: element,
+				};
+				this.selectedReportsQuery[counter] = {
+					sliceId: this.sliceId,
+					reportCode: this.selectedGroupCode,
+					govCode: element.searchPattern,
+				}
 				counter++;
 			});
 		}
@@ -318,6 +411,12 @@ export class ReportsModalContentComponent {
 			this.requestedReports.ersop[groupCode].splice(this.requestedReports.ersop[groupCode].indexOf(row), 1);
 			this.gridData.ersop[groupCode] = [...this.gridData.ersop[groupCode]];
 			this.requestedReports.ersop[groupCode] = [...this.requestedReports.ersop[groupCode]];
+		} else if (this.isGroupCourtReport) {
+			let row = selectedReport.region;
+
+			this.requestedReports.courtReport[groupCode].splice(this.requestedReports.courtReport[groupCode].indexOf(row), 1);
+			this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]];
+			this.requestedReports.courtReport[groupCode] = [...this.requestedReports.courtReport[groupCode]]
 		} else {
 			let regionCode = selectedReport.region.code,
 				departmentCode = selectedReport.department.code;
@@ -358,6 +457,7 @@ export class ReportsModalContentComponent {
 			counterFromIn = counterFrom,
 			selectedLang = this.checkLang();
 		if (this.selectedReportsQuery != undefined && this.selectedReportsQuery.length > 0) {
+			console.log('aaaaaaaaaaaaaaaaaaaa')
 			reportsSlice = this.selectedReportsQuery.splice(0, this.sliceSize);
 			this.generateReports(reportsSlice, selectedLang, counterFromIn);
 		} else {
@@ -440,9 +540,13 @@ export class ReportsModalContentComponent {
 			depIndex !== -1
 				? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
 				: (departmentName = "");
-		} else {
+		} else if (this.isGroupERSOP) {
 			let commonIndex = this.requestedReports.ersop[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.ersop[groupCode][commonIndex].name) : (regionName = "");
+			departmentName = "";
+		} else if (this.isGroupCourtReport) {
+			let commonIndex = this.requestedReports.courtReport[groupCode].findIndex(x => x.searchPattern === govCode);
+			commonIndex !== -1 ? (regionName = this.requestedReports.courtReport[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
 		}
 

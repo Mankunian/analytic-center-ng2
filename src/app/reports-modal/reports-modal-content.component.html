@@ -138,7 +138,59 @@
 		</ng-container>
 		<!-- END Treetable grid for GroupERSOP -->
 
-		<ng-container *ngIf="!isGroupERSOP">
+
+		<!-- Treetable grid for groupCourtReport -->
+		<ng-container *ngIf="isGroupCourtReport">
+			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
+				<div class="container-fluid custom-class">
+					<div class="row">
+						<div style="height: 5px; width: 100%; background: transparent">
+							<div *ngIf="loadingCourtReport" class="loader">
+								<div class="bar"></div>
+							</div>
+						</div>
+						<div class="col-sm-12" *ngIf="gridData.courtReport != undefined">
+							<p-treeTable [value]="gridData.courtReport[group.code]" [columns]="colsCourtReport" [lazy]="true"
+								dataKey="code" (onNodeExpand)="onNodeExpandGroupCourtReport($event, group.code)" [scrollable]="true"
+								scrollHeight="{{ gridScrollHeight }}">
+								<ng-template pTemplate="header" let-columns>
+									<tr>
+										<th style="width: 70px">
+											<p-checkbox [binary]="true"
+												(click)="selectAllRows(group.code, requestedReports.courtReport, gridData.courtReport, selectAllStatus.courtReport)"
+												[(ngModel)]="selectAllStatus.courtReport[group.code]"></p-checkbox>
+										</th>
+										<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
+									</tr>
+								</ng-template>
+								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+									<tr [ttSelectableRow]="rowNode">
+										<td style="width: 70px">
+											<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+										</td>
+										<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
+											<p-checkbox [(ngModel)]="requestedReports.courtReport[group.code]" [(value)]="rowNode.node.data"
+												*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
+												(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.courtReport)">
+											</p-checkbox>
+											<span [ngStyle]="{
+                          width: col.width,
+                          'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
+                        }">
+												{{ rowData[col.field] }}
+											</span>
+										</td>
+									</tr>
+								</ng-template>
+							</p-treeTable>
+						</div>
+					</div>
+				</div>
+			</mat-tab>
+		</ng-container>
+		<!-- END Treetable grid for groupCourtReport -->
+
+		<ng-container *ngIf="!isGroupERSOP && !isGroupCourtReport">
 			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid">
 					<div class="row">
@@ -185,9 +237,9 @@
 							</p-treeTable>
 						</div>
 						<!-- END Treetable grid for Regions -->
+
 						<!-- Treetable grid for Departments -->
 						<div class="col-sm-6" *ngIf="gridData.deps != undefined && !hideColsDepTable">
-
 							<p-treeTable [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code" [scrollable]="true"
 								scrollHeight="{{ gridScrollHeight }}">
 								<ng-template pTemplate="header" let-columns>
@@ -218,7 +270,6 @@
 				</div>
 			</mat-tab>
 		</ng-container>
-
 	</mat-tab-group>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="!contentLoading" align="end">

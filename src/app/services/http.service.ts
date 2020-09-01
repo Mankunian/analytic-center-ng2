@@ -95,12 +95,23 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree')
 	}
 
-	getGroupERSOP() {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents')
+	getGroupERSOP(repGroup) {
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
 	}
 
-	getGroupERSOPChildren(searchPattern) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern)
+	getGroupCourtReport(repGroup) {
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
+	}
+
+	getGroupERSOPChildren(searchPattern, repGroup) {
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '/&group=' + repGroup)
+			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			.then(response => <TreeNode[]>response);
+	}
+
+	getGroupCourtReportChildren(searchPattern, repGroup) {
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '/&group=' + repGroup)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export const GlobalConfig = Object.freeze({
 	BASE_API_URL: "https://analytic-center.tk:8081/api/v1/",
 	// SOCKET_URL: "http://192.168.210.10:8081", // IP PROD,
@@ -13,4 +14,12 @@ export const GlobalConfig = Object.freeze({
 		WAITING_FOR_PROCESSING: "6", // В ожидании обработки
 		IN_AGREEMENT: "7", // На согласовании
 	},
+	HIERARCHY_REPORTS: {
+		FOR_ERSOP: 0o1,
+		FOR_ANOTHER_ORGANIZATIONS: 0o2,
+	},
+	REPORT_GROUPS: {
+		ERSOP: 100,
+		COURT_REPORTS: 0o4
+	}
 });
