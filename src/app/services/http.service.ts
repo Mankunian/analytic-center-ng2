@@ -111,7 +111,7 @@ export class HttpService {
 	}
 
 	getGroupCourtReportChildren(searchPattern, repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '/&group=' + repGroup)
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
