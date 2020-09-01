@@ -207,16 +207,9 @@ export class ReportsModalContentComponent {
 
 			this.http.getGroupERSOPChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP).then(
 				data => {
-					if (data = []) {
-						alert('Данные отсутствуют')
-						this.generateGridERSOP()
-						this.loadingERSOP = false
-					}
-					else {
-						event.node.children = this.formatGridService.formatGridData(data, false);
-						this.gridData.ersop[groupCode] = [...this.gridData.ersop[groupCode]]; //refresh the data
-						this.loadingERSOP = false;
-					}
+					event.node.children = this.formatGridService.formatGridData(data, false);
+					this.gridData.ersop[groupCode] = [...this.gridData.ersop[groupCode]]; //refresh the data
+					this.loadingERSOP = false;
 				},
 				error => {
 					this.errorHandler.alertError(error);
@@ -234,16 +227,9 @@ export class ReportsModalContentComponent {
 			this.http.getGroupCourtReportChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
 				data => {
 					console.log(data)
-					if (data = []) {
-						alert('Данные отсутствуют')
-						// this.loadingCourtReport = true;
-						this.generateGridCourtReport()
-						this.loadingCourtReport = false
-					} else {
-						event.node.children = this.formatGridService.formatGridData(data, false);
-						this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]]; //refresh the data
-						this.loadingCourtReport = false;
-					}
+					event.node.children = this.formatGridService.formatGridData(data, false);
+					this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]]; //refresh the data
+					this.loadingCourtReport = false;
 
 				},
 				error => {
