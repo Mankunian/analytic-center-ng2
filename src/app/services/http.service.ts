@@ -199,7 +199,7 @@ export class HttpService {
 			territoryCode: saveEditReasonObj.territoryCode,
 			msg: saveEditReasonObj.msg
 		};
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
+		return this.http.put(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/approve', body, options)
 	}
 
 	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
@@ -214,6 +214,6 @@ export class HttpService {
 			territoryCode: saveEditReasonObj.territoryCode,
 			msg: saveEditReasonObj.msg
 		};
-		return this.http.put(this.BASE_API_URL + '/' + sliceId + '/approve', body, options)
+		return this.http.put(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/approve', body, options)
 	}
 }
