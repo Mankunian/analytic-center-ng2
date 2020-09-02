@@ -33,6 +33,7 @@ export class SliceOperationsModalContentComponent {
 	btnInAgreement: boolean;
 	btnDecided: boolean;
 	btnToAgreement: boolean;
+	btnDelete: boolean;
 	showTableInAgreement: boolean;
 	subscription: Subscription;
 	gridInAgreement: any;
@@ -61,23 +62,30 @@ export class SliceOperationsModalContentComponent {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
 		this.injectValueToModal = this.data;
-
+		// Статус на согласовании
 		if (this.injectValueToModal.statusCode == this.STATUS_CODES.IN_AGREEMENT) {
 			this.btnInAgreement = true;
 			this.showTableInAgreement = true;
 			this.service.showTableAgreement(this.showTableInAgreement);
 		}
+		// Статус Утверждено
 		if (this.injectValueToModal.statusCode == this.STATUS_CODES.APPROVED) {
 			this.btnDecided = true;
 		}
+		// Статус предварительный
 		if (this.injectValueToModal.statusCode == this.STATUS_CODES.PRELIMINARY) {
 			this.btnToAgreement = true;
+		}
+		// Статус Сформирован с ошибкой
+		if (this.injectValueToModal.statusCode == this.STATUS_CODES.FORMED_WITH_ERROR) {
+			this.btnDelete = true;
 		}
 		if (this.injectValueToModal.terrCode == "19000090") {
 			this.headTerritory = true;
 		}
 	}
 
+	//Утвердить срез
 	confirmSlice() {
 		this.http.confirmSliceService(this.injectValueToModal.sliceId).subscribe(
 			data => {
@@ -99,7 +107,7 @@ export class SliceOperationsModalContentComponent {
 			}
 		);
 	}
-
+	// Удалить срез
 	deleteSlice() {
 		this.http.deleteSliceService(this.injectValueToModal.sliceId).subscribe(
 			data => {
@@ -110,14 +118,13 @@ export class SliceOperationsModalContentComponent {
 			}
 		);
 	}
-
+	//Перевести в предварительный
 	sendToPreliminary() {
 		this.http.sendToPreliminaryService(this.injectValueToModal.sliceId).subscribe(
 			data => {
 				alert("Операция прошла успешна");
 				this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
 					historyValue => {
-						console.log(historyValue);
 						this.service.sendHistoryList(historyValue);
 					},
 					error => {
@@ -133,7 +140,7 @@ export class SliceOperationsModalContentComponent {
 			}
 		);
 	}
-
+	// Отправить на согласование
 	sendToAgreement() {
 		this.http.sendToAgreementService(this.injectValueToModal.sliceId).subscribe(
 			data => {
@@ -155,7 +162,7 @@ export class SliceOperationsModalContentComponent {
 			}
 		);
 	}
-
+	//Отказать в согласовании
 	rejectInAgreement() {
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogEditRejection.open(EditReasonComponent, {
@@ -164,11 +171,13 @@ export class SliceOperationsModalContentComponent {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log(result)
-			console.log("modal closed");
 		});
 	}
 
+	closeDialog(): void {
+		this.dialogRef.close();
+	}
+	//Согласовать срез
 	approveSlice() {
 		let approveSliceObj = {
 			historyId: this.historyValue.id,
@@ -176,7 +185,6 @@ export class SliceOperationsModalContentComponent {
 			territoryCode: this.injectValueToModal.terrCode,
 			msg: "",
 		};
-		console.log(approveSliceObj);
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe(
 			(data: SaveEditReasonObj) => {
@@ -188,8 +196,6 @@ export class SliceOperationsModalContentComponent {
 						alert("Операция прошла успешно");
 						this.approved = true;
 						this.service.approveAndRejectBtnStatus(this.approved);
-
-
 					},
 					error => {
 						this.errorHandler.alertError(error);
@@ -201,9 +207,7 @@ export class SliceOperationsModalContentComponent {
 			}
 		);
 	}
-	closeDialog(): void {
-		this.dialogRef.close();
-	}
+
 }
 
 @Component({
@@ -218,12 +222,14 @@ export class EditReasonComponent implements OnInit {
 	gridInAgreement: any;
 	rejected: boolean;
 
+
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private http: HttpService,
 		private service: SharedService,
-		public errorHandler: ErrorHandlerService
+		public errorHandler: ErrorHandlerService,
+		public dialogEditRejection: MatDialogRef<EditReasonComponent>,
 	) { }
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -241,16 +247,19 @@ export class EditReasonComponent implements OnInit {
 		this.sliceId = this.objOfRejectionReason[1].sliceId;
 		this.historyId = this.objOfRejectionReason[1].id;
 
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+
+		// eslint - disable - next - line @typescript-eslint / no - unused - vars
 		this.http.rejectSliceService(this.sliceId, SaveEditReasonObj).subscribe(
-			(data: SaveEditReasonObj) => {
-				// update ui-grid-in-agreement
+			() => {
 				this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe(
 					data => {
 						this.gridInAgreement = data;
 						this.service.sendGridInAgreement(this.gridInAgreement);
 						this.rejected = true;
 						this.service.approveAndRejectBtnStatus(this.rejected);
+						alert('Операция прошла успешна');
+						this.dialogEditRejection.close()
 					},
 					error => {
 						this.errorHandler.alertError(error);
