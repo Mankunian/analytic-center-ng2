@@ -29,16 +29,14 @@
 				</div>
 			</div>
 			<div class="col-md-6" *ngIf="headTerritory">
-				<div *ngIf="btnInAgreement">
-					<button style="margin-right: 10px;" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
-					<button (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
+				<div *ngIf="btnInAgreement || btnToAgreement">
+					<button class="marginRightBtn" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
+					<button class="marginRightBtn" (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
+					<p-button (click)="sendToAgreement()" *ngIf="!btnInAgreement" label="На согласование"></p-button>
 				</div>
 				<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
-				<p-button (click)="sendToAgreement()" *ngIf="btnToAgreement" label="На согласование"></p-button>
 			</div>
 			<div class="col-md-6" style="text-align: right;">
-				<!-- <button class="cancelBtn" mat-dialog-close
-					mat-raised-button>{{'SLICE_OPERATION_MODAL.CANCEL' | translate}}</button> -->
 				<p-button [mat-dialog-close]="true" label="{{'SLICE_OPERATION_MODAL.CANCEL' | translate}}"></p-button>
 			</div>
 		</mat-dialog-actions>
