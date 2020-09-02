@@ -121,7 +121,6 @@ export class TimelineComponent {
 		if (historyValue.statusCode == "2") {
 			this.historyList.forEach((element, index) => {
 				if (element.id == historyValue.id) {
-					console.log(index, element)
 					if (index == 0) {
 						//Предварительный
 						this.sliceCreator = "Задачу выставил:";
@@ -187,11 +186,9 @@ export class TimelineComponent {
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	onExpandEntry(event, index, historyValue) {
-		console.log(event, index);
 		if (historyValue.statusCode == "2") {
 			this.historyList.forEach((element, index) => {
 				if (element.id == historyValue.id) {
-					console.log(index, element)
 					if (index == 0) {
 						//Предварительный
 						this.sliceCreator = "Задачу выставил:";
