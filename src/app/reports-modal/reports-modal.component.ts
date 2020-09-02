@@ -479,6 +479,7 @@ export class ReportsModalContentComponent {
 	}
 
 	showReports(data) {
+		console.log(data)
 		this.readyReportsParts += data.length;
 		this.isReportsLoading = false;
 
@@ -491,6 +492,7 @@ export class ReportsModalContentComponent {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let self = this;
 		reportValues.forEach(function (element) {
+			console.log(element)
 			if (element.value == -1) {
 				reportDownloadUrl = "#";
 				reportDownloadName = errMsgMissing;
@@ -498,7 +500,7 @@ export class ReportsModalContentComponent {
 				reportDownloadUrl = "#";
 				reportDownloadName = errMsg;
 			} else {
-				reportDownloadUrl = self.BASE_API_URL + "reports/" + element.value + "/download";
+				reportDownloadUrl = self.BASE_API_URL + element.lang + "/slices/reports/" + element.value + "/download";
 				reportDownloadName = self.generateReportName(element);
 			}
 

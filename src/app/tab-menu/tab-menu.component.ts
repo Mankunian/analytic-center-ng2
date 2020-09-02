@@ -9,164 +9,164 @@ import { TreeNode } from "primeng/api/treenode";
 import { ErrorHandlerService } from "../services/error-handler.service";
 
 @Component({
-  selector: "app-tab-menu",
-  templateUrl: "./tab-menu.component.html",
-  styleUrls: ["./tab-menu.component.scss"],
-  providers: [HttpService],
+	selector: "app-tab-menu",
+	templateUrl: "./tab-menu.component.html",
+	styleUrls: ["./tab-menu.component.scss"],
+	providers: [HttpService],
 })
 export class TabMenuComponent implements OnInit {
-  groupListFormGroup: FormGroup;
-  groupList: any;
-  max: number;
-  checkedGroupCodes: any;
-  checkedGroupList: any = [];
-  disabledStatus: boolean;
-  orderSliceDone: boolean;
-  selected = 0;
-  checkedGroups: any = [];
-  onTabSelectedIndex: number;
-  preloaderByOrderSlice: boolean;
-  checkDeleted = false;
+	groupListFormGroup: FormGroup;
+	groupList: any;
+	max: number;
+	checkedGroupCodes: any;
+	checkedGroupList: any = [];
+	disabledStatus: boolean;
+	orderSliceDone: boolean;
+	selected = 0;
+	checkedGroups: any = [];
+	onTabSelectedIndex: number;
+	preloaderByOrderSlice: boolean;
+	checkDeleted = false;
 
-  subscription: Subscription;
-  groupListKaz: any;
-  shared: any;
-  disabledBtn = true;
-  lang: string;
+	subscription: Subscription;
+	groupListKaz: any;
+	shared: any;
+	disabledBtn = true;
+	lang: string;
 
-  gridData: TreeNode[];
+	gridData: TreeNode[];
 
-  dateFrom = new FormControl(new Date(1577859165 * 1000));
-  dateTo = new FormControl(new Date());
+	dateFrom = new FormControl(new Date(1577859165 * 1000));
+	dateTo = new FormControl(new Date());
 
-  sliceNumber: SliceNumber;
+	sliceNumber: SliceNumber;
 
-  constructor(
-    private httpService: HttpService,
-    private formBuilder: FormBuilder,
-    public translate: TranslateService,
-    public getShared: SharedService,
-    private service: SharedService,
-    public errorHandler: ErrorHandlerService
-  ) {
-    translate.addLangs(["ru", "kaz", "qaz"]);
-    translate.setDefaultLang("ru");
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/ru|kaz|qaz/) ? browserLang : "ru");
+	constructor(
+		private httpService: HttpService,
+		private formBuilder: FormBuilder,
+		public translate: TranslateService,
+		public getShared: SharedService,
+		private service: SharedService,
+		public errorHandler: ErrorHandlerService
+	) {
+		translate.addLangs(["ru", "kaz", "qaz"]);
+		translate.setDefaultLang("ru");
+		const browserLang = translate.getBrowserLang();
+		translate.use(browserLang.match(/ru|kaz|qaz/) ? browserLang : "ru");
 
-    this.subscription = getShared.subjGroupListKaz$.subscribe(value => {
-      this.groupList = value;
-      this.groupList.forEach(element => {
-        if (element.status == 2) {
-          element.disabledStatus = true;
-        }
-      });
-    });
-  }
-  ngOnInit() {
-    this.groupListFormGroup = this.formBuilder.group({
-      groupList: this.formBuilder.array([]),
-    });
-    setTimeout(() => {
-      this.httpService.getGroupList().subscribe(
-        data => {
-          this.groupList = data;
-          this.groupList.forEach(element => {
-            if (element.status == 2) {
-              element.disabledStatus = true;
-            }
-          });
-        },
-        error => {
-          this.errorHandler.alertError(error);
-        }
-      );
-    });
+		this.subscription = getShared.subjGroupListKaz$.subscribe(value => {
+			this.groupList = value;
+			this.groupList.forEach(element => {
+				if (element.status == 2) {
+					element.disabledStatus = true;
+				}
+			});
+		});
+	}
+	ngOnInit() {
+		this.groupListFormGroup = this.formBuilder.group({
+			groupList: this.formBuilder.array([]),
+		});
+		setTimeout(() => {
+			this.httpService.getGroupList().subscribe(
+				data => {
+					this.groupList = data;
+					this.groupList.forEach(element => {
+						if (element.status == 2) {
+							element.disabledStatus = true;
+						}
+					});
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				}
+			);
+		});
 
-    this.httpService.getSliceNumber().subscribe(
-      (data: SliceNumber) => {
-        this.max = data.value;
-      },
-      error => {
-        this.errorHandler.alertError(error);
-      }
-    );
-  }
+		this.httpService.getSliceNumber().subscribe(
+			(data: SliceNumber) => {
+				this.max = data.value;
+			},
+			error => {
+				this.errorHandler.alertError(error);
+			}
+		);
+	}
 
-  getSliceNumber() {
-    this.httpService.getSliceNumber().subscribe(
-      (data: SliceNumber) => {
-        this.max = data.value;
-      },
-      error => {
-        this.errorHandler.alertError(error);
-      }
-    );
-  }
+	getSliceNumber() {
+		this.httpService.getSliceNumber().subscribe(
+			(data: SliceNumber) => {
+				this.max = data.value;
+			},
+			error => {
+				this.errorHandler.alertError(error);
+			}
+		);
+	}
 
-  onCheckedGroup(event) {
-    this.disabledBtn = false;
-    this.checkedGroups.push(event);
-    this.checkedGroupCodes = event.source.value.code;
+	onCheckedGroup(event) {
+		this.disabledBtn = false;
+		this.checkedGroups.push(event);
+		this.checkedGroupCodes = event.source.value.code;
 
-    if (event.source._checked) {
-      this.checkedGroupList.push(this.checkedGroupCodes);
-    } else {
-      let a = this.checkedGroupList.indexOf(this.checkedGroupCodes);
-      this.checkedGroupList.splice(a, 1);
-    }
+		if (event.source._checked) {
+			this.checkedGroupList.push(this.checkedGroupCodes);
+		} else {
+			let a = this.checkedGroupList.indexOf(this.checkedGroupCodes);
+			this.checkedGroupList.splice(a, 1);
+		}
 
-    if (this.checkedGroupList.length == 0) {
-      this.disabledBtn = true;
-    }
-  }
+		if (this.checkedGroupList.length == 0) {
+			this.disabledBtn = true;
+		}
+	}
 
-  onTabSelectedEvent(event) {
-    this.selected = event.index;
-  }
+	onTabSelectedEvent(event) {
+		this.selected = event.index;
+	}
 
-  orderSlice() {
-    this.dateFrom.value.setHours(0);
-    this.dateFrom.value.setMinutes(0);
-    this.dateFrom.value.setSeconds(0);
+	orderSlice() {
+		this.dateFrom.value.setHours(0);
+		this.dateFrom.value.setMinutes(0);
+		this.dateFrom.value.setSeconds(0);
 
-    this.dateTo.value.setHours(0);
-    this.dateTo.value.setMinutes(0);
-    this.dateTo.value.setSeconds(0);
+		this.dateTo.value.setHours(0);
+		this.dateTo.value.setMinutes(0);
+		this.dateTo.value.setSeconds(0);
 
-    let dateFrom = this.dateFrom.value,
-      ddFrom = ("0" + dateFrom.getDate()).slice(-2),
-      mmFrom = ("0" + (dateFrom.getMonth() + 1)).slice(-2),
-      yyFrom = dateFrom.getFullYear();
-    let dateFromInput = ddFrom + "." + mmFrom + "." + yyFrom;
+		let dateFrom = this.dateFrom.value,
+			ddFrom = ("0" + dateFrom.getDate()).slice(-2),
+			mmFrom = ("0" + (dateFrom.getMonth() + 1)).slice(-2),
+			yyFrom = dateFrom.getFullYear();
+		let dateFromInput = ddFrom + "." + mmFrom + "." + yyFrom;
 
-    let dateTo = this.dateTo.value,
-      ddTo = ("0" + dateTo.getDate()).slice(-2),
-      mmTo = ("0" + (dateTo.getMonth() + 1)).slice(-2),
-      yyTo = dateTo.getFullYear();
-    let dateToInput = ddTo + "." + mmTo + "." + yyTo;
+		let dateTo = this.dateTo.value,
+			ddTo = ("0" + dateTo.getDate()).slice(-2),
+			mmTo = ("0" + (dateTo.getMonth() + 1)).slice(-2),
+			yyTo = dateTo.getFullYear();
+		let dateToInput = ddTo + "." + mmTo + "." + yyTo;
 
-    let orderSliceObj = {
-      startDate: dateFromInput,
-      endDate: dateToInput,
-      maxRecNum: this.max,
-      groups: this.checkedGroupList,
-    };
+		let orderSliceObj = {
+			startDate: dateFromInput,
+			endDate: dateToInput,
+			maxRecNum: this.max,
+			groups: this.checkedGroupList,
+		};
 
-    this.httpService.postOrderSlice(orderSliceObj).subscribe(
-      data => {
-        this.service.sendOrderSliceList(data);
-        this.preloaderByOrderSlice = true;
-        this.checkedGroups.forEach(element => {
-          element.source._checked = false; // uncheck all selected value after response
-        });
-        this.checkedGroupList.length = 0; // clear checkbox array after response
-        this.selected = 0; // transfer to Home Tab after response
-        this.preloaderByOrderSlice = false;
-      },
-      error => {
-        this.errorHandler.alertError(error);
-      }
-    );
-  }
+		this.httpService.postOrderSlice(orderSliceObj).subscribe(
+			data => {
+				this.service.sendOrderSliceList(data);
+				this.preloaderByOrderSlice = true;
+				this.checkedGroups.forEach(element => {
+					element.source._checked = false; // uncheck all selected value after response
+				});
+				this.checkedGroupList.length = 0; // clear checkbox array after response
+				this.selected = 0; // transfer to Home Tab after response
+				this.preloaderByOrderSlice = false;
+			},
+			error => {
+				this.errorHandler.alertError(error);
+			}
+		);
+	}
 }
