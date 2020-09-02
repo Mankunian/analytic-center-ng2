@@ -34,6 +34,10 @@
 					<button class="marginRightBtn" (click)="confirmSlice()" pButton type="button" label="Утвердить"></button>
 					<p-button (click)="sendToAgreement()" *ngIf="!btnInAgreement" label="На согласование"></p-button>
 				</div>
+
+				<div *ngIf="btnDelete">
+					<button class="marginRightBtn" (click)="deleteSlice()" pButton type="button" label="Удалить"></button>
+				</div>
 				<p-button (click)="sendToPreliminary()" *ngIf="btnDecided" label="Перевести в предварительный"></p-button>
 			</div>
 			<div class="col-md-6" style="text-align: right;">
