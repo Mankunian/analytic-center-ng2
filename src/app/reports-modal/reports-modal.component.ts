@@ -64,6 +64,8 @@ export class ReportsModalContentComponent {
 	groupCode: any;
 	isGroupERSOP = false; // Группа отчетов ЕРСОП
 	isGroupCourtReport = false; // Группа отчетов о работе суда
+	isReport1P = false;
+	isReportForm10 = false;
 	gridScrollHeight = "400px";
 	regionTableIndent = 12;
 	hideColsDepTable: boolean;
@@ -114,10 +116,17 @@ export class ReportsModalContentComponent {
 			reportGroups => {
 				this.reportGroups = reportGroups;
 				console.log(this.reportGroups)
+				this.reportGroups.forEach(element => {
+					if (element.code == '800' || element.code == '801') {
+						this.isReport1P = true;
+					} else if (element.code == '510' || element.code == '511') {
+						this.isReportForm10 = true;
+					}
+				});
 
-				if (this.isGroupERSOP) {
+				if (this.isGroupERSOP || this.isReport1P) {
 					this.generateGridERSOP();
-				} else if (this.isGroupCourtReport) {
+				} else if (this.isGroupCourtReport || this.isReportForm10) {
 					this.generateGridCourtReport();
 				} else {
 					// Get regions grid data
@@ -489,7 +498,7 @@ export class ReportsModalContentComponent {
 				reportDownloadUrl = "#";
 				reportDownloadName = errMsg;
 			} else {
-				reportDownloadUrl = self.BASE_API_URL + "/reports/" + element.value + "/download";
+				reportDownloadUrl = self.BASE_API_URL + "reports/" + element.value + "/download";
 				reportDownloadName = self.generateReportName(element);
 			}
 
