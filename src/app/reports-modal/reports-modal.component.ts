@@ -453,7 +453,6 @@ export class ReportsModalContentComponent {
 			counterFromIn = counterFrom,
 			selectedLang = this.checkLang();
 		if (this.selectedReportsQuery != undefined && this.selectedReportsQuery.length > 0) {
-			console.log('aaaaaaaaaaaaaaaaaaaa')
 			reportsSlice = this.selectedReportsQuery.splice(0, this.sliceSize);
 			this.generateReports(reportsSlice, selectedLang, counterFromIn);
 		} else {
@@ -500,8 +499,12 @@ export class ReportsModalContentComponent {
 				reportDownloadUrl = "#";
 				reportDownloadName = errMsg;
 			} else {
+				console.log(element)
 				reportDownloadUrl = self.BASE_API_URL + element.lang + "/slices/reports/" + element.value + "/download";
 				reportDownloadName = self.generateReportName(element);
+
+				console.log(reportDownloadUrl)
+				console.log(reportDownloadName)
 			}
 
 			let readyReportItem = {
@@ -530,15 +533,7 @@ export class ReportsModalContentComponent {
 		let reportInfo = this.getReportInfoByCode(groupCode);
 		reportInfo !== undefined ? (reportName = reportInfo.name + delimiter) : (reportName = "");
 
-		if (!this.isGroupERSOP) {
-			let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
-			regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
-
-			let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
-			depIndex !== -1
-				? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
-				: (departmentName = "");
-		} else if (this.isGroupERSOP) {
+		if (this.isGroupERSOP) {
 			let commonIndex = this.requestedReports.ersop[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.ersop[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
@@ -546,7 +541,32 @@ export class ReportsModalContentComponent {
 			let commonIndex = this.requestedReports.courtReport[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.courtReport[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
+		} else {
+			let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+			regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
+
+			let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+			depIndex !== -1
+				? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+				: (departmentName = "");
 		}
+		// if (!this.isGroupERSOP || !this.isGroupCourtReport) {
+		// 	let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+		// 	regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
+
+		// 	let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+		// 	depIndex !== -1
+		// 		? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+		// 		: (departmentName = "");
+		// } else if (this.isGroupERSOP) {
+		// 	let commonIndex = this.requestedReports.ersop[groupCode].findIndex(x => x.searchPattern === govCode);
+		// 	commonIndex !== -1 ? (regionName = this.requestedReports.ersop[groupCode][commonIndex].name) : (regionName = "");
+		// 	departmentName = "";
+		// } else if (this.isGroupCourtReport) {
+		// 	let commonIndex = this.requestedReports.courtReport[groupCode].findIndex(x => x.searchPattern === govCode);
+		// 	commonIndex !== -1 ? (regionName = this.requestedReports.courtReport[groupCode][commonIndex].name) : (regionName = "");
+		// 	departmentName = "";
+		// }
 
 		return reportName + regionName + departmentName + langPostfix;
 	}

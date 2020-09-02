@@ -17,7 +17,7 @@
 		<mgl-timeline class="mgl-timeline" style="overflow: auto;" *ngIf="showTimeline" [focusOnOpen]="onFocusOpened"
 			[toggle]="toggle" [side]="side">
 			<mgl-timeline-entry *ngFor="let history of historyList; let i = index; let last = last"
-				(click)="onExpandEntry($event, i)">
+				(click)="onExpandEntry($event, i, history)">
 				<mgl-timeline-entry-header [ngClass]="{onFocusOpened: last}" (click)="onHeaderClick(history, $event)">
 					<div class="statusName">{{history.statusName}}</div>
 				</mgl-timeline-entry-header>

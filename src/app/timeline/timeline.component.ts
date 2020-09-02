@@ -186,8 +186,63 @@ export class TimelineComponent {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	onExpandEntry(event, index) {
+	onExpandEntry(event, index, historyValue) {
 		console.log(event, index);
+		if (historyValue.statusCode == "2") {
+			this.historyList.forEach((element, index) => {
+				if (element.id == historyValue.id) {
+					console.log(index, element)
+					if (index == 0) {
+						//Предварительный
+						this.sliceCreator = "Задачу выставил:";
+						this.sliceDate = "Время перевода в предварительный:";
+					} else {
+						this.sliceCreator = "Сделал предварительным:";
+						this.sliceDate = "Время перевода в предварительный:";
+					}
+				}
+			});
+		} else if (historyValue.statusCode == "1") {
+			// Утвержден
+			this.sliceCreator = "Срез утвердил:";
+			this.sliceDate = "Время утверждения среза:";
+		} else if (historyValue.statusCode == "7") {
+			// На согласовании
+			this.sliceCreator = "Срез отправил на согласование:";
+			this.sliceDate = "Время отправки на согласование среза:";
+			this.showTableInAgreement = true;
+			this.dataService.sendVisibleTableInAgreement(this.showTableInAgreement);
+			this.showTimeline = false;
+
+			this.personName = historyValue.personName;
+			this.statusDate = historyValue.statusDate;
+
+			this.headerInfoObj = {
+				personName: this.personName,
+				statusDate: this.statusDate,
+			};
+
+			this.dataService.sendHeaderInfo(this.headerInfoObj);
+
+
+			this.http.getDataGridInAgreement(historyValue.sliceId, historyValue.id).subscribe(
+				data => {
+					this.gridListInAgreement = data;
+					this.dataService.sendGridInAgreement(this.gridListInAgreement);
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				}
+			);
+		} else if (historyValue.statusCode == "3") {
+			// Удален
+			this.sliceCreator = "Срез удалил:";
+			this.sliceDate = "Время удаления среза:";
+		} else if (historyValue.statusCode == "5") {
+			// сформирован с ошибкой
+			this.sliceCreator = "Заказал срез:";
+			this.errorMsg = "Сообщение об ошибке:";
+		}
 	}
 
 	toggleSide() {
