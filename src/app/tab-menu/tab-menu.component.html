@@ -1,104 +1,79 @@
 <div class="row">
-  <div class="col-md-12">
-    <mat-tab-group
-      [color]="primary"
-      (selectedTabChange)="onTabSelectedEvent($event)"
-      [selectedIndex]="selected"
-      animationDuration="0ms"
-    >
-      <mat-tab label="{{ 'TAB_MENU.SLICES' | translate }}">
-        <div id="sliceGrd">
-          <app-tree-table [checkDeleted]="checkDeleted"></app-tree-table>
-        </div>
-      </mat-tab>
-      <mat-tab label="{{ 'TAB_MENU.TO_FORM' | translate }}">
-        <div class="orderSliceContent">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12" style="float: none; margin: 0 auto;">
-                <h2>{{ "TAB_MENU.TO_FORM_SLICE" | translate }}</h2>
-              </div>
-              <div class="col-md-6">
-                <form [formGroup]="groupListFormGroup">
-                  <div class="box">
-                    <mat-checkbox
-                      color="primary"
-                      [disabled]="group.disabledStatus"
-                      (change)="onCheckedGroup($event)"
-                      *ngFor="let group of groupList; let i = index"
-                      [value]="group"
-                      >{{ group.name }}</mat-checkbox
-                    >
-                  </div>
-                </form>
-              </div>
-              <div class="forms" class="col-md-6" style="text-align: left;">
-                <div class="row">
-                  <div class="col-md-12">
-                    <mat-form-field>
-                      <input
-                        matInput
-                        [matDatepicker]="picker"
-                        placeholder="{{ 'TAB_MENU.DATE_FROM' | translate }} *"
-                        [formControl]="dateFrom"
-                      />
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="col-md-12">
-                    <mat-form-field>
-                      <input
-                        matInput
-                        [matDatepicker]="picker1"
-                        placeholder="{{ 'TAB_MENU.DATE_TO' | translate }} *"
-                        [formControl]="dateTo"
-                      />
-                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                      <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="col-md-10">
-                    <mat-form-field class="example-full-width">
-                      <input
-                        matInput
-                        type="number"
-                        placeholder="{{ 'TAB_MENU.SLICE_MAX' | translate }} *"
-                        [(ngModel)]="max"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-2">
-                    <button (click)="getSliceNumber()" mat-raised-button color="primary">
-                      <mat-icon>refresh</mat-icon>
-                    </button>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="col-md-12">
-                    <button
-                      [disabled]="disabledBtn"
-                      (click)="orderSlice()"
-                      class="orderSlice"
-                      mat-raised-button
-                      color="primary"
-                    >
-                      {{ "TAB_MENU.TO_FORM" | translate }}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+	<div class="col-md-12">
+		<mat-tab-group [color]="primary" (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]="selected"
+			animationDuration="0ms">
+			<mat-tab label="{{ 'TAB_MENU.SLICES' | translate }}">
+				<div id="sliceGrd">
+					<app-tree-table [checkDeleted]="checkDeleted"></app-tree-table>
+				</div>
+			</mat-tab>
+			<mat-tab label="{{ 'TAB_MENU.TO_FORM' | translate }}">
+				<div class="orderSliceContent">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12" style="float: none; margin: 0 auto;">
+								<h2>{{ "TAB_MENU.TO_FORM_SLICE" | translate }}</h2>
+							</div>
+							<div class="col-md-6">
+								<form [formGroup]="groupListFormGroup">
+									<div class="box">
+										<mat-checkbox color="primary" [disabled]="group.disabledStatus" (change)="onCheckedGroup($event)"
+											*ngFor="let group of groupList; let i = index" [value]="group">{{ group.name }}</mat-checkbox>
+									</div>
+								</form>
+							</div>
+							<div class="forms" class="col-md-6" style="text-align: left;">
+								<div class="row">
+									<div class="col-md-12">
+										<mat-form-field>
+											<input matInput [matDatepicker]="picker" placeholder="{{ 'TAB_MENU.DATE_FROM' | translate }} *"
+												[formControl]="dateFrom" />
+											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+											<mat-datepicker #picker></mat-datepicker>
+										</mat-form-field>
+
+
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-12">
+										<mat-form-field>
+											<input matInput [matDatepicker]="picker1" placeholder="{{ 'TAB_MENU.DATE_TO' | translate }} *"
+												[formControl]="dateTo" />
+											<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+											<mat-datepicker #picker1></mat-datepicker>
+										</mat-form-field>
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-10">
+										<mat-form-field class="example-full-width">
+											<input matInput type="number" placeholder="{{ 'TAB_MENU.SLICE_MAX' | translate }} *"
+												[(ngModel)]="max" />
+										</mat-form-field>
+									</div>
+									<div class="col-md-2">
+										<button (click)="getSliceNumber()" mat-raised-button color="primary">
+											<mat-icon>refresh</mat-icon>
+										</button>
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-md-12">
+										<button [disabled]="disabledBtn" (click)="orderSlice()" class="orderSlice" mat-raised-button
+											color="primary">
+											{{ "TAB_MENU.TO_FORM" | translate }}
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</mat-tab>
+		</mat-tab-group>
+	</div>
 </div>

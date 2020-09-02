@@ -8,11 +8,21 @@ import { SharedService } from "../services/shared.service";
 import { TreeNode } from "primeng/api/treenode";
 import { ErrorHandlerService } from "../services/error-handler.service";
 
+import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
+import { AppDateAdapter, APP_DATE_FORMATS } from '../date.adapter';
+
 @Component({
 	selector: "app-tab-menu",
 	templateUrl: "./tab-menu.component.html",
 	styleUrls: ["./tab-menu.component.scss"],
-	providers: [HttpService],
+	providers: [HttpService,
+		{
+			provide: DateAdapter, useClass: AppDateAdapter
+		},
+		{
+			provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+		}
+	],
 })
 export class TabMenuComponent implements OnInit {
 	groupListFormGroup: FormGroup;
