@@ -199,7 +199,8 @@ export class TreeTableComponent implements OnInit {
 								gridValue["expanded"] = true;
 								gridValue.children.forEach(function (childValue) {
 									if (
-										orderListValue.statusCode == self.STATUS_CODES.WAITING_FOR_PROCESSING &&
+										// orderListValue.statusCode == self.STATUS_CODES.WAITING_FOR_PROCESSING && 
+										childValue.data.code == self.STATUS_CODES.IN_PROCESSING &&
 										childValue.data.statusYear == orderListValue.year
 									) {
 										// self.loader = true;
