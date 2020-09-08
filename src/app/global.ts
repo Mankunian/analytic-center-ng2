@@ -21,6 +21,7 @@ export const GlobalConfig = Object.freeze({
 	},
 	REPORT_GROUPS: {
 		ERSOP: 100,
-		COURT_REPORTS: 0o4
+		COURT_REPORTS: 0o4,
+		ADMIN_VIOLATIONS: 0o6
 	}
 });
