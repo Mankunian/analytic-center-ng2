@@ -30,15 +30,16 @@ export class ReportsModalContentComponent {
 	colsReg: any[];
 	colsERSOP: any[];
 	colsCourtReport: any[];
+	colsAdminViolations: any[];
 	selectedGroupCode: any;
-	gridData = { deps: [] as any, regs: [] as any, ersop: [] as any, courtReport: [] as any };
+	gridData = { deps: [] as any, regs: [] as any, ersop: [] as any, courtReport: [] as any, adminViolations: [] };
 	childrenNode: TreeNode[];
 
-	requestedReports = { deps: [], regs: [], ersop: [], courtReport: [] };
+	requestedReports = { deps: [], regs: [], ersop: [], courtReport: [], adminViolations: [] };
 	selectedReportsList: any = [];
 	selectedReportsQuery: any = [];
 	readyReports: any = [];
-	selectAllStatus = { deps: [], regs: [], ersop: [], courtReport: [] };
+	selectAllStatus = { deps: [], regs: [], ersop: [], courtReport: [], adminViolations: [] };
 	reportLangs = {
 		ru: {
 			name: "Русский",
@@ -60,12 +61,15 @@ export class ReportsModalContentComponent {
 	contentLoading = false;
 	loadingERSOP: boolean;
 	loadingCourtReport: boolean;
+	loadingAdminViolations: boolean;
 	isReportsLoading: boolean;
 	groupCode: any;
 	isGroupERSOP = false; // Группа отчетов ЕРСОП
 	isGroupCourtReport = false; // Группа отчетов о работе суда
-	isReport1P = false;
-	isReportForm10 = false;
+	isGroupAdminViolations = false; // Группа отчетов об админ.правонарушениях
+	isReport1P = false; // Отчет 1П
+	isReportForm10 = false; // Отчет Форма 10-11-12
+	isReport1AD = false; // Отчет 1АД
 	gridScrollHeight = "400px";
 	regionTableIndent = 12;
 	hideColsDepTable: boolean;
@@ -87,6 +91,8 @@ export class ReportsModalContentComponent {
 			this.isGroupERSOP = true;
 		} else if (this.groupCode == GlobalConfig.REPORT_GROUPS.COURT_REPORTS) { // Если группа отчетов о работе суда
 			this.isGroupCourtReport = true;
+		} else if (this.groupCode == GlobalConfig.REPORT_GROUPS.ADMIN_VIOLATIONS) { // Если группа отчетов о работе админ правонарушениях
+			this.isGroupAdminViolations = true;
 		}
 
 
@@ -108,7 +114,11 @@ export class ReportsModalContentComponent {
 		this.colsCourtReport = [
 			{ field: "searchPattern", header: "Код органа", width: "180px" },
 			{ field: "name", header: "Наименование", width: "auto" },
+		]
 
+		this.colsAdminViolations = [
+			{ field: "searchPattern", header: "Код органа", width: "180px" },
+			{ field: "name", header: "Наименование", width: "auto" },
 		]
 
 		// Get reports list by slice id to genereate tabs
@@ -120,6 +130,8 @@ export class ReportsModalContentComponent {
 						this.isReport1P = true;
 					} else if (element.code == '510' || element.code == '511') {
 						this.isReportForm10 = true;
+					} else if (element.code == '050') {
+						this.isReport1AD = true;
 					}
 				});
 
@@ -127,6 +139,9 @@ export class ReportsModalContentComponent {
 					this.generateGridERSOP();
 				} else if (this.isGroupCourtReport || this.isReportForm10) {
 					this.generateGridCourtReport();
+				} else if (this.isGroupAdminViolations) {
+					console.log('Группа админ правонарушения')
+					this.generateGridAdminViolations();
 				} else {
 					// Get regions grid data
 					this.http.getRegions().subscribe(
@@ -205,6 +220,25 @@ export class ReportsModalContentComponent {
 		});
 	}
 
+	generateGridAdminViolations() {
+		this.reportGroups.forEach(reportGroup => {
+			let groupCode = reportGroup.code;
+
+			this.http.getGroupAdminViolations(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).subscribe(
+				data => {
+					this.gridData.adminViolations[groupCode] = this.formatGridService.formatGridData(data, true, true);
+					this.requestedReports.adminViolations[groupCode] = [];
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				},
+				() => {
+					this.contentLoading = false;
+				}
+			)
+		});
+	}
+
 	onNodeExpandGroupERSOP(event, groupCode) {
 		let node = event.node;
 		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
@@ -235,6 +269,26 @@ export class ReportsModalContentComponent {
 					event.node.children = this.formatGridService.formatGridData(data, false);
 					this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]]; //refresh the data
 					this.loadingCourtReport = false;
+
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				}
+			)
+		}
+	}
+
+	onNodeExpandGroupAdminViolations(event, groupCode) {
+		let node = event.node;
+		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
+			this.loadingAdminViolations = true;
+			const searchPattern = node.data.searchPattern;
+
+			this.http.getGroupAdminViolationsChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
+				data => {
+					event.node.children = this.formatGridService.formatGridData(data, false);
+					this.gridData.adminViolations[groupCode] = [...this.gridData.adminViolations[groupCode]]; //refresh the data
+					this.loadingAdminViolations = false;
 
 				},
 				error => {
@@ -310,7 +364,10 @@ export class ReportsModalContentComponent {
 				this.requestedReports.ersop[this.selectedGroupCode].length !== 0) ||
 			//if groups is CourtReport
 			(this.requestedReports.courtReport[this.selectedGroupCode] !== undefined &&
-				this.requestedReports.courtReport[this.selectedGroupCode].length !== 0)
+				this.requestedReports.courtReport[this.selectedGroupCode].length !== 0) ||
+			//if groups is Admin Vioaltions
+			(this.requestedReports.adminViolations[this.selectedGroupCode] !== undefined &&
+				this.requestedReports.adminViolations[this.selectedGroupCode].length !== 0)
 		) {
 			return true;
 		}
@@ -322,7 +379,7 @@ export class ReportsModalContentComponent {
 		this.selectedReportsList = [];
 
 
-		if (!this.isGroupERSOP && !this.isGroupCourtReport) {
+		if (!this.isGroupERSOP && !this.isGroupCourtReport && !this.isGroupAdminViolations) {
 			this.readyReportsParts = 0;
 			this.requestedReports.regs.forEach((element, index) => {
 				let regionsTabIndex = index;
@@ -382,6 +439,21 @@ export class ReportsModalContentComponent {
 				}
 				counter++;
 			});
+		} else if (this.isGroupAdminViolations) {
+			// if group is Admin violations
+			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
+			this.requestedReports.adminViolations[this.selectedGroupCode].forEach(element => {
+				this.selectedReportsList[counter] = {
+					report: reportInfo,
+					region: element
+				};
+				this.selectedReportsQuery[counter] = {
+					sliceId: this.sliceId,
+					reportCode: this.selectedGroupCode,
+					govCode: element.searchPattern,
+				}
+				counter++
+			});
 		}
 	}
 
@@ -402,6 +474,12 @@ export class ReportsModalContentComponent {
 			this.requestedReports.courtReport[groupCode].splice(this.requestedReports.courtReport[groupCode].indexOf(row), 1);
 			this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]];
 			this.requestedReports.courtReport[groupCode] = [...this.requestedReports.courtReport[groupCode]]
+		} else if (this.isGroupAdminViolations) {
+			let row = selectedReport.region;
+
+			this.requestedReports.adminViolations[groupCode].splice(this.requestedReports.adminViolations[groupCode].indexOf(row), 1);
+			this.gridData.adminViolations[groupCode] = [...this.gridData.adminViolations[groupCode]];
+			this.requestedReports.adminViolations[groupCode] = [...this.requestedReports.adminViolations[groupCode]]
 		} else {
 			let regionCode = selectedReport.region.code,
 				departmentCode = selectedReport.department.code;
@@ -523,6 +601,10 @@ export class ReportsModalContentComponent {
 		} else if (this.isGroupCourtReport) {
 			let commonIndex = this.requestedReports.courtReport[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.courtReport[groupCode][commonIndex].name) : (regionName = "");
+			departmentName = "";
+		} else if (this.isGroupAdminViolations) {
+			let commonIndex = this.requestedReports.adminViolations[groupCode].findIndex(x => x.searchPattern === govCode);
+			commonIndex !== -1 ? (regionName = this.requestedReports.adminViolations[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
 		} else {
 			let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);

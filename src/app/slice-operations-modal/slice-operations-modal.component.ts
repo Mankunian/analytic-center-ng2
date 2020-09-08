@@ -171,6 +171,7 @@ export class SliceOperationsModalContentComponent {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
+			console.log(result)
 		});
 	}
 
@@ -187,7 +188,7 @@ export class SliceOperationsModalContentComponent {
 		};
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe(
-			(data: SaveEditReasonObj) => {
+			() => {
 				// update ui-grid-in-agreement
 				this.http.getDataGridInAgreement(this.historyValue.sliceId, this.historyValue.id).subscribe(
 					data => {

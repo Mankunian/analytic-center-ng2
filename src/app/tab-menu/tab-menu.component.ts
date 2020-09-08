@@ -119,6 +119,7 @@ export class TabMenuComponent implements OnInit {
 		this.checkedGroups.push(event);
 		this.checkedGroupCodes = event.source.value.code;
 
+		// eslint-disable-next-line no-underscore-dangle
 		if (event.source._checked) {
 			this.checkedGroupList.push(this.checkedGroupCodes);
 		} else {
@@ -168,6 +169,7 @@ export class TabMenuComponent implements OnInit {
 				this.service.sendOrderSliceList(data);
 				this.preloaderByOrderSlice = true;
 				this.checkedGroups.forEach(element => {
+					// eslint-disable-next-line no-underscore-dangle
 					element.source._checked = false; // uncheck all selected value after response
 				});
 				this.checkedGroupList.length = 0; // clear checkbox array after response
