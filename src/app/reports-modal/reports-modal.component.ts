@@ -216,9 +216,10 @@ export class ReportsModalContentComponent {
 
 	generateGridERSOP() {
 		this.reportGroups.forEach(reportGroup => {
+			console.log(reportGroup)
 			let groupCode = reportGroup.code;
 
-			this.http.getGroupERSOP(GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP).subscribe(
+			this.http.getGroups4DialogTable(GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP, groupCode).subscribe(
 				data => {
 					this.gridData.ersop[groupCode] = this.formatGridService.formatGridData(data, true, true);
 					this.requestedReports.ersop[groupCode] = [];
@@ -237,7 +238,7 @@ export class ReportsModalContentComponent {
 		this.reportGroups.forEach(reportGroup => {
 			let groupCode = reportGroup.code;
 
-			this.http.getGroupCourtReport(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).subscribe(
+			this.http.getGroups4DialogTable(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS, groupCode).subscribe(
 				data => {
 					this.gridData.courtReport[groupCode] = this.formatGridService.formatGridData(data, true, true);
 					this.requestedReports.courtReport[groupCode] = [];
@@ -257,7 +258,7 @@ export class ReportsModalContentComponent {
 		this.reportGroups.forEach(reportGroup => {
 			let groupCode = reportGroup.code;
 
-			this.http.getProkuraturaReport(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).subscribe(
+			this.http.getGroups4DialogTable(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS, groupCode).subscribe(
 				data => {
 					this.gridData.prokuratura[groupCode] = this.formatGridService.formatGridData(data, true, true);
 					this.requestedReports.prokuratura[groupCode] = []
@@ -278,7 +279,7 @@ export class ReportsModalContentComponent {
 		this.reportGroups.forEach(reportGroup => {
 			let groupCode = reportGroup.code;
 
-			this.http.getGroupAdminViolations(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).subscribe(
+			this.http.getGroups4DialogTable(GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS, groupCode).subscribe(
 				data => {
 					this.gridData.adminViolations[groupCode] = this.formatGridService.formatGridData(data, true, true);
 					this.requestedReports.adminViolations[groupCode] = [];
@@ -299,7 +300,7 @@ export class ReportsModalContentComponent {
 			this.loadingERSOP = true;
 			const searchPattern = node.data.searchPattern;
 
-			this.http.getGroupERSOPChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP).then(
+			this.http.getGroupsChildren4DialogTable(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ERSOP).then(
 				data => {
 					event.node.children = this.formatGridService.formatGridData(data, false);
 					this.gridData.ersop[groupCode] = [...this.gridData.ersop[groupCode]]; //refresh the data
@@ -318,7 +319,7 @@ export class ReportsModalContentComponent {
 			this.loadingCourtReport = true;
 			const searchPattern = node.data.searchPattern;
 
-			this.http.getGroupCourtReportChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
+			this.http.getGroupsChildren4DialogTable(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
 				data => {
 					event.node.children = this.formatGridService.formatGridData(data, false);
 					this.gridData.courtReport[groupCode] = [...this.gridData.courtReport[groupCode]]; //refresh the data
@@ -338,7 +339,7 @@ export class ReportsModalContentComponent {
 			this.loadingProkuratura = true;
 			const searchPattern = node.data.searchPattern;
 
-			this.http.getGroupProkuraturaChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
+			this.http.getGroupsChildren4DialogTable(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
 				data => {
 					event.node.children = this.formatGridService.formatGridData(data, false);
 					this.gridData.prokuratura[groupCode] = [...this.gridData.prokuratura[groupCode]]; //refresh the data
@@ -357,7 +358,7 @@ export class ReportsModalContentComponent {
 			this.loadingAdminViolations = true;
 			const searchPattern = node.data.searchPattern;
 
-			this.http.getGroupAdminViolationsChildren(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
+			this.http.getGroupsChildren4DialogTable(searchPattern, GlobalConfig.HIERARCHY_REPORTS.FOR_ANOTHER_ORGANIZATIONS).then(
 				data => {
 					event.node.children = this.formatGridService.formatGridData(data, false);
 					this.gridData.adminViolations[groupCode] = [...this.gridData.adminViolations[groupCode]]; //refresh the data

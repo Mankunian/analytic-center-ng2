@@ -95,49 +95,19 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree')
 	}
 
-	getGroupERSOP(repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
+	getGroups4DialogTable(repGroup, groupCode) {
+		console.log(repGroup)
+		console.log(groupCode)
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup + '&report=' + groupCode)
 	}
 
-	getGroupCourtReport(repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
-	}
-
-	getProkuraturaReport(repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
-	}
-
-	getGroupAdminViolations(repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
-	}
-
-	getGroupERSOPChildren(searchPattern, repGroup) {
+	getGroupsChildren4DialogTable(searchPattern, repGroup) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
 
-	getGroupCourtReportChildren(searchPattern, repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
-			.toPromise()
-			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-			.then(response => <TreeNode[]>response);
-	}
-
-	getGroupAdminViolationsChildren(searchPattern, repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
-			.toPromise()
-			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-			.then(response => <TreeNode[]>response);
-	}
-
-	getGroupProkuraturaChildren(searchPattern, repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
-			.toPromise()
-			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-			.then(response => <TreeNode[]>response);
-	}
 
 	getDepsByReportId(reportId) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/orgs?reportCode=' + reportId)
