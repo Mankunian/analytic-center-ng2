@@ -73,6 +73,10 @@
   border: 1px solid #94c0d2;
 }
 
+.ui-treetable table{
+margin: 15px 0;
+}
+
 ::ng-deep body .ui-treetable .ui-treetable-tbody > tr:nth-child(even) {
   background-color: #daecf4 !important;
 }
