@@ -103,6 +103,10 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
 	}
 
+	getProkuraturaReport(repGroup) {
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
+	}
+
 	getGroupAdminViolations(repGroup) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup)
 	}
@@ -122,6 +126,13 @@ export class HttpService {
 	}
 
 	getGroupAdminViolationsChildren(searchPattern, repGroup) {
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
+			.toPromise()
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+			.then(response => <TreeNode[]>response);
+	}
+
+	getGroupProkuraturaChildren(searchPattern, repGroup) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions

@@ -241,7 +241,58 @@
 		</ng-container>
 		<!-- END Treetable grid for groupAdminViolations -->
 
-		<ng-container *ngIf="!isGroupERSOP && !isGroupCourtReport && !isGroupAdminViolations">
+		<!-- Treetable grid for Prokuratura -->
+		<ng-container *ngIf="isGroupProkuratura">
+			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
+				<div class="container-fluid custom-class">
+					<div class="row">
+						<div style="height: 5px; width: 100%; background: transparent">
+							<div *ngIf="loadingProkuratura" class="loader">
+								<div class="bar"></div>
+							</div>
+						</div>
+						<div class="col-sm-12" *ngIf="gridData.prokuratura != undefined">
+							<p-treeTable [value]="gridData.prokuratura[group.code]" [columns]="colsCourtReport" [lazy]="true"
+								dataKey="code" (onNodeExpand)="onNodeExpandGroupProkuratura($event, group.code)" [scrollable]="true"
+								scrollHeight="{{ gridScrollHeight }}">
+								<ng-template pTemplate="header" let-columns>
+									<tr>
+										<th style="width: 70px">
+											<p-checkbox [binary]="true"
+												(click)="selectAllRows(group.code, requestedReports.prokuratura, gridData.prokuratura, selectAllStatus.prokuratura)"
+												[(ngModel)]="selectAllStatus.prokuratura[group.code]"></p-checkbox>
+										</th>
+										<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
+									</tr>
+								</ng-template>
+								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+									<tr [ttSelectableRow]="rowNode">
+										<td style="width: 70px">
+											<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+										</td>
+										<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
+											<p-checkbox [(ngModel)]="requestedReports.prokuratura[group.code]" [(value)]="rowNode.node.data"
+												*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
+												(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.prokuratura)">
+											</p-checkbox>
+											<span [ngStyle]="{
+                          width: col.width,
+                          'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
+                        }">
+												{{ rowData[col.field] }}
+											</span>
+										</td>
+									</tr>
+								</ng-template>
+							</p-treeTable>
+						</div>
+					</div>
+				</div>
+			</mat-tab>
+		</ng-container>
+		<!-- END Treetable grid for Prokuratura -->
+
+		<ng-container *ngIf="!isGroupERSOP && !isGroupCourtReport && !isGroupAdminViolations && !isGroupProkuratura">
 			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid">
 					<div class="row">

@@ -8,8 +8,8 @@
 		<div class="bar"></div>
 	</div>
 </div>
-<p-treeTable [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true" [loading]="loader"
-	[showLoader]="false">
+<p-treeTable [style]="{'margin': '15px 0'}" [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true"
+	[loading]="loader" [showLoader]="false">
 	<ng-template pTemplate="colgroup" let-columns>
 		<colgroup>
 			<!-- treeTableToggler -->
