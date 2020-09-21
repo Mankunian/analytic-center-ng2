@@ -16,13 +16,17 @@ export const GlobalConfig = Object.freeze({
 		IN_AGREEMENT: "7", // На согласовании
 	},
 	HIERARCHY_REPORTS: {
-		FOR_ERSOP: 0o1,
-		FOR_ANOTHER_ORGANIZATIONS: 0o2,
+		GROUP_001: 0o1,
+		GROUP_002: 0o2,
+		GROUP_003: 0o3
 	},
 	REPORT_GROUPS: {
 		ERSOP: 100,
 		COURT_REPORTS: 0o4,
 		ADMIN_VIOLATIONS: 0o6,
-		PROKURATURA: 102
+		PROKURATURA: 102,
+		PROSECUTORS_WORK: 0o3,
+		CIVIL_CASES: 103,
+		KISA: 101
 	}
 });
