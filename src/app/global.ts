@@ -18,7 +18,8 @@ export const GlobalConfig = Object.freeze({
 	HIERARCHY_REPORTS: {
 		GROUP_001: 0o1,
 		GROUP_002: 0o2,
-		GROUP_003: 0o3
+		GROUP_003: 0o3,
+		GROUP_004: 0o4
 	},
 	REPORT_GROUPS: {
 		ERSOP: 100,
