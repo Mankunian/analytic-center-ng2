@@ -184,7 +184,7 @@ export class ReportsModalContentComponent {
 		this.reportGroups.forEach(reportGroup => {
 			console.log(reportGroup)
 			let groupCode = reportGroup.code;
-			if (groupCode == '800') {
+			if (groupCode == '800' || groupCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
 			} else if (groupCode == '050') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
@@ -215,7 +215,7 @@ export class ReportsModalContentComponent {
 		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
 			this.loadingOrgz = true;
 			const searchPattern = node.data.searchPattern;
-			if (groupCode == '800') {
+			if (groupCode == '800' || groupCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
 			} else if (groupCode == '050') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
