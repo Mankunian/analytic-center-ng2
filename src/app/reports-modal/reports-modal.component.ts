@@ -111,7 +111,7 @@ export class ReportsModalContentComponent {
 		];
 
 		this.colsReg = [
-			{ field: "code", header: "И/н", width: "90px" },
+			{ field: "code", header: "И/н", width: "110px" },
 			{ field: "name", header: "Регион/Орган", width: "auto" },
 		];
 
