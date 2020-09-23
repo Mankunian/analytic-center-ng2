@@ -188,6 +188,8 @@ export class ReportsModalContentComponent {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
 			} else if (groupCode == '050') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
+			} else if (groupCode == '810') {
+				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
 			} else {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 			}
