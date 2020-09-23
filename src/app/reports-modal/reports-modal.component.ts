@@ -106,7 +106,7 @@ export class ReportsModalContentComponent {
 
 
 		this.colsDep = [
-			{ field: "code", header: "И/н", width: "56px" },
+			{ field: "code", header: "И/н", width: "90px" },
 			{ field: "name", header: "Ведомство", width: "auto" },
 		];
 
