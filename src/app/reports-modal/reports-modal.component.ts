@@ -96,7 +96,10 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.PROKURATURA ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.PROSECUTORS_WORK ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.CIVIL_CASES ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.KISA
+			this.groupCode == GlobalConfig.REPORT_GROUPS.KISA ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_CORRUPTION ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7
 		) {
 			this.isGroupOrgz = true;
 			console.log(this.isGroupOrgz)
@@ -131,6 +134,7 @@ export class ReportsModalContentComponent {
 						element.code == '800' || element.code == '801' ||
 						element.code == '510' || element.code == '511' ||
 						element.code == '050' || element.code == '720' || // группа отчетов Ф.2 прокурорский
+						element.code == '707' || element.code == '708' || element.code == '710' || //
 						element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
 						element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
 						element.code == '810' // KISA
@@ -237,11 +241,6 @@ export class ReportsModalContentComponent {
 			);
 		}
 	}
-
-
-
-
-
 
 	getReportInfoByCode(groupCode): any {
 		if (this.reportGroups != undefined && this.reportGroups) {
@@ -401,7 +400,6 @@ export class ReportsModalContentComponent {
 		if (this.selectedReportsList.length === 0) this.isReportsSelected = false;
 	};
 
-	/*=====  Get reports ======*/
 	getReports() {
 		this.openFirstTab();
 		let cntr = 0;
@@ -412,7 +410,6 @@ export class ReportsModalContentComponent {
 			this.getReportSplices(cntr);
 		}, 0);
 	}
-	/*=====  Get reports end ======*/
 
 	getReportSplices(counterFrom) {
 		let reportsSlice,
