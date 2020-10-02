@@ -24,6 +24,7 @@ export const GlobalConfig = Object.freeze({
 	REPORT_GROUPS: {
 		PROSECUTORS_WORK: 0o3,
 		COURT_REPORTS: 0o4,
+		KUI: 0o5,
 		ADMIN_VIOLATIONS: 0o6,
 		ERSOP: 100,
 		KISA: 101,
@@ -31,6 +32,7 @@ export const GlobalConfig = Object.freeze({
 		CIVIL_CASES: 103,
 		GPS_CORRUPTION: 104,
 		F8: 105,
-		GP_F7: 106
+		GP_F7: 106,
+
 	}
 });
