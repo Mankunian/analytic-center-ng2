@@ -103,9 +103,8 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI
 		) {
 			this.isGroupOrgz = true;
-			console.log(this.isGroupOrgz)
 		} else {
-			console.error('aaaaaaaaaaaaaaaaaaaaaa')
+			this.isGroupOrgz = false;
 		}
 
 
@@ -128,6 +127,7 @@ export class ReportsModalContentComponent {
 		// Get reports list by slice id to genereate tabs
 		this.http.getReportsBySliceId(this.sliceId).subscribe(
 			reportGroups => {
+				console.log(reportGroups)
 				this.reportGroups = reportGroups;
 				this.reportGroups.forEach(element => {
 					console.log(element)
@@ -142,6 +142,8 @@ export class ReportsModalContentComponent {
 						element.code == '810' // KISA
 					) {
 						this.isReportOrgz = true;
+					} else {
+						this.isReportOrgz = false;
 					}
 				});
 				if (this.isGroupOrgz) {
@@ -158,12 +160,18 @@ export class ReportsModalContentComponent {
 								// console.log(element)
 								let reportCode = element.code;
 								// Get department grid data
-								this.http.getDepsByReportId(reportCode).subscribe(
-									departments => {
-										console.log(departments)
-										this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-										this.requestedReports.deps[reportCode] = [];
-									},
+								this.http.getDepsByReportId(reportCode).subscribe(departments => {
+									this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
+									console.log(this.gridData.deps[reportCode])
+									this.requestedReports.deps[reportCode] = [];
+
+									this.gridData.deps[reportCode].forEach(element => {
+										if (element.data.code == '03') {
+											console.log(true)
+											// set checkbox value true by default
+										}
+									});
+								},
 									error => {
 										this.errorHandler.alertError(error);
 									},
@@ -264,6 +272,7 @@ export class ReportsModalContentComponent {
 	}
 
 	onChangeCheckboxStatus(event, groupCode, selectAllStatus) {
+		console.log(event, groupCode, selectAllStatus)
 		// Calls after every checkbox change. Check for matching regions and deps, or selected ERSOP
 		// Returns true if selections ready for report generating
 		this.isReportsSelectedFn() ? (this.isReportsSelected = true) : (this.isReportsSelected = false);

@@ -26,6 +26,7 @@ export const GlobalConfig = Object.freeze({
 		COURT_REPORTS: 0o4,
 		KUI: 0o5,
 		ADMIN_VIOLATIONS: 0o6,
+		DOROZHNO_TRANSPORT: 0o7,
 		ERSOP: 100,
 		KISA: 101,
 		PROKURATURA: 102,
