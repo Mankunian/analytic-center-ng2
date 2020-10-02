@@ -47,7 +47,7 @@ import {
 	EditReasonComponent,
 } from "./slice-operations-modal/slice-operations-modal.component";
 import { SliceOperationsModalContentComponent } from "./slice-operations-modal/slice-operations-modal.component";
-import { ReportsModalComponent } from "./reports-modal/reports-modal.component";
+// import { ReportsModalComponent } from "./reports-modal/reports-modal.component";
 import { ReportsModalContentComponent } from "./reports-modal/reports-modal.component";
 import { TimelineComponent } from "./timeline/timeline.component";
 import { GridDataInAgreementComponent } from "./grid-data-in-agreement/grid-data-in-agreement.component";
@@ -78,7 +78,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		TreeTableComponent,
 		SliceOperationsModalComponent,
 		SliceOperationsModalContentComponent,
-		ReportsModalComponent,
+		// ReportsModalComponent,
 		ReportsModalContentComponent,
 		TimelineComponent,
 		GridDataInAgreementComponent,
@@ -133,7 +133,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		SharedService,
 		TimelineComponent,
 		TreeTableComponent,
-		ReportsModalComponent,
+		// ReportsModalComponent,
 		SliceOperationsModalComponent,
 		MessageService,
 		{ provide: InjectableRxStompConfig, useValue: rxStompConfig },

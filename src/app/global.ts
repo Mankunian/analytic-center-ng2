@@ -24,13 +24,16 @@ export const GlobalConfig = Object.freeze({
 	REPORT_GROUPS: {
 		PROSECUTORS_WORK: 0o3,
 		COURT_REPORTS: 0o4,
+		KUI: 0o5,
 		ADMIN_VIOLATIONS: 0o6,
+		DOROZHNO_TRANSPORT: 0o7,
 		ERSOP: 100,
 		KISA: 101,
 		PROKURATURA: 102,
 		CIVIL_CASES: 103,
 		GPS_CORRUPTION: 104,
 		F8: 105,
-		GP_F7: 106
+		GP_F7: 106,
+
 	}
 });

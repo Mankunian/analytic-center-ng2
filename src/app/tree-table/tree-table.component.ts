@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { TreeNode } from "primeng/api";
 import { HttpService } from "../services/http.service";
 import { MatDialog } from "@angular/material/dialog";
-import { ReportsModalComponent, ReportsModalContentComponent } from "../reports-modal/reports-modal.component";
+import { ReportsModalContentComponent } from "../reports-modal/reports-modal.component";
 import {
 	SliceOperationsModalComponent,
 	SliceOperationsModalContentComponent,
@@ -18,7 +18,7 @@ import { FormatGridService } from "../services/format-grid.service";
 	selector: "app-tree-table",
 	templateUrl: "./tree-table.component.html",
 	styleUrls: ["./tree-table.component.scss"],
-	providers: [SliceOperationsModalComponent, ReportsModalComponent],
+	providers: [SliceOperationsModalComponent],
 })
 export class TreeTableComponent implements OnInit {
 	public STATUS_CODES = GlobalConfig.STATUS_CODES;
@@ -43,7 +43,7 @@ export class TreeTableComponent implements OnInit {
 	tableIndentSize = 15;
 
 	constructor(
-		public reportsModalInstance: ReportsModalComponent,
+		// public reportsModalInstance: ReportsModalComponent,
 		public dialogOperSlice: MatDialog,
 		public reportsModal: MatDialog,
 		public dialog: SliceOperationsModalComponent,

@@ -201,7 +201,8 @@
 								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
 									<tr [ttSelectableRow]="rowNode">
 										<td style="width: 45px">
-											<p-checkbox [(ngModel)]="requestedReports.deps[group.code]" [(value)]="rowNode.node.data"
+											<p-checkbox [binary]="false" [(ngModel)]="requestedReports.deps[group.code]"
+												[(value)]="rowNode.node.data"
 												(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
 										</td>
 										<td *ngFor="let col of columns; let i = index" [style.width]="col.width">

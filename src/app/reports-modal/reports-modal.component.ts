@@ -6,14 +6,14 @@ import { GlobalConfig } from "../global";
 import { ErrorHandlerService } from "../services/error-handler.service";
 import { FormatGridService } from "../services/format-grid.service";
 
-@Component({
-	selector: "app-reports-modal",
-	templateUrl: "./reports-modal.component.html",
-	styleUrls: ["./reports-modal.component.scss"],
-})
-export class ReportsModalComponent {
-	constructor(public dialog: MatDialog, private http: HttpService) { }
-}
+// @Component({
+// 	selector: "app-reports-modal",
+// 	templateUrl: "./reports-modal.component.html",
+// 	styleUrls: ["./reports-modal.component.scss"],
+// })
+// export class ReportsModalComponent {
+// 	constructor(public dialog: MatDialog, private http: HttpService) { }
+// }
 
 @Component({
 	selector: "app-reports-modal-content",
@@ -99,12 +99,12 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.KISA ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_CORRUPTION ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7
+			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI
 		) {
 			this.isGroupOrgz = true;
-			console.log(this.isGroupOrgz)
 		} else {
-			console.error('aaaaaaaaaaaaaaaaaaaaaa')
+			this.isGroupOrgz = false;
 		}
 
 
@@ -127,6 +127,7 @@ export class ReportsModalContentComponent {
 		// Get reports list by slice id to genereate tabs
 		this.http.getReportsBySliceId(this.sliceId).subscribe(
 			reportGroups => {
+				console.log(reportGroups)
 				this.reportGroups = reportGroups;
 				this.reportGroups.forEach(element => {
 					console.log(element)
@@ -134,12 +135,15 @@ export class ReportsModalContentComponent {
 						element.code == '800' || element.code == '801' ||
 						element.code == '510' || element.code == '511' ||
 						element.code == '050' || element.code == '720' || // группа отчетов Ф.2 прокурорский
-						element.code == '707' || element.code == '708' || element.code == '710' || //
+						element.code == '707' || element.code == '708' || element.code == '710' ||
+						element.code == '514' || // КУИ
 						element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
 						element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
 						element.code == '810' // KISA
 					) {
 						this.isReportOrgz = true;
+					} else {
+						this.isReportOrgz = false;
 					}
 				});
 				if (this.isGroupOrgz) {
@@ -153,13 +157,21 @@ export class ReportsModalContentComponent {
 							regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
 
 							this.reportGroups.forEach(element => {
-								let groupCode = element.code;
+								// console.log(element)
+								let reportCode = element.code;
 								// Get department grid data
-								this.http.getDepsByReportId(groupCode).subscribe(
-									departments => {
-										this.gridData.deps[groupCode] = this.formatGridService.formatGridData(departments, false);
-										this.requestedReports.deps[groupCode] = [];
-									},
+								this.http.getDepsByReportId(reportCode).subscribe(departments => {
+									this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
+									console.log(this.gridData.deps[reportCode])
+									this.requestedReports.deps[reportCode] = [];
+
+									this.gridData.deps[reportCode].forEach(element => {
+										if (element.data.code == '03') {
+											console.log(true)
+											// set checkbox value true by default
+										}
+									});
+								},
 									error => {
 										this.errorHandler.alertError(error);
 									},
@@ -168,8 +180,8 @@ export class ReportsModalContentComponent {
 									}
 								);
 								// Assign regions to grid
-								this.gridData.regs[groupCode] = regionsTreeFormatted;
-								this.requestedReports.regs[groupCode] = [];
+								this.gridData.regs[reportCode] = regionsTreeFormatted;
+								this.requestedReports.regs[reportCode] = [];
 							});
 						},
 						error => {
@@ -260,6 +272,7 @@ export class ReportsModalContentComponent {
 	}
 
 	onChangeCheckboxStatus(event, groupCode, selectAllStatus) {
+		console.log(event, groupCode, selectAllStatus)
 		// Calls after every checkbox change. Check for matching regions and deps, or selected ERSOP
 		// Returns true if selections ready for report generating
 		this.isReportsSelectedFn() ? (this.isReportsSelected = true) : (this.isReportsSelected = false);
