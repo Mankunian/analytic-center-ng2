@@ -103,8 +103,6 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI
 		) {
 			this.isGroupOrgz = true;
-		} else {
-			this.isGroupOrgz = false;
 		}
 
 
@@ -123,14 +121,11 @@ export class ReportsModalContentComponent {
 			{ field: "name", header: "Наименование", width: "auto" },
 		]
 
-
 		// Get reports list by slice id to genereate tabs
 		this.http.getReportsBySliceId(this.sliceId).subscribe(
 			reportGroups => {
-				console.log(reportGroups)
 				this.reportGroups = reportGroups;
 				this.reportGroups.forEach(element => {
-					console.log(element)
 					if (
 						element.code == '800' || element.code == '801' ||
 						element.code == '510' || element.code == '511' ||
@@ -139,7 +134,7 @@ export class ReportsModalContentComponent {
 						element.code == '514' || // КУИ
 						element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
 						element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
-						element.code == '810' // KISA
+						element.code == '810' // KISA 
 					) {
 						this.isReportOrgz = true;
 					} else {
@@ -157,20 +152,11 @@ export class ReportsModalContentComponent {
 							regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
 
 							this.reportGroups.forEach(element => {
-								// console.log(element)
 								let reportCode = element.code;
 								// Get department grid data
 								this.http.getDepsByReportId(reportCode).subscribe(departments => {
 									this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-									console.log(this.gridData.deps[reportCode])
 									this.requestedReports.deps[reportCode] = [];
-
-									this.gridData.deps[reportCode].forEach(element => {
-										if (element.data.code == '03') {
-											console.log(true)
-											// set checkbox value true by default
-										}
-									});
 								},
 									error => {
 										this.errorHandler.alertError(error);
@@ -272,7 +258,6 @@ export class ReportsModalContentComponent {
 	}
 
 	onChangeCheckboxStatus(event, groupCode, selectAllStatus) {
-		console.log(event, groupCode, selectAllStatus)
 		// Calls after every checkbox change. Check for matching regions and deps, or selected ERSOP
 		// Returns true if selections ready for report generating
 		this.isReportsSelectedFn() ? (this.isReportsSelected = true) : (this.isReportsSelected = false);
@@ -328,19 +313,35 @@ export class ReportsModalContentComponent {
 		let counter = 0;
 		this.selectedReportsList = [];
 
-
-		if (!this.isGroupOrgz) {
+		if (this.isGroupOrgz) {
+			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
+			this.requestedReports.orgz[this.selectedGroupCode].forEach(element => {
+				this.selectedReportsList[counter] = {
+					report: reportInfo,
+					region: element,
+				};
+				this.selectedReportsQuery[counter] = {
+					sliceId: this.sliceId,
+					reportCode: this.selectedGroupCode,
+					govCode: element.searchPattern,
+				};
+				counter++;
+			});
+		}
+		else if (!this.isGroupOrgz) {
 			this.readyReportsParts = 0;
+
+			console.log(typeof this.requestedReports.regs);
 			this.requestedReports.regs.forEach((element, index) => {
-				let regionsTabIndex = index;
-				let reportInfo = this.getReportInfoByCode(regionsTabIndex);
-			})
-			this.requestedReports.regs.forEach((element, index) => {
+				console.log(index, element)
 				let regionsTabIndex = index;
 				let reportInfo = this.getReportInfoByCode(regionsTabIndex);
 				// eslint-disable-next-line @typescript-eslint/no-this-alias
 				let self = this;
 				element.forEach(region => {
+					// console.log(region)
+					//hereeeeeeeeeeeeeeeeee
+
 					if (self.requestedReports.deps[regionsTabIndex] != undefined) {
 						self.requestedReports.deps[regionsTabIndex].forEach(department => {
 							self.selectedReportsList[counter] = {
@@ -360,22 +361,7 @@ export class ReportsModalContentComponent {
 				});
 			});
 		}
-		else if (this.isGroupOrgz) {
-			// if group is ERSOP
-			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
-			this.requestedReports.orgz[this.selectedGroupCode].forEach(element => {
-				this.selectedReportsList[counter] = {
-					report: reportInfo,
-					region: element,
-				};
-				this.selectedReportsQuery[counter] = {
-					sliceId: this.sliceId,
-					reportCode: this.selectedGroupCode,
-					govCode: element.searchPattern,
-				};
-				counter++;
-			});
-		}
+
 
 	}
 
