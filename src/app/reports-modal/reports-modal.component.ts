@@ -61,6 +61,7 @@ export class ReportsModalContentComponent {
 	readyReportsParts = 0;
 	sliceSize = 2;
 	isReportsSelected = false;
+	isReportsSelectedDeps = false;
 	tabIndex = 0;
 	contentLoading = false;
 	loadingOrgz: boolean;
@@ -75,6 +76,10 @@ export class ReportsModalContentComponent {
 	gridScrollHeight = "400px";
 	regionTableIndent = 12;
 	hideColsDepTable: boolean;
+	departments: any;
+	startWith0ReportCodeRegs: boolean;
+	startWith0ReportCodeDeps: boolean;
+	regionsTabIndex: any;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -155,8 +160,15 @@ export class ReportsModalContentComponent {
 								let reportCode = element.code;
 								// Get department grid data
 								this.http.getDepsByReportId(reportCode).subscribe(departments => {
+									this.departments = departments
 									this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-									this.requestedReports.deps[reportCode] = [];
+									if (this.departments[0].code == '03') {
+										console.log('МВД')
+										this.requestedReports.deps[reportCode] = this.departments
+										this.isReportsSelectedDeps = true;
+									} else {
+										this.requestedReports.deps[reportCode] = [];
+									}
 								},
 									error => {
 										this.errorHandler.alertError(error);
@@ -184,7 +196,7 @@ export class ReportsModalContentComponent {
 
 	generateGridOrgz() {
 		this.reportGroups.forEach(reportGroup => {
-			console.log(reportGroup)
+			// console.log(reportGroup)
 			let groupCode = reportGroup.code;
 			if (groupCode == '800' || groupCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
@@ -295,6 +307,8 @@ export class ReportsModalContentComponent {
 	}
 
 	isReportsSelectedFn(): boolean {
+		console.log(this.requestedReports.regs[this.selectedGroupCode])
+		console.log(this.requestedReports.deps[this.selectedGroupCode])
 
 		if (
 			(this.requestedReports.regs[this.selectedGroupCode] !== undefined &&
@@ -328,41 +342,62 @@ export class ReportsModalContentComponent {
 				counter++;
 			});
 		}
-		else if (!this.isGroupOrgz) {
+		if (!this.isGroupOrgz) {
 			this.readyReportsParts = 0;
-
-			console.log(typeof this.requestedReports.regs);
+			// Check report Code for start with 0 or not. Example: 060, 510 etc..
+			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
+				this.startWith0ReportCodeRegs = key.startsWith("0"); // search for report code starts with 0
+				if (this.startWith0ReportCodeRegs) { // if true
+					this.removeLeadingZeroFromStringRegs() // 060 = 60
+				}
+			}
 			this.requestedReports.regs.forEach((element, index) => {
-				console.log(index, element)
-				let regionsTabIndex = index;
-				let reportInfo = this.getReportInfoByCode(regionsTabIndex);
+				if (this.startWith0ReportCodeRegs) {
+					let strIndex = '0' + index;
+					this.regionsTabIndex = strIndex
+				} else {
+					this.regionsTabIndex = index
+				}
+				let reportInfo = this.getReportInfoByCode(this.regionsTabIndex);
 				// eslint-disable-next-line @typescript-eslint/no-this-alias
 				let self = this;
 				element.forEach(region => {
-					// console.log(region)
-					//hereeeeeeeeeeeeeeeeee
-
-					if (self.requestedReports.deps[regionsTabIndex] != undefined) {
-						self.requestedReports.deps[regionsTabIndex].forEach(department => {
+					console.log(this.requestedReports.deps[this.regionsTabIndex])
+					if (this.requestedReports.deps[this.regionsTabIndex] != undefined) {
+						this.requestedReports.deps[this.regionsTabIndex].forEach(depElemen => {
+							console.log(depElemen);
 							self.selectedReportsList[counter] = {
 								report: reportInfo,
 								region: region,
-								department: department,
+								department: depElemen,
 							};
 							self.selectedReportsQuery[counter] = {
 								sliceId: self.sliceId,
 								reportCode: reportInfo.code,
-								orgCode: department.code,
+								orgCode: depElemen.code,
 								regCode: region.code,
 							};
 							counter++;
 						});
 					}
+
 				});
 			});
 		}
+	}
 
-
+	removeLeadingZeroFromStringRegs() {
+		let newKey;
+		let oldKey;
+		for (const [key, value] of Object.entries(this.requestedReports.regs)) {
+			// console.log(key, value)
+			if (key.charAt(0) === '0') {
+				oldKey = key;
+				newKey = oldKey.substring(1);
+				this.requestedReports.regs[newKey] = this.requestedReports.regs[oldKey];
+				delete this.requestedReports.regs[oldKey];
+			}
+		}
 	}
 
 	removeSelectedReport = function (index, selectedReport) {
@@ -416,6 +451,7 @@ export class ReportsModalContentComponent {
 			selectedLang = this.checkLang();
 		if (this.selectedReportsQuery != undefined && this.selectedReportsQuery.length > 0) {
 			reportsSlice = this.selectedReportsQuery.splice(0, this.sliceSize);
+			console.log(reportsSlice)
 			this.generateReports(reportsSlice, selectedLang, counterFromIn);
 		} else {
 			this.isReportsLoading = false;
@@ -426,6 +462,7 @@ export class ReportsModalContentComponent {
 		if (reportsSlice.length === 0) {
 			return false;
 		} else {
+			console.log(reportsSlice)
 			this.http.generateReports(selectedLang, reportsSlice).subscribe(
 				data => {
 					this.showReports(data);
