@@ -203,7 +203,8 @@
 										<td style="width: 45px">
 											<!-- <p-checkbox value="rowNode.node.data" [value]="rowNode.node.data" [(ngModel)]="value">
 											</p-checkbox> -->
-											<p-checkbox [(ngModel)]="requestedReports.deps[group.code]" [(value)]="rowNode.node.data"
+											<p-checkbox [binary]="isReportsSelectedDeps" [(ngModel)]="requestedReports.deps[group.code]"
+												[(value)]="rowNode.node.data"
 												(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
 										</td>
 										<td *ngFor="let col of columns; let i = index" [style.width]="col.width">
@@ -226,8 +227,5 @@
 	<button mat-flat-button color="primary" (click)="getReports()" [disabled]="!isReportsSelected">
 		{{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
 	</button>
-	<!-- <button mat-flat-button color="primary" (click)="openFirstTab()" *ngIf="tabIndex !== 0">
-    {{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
-  </button> -->
 	<button mat-flat-button color="primary" mat-dialog-close>{{ "REPORTS_MODAL.BTN_CANCEL" | translate }}</button>
 </mat-dialog-actions>
