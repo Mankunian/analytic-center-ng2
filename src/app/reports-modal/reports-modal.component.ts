@@ -68,7 +68,7 @@ export class ReportsModalContentComponent {
 
 	isReportsLoading: boolean;
 	groupCode: any;
-	isGroupOrgz = false;
+	isGroupGov = false;
 
 	isReportOrgz = false;
 	hierarchyReportCode: any;
@@ -94,6 +94,7 @@ export class ReportsModalContentComponent {
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
+		// Condition 4 reports modal has 1 table 
 		if (
 			this.groupCode == GlobalConfig.REPORT_GROUPS.ERSOP ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.ADMIN_VIOLATIONS ||
@@ -107,7 +108,7 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI
 		) {
-			this.isGroupOrgz = true;
+			this.isGroupGov = true;
 		}
 
 
@@ -146,7 +147,7 @@ export class ReportsModalContentComponent {
 						this.isReportOrgz = false;
 					}
 				});
-				if (this.isGroupOrgz) {
+				if (this.isGroupGov) {
 					this.generateGridOrgz();
 				}
 				else {
@@ -327,7 +328,7 @@ export class ReportsModalContentComponent {
 		let counter = 0;
 		this.selectedReportsList = [];
 
-		if (this.isGroupOrgz) {
+		if (this.isGroupGov) {
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
 			this.requestedReports.orgz[this.selectedGroupCode].forEach(element => {
 				this.selectedReportsList[counter] = {
@@ -341,8 +342,7 @@ export class ReportsModalContentComponent {
 				};
 				counter++;
 			});
-		}
-		if (!this.isGroupOrgz) {
+		} else {
 			this.readyReportsParts = 0;
 			// Check report Code for start with 0 or not. Example: 060, 510 etc..
 			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
@@ -406,7 +406,7 @@ export class ReportsModalContentComponent {
 		let groupCode = selectedReport.report.code;
 
 
-		if (this.isGroupOrgz) {
+		if (this.isGroupGov) {
 			let row = selectedReport.region;
 			this.requestedReports.orgz[groupCode].splice(this.requestedReports.orgz[groupCode].indexOf(row), 1);
 			this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]];
@@ -526,7 +526,7 @@ export class ReportsModalContentComponent {
 		let reportInfo = this.getReportInfoByCode(groupCode);
 		reportInfo !== undefined ? (reportName = reportInfo.name + delimiter) : (reportName = "");
 
-		if (this.isGroupOrgz) {
+		if (this.isGroupGov) {
 			let commonIndex = this.requestedReports.orgz[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.orgz[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
