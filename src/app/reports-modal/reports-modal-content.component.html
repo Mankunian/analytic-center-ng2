@@ -89,7 +89,7 @@
 			</div>
 		</mat-tab>
 
-		<ng-container *ngIf="isGroupOrgz">
+		<ng-container *ngIf="isGroupGov">
 			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid custom-class">
 					<div class="row">
@@ -137,7 +137,7 @@
 			</mat-tab>
 		</ng-container>
 
-		<ng-container *ngIf="!isGroupOrgz">
+		<ng-container *ngIf="!isGroupGov">
 			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid">
 					<div class="row">
