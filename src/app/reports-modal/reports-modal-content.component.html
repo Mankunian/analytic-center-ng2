@@ -99,7 +99,7 @@
 							</div>
 						</div>
 						<div class="col-sm-12" *ngIf="gridData.orgz != undefined">
-							<p-treeTable [value]="gridData.orgz[group.code]" [columns]="colsOrgz" [lazy]="true" dataKey="code"
+							<p-treeTable [value]="gridData.orgz[group.code]" [columns]="colsGovs" [lazy]="true" dataKey="code"
 								(onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)" [scrollable]="true"
 								scrollHeight="{{ gridScrollHeight }}">
 								<ng-template pTemplate="header" let-columns>

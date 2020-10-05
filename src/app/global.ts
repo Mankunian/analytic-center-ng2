@@ -32,7 +32,7 @@ export const GlobalConfig = Object.freeze({
 		CIVIL_CASES: 103,
 		GPS_CORRUPTION: 104,
 		F8: 105,
-		GP_F7: 106,
+		GP_F7: 106
 
 	}
 });

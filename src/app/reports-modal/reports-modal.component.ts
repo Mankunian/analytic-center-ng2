@@ -1,19 +1,11 @@
 import { Component, Inject, ViewEncapsulation } from "@angular/core";
 import { HttpService } from "../services/http.service";
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TreeNode } from "primeng/api";
 import { GlobalConfig } from "../global";
 import { ErrorHandlerService } from "../services/error-handler.service";
 import { FormatGridService } from "../services/format-grid.service";
 
-// @Component({
-// 	selector: "app-reports-modal",
-// 	templateUrl: "./reports-modal.component.html",
-// 	styleUrls: ["./reports-modal.component.scss"],
-// })
-// export class ReportsModalComponent {
-// 	constructor(public dialog: MatDialog, private http: HttpService) { }
-// }
 
 @Component({
 	selector: "app-reports-modal-content",
@@ -29,7 +21,7 @@ export class ReportsModalContentComponent {
 
 	colsDep: any[];
 	colsReg: any[];
-	colsOrgz: any[];
+	colsGovs: any[];
 
 	selectedGroupCode: any;
 	gridData = {
@@ -122,7 +114,7 @@ export class ReportsModalContentComponent {
 			{ field: "name", header: "Регион/Орган", width: "auto" },
 		];
 
-		this.colsOrgz = [
+		this.colsGovs = [
 			{ field: "searchPattern", header: "Код органа", width: "180px" },
 			{ field: "name", header: "Наименование", width: "auto" },
 		]
@@ -164,7 +156,6 @@ export class ReportsModalContentComponent {
 									this.departments = departments
 									this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
 									if (this.departments[0].code == '03') {
-										console.log('МВД')
 										this.requestedReports.deps[reportCode] = this.departments
 										this.isReportsSelectedDeps = true;
 									} else {
@@ -308,8 +299,8 @@ export class ReportsModalContentComponent {
 	}
 
 	isReportsSelectedFn(): boolean {
-		console.log(this.requestedReports.regs[this.selectedGroupCode])
-		console.log(this.requestedReports.deps[this.selectedGroupCode])
+		// console.log(this.requestedReports.regs[this.selectedGroupCode])
+		// console.log(this.requestedReports.deps[this.selectedGroupCode])
 
 		if (
 			(this.requestedReports.regs[this.selectedGroupCode] !== undefined &&
@@ -362,10 +353,10 @@ export class ReportsModalContentComponent {
 				// eslint-disable-next-line @typescript-eslint/no-this-alias
 				let self = this;
 				element.forEach(region => {
-					console.log(this.requestedReports.deps[this.regionsTabIndex])
+					// console.log(this.requestedReports.deps[this.regionsTabIndex])
 					if (this.requestedReports.deps[this.regionsTabIndex] != undefined) {
 						this.requestedReports.deps[this.regionsTabIndex].forEach(depElemen => {
-							console.log(depElemen);
+							// console.log(depElemen);
 							self.selectedReportsList[counter] = {
 								report: reportInfo,
 								region: region,
@@ -451,7 +442,7 @@ export class ReportsModalContentComponent {
 			selectedLang = this.checkLang();
 		if (this.selectedReportsQuery != undefined && this.selectedReportsQuery.length > 0) {
 			reportsSlice = this.selectedReportsQuery.splice(0, this.sliceSize);
-			console.log(reportsSlice)
+			// console.log(reportsSlice)
 			this.generateReports(reportsSlice, selectedLang, counterFromIn);
 		} else {
 			this.isReportsLoading = false;
@@ -462,7 +453,7 @@ export class ReportsModalContentComponent {
 		if (reportsSlice.length === 0) {
 			return false;
 		} else {
-			console.log(reportsSlice)
+			// console.log(reportsSlice)
 			this.http.generateReports(selectedLang, reportsSlice).subscribe(
 				data => {
 					this.showReports(data);
