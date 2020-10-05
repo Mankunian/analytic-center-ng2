@@ -54,8 +54,16 @@
 									<li *ngFor="let selectedReport of selectedReportsList; let i = index">
 										<i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, selectedReport)"></i>
 										<span class="requested-report-item">{{ selectedReport.report.name }} -
-											{{ selectedReport.region.name }} <span *ngIf="selectedReport.department">-
-												{{ selectedReport.department?.name }}</span></span>
+											{{ selectedReport.region.name }}
+											<span *ngIf="selectedReport.department">-
+												{{ selectedReport.department?.name }}
+											</span>
+											<p-button onclick="location.href='https://primefaces.org/primeng/showcase/#/icons'"
+												class="redirectSysButton" label="Переход" icon="pi pi-arrow-right" iconPos="right">
+											</p-button>
+
+										</span>
+
 									</li>
 								</ul>
 							</div>
