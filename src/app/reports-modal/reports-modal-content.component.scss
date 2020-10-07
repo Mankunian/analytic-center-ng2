@@ -46,7 +46,8 @@
   margin-right: 8px;
   cursor: pointer;
   opacity: 0.6;
-  transition: opacity 0.3s ease;
+	transition: opacity 0.3s ease;
+	margin-bottom: 6px;
 }
 .remove-icon:hover {
   opacity: 1;
@@ -293,4 +294,14 @@
 .reports-modal-form .mat-form-field-infix {
   padding: 0 10px;
   border: none;
+}
+
+.redirectSysButton{
+	margin: 0 10px;
+}
+
+img#table_filter{
+	width: 25px;
+	margin: 0 5px;
+	cursor: pointer;
 }
