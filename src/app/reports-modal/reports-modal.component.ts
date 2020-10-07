@@ -524,6 +524,7 @@ export class ReportsModalContentComponent {
 		}
 		else {
 			let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+			console.log(regIndex)
 			regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
 
 			let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
