@@ -336,13 +336,17 @@ export class ReportsModalContentComponent {
 		} else {
 			this.readyReportsParts = 0;
 			// Check report Code for start with 0 or not. Example: 060, 510 etc..
+			console.log(this.requestedReports.regs)
 			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
+				// console.log('key' + key)
 				this.startWith0ReportCodeRegs = key.startsWith("0"); // search for report code starts with 0
 				if (this.startWith0ReportCodeRegs) { // if true
 					this.removeLeadingZeroFromStringRegs() // 060 = 60
 				}
 			}
+			// console.log(this.requestedReports.regs)
 			this.requestedReports.regs.forEach((element, index) => {
+				// console.log(element)
 				if (this.startWith0ReportCodeRegs) {
 					let strIndex = '0' + index;
 					this.regionsTabIndex = strIndex
@@ -389,6 +393,7 @@ export class ReportsModalContentComponent {
 				delete this.requestedReports.regs[oldKey];
 			}
 		}
+		console.log(this.requestedReports.regs)
 	}
 
 	removeSelectedReport = function (index, selectedReport) {
@@ -487,6 +492,8 @@ export class ReportsModalContentComponent {
 				reportDownloadUrl = "#";
 				reportDownloadName = errMsg;
 			} else {
+				console.log('1aaaaaaaaaaaaaaaaa')
+				console.log(element)
 				reportDownloadUrl = self.BASE_API_URL + element.lang + "/slices/reports/" + element.value + "/download";
 				reportDownloadName = self.generateReportName(element);
 			}
@@ -500,6 +507,7 @@ export class ReportsModalContentComponent {
 	}
 
 	generateReportName(element) {
+		console.log(element)
 		let delimiter = " - ",
 			reportName,
 			regionName,
@@ -510,6 +518,7 @@ export class ReportsModalContentComponent {
 			govCode = element.govCode,
 			langPostfix = "";
 
+		console.log(groupCode)
 		if (element.lang !== "RU") {
 			langPostfix = delimiter + "[" + element.lang + "]";
 		}
@@ -523,14 +532,34 @@ export class ReportsModalContentComponent {
 			departmentName = "";
 		}
 		else {
-			let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
-			console.log(regIndex)
-			regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
+			console.log('aaaa')
+			// console.log('regs' + this.requestedReports.regs[groupCode])
+			// console.log('deps' + this.requestedReports.deps[groupCode])
 
-			let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
-			depIndex !== -1
-				? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
-				: (departmentName = "");
+			this.requestedReports.regs.forEach((element, key) => {
+				// console.log(element, key)
+				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
+				console.log(regIndex)
+				regIndex !== -1 ? (regionName = this.requestedReports.regs[key][regIndex].name) : (regionName = "");
+
+				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+				depIndex !== -1
+					? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+					: (departmentName = "");
+
+			})
+
+			this.requestedReports.deps.forEach((element, key) => {
+				// console.log(element, key)
+				let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+				console.log(regIndex)
+				regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
+
+				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+				depIndex !== -1
+					? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+					: (departmentName = "");
+			})
 		}
 		return reportName + regionName + departmentName + langPostfix;
 	}
@@ -557,5 +586,10 @@ export class ReportsModalContentComponent {
 
 	openFirstTab() {
 		this.tabIndex = 0;
+	}
+
+	goErdr() {
+		// window.open('https://primefaces.org/primeng/showcase/#/icons')
+		alert('В разработке')
 	}
 }
