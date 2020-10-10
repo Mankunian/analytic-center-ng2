@@ -22,6 +22,7 @@ export const GlobalConfig = Object.freeze({
 		GROUP_004: 0o4
 	},
 	REPORT_GROUPS: {
+		UGOLOV_PRESLED: 0o2,
 		PROSECUTORS_WORK: 0o3,
 		COURT_REPORTS: 0o4,
 		KUI: 0o5,

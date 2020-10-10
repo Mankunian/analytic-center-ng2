@@ -98,8 +98,10 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_CORRUPTION ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI
+			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED
 		) {
+			console.log('isGroupGov')
 			this.isGroupGov = true;
 		}
 
@@ -123,13 +125,14 @@ export class ReportsModalContentComponent {
 		this.http.getReportsBySliceId(this.sliceId).subscribe(
 			reportGroups => {
 				this.reportGroups = reportGroups;
+				console.log(this.reportGroups)
 				this.reportGroups.forEach(element => {
 					if (
 						element.code == '800' || element.code == '801' ||
 						element.code == '510' || element.code == '511' ||
 						element.code == '050' || element.code == '720' || // группа отчетов Ф.2 прокурорский
 						element.code == '707' || element.code == '708' || element.code == '710' ||
-						element.code == '514' || // КУИ
+						element.code == '514' || element.code == '604' || // КУИ и Уголовоного преследования
 						element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
 						element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
 						element.code == '810' // KISA 
@@ -188,7 +191,7 @@ export class ReportsModalContentComponent {
 
 	generateGridOrgz() {
 		this.reportGroups.forEach(reportGroup => {
-			// console.log(reportGroup)
+			console.log(reportGroup)
 			let groupCode = reportGroup.code;
 			if (groupCode == '800' || groupCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
