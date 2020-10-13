@@ -96,8 +96,6 @@ export class HttpService {
 	}
 
 	getGroups4DialogTable(repGroup, groupCode) {
-		console.log(repGroup)
-		console.log(groupCode)
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup + '&report=' + groupCode)
 	}
 
