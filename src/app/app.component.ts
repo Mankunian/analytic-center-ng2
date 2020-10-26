@@ -10,7 +10,17 @@ export class AppComponent implements OnInit {
 	constructor() { }
 
 	ngOnInit() {
-		let accessToken = window.location.search.substr(7)
-		sessionStorage.setItem('token', accessToken)
+
+		if (window.location.search !== '' || sessionStorage.token) {
+			let accessToken = window.location.search.substr(7)
+			sessionStorage.setItem('token', accessToken)
+		} else {
+			console.log(true);
+			window.open('https://master.d260huhvcvtk4w.amplifyapp.com/')
+		}
+
+		// if (window.location.search == '' && !sessionStorage.token) {
+		// }
+
 	}
 }
