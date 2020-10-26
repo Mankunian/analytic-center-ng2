@@ -106,7 +106,6 @@ export class HttpService {
 			.then(response => <TreeNode[]>response);
 	}
 
-
 	getDepsByReportId(reportId) {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/orgs?reportCode=' + reportId)
 	}
@@ -205,5 +204,14 @@ export class HttpService {
 			msg: saveEditReasonObj.msg
 		};
 		return this.http.put(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/approve', body, options)
+	}
+
+	getPermissionsByUserService(token) {
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + token
+		});
+
+		let options = { headers: headers }
+		return this.http.get('https://18.138.17.74:8084/api/v1/RU/adm-core/my/permissions', options)
 	}
 }
