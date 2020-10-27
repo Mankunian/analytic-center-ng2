@@ -69,9 +69,16 @@ header h1{
 	display: block;
 	padding: 7px 20px 0 20px;
 	right: 100px;
-	// left: 100px;
-	// border-radius: 3px 3px 0 0;
+	// right: 500px;
 	cursor: pointer;
+}
+
+.main-navigation span.userInfo{
+	position: absolute;
+	right: 100px;
+	color: #fc0;
+	font-style: italic;
+	padding: 5px;
 }
 
 .mat-select-value{

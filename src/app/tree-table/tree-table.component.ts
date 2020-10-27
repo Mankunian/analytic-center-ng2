@@ -41,6 +41,7 @@ export class TreeTableComponent implements OnInit {
 	year: any;
 	statusData: any;
 	tableIndentSize = 15;
+	userInfo: any;
 
 	constructor(
 		// public reportsModalInstance: ReportsModalComponent,
@@ -86,6 +87,7 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 		this.loader = true;
 		this.httpService.getSliceGroups().then(
 			gridData => {

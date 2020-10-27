@@ -1,7 +1,6 @@
 <div class="row">
 	<div class="col-md-12">
-		<mat-tab-group [color]="primary" (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]="selected"
-			animationDuration="0ms">
+		<mat-tab-group (selectedTabChange)="onTabSelectedEvent($event)" [selectedIndex]="selected" animationDuration="0ms">
 			<mat-tab label="{{ 'TAB_MENU.SLICES' | translate }}">
 				<div id="sliceGrd">
 					<app-tree-table [checkDeleted]="checkDeleted"></app-tree-table>

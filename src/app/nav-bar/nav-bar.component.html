@@ -1,66 +1,40 @@
 <header>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-5" style="display: flex;">
-        <a class="logo" href="#">
-          <img src="../../assets/img/logo.jpg" class="img-responsive" />
-        </a>
-        <span class="logo-text"
-          >{{ "HOME.PROJECT_TITLE1" | translate }} <br />
-          {{ "HOME.PROJECT_TITLE2" | translate }}</span
-        >
-      </div>
-      <div class="col-md-4 text-left">
-        <h1>{{ "HOME.STAT_SREZ" | translate }}</h1>
-      </div>
-      <div class="col-md-3 text-right">
-        <div class="switch-field">
-          <input
-            #langSelect
-            (change)="translate.use('ru'); changeLang('RU')"
-            type="radio"
-            id="radio-three"
-            name="switch-two"
-            value="ru"
-            checked
-          /><label for="radio-three">RUS</label>
-          <input
-            #langSelect
-            (change)="translate.use('kaz'); changeLang('KZ')"
-            type="radio"
-            id="radio-four"
-            name="switch-two"
-            value="kaz"
-          /><label for="radio-four">KAZ</label>
-          <input
-            #langSelect
-            (change)="translate.use('qaz')"
-            type="radio"
-            id="radio-five"
-            name="switch-two"
-            value="qaz"
-          /><label for="radio-five">QAZ</label>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-5" style="display: flex;">
+				<a class="logo" href="#">
+					<img src="../../assets/img/logo.jpg" class="img-responsive" />
+				</a>
+				<span class="logo-text">{{ "HOME.PROJECT_TITLE1" | translate }} <br />
+					{{ "HOME.PROJECT_TITLE2" | translate }}</span>
+			</div>
+			<div class="col-md-4 text-left">
+				<h1>{{ "HOME.STAT_SREZ" | translate }}</h1>
+			</div>
+			<div class="col-md-3 text-right">
+				<div class="switch-field">
+					<input #langSelect (change)="translate.use('ru'); changeLang('RU')" type="radio" id="radio-three"
+						name="switch-two" value="ru" checked /><label for="radio-three">RUS</label>
+					<input #langSelect (change)="translate.use('kaz'); changeLang('KZ')" type="radio" id="radio-four"
+						name="switch-two" value="kaz" /><label for="radio-four">KAZ</label>
+					<input #langSelect (change)="translate.use('qaz')" type="radio" id="radio-five" name="switch-two"
+						value="qaz" /><label for="radio-five">QAZ</label>
+				</div>
+			</div>
+		</div>
+	</div>
 </header>
 
 <div class="main-navigation row">
-  <span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
-  <mat-form-field>
-    <mat-label style="color: #fff;">{{ "HOME.CHOOSE_REGION" | translate }}</mat-label>
-    <select
-      style="color: #fff;"
-      [(ngModel)]="selectedTerritory"
-      (change)="selectedTerr($event.target.value)"
-      matNativeControl
-      required
-    >
-      <option style="background-color: #1975C0;" *ngFor="let terr of territoryList" [value]="terr.code"
-        >{{ terr.name }}
-      </option>
-    </select>
-  </mat-form-field>
+	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
+	<mat-form-field>
+		<mat-label style="color: #fff;">{{ "HOME.CHOOSE_REGION" | translate }}</mat-label>
+		<select style="color: #fff;" [(ngModel)]="selectedTerritory" (change)="selectTerr($event.target.value)"
+			matNativeControl required>
+			<option style="background-color: #1975C0;" *ngFor="let terr of territoryList" [value]="terr.code">{{ terr.name }}
+			</option>
+		</select>
+	</mat-form-field>
+	<!-- <span class="userInfo">Саматов Олжас <br> Код органа: 19009901</span><br> -->
 </div>
 <br />
