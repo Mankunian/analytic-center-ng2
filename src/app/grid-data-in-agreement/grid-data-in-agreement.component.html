@@ -46,27 +46,3 @@
 		</ng-template>
 	</p-table>
 </div>
-
-
-<!-- <table class="table" *ngIf="inputTableInAgreement">
-	<thead>
-		<tr>
-			<th scope="col">{{gridTitle[0]}}</th>
-			<th scope="col">{{gridTitle[1]}}</th>
-			<th scope="col">{{gridTitle[2]}}</th>
-			<th scope="col">{{gridTitle[3]}}</th>
-		</tr>
-	</thead>
-	<tbody *ngFor="let a of gridListInAgreement">
-		<tr>
-			<th scope="row">{{a.territoryName}}</th>
-			<td>{{a.approveDate}}</td>
-			<td>
-				<a (click)="openRejectionReasonModal(a)" class="underline" style="color: red;"
-					*ngIf="a.approveCode =='2'">{{a.approveName}}</a>
-				<span *ngIf="a.approveCode == '1'">{{a.approveName}}</span>
-			</td>
-			<td>{{a.personName}}</td>
-		</tr>
-	</tbody>
-</table> -->
