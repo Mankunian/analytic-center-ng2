@@ -1,5 +1,6 @@
 <div class="sliceContent">
-	<button pButton (click)="refreshGridTable()" class="refreshTable" icon="pi pi-refresh" iconPos="left"></button>
+	<button pButton *ngIf="permissionsCode" (click)="refreshGridTable()" class="refreshTable" icon="pi pi-refresh"
+		iconPos="left"></button>
 	<!-- <span>{{userInfo.fullName}}</span> -->
 	<mat-checkbox color="primary" (change)="showDeleted(checkDeleted)" class="showDeletedCheckbox"
 		[(ngModel)]="checkDeleted" name="isDeleted"> {{ "TAB_MENU.SHOW_DELETED" | translate }}</mat-checkbox>
