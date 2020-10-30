@@ -8,13 +8,14 @@ import { HttpService } from './services/http.service';
 })
 export class AppComponent implements OnInit {
 	userInfo: Record<string, any>;
+	permissionCodes: {};
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor(private http: HttpService) { }
 
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
+		this.permissionCodes = {}
 	}
-
 
 	checkAccessTokenFromAdminRedirect() {
 		console.log(window.location)
@@ -26,18 +27,23 @@ export class AppComponent implements OnInit {
 			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
-			window.location.href = 'https://master.d260huhvcvtk4w.amplifyapp.com/'
+			// window.location.href = 'https://master.d260huhvcvtk4w.amplifyapp.com/'
 		}
-		let token = sessionStorage.token
-		this.getPermissionsByCurrentUser(token)
+		// let token = sessionStorage.token
+		this.getPermissionsByCurrentUser()
 
 	}
 
-	getPermissionsByCurrentUser(token) {
-		this.http.getPermissionsByUserService(token).subscribe(data => {
+	getPermissionsByCurrentUser() {
+		this.http.getPermissionsByUserService().subscribe(data => {
 			console.log(data)
 			this.userInfo = data;
 			sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
+			// this.userInfo.permissions.forEach((element, key) => {
+			// 	console.log(key, element)
+			// 	this.permissionCodes[element] = true;
+			// });
+			sessionStorage.setItem('permissionCode', JSON.stringify(this.userInfo.permissions))
 		})
 	}
 }

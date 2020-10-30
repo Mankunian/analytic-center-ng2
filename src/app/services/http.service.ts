@@ -19,6 +19,7 @@ export class HttpService {
 	public subscription: Subscription;
 	private users;
 	private terrCode;
+	private token = sessionStorage.token
 
 	constructor(private http: HttpClient, shared: SharedService) {
 		this.subscription = shared.subjChangeLang$.subscribe(lang => {
@@ -27,92 +28,167 @@ export class HttpService {
 		this.subscription = shared.subjCheckDeleted$.subscribe(checkDeleted => {
 			this.checkDeleted = checkDeleted
 		})
-		this.getUsers()
-			.subscribe(
-				successData => {
-					this.users = successData;
-					// console.log("HttpService -> constructor -> this.users", this.users)
-				},
-				error => {
-					console.log("getUsers -> error", error)
-				},
-				() => { // when complete
-					this.subscription = shared.subjTerrCode$.subscribe(userRole => {
-						this.terrCode = userRole;
-						this.users.forEach(element => {
-							if (element[this.terrCode] != undefined) {
-								this.baseAuthUser = element[this.terrCode];
-							}
-						});
-					})
-				}
-			);
+		// this.getUsers()
+		// 	.subscribe(
+		// 		successData => {
+		// 			this.users = successData;
+		// 			// console.log("HttpService -> constructor -> this.users", this.users)
+		// 		},
+		// 		error => {
+		// 			console.log("getUsers -> error", error)
+		// 		},
+		// 		() => { // when complete
+		// 			this.subscription = shared.subjTerrCode$.subscribe(userRole => {
+		// 				this.terrCode = userRole;
+		// 				this.users.forEach(element => {
+		// 					if (element[this.terrCode] != undefined) {
+		// 						this.baseAuthUser = element[this.terrCode];
+		// 					}
+		// 				});
+		// 			})
+		// 		}
+		// 	);
+	}
+
+
+	getPermissionsByUserService() {
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get('https://18.138.17.74:8084/api/v1/RU/adm-core/my/permissions', options)
 	}
 
 	getGroupList() {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/groups')
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/groups', options)
 	}
 
-	getUsers() {
-		return this.http.get('./assets/json/users.json')
+
+	getTerritories() {
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/territories', options)
 	}
+
 
 	getSliceNumber() {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/max');
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/max', options);
 	}
 
+
+
 	getSlices(groupCode, statusCode, year) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices' + '?deleted=' + this.checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year)
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices' + '?deleted=' + this.checkDeleted + '&groupCode=' + groupCode + '&statusCode=' + statusCode + '&year=' + year, options)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
 
 	getSliceGroups() {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/parents' + '?deleted=' + this.checkDeleted)
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/parents' + '?deleted=' + this.checkDeleted, options)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
-	}
-
-	getTerritories() {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/territories')
 	}
 
 	getHistory(sliceId: number) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history')
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history', options)
+	}
+
+	getUsers() {
+		return this.http.get('./assets/json/users.json')
 	}
 
 	getDataGridInAgreement(sliceId: number, historyId: number) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history/' + historyId + '/approving')
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history/' + historyId + '/approving', options)
 	}
 
 	getReportsBySliceId(sliceId) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/reports?sliceId=' + sliceId)
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/reports?sliceId=' + sliceId, options)
 	}
 
 	getRegions() {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree')
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree', options)
 	}
 
 	getGroups4DialogTable(repGroup, groupCode) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup + '&report=' + groupCode)
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup + '&report=' + groupCode, options)
 	}
 
 	getGroupsChildren4DialogTable(searchPattern, repGroup) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup)
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/children?searchPattern=' + searchPattern + '&group=' + repGroup, options)
 			.toPromise()
 			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			.then(response => <TreeNode[]>response);
 	}
 
+
 	getDepsByReportId(reportId) {
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/orgs?reportCode=' + reportId)
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + this.token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/orgs?reportCode=' + reportId, options)
 	}
 
 	confirmSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -122,7 +198,7 @@ export class HttpService {
 
 	deleteSliceService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -132,7 +208,7 @@ export class HttpService {
 
 	sendToPreliminaryService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -142,7 +218,7 @@ export class HttpService {
 
 	sendToAgreementService(sliceId: number) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -152,16 +228,16 @@ export class HttpService {
 
 	generateReports(lang, data) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
-		let options = { headers: headers }
 
+		let options = { headers: headers }
 		return this.http.post(this.BASE_API_URL + this.changeLang + '/slices/reports/createReports?repLang=' + lang, data, options)
 	}
 
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -178,7 +254,7 @@ export class HttpService {
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -193,7 +269,7 @@ export class HttpService {
 
 	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
 		let headers = new HttpHeaders({
-			'sessionKey': this.baseAuthUser
+			'authorization': 'bearer ' + this.token
 		});
 
 		let options = { headers: headers }
@@ -204,14 +280,5 @@ export class HttpService {
 			msg: saveEditReasonObj.msg
 		};
 		return this.http.put(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/approve', body, options)
-	}
-
-	getPermissionsByUserService(token) {
-		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + token
-		});
-
-		let options = { headers: headers }
-		return this.http.get('https://18.138.17.74:8084/api/v1/RU/adm-core/my/permissions', options)
 	}
 }

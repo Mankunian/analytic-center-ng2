@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Injectable } from "@angular/core";
 import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -32,10 +32,6 @@ export class NavBarComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.getTerritories()
-	}
-
-	getTerritories() {
 		this.httpService.getTerritories().subscribe(
 			(data: Territory) => {
 				this.territoryList = data;
@@ -48,18 +44,32 @@ export class NavBarComponent implements OnInit {
 		this.sharedService.sendTerrCode(this.selectedTerritory);
 	}
 
-	getGroupList() {
-		this.httpService.getGroupList().subscribe(
-			groupList => {
-				this.sharedService.sendGroupListLang(groupList);
+	selectedTerr(selectedTerr) {
+		this.selectedTerritory = selectedTerr;
+		this.sharedService.sendTerrCode(this.selectedTerritory);
+	}
+
+	changeLang(lang: string) {
+		this.sharedService.changeLangService(lang);
+
+		this.httpService.getTerritories().subscribe(
+			territories => {
+				this.territoryList = territories;
 			},
 			error => {
 				this.errorHandler.alertError(error);
 			}
 		);
-	}
 
-	getSliceGroups() {
+		// this.httpService.getGroupList().subscribe(
+		// 	groupList => {
+		// 		this.sharedService.sendGroupListLang(groupList);
+		// 	},
+		// 	error => {
+		// 		this.errorHandler.alertError(error);
+		// 	}
+		// );
+
 		this.httpService.getSliceGroups().then(
 			gridData => {
 				this.sharedService.sendSliceGroupLang(gridData);
@@ -69,17 +79,4 @@ export class NavBarComponent implements OnInit {
 			}
 		);
 	}
-
-	selectTerr(selectedTerr) {
-		this.selectedTerritory = selectedTerr;
-		this.sharedService.sendTerrCode(this.selectedTerritory);
-	}
-
-	changeLang(lang: string) {
-		this.sharedService.changeLangService(lang);
-		this.getTerritories();
-		this.getGroupList();
-		this.getSliceGroups();
-	}
-
 }

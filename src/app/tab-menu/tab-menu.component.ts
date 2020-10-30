@@ -50,6 +50,7 @@ export class TabMenuComponent implements OnInit {
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
+	permissionsArr: any[];
 
 	constructor(
 		private httpService: HttpService,
@@ -78,24 +79,30 @@ export class TabMenuComponent implements OnInit {
 			groupList: this.formBuilder.array([]),
 		});
 		setTimeout(() => {
-			this.httpService.getGroupList().subscribe(
-				data => {
-					this.groupList = data;
-					this.groupList.forEach(element => {
-						if (element.status == 2) {
-							element.disabledStatus = true;
-						}
-					});
-				},
-				error => {
-					this.errorHandler.alertError(error);
-				}
-			);
+			this.getGroupList()
 		});
 
 		this.httpService.getSliceNumber().subscribe(
 			(data: SliceNumber) => {
 				this.max = data.value;
+			},
+			error => {
+				this.errorHandler.alertError(error);
+			}
+		);
+	}
+
+	getGroupList() {
+		this.httpService.getGroupList().subscribe(
+			data => {
+				this.groupList = data;
+				this.permissionsArr = []
+				this.groupList.forEach(element => {
+					// this.permissionsArr.push(element.permissionApprove, element.permissionConfirm, element.permissionCreate, element.permissionDelete, element.permissionReport)
+					if (element.status == 2) {
+						element.disabledStatus = true;
+					}
+				});
 			},
 			error => {
 				this.errorHandler.alertError(error);
