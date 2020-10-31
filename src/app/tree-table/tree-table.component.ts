@@ -41,6 +41,8 @@ export class TreeTableComponent implements OnInit {
 	year: any;
 	statusData: any;
 	tableIndentSize = 15;
+	permissionReport: any;
+	enableGetReportBtn: string;
 
 	constructor(
 		// public reportsModalInstance: ReportsModalComponent,
@@ -87,15 +89,12 @@ export class TreeTableComponent implements OnInit {
 
 	ngOnInit() {
 		this.loader = true;
-		this.httpService.getSliceGroups().then(
-			gridData => {
-				this.getGridData(gridData);
-				this.loader = false;
-			},
-			error => {
-				this.errorHandler.alertError(error);
-			}
-		);
+		let permissionReport = JSON.parse(sessionStorage.getItem('permissionReport'))
+		console.log(permissionReport)
+		this.permissionReport = permissionReport
+
+
+		this.getSliceGroups()
 
 		this.cols = [
 			{ field: "name", header: "Группы" },
@@ -105,6 +104,17 @@ export class TreeTableComponent implements OnInit {
 			{ field: "region", header: "По органу" },
 			{ field: "percentComplete", header: "Прогресс" },
 		];
+	}
+
+	getSliceGroups() {
+		this.httpService.getSliceGroups().then(gridData => {
+			this.getGridData(gridData);
+			this.loader = false;
+		},
+			error => {
+				this.errorHandler.alertError(error);
+			}
+		);
 	}
 
 	onNodeExpand(event) {
@@ -160,6 +170,12 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	openReportsModal(row) {
+		this.enableGetReportBtn = 'false';
+		this.permissionReport.forEach(element => {
+			if (row.groupCode == element.code) {
+				this.enableGetReportBtn = 'true';
+			}
+		});
 		const sliceId = row.id;
 		const slicePeriod = row.period;
 		const sliceGroupCode = row.groupCode;
@@ -172,7 +188,7 @@ export class TreeTableComponent implements OnInit {
 		} else {
 			const reportsModalRef = this.reportsModal.open(ReportsModalContentComponent, {
 				disableClose: true,
-				data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode },
+				data: { sliceId: sliceId, slicePeriod: slicePeriod, groupCode: sliceGroupCode, permissionReport: this.enableGetReportBtn },
 				height: "90vh",
 				maxHeight: "620px",
 				width: "1075px",

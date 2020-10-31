@@ -231,7 +231,7 @@
 	</mat-tab-group>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="!contentLoading" align="end">
-	<button mat-flat-button color="primary" (click)="getReports()" [disabled]="!isReportsSelected">
+	<button mat-flat-button color="primary" (click)="getReports()" [disabled]="enableGetReportBtn == 'false'">
 		{{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
 	</button>
 	<button mat-flat-button color="primary" mat-dialog-close>{{ "REPORTS_MODAL.BTN_CANCEL" | translate }}</button>

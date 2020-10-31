@@ -121,6 +121,4 @@ export class SharedService {
 		console.log(status)
 		this.subGridAgreementVisibleStatus.next(status)
 	}
-
-
 }

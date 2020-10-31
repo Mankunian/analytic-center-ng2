@@ -18,20 +18,18 @@ export class AppComponent implements OnInit {
 	}
 
 	checkAccessTokenFromAdminRedirect() {
-		console.log(window.location)
 		if (window.location.search !== '') {
 			let accessToken = window.location.search.substr(7);
-			console.log(accessToken)
-			let hostName = window.location.hostname;
+			console.log(window.location)
+			let hostName = window.location.origin;
 			sessionStorage.setItem('token', accessToken)
 			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
-			// window.location.href = 'https://master.d260huhvcvtk4w.amplifyapp.com/'
+			// Here redirect to local IP-address url of admin 
+			window.location.href = 'https://192.168.210.69'
 		}
-		// let token = sessionStorage.token
 		this.getPermissionsByCurrentUser()
-
 	}
 
 	getPermissionsByCurrentUser() {

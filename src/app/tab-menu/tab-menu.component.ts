@@ -30,7 +30,7 @@ export class TabMenuComponent implements OnInit {
 	max: number;
 	checkedGroupCodes: any;
 	checkedGroupList: any = [];
-	disabledStatus: boolean;
+	enableStatus: boolean;
 	orderSliceDone: boolean;
 	selected = 0;
 	checkedGroups: any = [];
@@ -51,6 +51,8 @@ export class TabMenuComponent implements OnInit {
 
 	sliceNumber: SliceNumber;
 	permissionsArr: any[];
+	permissionElem: any;
+	// enableGetReport: boolean;
 
 	constructor(
 		private httpService: HttpService,
@@ -96,12 +98,17 @@ export class TabMenuComponent implements OnInit {
 		this.httpService.getGroupList().subscribe(
 			data => {
 				this.groupList = data;
-				this.permissionsArr = []
-				this.groupList.forEach(element => {
-					// this.permissionsArr.push(element.permissionApprove, element.permissionConfirm, element.permissionCreate, element.permissionDelete, element.permissionReport)
-					if (element.status == 2) {
-						element.disabledStatus = true;
-					}
+				let permissionList = JSON.parse(sessionStorage.getItem('permissionCode'))
+				let permissionReport = []
+				this.groupList.forEach(elementGroup => {
+					permissionList.forEach(elementPermission => {
+						if (elementPermission == elementGroup.permissionReport) {
+							permissionReport.push(elementGroup)
+							sessionStorage.setItem('permissionReport', JSON.stringify(permissionReport))
+						} else if (elementPermission == elementGroup.permissionCreate) {
+							elementGroup.enableStatus = true;
+						}
+					});
 				});
 			},
 			error => {
