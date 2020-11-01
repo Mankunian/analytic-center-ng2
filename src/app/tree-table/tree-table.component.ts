@@ -89,9 +89,12 @@ export class TreeTableComponent implements OnInit {
 
 	ngOnInit() {
 		this.loader = true;
-		let permissionReport = JSON.parse(sessionStorage.getItem('permissionReport'))
-		console.log(permissionReport)
-		this.permissionReport = permissionReport
+		if (sessionStorage.permissionReport) {
+			let permissionReport = JSON.parse(sessionStorage.getItem('permissionReport'))
+			console.log(permissionReport)
+			this.permissionReport = permissionReport
+		}
+
 
 
 		this.getSliceGroups()
@@ -171,11 +174,13 @@ export class TreeTableComponent implements OnInit {
 
 	openReportsModal(row) {
 		this.enableGetReportBtn = 'false';
-		this.permissionReport.forEach(element => {
-			if (row.groupCode == element.code) {
-				this.enableGetReportBtn = 'true';
-			}
-		});
+		if (sessionStorage.permissionReport) {
+			this.permissionReport.forEach(element => {
+				if (row.groupCode == element.code) {
+					this.enableGetReportBtn = 'true';
+				}
+			});
+		}
 		const sliceId = row.id;
 		const slicePeriod = row.period;
 		const sliceGroupCode = row.groupCode;

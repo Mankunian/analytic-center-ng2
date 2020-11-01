@@ -53,7 +53,8 @@
 								<ul>
 									<li *ngFor="let selectedReport of selectedReportsList; let i = index">
 										<i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, selectedReport)"></i>
-										<img (click)="goErdr()" id="table_filter" src="assets/img/icon.png" alt="table_filter">
+										<img (click)="redirectSystemToShowReport(selectedReport)" id="table_filter"
+											src="assets/img/icon.png" alt="table_filter">
 										<span class="requested-report-item">{{ selectedReport.report.name }} -
 											{{ selectedReport.region.name }}
 											<span *ngIf="selectedReport.department">-

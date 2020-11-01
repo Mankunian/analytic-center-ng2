@@ -52,6 +52,8 @@ export class TabMenuComponent implements OnInit {
 	sliceNumber: SliceNumber;
 	permissionsArr: any[];
 	permissionElem: any;
+	elementPermissionList: any;
+	elementGroup: any;
 	// enableGetReport: boolean;
 
 	constructor(
@@ -98,15 +100,26 @@ export class TabMenuComponent implements OnInit {
 		this.httpService.getGroupList().subscribe(
 			data => {
 				this.groupList = data;
-				let permissionList = JSON.parse(sessionStorage.getItem('permissionCode'))
 				let permissionReport = []
+				let permissionDelete = []
+				let permissionList = JSON.parse(sessionStorage.getItem('permissionCode'))
 				this.groupList.forEach(elementGroup => {
 					permissionList.forEach(elementPermission => {
+
+						// console.log(elementPermission)
 						if (elementPermission == elementGroup.permissionReport) {
 							permissionReport.push(elementGroup)
 							sessionStorage.setItem('permissionReport', JSON.stringify(permissionReport))
-						} else if (elementPermission == elementGroup.permissionCreate) {
+						}
+						else if (elementPermission == elementGroup.permissionCreate) {
 							elementGroup.enableStatus = true;
+						}
+						if (elementPermission == elementGroup.permissionDelete) {
+							// console.log(elementPermission)
+							// console.log(elementGroup)
+							permissionDelete.push(elementGroup)
+							console.log(permissionDelete)
+							// sessionStorage.setItem('permissionDelete', JSON.stringify(permissionDelete))
 						}
 					});
 				});

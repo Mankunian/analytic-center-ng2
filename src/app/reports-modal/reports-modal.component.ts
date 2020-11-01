@@ -594,8 +594,13 @@ export class ReportsModalContentComponent {
 		this.tabIndex = 0;
 	}
 
-	goErdr() {
-		// window.open('https://primefaces.org/primeng/showcase/#/icons')
-		alert('В разработке')
+	redirectSystemToShowReport(item) {
+		let reportId = item.report.code;
+		let regionCode = item.region.code;
+		let dvedomostv = item.department.code;
+		let sliceId = this.sliceId;
+
+		console.log(reportId, regionCode, dvedomostv, sliceId)
+		window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
 	}
 }

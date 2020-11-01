@@ -19,7 +19,7 @@ export class HttpService {
 	public subscription: Subscription;
 	private users;
 	private terrCode;
-	private token = sessionStorage.token
+	// private token = sessionStorage.token
 
 	constructor(private http: HttpClient, shared: SharedService) {
 		this.subscription = shared.subjChangeLang$.subscribe(lang => {
@@ -52,8 +52,9 @@ export class HttpService {
 
 
 	getPermissionsByUserService() {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -61,8 +62,9 @@ export class HttpService {
 	}
 
 	getGroupList() {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -71,8 +73,9 @@ export class HttpService {
 
 
 	getTerritories() {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -81,8 +84,9 @@ export class HttpService {
 
 
 	getSliceNumber() {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -92,8 +96,9 @@ export class HttpService {
 
 
 	getSlices(groupCode, statusCode, year) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -104,8 +109,9 @@ export class HttpService {
 	}
 
 	getSliceGroups() {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -116,8 +122,9 @@ export class HttpService {
 	}
 
 	getHistory(sliceId: number) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -129,8 +136,9 @@ export class HttpService {
 	}
 
 	getDataGridInAgreement(sliceId: number, historyId: number) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -138,8 +146,9 @@ export class HttpService {
 	}
 
 	getReportsBySliceId(sliceId) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -147,8 +156,9 @@ export class HttpService {
 	}
 
 	getRegions() {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -156,8 +166,9 @@ export class HttpService {
 	}
 
 	getGroups4DialogTable(repGroup, groupCode) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -165,8 +176,9 @@ export class HttpService {
 	}
 
 	getGroupsChildren4DialogTable(searchPattern, repGroup) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -178,8 +190,9 @@ export class HttpService {
 
 
 	getDepsByReportId(reportId) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -187,8 +200,9 @@ export class HttpService {
 	}
 
 	confirmSliceService(sliceId: number) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -197,8 +211,9 @@ export class HttpService {
 	}
 
 	deleteSliceService(sliceId: number) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -207,8 +222,9 @@ export class HttpService {
 	}
 
 	sendToPreliminaryService(sliceId: number) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -217,8 +233,9 @@ export class HttpService {
 	}
 
 	sendToAgreementService(sliceId: number) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -227,8 +244,9 @@ export class HttpService {
 	}
 
 	generateReports(lang, data) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -236,8 +254,9 @@ export class HttpService {
 	}
 
 	postOrderSlice(orderSliceObj: OrderSliceObj) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -253,8 +272,9 @@ export class HttpService {
 	}
 
 	rejectSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
@@ -268,8 +288,9 @@ export class HttpService {
 	}
 
 	approveSliceService(sliceId: any, saveEditReasonObj: SaveEditReasonObj) {
+		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
-			'authorization': 'bearer ' + this.token
+			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
