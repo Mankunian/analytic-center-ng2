@@ -20,6 +20,7 @@ import { FormatGridService } from "../services/format-grid.service";
 	styleUrls: ["./tree-table.component.scss"],
 	providers: [SliceOperationsModalComponent],
 })
+
 export class TreeTableComponent implements OnInit {
 	public STATUS_CODES = GlobalConfig.STATUS_CODES;
 	subscription: Subscription;
@@ -41,8 +42,15 @@ export class TreeTableComponent implements OnInit {
 	year: any;
 	statusData: any;
 	tableIndentSize = 15;
+
 	permissionReport: any;
+	permissionDelete: any;
+	permissionConfirm: any;
 	enableGetReportBtn: string;
+	enableDeleteSliceBtn: string;
+	enableConfirmSliceBtn: string;
+	permissionApprove: any;
+	enableApproveSliceBtn: string;
 
 	constructor(
 		// public reportsModalInstance: ReportsModalComponent,
@@ -94,6 +102,18 @@ export class TreeTableComponent implements OnInit {
 			console.log(permissionReport)
 			this.permissionReport = permissionReport
 		}
+		if (sessionStorage.permissionDelete) {
+			let permissionDelete = JSON.parse(sessionStorage.getItem('permissionDelete'))
+			this.permissionDelete = permissionDelete
+		}
+		if (sessionStorage.permissionConfirm) {
+			let permissionConfirm = JSON.parse(sessionStorage.getItem('permissionConfirm'))
+			this.permissionConfirm = permissionConfirm
+		}
+		if (sessionStorage.permissionApprove) {
+			let permissionApprove = JSON.parse(sessionStorage.getItem('permissionApprove'))
+			this.permissionApprove = permissionApprove
+		}
 
 
 
@@ -141,7 +161,32 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	openOperationSliceModal(rowEntity) {
-		console.log(rowEntity);
+		this.enableDeleteSliceBtn = 'false'
+		this.enableConfirmSliceBtn = 'false'
+		this.enableApproveSliceBtn = 'false'
+		console.log(this.permissionDelete)
+		if (sessionStorage.permissionDelete) {
+			this.permissionDelete.forEach(element => {
+				if (rowEntity.groupCode == element.code) {
+					this.enableDeleteSliceBtn = 'true';
+				}
+			});
+		}
+		if (sessionStorage.permissionConfirm) {
+			this.permissionConfirm.forEach(element => {
+				if (rowEntity.groupCode == element.code) {
+					this.enableConfirmSliceBtn = 'true'
+				}
+			});
+		}
+		if (sessionStorage.permissionApprove) {
+			this.permissionApprove.forEach(element => {
+				if (rowEntity.groupCode == element.code) {
+					this.enableApproveSliceBtn = 'true'
+				}
+			});
+		}
+
 		this.period = rowEntity.period;
 		this.sliceId = rowEntity.id;
 		const dialogRef = this.dialogOperSlice.open(SliceOperationsModalContentComponent, {
@@ -151,6 +196,9 @@ export class TreeTableComponent implements OnInit {
 				period: this.period,
 				terrCode: this.terrCode,
 				statusCode: rowEntity.statusCode,
+				permissionDelete: this.enableDeleteSliceBtn,
+				permissionConfirm: this.enableConfirmSliceBtn,
+				permissionApprove: this.enableApproveSliceBtn
 			},
 			panelClass: "slice-operations-modal",
 		});
