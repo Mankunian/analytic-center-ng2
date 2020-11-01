@@ -22,8 +22,9 @@
 		<mat-dialog-actions>
 			<div class="col-md-8" *ngIf="!headTerritory">
 				<div *ngIf="showDeleteBtn">
-					<button style="margin: 0 5px;" class="marginbtn" pButton type="button" [disabled]="disableBtn"
-						(click)="approveSlice()" label="Согласовать"></button>
+					<button style="margin: 0 5px;" class="marginbtn" pButton type="button"
+						[disabled]="disableBtn || enableApproveSliceBtn == 'false'" (click)="approveSlice()"
+						label="Согласовать"></button>
 					<button class="marginBtn" pButton type="button" [disabled]="disableBtn" (click)="rejectInAgreement()"
 						label="Отказать"></button>
 				</div>
@@ -35,7 +36,7 @@
 				<div *ngIf="showApproveBtn && showDeleteBtn">
 					<button [disabled]="enableDeleteSliceBtn == 'false'" class="marginRightBtn" (click)="deleteSlice()" pButton
 						type="button" label="Удалить"></button>
-					<button [disabled]="enableConfirmSliceBtn" class="marginRightBtn" (click)="confirmSlice()" pButton
+					<button [disabled]="enableConfirmSliceBtn == 'false'" class="marginRightBtn" (click)="confirmSlice()" pButton
 						type="button" label="Утвердить"></button>
 				</div>
 
