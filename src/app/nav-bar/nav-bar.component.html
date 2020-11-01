@@ -27,14 +27,6 @@
 
 <div class="main-navigation row">
 	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
-	<mat-form-field>
-		<mat-label style="color: #fff;">{{ "HOME.CHOOSE_REGION" | translate }}</mat-label>
-		<select style="color: #fff;" [(ngModel)]="selectedTerritory" (change)="selectedTerr($event.target.value)"
-			matNativeControl required>
-			<option style="background-color: #1975C0;" *ngFor="let terr of territoryList" [value]="terr.code">{{ terr.name }}
-			</option>
-		</select>
-	</mat-form-field>
-	<!-- <span class="userInfo">Саматов Олжас <br> Код органа: 19009901</span><br> -->
+	<span class="userInfo">{{incomingUserInfo.fullName}} <br> Код органа: {{selectedTerritory}}</span><br>
 </div>
 <br />

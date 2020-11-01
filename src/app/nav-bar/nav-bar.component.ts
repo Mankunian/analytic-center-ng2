@@ -19,6 +19,7 @@ export class NavBarComponent implements OnInit {
 	public selectedTerritory: any;
 	public terrValue: string;
 	public lang: string;
+	public incomingUserInfo: any;
 
 	constructor(
 		private httpService: HttpService,
@@ -32,23 +33,22 @@ export class NavBarComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.httpService.getTerritories().subscribe(
-			(data: Territory) => {
-				this.territoryList = data;
-			},
-			error => {
-				this.errorHandler.alertError(error);
-			}
-		);
-		this.selectedTerritory = "19000090";
-		this.sharedService.sendTerrCode(this.selectedTerritory);
+		this.getTerritory()
+		if (sessionStorage.userInfo) {
+			this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+			this.selectedTerritory = this.incomingUserInfo.orgCode
+			this.sharedService.sendTerrCode(this.selectedTerritory);
+		}
+
 	}
 
-	selectedTerr(selectedTerr) {
-		this.selectedTerritory = selectedTerr;
-		this.sharedService.sendTerrCode(this.selectedTerritory);
+	getTerritory() {
+		this.httpService.getTerritories().subscribe((data: Territory) => {
+			this.territoryList = data;
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
 	}
-
 	changeLang(lang: string) {
 		this.sharedService.changeLangService(lang);
 
