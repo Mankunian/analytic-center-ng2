@@ -5,6 +5,8 @@ import { TreeNode } from "primeng/api";
 import { GlobalConfig } from "../global";
 import { ErrorHandlerService } from "../services/error-handler.service";
 import { FormatGridService } from "../services/format-grid.service";
+// import { SharedService } from '../services/shared.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -72,15 +74,17 @@ export class ReportsModalContentComponent {
 	startWith0ReportCodeRegs: boolean;
 	startWith0ReportCodeDeps: boolean;
 	regionsTabIndex: any;
+	subscription: Subscription;
+	enableGetReportBtn: string;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private http: HttpService,
 		private formatGridService: FormatGridService,
-		public errorHandler: ErrorHandlerService
-	) { }
+		public errorHandler: ErrorHandlerService) { }
 
 	ngOnInit() {
+		this.enableGetReportBtn = this.data.permissionReport
 		this.contentLoading = true;
 		this.sliceId = this.data.sliceId;
 		this.slicePeriod = this.data.slicePeriod;
@@ -101,7 +105,6 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED
 		) {
-			console.log('isGroupGov')
 			this.isGroupGov = true;
 		}
 
@@ -187,6 +190,7 @@ export class ReportsModalContentComponent {
 			}
 		);
 	}
+
 
 	generateGridOrgz() {
 		this.reportGroups.forEach(reportGroup => {
@@ -590,8 +594,13 @@ export class ReportsModalContentComponent {
 		this.tabIndex = 0;
 	}
 
-	goErdr() {
-		// window.open('https://primefaces.org/primeng/showcase/#/icons')
-		alert('В разработке')
+	redirectSystemToShowReport(item) {
+		let reportId = item.report.code;
+		let regionCode = item.region.code;
+		let dvedomostv = item.department.code;
+		let sliceId = this.sliceId;
+
+		console.log(reportId, regionCode, dvedomostv, sliceId)
+		window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
 	}
 }

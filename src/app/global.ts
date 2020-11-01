@@ -34,6 +34,5 @@ export const GlobalConfig = Object.freeze({
 		GPS_CORRUPTION: 104,
 		F8: 105,
 		GP_F7: 106
-
 	}
 });

@@ -30,10 +30,7 @@ export class SliceOperationsModalContentComponent {
 	public STATUS_CODES = GlobalConfig.STATUS_CODES;
 	injectValueToModal: any;
 	headTerritory: boolean;
-	btnInAgreement: boolean;
-	btnDecided: boolean;
-	btnToAgreement: boolean;
-	btnDelete: boolean;
+
 	showTableInAgreement: boolean;
 	subscription: Subscription;
 	gridInAgreement: any;
@@ -42,6 +39,15 @@ export class SliceOperationsModalContentComponent {
 	historyValue: any;
 	disableBtn: any;
 	preloader: boolean;
+
+	showDeleteBtn: boolean; // Удалить срез
+	showSendIntoPreliminaryBtn: boolean; // Перевести в предварительный
+	showApproveBtn: boolean; // Согласовать
+	showOnApprovalBtn: boolean; // На согласовании
+	showDeleteBtnFromError: boolean; // Удалить (сформирован с ошибкой)
+	enableDeleteSliceBtn: any;
+	enableConfirmSliceBtn: any;
+	enableApproveSliceBtn: any;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -61,28 +67,53 @@ export class SliceOperationsModalContentComponent {
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
+		this.enableDeleteSliceBtn = this.data.permissionDelete
+		console.log(this.enableDeleteSliceBtn)
+
+		this.enableConfirmSliceBtn = this.data.permissionConfirm
+		console.log(this.enableConfirmSliceBtn)
+
+		this.enableApproveSliceBtn = this.data.permissionApprove
+		console.log(this.enableApproveSliceBtn)
+
 		this.injectValueToModal = this.data;
+		let statusCode = this.injectValueToModal.statusCode
+		let terrCode = this.injectValueToModal.terrCode;
+
+		// Статус Сформирован с ошибкой
+		if (statusCode == this.STATUS_CODES.FORMED_WITH_ERROR) {
+			this.showDeleteBtnFromError = true;
+		}
+
+		// Статус Окончательный
+		if (statusCode == this.STATUS_CODES.APPROVED) {
+			// this.btnDecided = true;
+			this.showSendIntoPreliminaryBtn = true;
+		}
+
 		// Статус на согласовании
-		if (this.injectValueToModal.statusCode == this.STATUS_CODES.IN_AGREEMENT) {
-			this.btnInAgreement = true;
+		if (statusCode == this.STATUS_CODES.IN_AGREEMENT) {
+			// this.btnInAgreement = true;
+			this.showDeleteBtn = true;
+			this.showApproveBtn = true;
 			this.showTableInAgreement = true;
 			this.service.showTableAgreement(this.showTableInAgreement);
 		}
-		// Статус Утверждено
-		if (this.injectValueToModal.statusCode == this.STATUS_CODES.APPROVED) {
-			this.btnDecided = true;
-		}
 		// Статус предварительный
-		if (this.injectValueToModal.statusCode == this.STATUS_CODES.PRELIMINARY) {
-			this.btnToAgreement = true;
+		if (statusCode == this.STATUS_CODES.PRELIMINARY) {
+			// this.btnToAgreement = true
+			this.showOnApprovalBtn = true;
 		}
-		// Статус Сформирован с ошибкой
-		if (this.injectValueToModal.statusCode == this.STATUS_CODES.FORMED_WITH_ERROR) {
-			this.btnDelete = true;
-		}
-		if (this.injectValueToModal.terrCode == "19000090") {
+
+
+		console.log(this.injectValueToModal.terrCode)
+		if (terrCode.startsWith('1900')) {
+			console.log(true)
 			this.headTerritory = true;
 		}
+		// if (this.injectValueToModal.terrCode == "19000090") {
+		// 	this.headTerritory = true;
+		// }
 	}
 
 	//Утвердить срез
@@ -98,9 +129,10 @@ export class SliceOperationsModalContentComponent {
 						this.errorHandler.alertError(error);
 					}
 				);
-				this.btnDecided = true;
-				this.btnToAgreement = false;
-				this.btnInAgreement = false;
+				this.showSendIntoPreliminaryBtn = true;
+				this.showOnApprovalBtn = false;
+				this.showApproveBtn = false;
+				this.showDeleteBtn = false;
 			},
 			error => {
 				this.errorHandler.alertError(error);
@@ -131,9 +163,10 @@ export class SliceOperationsModalContentComponent {
 						this.errorHandler.alertError(error);
 					}
 				);
-				this.btnToAgreement = true;
-				this.btnDecided = false;
-				this.btnInAgreement = false;
+				this.showOnApprovalBtn = true;
+				this.showSendIntoPreliminaryBtn = false;
+				this.showDeleteBtn = false;
+				this.showApproveBtn = false;
 			},
 			error => {
 				this.errorHandler.alertError(error);
@@ -153,9 +186,10 @@ export class SliceOperationsModalContentComponent {
 						this.errorHandler.alertError(error);
 					}
 				);
-				this.btnInAgreement = true;
-				this.btnToAgreement = false;
-				this.btnDecided = false;
+				this.showApproveBtn = true;
+				this.showDeleteBtn = true;
+				this.showOnApprovalBtn = false;
+				this.showSendIntoPreliminaryBtn = false;
 			},
 			error => {
 				this.errorHandler.alertError(error);
@@ -175,9 +209,6 @@ export class SliceOperationsModalContentComponent {
 		});
 	}
 
-	closeDialog(): void {
-		this.dialogRef.close();
-	}
 	//Согласовать срез
 	approveSlice() {
 		let approveSliceObj = {
@@ -207,6 +238,10 @@ export class SliceOperationsModalContentComponent {
 				this.errorHandler.alertError(error);
 			}
 		);
+	}
+
+	closeDialog(): void {
+		this.dialogRef.close();
 	}
 
 }
