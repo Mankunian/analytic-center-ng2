@@ -102,24 +102,33 @@ export class TabMenuComponent implements OnInit {
 				this.groupList = data;
 				let permissionReport = []
 				let permissionDelete = []
-				let permissionList = JSON.parse(sessionStorage.getItem('permissionCode'))
+				let permissionCreate = []
+				let permissionConfirm = []
+				let permissionApprove = []
+				let permissionList = JSON.parse(sessionStorage.getItem('permissionCodesList'))
+
 				this.groupList.forEach(elementGroup => {
 					permissionList.forEach(elementPermission => {
-
-						// console.log(elementPermission)
 						if (elementPermission == elementGroup.permissionReport) {
 							permissionReport.push(elementGroup)
 							sessionStorage.setItem('permissionReport', JSON.stringify(permissionReport))
 						}
 						else if (elementPermission == elementGroup.permissionCreate) {
 							elementGroup.enableStatus = true;
+							permissionCreate.push(elementGroup)
+							sessionStorage.setItem('permissionCreate', JSON.stringify(permissionCreate))
 						}
-						if (elementPermission == elementGroup.permissionDelete) {
-							// console.log(elementPermission)
-							// console.log(elementGroup)
+						else if (elementPermission == elementGroup.permissionDelete) {
 							permissionDelete.push(elementGroup)
-							console.log(permissionDelete)
-							// sessionStorage.setItem('permissionDelete', JSON.stringify(permissionDelete))
+							sessionStorage.setItem('permissionDelete', JSON.stringify(permissionDelete))
+						}
+						else if (elementPermission == elementGroup.permissionConfirm) {
+							permissionConfirm.push(elementGroup)
+							sessionStorage.setItem('permissionConfirm', JSON.stringify(permissionConfirm))
+						}
+						else if (elementPermission == elementGroup.permissionApprove) {
+							permissionApprove.push(elementGroup)
+							sessionStorage.setItem('permissionApprove', JSON.stringify(permissionApprove))
 						}
 					});
 				});

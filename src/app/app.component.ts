@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
 			// 	console.log(key, element)
 			// 	this.permissionCodes[element] = true;
 			// });
-			sessionStorage.setItem('permissionCode', JSON.stringify(this.userInfo.permissions))
+			sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 		})
 	}
 }
