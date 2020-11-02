@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
 			// Here redirect to local IP-address url of admin 
-			window.location.href = 'https://192.168.210.69'
+			window.location.href = 'http://192.168.210.69'
 		}
 		this.getPermissionsByCurrentUser()
 	}
