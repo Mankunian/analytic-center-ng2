@@ -12,6 +12,7 @@ export class SharedService {
 	subjTerrCode$ = this.subTerrCode.asObservable();
 
 	sendTerrCode(terrCode: string) {
+		console.log(terrCode)
 		this.subTerrCode.next(terrCode)
 	}
 

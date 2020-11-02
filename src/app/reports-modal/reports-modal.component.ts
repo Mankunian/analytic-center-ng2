@@ -5,7 +5,6 @@ import { TreeNode } from "primeng/api";
 import { GlobalConfig } from "../global";
 import { ErrorHandlerService } from "../services/error-handler.service";
 import { FormatGridService } from "../services/format-grid.service";
-// import { SharedService } from '../services/shared.service';
 import { Subscription } from 'rxjs';
 
 
@@ -595,12 +594,22 @@ export class ReportsModalContentComponent {
 	}
 
 	redirectSystemToShowReport(item) {
-		let reportId = item.report.code;
-		let regionCode = item.region.code;
-		let dvedomostv = item.department.code;
-		let sliceId = this.sliceId;
+		let department = item.department
+		if (department == undefined) {
+			let reportId = item.report.code;
+			let regionCode = item.region.code;
+			let dvedomostv = '';
+			let sliceId = this.sliceId;
 
-		console.log(reportId, regionCode, dvedomostv, sliceId)
-		window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
+		} else {
+			let reportId = item.report.code;
+			let regionCode = item.region.code;
+			let dvedomostv = item.department.code;
+			let sliceId = this.sliceId;
+
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
+		}
+
 	}
 }

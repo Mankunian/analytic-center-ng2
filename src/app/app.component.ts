@@ -8,13 +8,11 @@ import { HttpService } from './services/http.service';
 })
 export class AppComponent implements OnInit {
 	userInfo: Record<string, any>;
-	permissionCodes: {};
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor(private http: HttpService) { }
 
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
-		this.permissionCodes = {}
 	}
 
 	checkAccessTokenFromAdminRedirect() {
@@ -29,19 +27,5 @@ export class AppComponent implements OnInit {
 			// Here redirect to local IP-address url of admin 
 			window.location.href = 'http://192.168.210.69'
 		}
-		this.getPermissionsByCurrentUser()
-	}
-
-	getPermissionsByCurrentUser() {
-		this.http.getPermissionsByUserService().subscribe(data => {
-			console.log(data)
-			this.userInfo = data;
-			sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
-			// this.userInfo.permissions.forEach((element, key) => {
-			// 	console.log(key, element)
-			// 	this.permissionCodes[element] = true;
-			// });
-			sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
-		})
 	}
 }

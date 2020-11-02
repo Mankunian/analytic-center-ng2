@@ -97,26 +97,6 @@ export class TreeTableComponent implements OnInit {
 
 	ngOnInit() {
 		this.loader = true;
-		if (sessionStorage.permissionReport) {
-			let permissionReport = JSON.parse(sessionStorage.getItem('permissionReport'))
-			console.log(permissionReport)
-			this.permissionReport = permissionReport
-		}
-		if (sessionStorage.permissionDelete) {
-			let permissionDelete = JSON.parse(sessionStorage.getItem('permissionDelete'))
-			this.permissionDelete = permissionDelete
-		}
-		if (sessionStorage.permissionConfirm) {
-			let permissionConfirm = JSON.parse(sessionStorage.getItem('permissionConfirm'))
-			this.permissionConfirm = permissionConfirm
-		}
-		if (sessionStorage.permissionApprove) {
-			let permissionApprove = JSON.parse(sessionStorage.getItem('permissionApprove'))
-			this.permissionApprove = permissionApprove
-		}
-
-
-
 		this.getSliceGroups()
 
 		this.cols = [
@@ -164,23 +144,27 @@ export class TreeTableComponent implements OnInit {
 		this.enableDeleteSliceBtn = 'false'
 		this.enableConfirmSliceBtn = 'false'
 		this.enableApproveSliceBtn = 'false'
-		console.log(this.permissionDelete)
+
+
 		if (sessionStorage.permissionDelete) {
-			this.permissionDelete.forEach(element => {
+			let permissionDelete = JSON.parse(sessionStorage.getItem('permissionDelete'))
+			permissionDelete.forEach(element => {
 				if (rowEntity.groupCode == element.code) {
 					this.enableDeleteSliceBtn = 'true';
 				}
 			});
 		}
 		if (sessionStorage.permissionConfirm) {
-			this.permissionConfirm.forEach(element => {
+			let permissionConfirm = JSON.parse(sessionStorage.getItem('permissionConfirm'))
+			permissionConfirm.forEach(element => {
 				if (rowEntity.groupCode == element.code) {
 					this.enableConfirmSliceBtn = 'true'
 				}
 			});
 		}
 		if (sessionStorage.permissionApprove) {
-			this.permissionApprove.forEach(element => {
+			let permissionApprove = JSON.parse(sessionStorage.getItem('permissionApprove'))
+			permissionApprove.forEach(element => {
 				if (rowEntity.groupCode == element.code) {
 					this.enableApproveSliceBtn = 'true'
 				}
@@ -223,7 +207,8 @@ export class TreeTableComponent implements OnInit {
 	openReportsModal(row) {
 		this.enableGetReportBtn = 'false';
 		if (sessionStorage.permissionReport) {
-			this.permissionReport.forEach(element => {
+			let permissionReport = JSON.parse(sessionStorage.getItem('permissionReport'))
+			permissionReport.forEach(element => {
 				if (row.groupCode == element.code) {
 					this.enableGetReportBtn = 'true';
 				}

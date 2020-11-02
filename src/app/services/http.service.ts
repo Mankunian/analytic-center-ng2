@@ -13,13 +13,11 @@ import { SharedService } from './shared.service';
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
+	private ADMIN_URL = GlobalConfig.ADMIN_URL;
 	private baseAuthUser = GlobalConfig.BASE_AUTH_USER
 	public changeLang: unknown = 'RU';
 	public checkDeleted: unknown = false;
 	public subscription: Subscription;
-	private users;
-	private terrCode;
-	// private token = sessionStorage.token
 
 	constructor(private http: HttpClient, shared: SharedService) {
 		this.subscription = shared.subjChangeLang$.subscribe(lang => {
@@ -28,26 +26,6 @@ export class HttpService {
 		this.subscription = shared.subjCheckDeleted$.subscribe(checkDeleted => {
 			this.checkDeleted = checkDeleted
 		})
-		// this.getUsers()
-		// 	.subscribe(
-		// 		successData => {
-		// 			this.users = successData;
-		// 			// console.log("HttpService -> constructor -> this.users", this.users)
-		// 		},
-		// 		error => {
-		// 			console.log("getUsers -> error", error)
-		// 		},
-		// 		() => { // when complete
-		// 			this.subscription = shared.subjTerrCode$.subscribe(userRole => {
-		// 				this.terrCode = userRole;
-		// 				this.users.forEach(element => {
-		// 					if (element[this.terrCode] != undefined) {
-		// 						this.baseAuthUser = element[this.terrCode];
-		// 					}
-		// 				});
-		// 			})
-		// 		}
-		// 	);
 	}
 
 
@@ -58,7 +36,7 @@ export class HttpService {
 		});
 
 		let options = { headers: headers }
-		return this.http.get('https://18.138.17.74:8084/api/v1/RU/adm-core/my/permissions', options)
+		return this.http.get(this.ADMIN_URL + '/api/v1/RU/adm-core/my/permissions', options)
 	}
 
 	getGroupList() {
@@ -70,7 +48,6 @@ export class HttpService {
 		let options = { headers: headers }
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/groups', options)
 	}
-
 
 	getTerritories() {
 		let token = sessionStorage.token;
@@ -92,8 +69,6 @@ export class HttpService {
 		let options = { headers: headers }
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/max', options);
 	}
-
-
 
 	getSlices(groupCode, statusCode, year) {
 		let token = sessionStorage.token;
