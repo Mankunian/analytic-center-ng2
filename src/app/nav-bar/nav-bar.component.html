@@ -27,6 +27,7 @@
 
 <div class="main-navigation row">
 	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
-	<span class="userInfo">{{incomingUserInfo.fullName}} <br> Код органа: {{selectedTerritory}}</span><br>
+	<span *ngIf="incomingUserInfo" class="userInfo">{{incomingUserInfo.fullName}} <br> Код органа:
+		{{selectedTerritory}}</span><br>
 </div>
 <br />

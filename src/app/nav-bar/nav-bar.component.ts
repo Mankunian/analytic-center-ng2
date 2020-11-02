@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -16,10 +16,11 @@ export interface Territory {
 })
 export class NavBarComponent implements OnInit {
 	public territoryList: any = [];
-	public selectedTerritory: any;
 	public terrValue: string;
 	public lang: string;
 	public incomingUserInfo: any;
+	public selectedTerritory: any;
+	userInfo: any;
 
 	constructor(
 		private httpService: HttpService,
@@ -34,12 +35,28 @@ export class NavBarComponent implements OnInit {
 
 	ngOnInit() {
 		this.getTerritory()
-		if (sessionStorage.userInfo) {
-			this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-			this.selectedTerritory = this.incomingUserInfo.orgCode
+		this.getPermissionsByCurrentUser()
+	}
+
+	getPermissionsByCurrentUser() {
+		this.httpService.getPermissionsByUserService().subscribe(data => {
+			this.userInfo = data;
+			if (this.userInfo) {
+				console.log(this.userInfo)
+				sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
+				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
+			}
+			this.getUserInfo()
+		})
+	}
+
+	getUserInfo() {
+		console.log(sessionStorage.userInfo)
+		this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+		this.selectedTerritory = this.incomingUserInfo.orgCode
+		if (this.selectedTerritory) {
 			this.sharedService.sendTerrCode(this.selectedTerritory);
 		}
-
 	}
 
 	getTerritory() {
@@ -49,6 +66,7 @@ export class NavBarComponent implements OnInit {
 			this.errorHandler.alertError(error);
 		});
 	}
+
 	changeLang(lang: string) {
 		this.sharedService.changeLangService(lang);
 
