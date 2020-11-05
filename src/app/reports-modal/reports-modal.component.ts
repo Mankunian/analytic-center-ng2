@@ -597,10 +597,9 @@ export class ReportsModalContentComponent {
 		let department = item.department
 		if (department == undefined) {
 			let reportId = item.report.code;
-			let regionCode = item.region.code;
+			let regionCode = item.region.searchPattern;
 			let dvedomostv = '';
-			let sliceId = this.sliceId;
-
+			let sliceId = this.sliceId
 			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
 		} else {
 			let reportId = item.report.code;
@@ -610,6 +609,5 @@ export class ReportsModalContentComponent {
 
 			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
 		}
-
 	}
 }
