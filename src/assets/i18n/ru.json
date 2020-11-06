@@ -34,9 +34,10 @@
 		"REPORT_LANG": "Язык отчета",
 		"REPORT_RU": "Русский",
 		"REPORT_KZ": "Казахский",
-		"REQUESTED_REPORTS": "Запрошенные отчеты",
-		"REPORTS": "Отчеты",
+		"REQUESTED_REPORTS": "Открыть отчет",
+		"REPORTS": "Получить в Excel",
 		"BTN_GET_REPORTS": "Получить",
+		"BTN_GO_CATALOG": "Перейти в каталог",
 		"BTN_CANCEL": "Отмена",
 		"GOT_REPORTS": "Получено"
 	}

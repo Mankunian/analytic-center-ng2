@@ -13,6 +13,19 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
+		this.checkTokenForValidation()
+	}
+
+	checkTokenForValidation() {
+		this.http.checkTokenValidationService().subscribe(data => {
+			console.log(data)
+			if (data == null) {
+				let tokenIsValid = 'true';
+				sessionStorage.setItem('tokenIsValid', tokenIsValid)
+			}
+		}, error => {
+			console.log(error)
+		})
 	}
 
 	checkAccessTokenFromAdminRedirect() {
