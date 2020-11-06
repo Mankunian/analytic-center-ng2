@@ -18,6 +18,8 @@
 		</div>
 	</div>
 </div>
+
+
 <mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
 	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="tabIndex">
 		<mat-tab>
@@ -35,8 +37,7 @@
 					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]="true" matInput value="{{ data.slicePeriod }}" />
 					</mat-form-field>
-				</div>
-				<div>
+
 					<span class="lang-checkbox-label">{{ "REPORTS_MODAL.REPORT_LANG" | translate }}</span>
 					<mat-checkbox [(ngModel)]="reportLangs.ru.isSelected" name="langRu">
 						{{ "REPORTS_MODAL.REPORT_RU" | translate }}</mat-checkbox>
@@ -44,38 +45,47 @@
 						{{ "REPORTS_MODAL.REPORT_KZ" | translate }} </mat-checkbox>
 				</div>
 			</form>
+
 			<div class="reports-list">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-6" style="border-right: 2px solid; min-height: 330px;">
 							<h3 mat-dialog-title>{{ "REPORTS_MODAL.REQUESTED_REPORTS" | translate }}</h3>
 							<div class="selected-reports">
 								<ul>
 									<li *ngFor="let selectedReport of selectedReportsList; let i = index">
 										<i class="remove-icon pi pi-times-circle" (click)="removeSelectedReport(i, selectedReport)"></i>
 										<img (click)="redirectSystemToShowReport(selectedReport)" id="table_filter"
-											src="assets/img/icon.png" alt="table_filter">
+											src="assets/img/folder.png" alt="table_filter">
 										<span class="requested-report-item">{{ selectedReport.report.name }} -
 											{{ selectedReport.region.name }}
 											<span *ngIf="selectedReport.department">-
 												{{ selectedReport.department?.name }}
 											</span>
-											<!-- <p-button onclick="location.href='https://primefaces.org/primeng/showcase/#/icons'"
-												class="redirectSysButton" label="Переход" icon="pi pi-arrow-right" iconPos="right">
-											</p-button> -->
 										</span>
 									</li>
 								</ul>
 							</div>
 						</div>
 						<div class="col-sm-6">
-							<h3 mat-dialog-title>
+							<!-- <h3 mat-dialog-title>
+								<span class="excel">
+									<img src="assets/img/excel.png" alt="">
+								</span>
 								{{ "REPORTS_MODAL.REPORTS" | translate }}
 								<span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">
 									{{ "REPORTS_MODAL.GOT_REPORTS" | translate }} {{ readyReportsParts }} из
 									{{ selectedReportsList.length }}
 								</span>
-							</h3>
+							</h3> -->
+							<button (click)="getReports()" [disabled]="enableGetReportBtn == 'false'" type="button" class="btn">
+								<img style="width: 30px;" src="assets/img/excel.png" alt="">
+								{{ "REPORTS_MODAL.REPORTS" | translate }}
+							</button>
+							<span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">
+								{{ "REPORTS_MODAL.GOT_REPORTS" | translate }} {{ readyReportsParts }} из
+								{{ selectedReportsList.length }}
+							</span>
 							<div class="reports">
 								<div class="preloader-block ready-reports" *ngIf="isReportsLoading">
 									<div class="lds-ring-readyReports">
@@ -231,9 +241,11 @@
 
 	</mat-tab-group>
 </mat-dialog-content>
+
+
 <mat-dialog-actions *ngIf="!contentLoading" align="end">
-	<button mat-flat-button color="primary" (click)="getReports()" [disabled]="enableGetReportBtn == 'false'">
+	<button *ngIf="tabIndex !== 0" (click)="openFirstTab()" mat-flat-button color="primary">
 		{{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
 	</button>
-	<button mat-flat-button color="primary" mat-dialog-close>{{ "REPORTS_MODAL.BTN_CANCEL" | translate }}</button>
+	<!-- <button mat-flat-button color="primary" mat-dialog-close>{{ "REPORTS_MODAL.BTN_CANCEL" | translate }}</button> -->
 </mat-dialog-actions>

@@ -102,7 +102,11 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED
+			this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.ROZYSK ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_ADMIN_DELA ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU
 		) {
 			this.isGroupGov = true;
 		}
@@ -124,66 +128,74 @@ export class ReportsModalContentComponent {
 		]
 
 		// Get reports list by slice id to genereate tabs
-		this.http.getReportsBySliceId(this.sliceId).subscribe(
-			reportGroups => {
-				this.reportGroups = reportGroups;
-				this.reportGroups.forEach(element => {
-					if (
-						element.code == '800' || element.code == '801' ||
-						element.code == '510' || element.code == '511' ||
-						element.code == '050' || element.code == '720' || // группа отчетов Ф.2 прокурорский
-						element.code == '707' || element.code == '708' || element.code == '710' ||
-						element.code == '514' || element.code == '516' || element.code == '519' || // КУИ и 1E
-						element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
-						element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
-						element.code == '810' // KISA 
-					) {
-						this.isReportOrgz = true;
-					} else {
-						this.isReportOrgz = false;
-					}
-				});
-				if (this.isGroupGov) {
-					this.generateGridOrgz();
-				}
-				else {
-					// Get regions grid data
-					this.http.getRegions().subscribe(
-						regionsTree => {
-							let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
-							regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
+		this.getReportsBySliceId()
+	}
 
-							this.reportGroups.forEach(element => {
-								let reportCode = element.code;
-								// Get department grid data
-								this.http.getDepsByReportId(reportCode).subscribe(departments => {
-									this.departments = departments
-									this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-									if (this.departments[0].code == '03') {
-										this.requestedReports.deps[reportCode] = this.departments
-										this.isReportsSelectedDeps = true;
-									} else {
-										this.requestedReports.deps[reportCode] = [];
-									}
-								},
-									error => {
-										this.errorHandler.alertError(error);
-									},
-									() => {
-										this.contentLoading = false;
-									}
-								);
-								// Assign regions to grid
-								this.gridData.regs[reportCode] = regionsTreeFormatted;
-								this.requestedReports.regs[reportCode] = [];
-							});
-						},
-						error => {
-							this.errorHandler.alertError(error);
-						}
-					);
+	getReportsBySliceId() {
+		let sliceId = this.sliceId
+		this.http.getReportsBySliceIdService(sliceId).subscribe(response => {
+			console.log(response)
+			this.reportGroups = response;
+			this.reportGroups.forEach(element => {
+				if (
+					element.code == '800' || element.code == '801' ||
+					element.code == '510' || element.code == '511' ||
+					element.code == '050' || element.code == '720' || // группа отчетов Ф.2 прокурорский
+					element.code == '707' || element.code == '708' || element.code == '710' || element.code == '530' ||
+					element.code == '705' || element.code == '731' ||
+					element.code == '514' || element.code == '516' || element.code == '519' || // КУИ и 1E
+					element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
+					element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
+					element.code == '717' || element.code == '718' || element.code == '719' ||
+					element.code == '810' // KISA 
+				) {
+					this.isReportOrgz = true;
+				} else {
+					this.isReportOrgz = false;
 				}
-			},
+			});
+			if (this.isGroupGov) {
+				this.generateGridOrgz();
+			}
+			else {
+				// Get regions grid data
+				this.http.getRegions().subscribe(
+					regionsTree => {
+						let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
+						regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
+
+						this.reportGroups.forEach(element => {
+							let reportCode = element.code;
+							// Get department grid data
+							this.http.getDepsByReportId(reportCode).subscribe(departments => {
+								this.departments = departments
+								this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
+								console.log(this.departments)
+								if (this.departments[0].code == '03') {
+									this.requestedReports.deps[reportCode] = this.departments
+									this.isReportsSelectedDeps = true;
+								} else {
+									this.requestedReports.deps[reportCode] = [];
+								}
+							},
+								error => {
+									this.errorHandler.alertError(error);
+								},
+								() => {
+									this.contentLoading = false;
+								}
+							);
+							// Assign regions to grid
+							this.gridData.regs[reportCode] = regionsTreeFormatted;
+							this.requestedReports.regs[reportCode] = [];
+						});
+					},
+					error => {
+						this.errorHandler.alertError(error);
+					}
+				);
+			}
+		},
 			error => {
 				this.errorHandler.alertError(error);
 			}
@@ -194,22 +206,22 @@ export class ReportsModalContentComponent {
 	generateGridOrgz() {
 		this.reportGroups.forEach(reportGroup => {
 			console.log(reportGroup)
-			let groupCode = reportGroup.code;
-			if (groupCode == '800' || groupCode == '801') {
+			let reportCode = reportGroup.code;
+			if (reportCode == '800' || reportCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
-			} else if (groupCode == '050') {
+			} else if (reportCode == '050') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
-			} else if (groupCode == '810') {
+			} else if (reportCode == '810') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
 			} else {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 			}
 
 
-			this.http.getGroups4DialogTable(this.hierarchyReportCode, groupCode).subscribe(
+			this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe(
 				data => {
-					this.gridData.orgz[groupCode] = this.formatGridService.formatGridData(data, true, true);
-					this.requestedReports.orgz[groupCode] = [];
+					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
+					this.requestedReports.orgz[reportCode] = [];
 				},
 				error => {
 					this.errorHandler.alertError(error);

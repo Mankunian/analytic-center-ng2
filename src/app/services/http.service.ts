@@ -28,6 +28,27 @@ export class HttpService {
 		})
 	}
 
+	checkTokenValidationService() {
+		let token = sessionStorage.token;
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(this.BASE_API_URL + 'test', options)
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	getPermissionsByUserService() {
 		let token = sessionStorage.token;
@@ -120,7 +141,7 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history/' + historyId + '/approving', options)
 	}
 
-	getReportsBySliceId(sliceId) {
+	getReportsBySliceIdService(sliceId) {
 		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
 			'authorization': 'bearer ' + token
@@ -140,14 +161,14 @@ export class HttpService {
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/regsTree', options)
 	}
 
-	getGroups4DialogTable(repGroup, groupCode) {
+	getGroups4DialogTable(repGroup, reportCode) {
 		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
 			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
-		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup + '&report=' + groupCode, options)
+		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/governments/parents?group=' + repGroup + '&report=' + reportCode, options)
 	}
 
 	getGroupsChildren4DialogTable(searchPattern, repGroup) {

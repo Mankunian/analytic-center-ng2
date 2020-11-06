@@ -78,12 +78,15 @@ export class TabMenuComponent implements OnInit {
 			});
 		});
 	}
+
 	ngOnInit() {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([]),
 		});
 		setTimeout(() => {
-			this.getGroupList()
+			if (sessionStorage.tokenIsValid) {
+				this.getGroupList()
+			}
 		});
 
 		this.httpService.getSliceNumber().subscribe(
