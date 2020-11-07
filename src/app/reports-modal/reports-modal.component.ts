@@ -217,15 +217,25 @@ export class ReportsModalContentComponent {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 			}
 
-
-			this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe(
-				data => {
+			this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
+				if (reportCode == '530' || reportCode == '731') {
+					console.log(true)
+					data.forEach(element => {
+						element.children.forEach(region => {
+							delete region.children
+						});
+					});
 					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
 					this.requestedReports.orgz[reportCode] = [];
-				},
-				error => {
-					this.errorHandler.alertError(error);
-				},
+				} else {
+					console.log(false)
+					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
+					this.requestedReports.orgz[reportCode] = [];
+				}
+
+			}, error => {
+				this.errorHandler.alertError(error);
+			},
 				() => {
 					this.contentLoading = false;
 				}
@@ -233,8 +243,9 @@ export class ReportsModalContentComponent {
 		});
 	}
 
-	onNodeExpandGroupOrgz(event, groupCode) {
-		let node = event.node;
+	onNodeExpandGroupOrgz(e, groupCode) {
+		let node = e.node;
+		let event = e;
 		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
 			this.loadingOrgz = true;
 			const searchPattern = node.data.searchPattern;
@@ -247,18 +258,18 @@ export class ReportsModalContentComponent {
 			} else {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 			}
-
-			this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(
-				data => {
-					event.node.children = this.formatGridService.formatGridData(data, false);
-					this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]]; //refresh the data
-					this.loadingOrgz = false;
-				},
-				error => {
-					this.errorHandler.alertError(error);
-				}
-			);
+			this.getRegionsChildren(event, searchPattern, groupCode)
 		}
+	}
+
+	getRegionsChildren(event, searchPattern, groupCode) {
+		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
+			event.node.children = this.formatGridService.formatGridData(data, false);
+			this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]]; //refresh the data
+			this.loadingOrgz = false;
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
 	}
 
 	getReportInfoByCode(groupCode): any {
@@ -448,14 +459,17 @@ export class ReportsModalContentComponent {
 	};
 
 	getReports() {
-		this.openFirstTab();
-		let cntr = 0;
-		this.readyReportsParts = 0;
-		this.readyReports = [];
-		this.isReportsLoading = true;
-		setTimeout(() => {
-			this.getReportSplices(cntr);
-		}, 0);
+		if (this.enableGetReportBtn == 'false') {
+			alert('Нет доступа для получение данного отчета')
+		} else {
+			let cntr = 0;
+			this.readyReportsParts = 0;
+			this.readyReports = [];
+			this.isReportsLoading = true;
+			setTimeout(() => {
+				this.getReportSplices(cntr);
+			}, 0);
+		}
 	}
 
 	getReportSplices(counterFrom) {

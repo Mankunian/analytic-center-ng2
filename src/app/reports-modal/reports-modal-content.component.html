@@ -78,10 +78,11 @@
 									{{ selectedReportsList.length }}
 								</span>
 							</h3> -->
-							<button (click)="getReports()" [disabled]="enableGetReportBtn == 'false'" type="button" class="btn">
+							<button (click)="getReports()" type="button" class="btn">
 								<img style="width: 30px;" src="assets/img/excel.png" alt="">
 								{{ "REPORTS_MODAL.REPORTS" | translate }}
 							</button>
+							<!-- <button pButton pRipple type="button" label="Primary" class="p-button-raised"></button> -->
 							<span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">
 								{{ "REPORTS_MODAL.GOT_REPORTS" | translate }} {{ readyReportsParts }} из
 								{{ selectedReportsList.length }}

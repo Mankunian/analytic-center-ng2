@@ -44,7 +44,6 @@ export class NavBarComponent implements OnInit {
 		this.httpService.getPermissionsByUserService().subscribe(data => {
 			this.userInfo = data;
 			if (this.userInfo) {
-				console.log(this.userInfo)
 				sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 			}
@@ -53,7 +52,6 @@ export class NavBarComponent implements OnInit {
 	}
 
 	getUserInfo() {
-		console.log(sessionStorage.userInfo)
 		this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 		this.selectedTerritory = this.incomingUserInfo.orgCode
 		if (this.selectedTerritory) {
