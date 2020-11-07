@@ -33,14 +33,20 @@
 
 
 			<div class="col-md-8" *ngIf="headTerritory">
-				<div *ngIf="showApproveBtn && showDeleteBtn">
+				<!-- <div *ngIf="showApproveBtn && showDeleteBtn">
 					<button [disabled]="enableDeleteSliceBtn == 'false'" class="marginRightBtn" (click)="deleteSlice()" pButton
 						type="button" label="Удалить"></button>
 					<button [disabled]="enableConfirmSliceBtn == 'false'" class="marginRightBtn" (click)="confirmSlice()" pButton
 						type="button" label="Утвердить"></button>
-				</div>
+				</div> -->
+				<button pButton (click)="deleteSlice()" *ngIf="showApproveBtn && showDeleteBtn || showOnApprovalBtn"
+					label="Удалить" [disabled]="enableDeleteSliceBtn == 'false'" class="marginRightBtn"></button>
 
-				<button pButton (click)="sendToAgreement()" *ngIf="showOnApprovalBtn" label="На согласование"></button>
+				<button pButton (click)="confirmSlice()" *ngIf="showApproveBtn && showDeleteBtn || showOnApprovalBtn"
+					label="Утвердить" [disabled]="enableConfirmSliceBtn == 'false'" class="marginRightBtn"></button>
+
+				<button pButton (click)="sendToAgreement()" *ngIf="showOnApprovalBtn" label="На подтверждение"></button>
+
 				<button pButton (click)="sendToPreliminary()" *ngIf="showSendIntoPreliminaryBtn"
 					label="Перевести в предварительный"></button>
 

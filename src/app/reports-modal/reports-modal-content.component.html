@@ -68,16 +68,6 @@
 							</div>
 						</div>
 						<div class="col-sm-6">
-							<!-- <h3 mat-dialog-title>
-								<span class="excel">
-									<img src="assets/img/excel.png" alt="">
-								</span>
-								{{ "REPORTS_MODAL.REPORTS" | translate }}
-								<span class="readyReportsCounter" *ngIf="selectedReportsList.length != 0">
-									{{ "REPORTS_MODAL.GOT_REPORTS" | translate }} {{ readyReportsParts }} из
-									{{ selectedReportsList.length }}
-								</span>
-							</h3> -->
 							<button (click)="getReports()" type="button" class="btn">
 								<img style="width: 30px;" src="assets/img/excel.png" alt="">
 								{{ "REPORTS_MODAL.REPORTS" | translate }}
@@ -248,5 +238,4 @@
 	<button *ngIf="tabIndex !== 0" (click)="openFirstTab()" mat-flat-button color="primary">
 		{{ "REPORTS_MODAL.BTN_GET_REPORTS" | translate }}
 	</button>
-	<!-- <button mat-flat-button color="primary" mat-dialog-close>{{ "REPORTS_MODAL.BTN_CANCEL" | translate }}</button> -->
 </mat-dialog-actions>

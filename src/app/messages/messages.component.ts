@@ -32,33 +32,36 @@ export class MessagesComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit() {
-		this.http.getUsers().subscribe(
-			successData => {
-				this.users = successData;
-			},
+		this.getUsers()
+	}
+
+	getUsers() {
+		this.http.getUsers().subscribe(successData => {
+			this.users = successData;
+			console.log(this.users)
+		},
 			error => {
 				this.errorHandler.alertError(error);
 			},
 			() => {
 				// when complete
 				this.subscription = this.shared.subjTerrCode$.subscribe(userRole => {
-					this.terrCode = userRole;
-					this.users.forEach(element => {
-						if (element[this.terrCode] != undefined) {
-							this.authUser = element[this.terrCode];
-							this.topicSubscription.unsubscribe();
-							this.rxStompService.deactivate();
-							this.rxStompService.configure({ connectHeaders: { sessionKey: this.authUser } });
-							this.rxStompService.activate();
-							this.subscribe(this.authUser);
-						}
-					});
+					console.log(userRole)
+					// this.terrCode = userRole;
+					// this.users.forEach(element => {
+					// 	if (element[this.terrCode] != undefined) {
+					// 		this.authUser = element[this.terrCode];
+					// 		this.topicSubscription.unsubscribe();
+					// 		this.rxStompService.deactivate();
+					// 		this.rxStompService.configure({ connectHeaders: { sessionKey: this.authUser } });
+					// 		this.rxStompService.activate();
+					// 		this.subscribe(this.authUser);
+					// 	}
+					// });
 				});
-			}
-		);
+			});
 		this.subscribe(this.authUser);
 	}
-
 	ngOnDestroy() {
 		this.topicSubscription.unsubscribe();
 	}
