@@ -111,40 +111,33 @@ export class SliceOperationsModalContentComponent {
 			console.log(true)
 			this.headTerritory = true;
 		}
-		// if (this.injectValueToModal.terrCode == "19000090") {
-		// 	this.headTerritory = true;
-		// }
 	}
 
 	//Утвердить срез
 	confirmSlice() {
-		this.http.confirmSliceService(this.injectValueToModal.sliceId).subscribe(
-			data => {
-				alert("Операция прошла успешна");
-				this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
-					historyValue => {
-						this.service.sendHistoryList(historyValue);
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
-				this.showSendIntoPreliminaryBtn = true;
-				this.showOnApprovalBtn = false;
-				this.showApproveBtn = false;
-				this.showDeleteBtn = false;
-			},
-			error => {
+		this.http.confirmSliceService(this.injectValueToModal.sliceId).subscribe(data => {
+			alert("Операция прошла успешна");
+			this.http.getHistory(this.injectValueToModal.sliceId).subscribe(historyValue => {
+				this.service.sendHistoryList(historyValue);
+			}, error => {
 				this.errorHandler.alertError(error);
 			}
+			);
+			this.showSendIntoPreliminaryBtn = true;
+			this.showOnApprovalBtn = false;
+			this.showApproveBtn = false;
+			this.showDeleteBtn = false;
+		}, error => {
+			this.errorHandler.alertError(error);
+		}
 		);
 	}
 	// Удалить срез
 	deleteSlice() {
-		this.http.deleteSliceService(this.injectValueToModal.sliceId).subscribe(
-			data => {
-				alert("Операция прошла успешна");
-			},
+		this.http.deleteSliceService(this.injectValueToModal.sliceId).subscribe(data => {
+			console.log(data)
+			alert("Операция прошла успешна");
+		},
 			error => {
 				this.errorHandler.alertError(error);
 			}
@@ -152,22 +145,20 @@ export class SliceOperationsModalContentComponent {
 	}
 	//Перевести в предварительный
 	sendToPreliminary() {
-		this.http.sendToPreliminaryService(this.injectValueToModal.sliceId).subscribe(
-			data => {
-				alert("Операция прошла успешна");
-				this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
-					historyValue => {
-						this.service.sendHistoryList(historyValue);
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
-				this.showOnApprovalBtn = true;
-				this.showSendIntoPreliminaryBtn = false;
-				this.showDeleteBtn = false;
-				this.showApproveBtn = false;
-			},
+		this.http.sendToPreliminaryService(this.injectValueToModal.sliceId).subscribe(data => {
+			console.log(data)
+			alert("Операция прошла успешна");
+			this.http.getHistory(this.injectValueToModal.sliceId).subscribe(historyValue => {
+				this.service.sendHistoryList(historyValue);
+			}, error => {
+				this.errorHandler.alertError(error);
+			}
+			);
+			this.showOnApprovalBtn = true;
+			this.showSendIntoPreliminaryBtn = false;
+			this.showDeleteBtn = false;
+			this.showApproveBtn = false;
+		},
 			error => {
 				this.errorHandler.alertError(error);
 			}
@@ -175,22 +166,21 @@ export class SliceOperationsModalContentComponent {
 	}
 	// Отправить на согласование
 	sendToAgreement() {
-		this.http.sendToAgreementService(this.injectValueToModal.sliceId).subscribe(
-			data => {
-				alert("Операция прошла успешна");
-				this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
-					historyValue => {
-						this.service.sendHistoryList(historyValue);
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
-				this.showApproveBtn = true;
-				this.showDeleteBtn = true;
-				this.showOnApprovalBtn = false;
-				this.showSendIntoPreliminaryBtn = false;
-			},
+		this.http.sendToAgreementService(this.injectValueToModal.sliceId).subscribe(() => {
+			alert("Операция прошла успешна");
+			this.http.getHistory(this.injectValueToModal.sliceId).subscribe(
+				historyValue => {
+					this.service.sendHistoryList(historyValue);
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				}
+			);
+			this.showApproveBtn = true;
+			this.showDeleteBtn = true;
+			this.showOnApprovalBtn = false;
+			this.showSendIntoPreliminaryBtn = false;
+		},
 			error => {
 				this.errorHandler.alertError(error);
 			}

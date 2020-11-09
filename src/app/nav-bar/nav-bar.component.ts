@@ -34,9 +34,9 @@ export class NavBarComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.getPermissionsByCurrentUser()
 		if (sessionStorage.tokenIsValid) {
 			this.getTerritory()
-			this.getPermissionsByCurrentUser()
 		}
 	}
 

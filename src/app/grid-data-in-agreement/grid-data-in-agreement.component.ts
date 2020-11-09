@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SharedService } from '../services/shared.service';
 import { Subscription } from 'rxjs';
 import { DataAgreement } from '../grid-data-in-agreement/data'
-import { ThrowStmt } from '@angular/compiler';
 
 
 
@@ -32,15 +31,7 @@ export class GridDataInAgreementComponent {
 		this.subscription = shared.subjGridInAgreement$.subscribe(value => {
 			this.inputTableInAgreement = true;
 			this.getGridDataInAgreement(value)
-
-			this.cols = [
-				{ field: 'territoryName', header: 'Терр.управление' },
-				{ field: 'approveData', header: 'Дата-время' },
-				{ field: 'approveName', header: 'Статус' },
-				{ field: 'personName', header: 'ФИО' }
-			];
 		})
-
 
 		this.subscription = shared.subjGridAgreementHeaderInfo$.subscribe(value => {
 			this.getHeaderInfoObj(value)
@@ -53,6 +44,16 @@ export class GridDataInAgreementComponent {
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
+		this.getColHeader()
+	}
+
+	getColHeader() {
+		this.cols = [
+			{ field: 'territoryName', header: 'Терр.управление' },
+			{ field: 'approveData', header: 'Дата-время' },
+			{ field: 'approveName', header: 'Статус' },
+			{ field: 'personName', header: 'ФИО' }
+		];
 	}
 
 	getHeaderInfoObj(value) {
@@ -62,7 +63,6 @@ export class GridDataInAgreementComponent {
 
 	getVisibleTableStatus(status) {
 		this.showTable = status;
-		console.log(this.showTable)
 	}
 
 	getGridDataInAgreement(value) {
