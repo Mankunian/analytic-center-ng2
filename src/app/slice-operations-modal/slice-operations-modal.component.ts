@@ -68,13 +68,10 @@ export class SliceOperationsModalContentComponent {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
 		this.enableDeleteSliceBtn = this.data.permissionDelete
-		console.log(this.enableDeleteSliceBtn)
 
 		this.enableConfirmSliceBtn = this.data.permissionConfirm
-		console.log(this.enableConfirmSliceBtn)
 
 		this.enableApproveSliceBtn = this.data.permissionApprove
-		console.log(this.enableApproveSliceBtn)
 
 		this.injectValueToModal = this.data;
 		let statusCode = this.injectValueToModal.statusCode
