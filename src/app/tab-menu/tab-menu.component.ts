@@ -83,64 +83,52 @@ export class TabMenuComponent implements OnInit {
 		this.groupListFormGroup = this.formBuilder.group({
 			groupList: this.formBuilder.array([]),
 		});
-		setTimeout(() => {
-			if (sessionStorage.tokenIsValid) {
-				this.getGroupList()
-			}
-		});
-
-		this.httpService.getSliceNumber().subscribe(
-			(data: SliceNumber) => {
-				this.max = data.value;
-			},
-			error => {
-				this.errorHandler.alertError(error);
-			}
-		);
+		this.getGroupList()
+		this.getSliceNumber()
 	}
 
 	getGroupList() {
-		this.httpService.getGroupList().subscribe(
-			data => {
-				this.groupList = data;
-				let permissionReport = []
-				let permissionDelete = []
-				let permissionCreate = []
-				let permissionConfirm = []
-				let permissionApprove = []
-				let permissionList = JSON.parse(sessionStorage.getItem('permissionCodesList'))
+		console.log('Получение групп отчетов')
+		this.httpService.getGroupList().subscribe(data => {
+			this.groupList = data;
+			let permissionReport = []
+			let permissionDelete = []
+			let permissionCreate = []
+			let permissionConfirm = []
+			let permissionApprove = []
+			let permissionList = JSON.parse(sessionStorage.getItem('permissionCodesList'))
 
 
-				this.groupList.forEach(elementGroup => {
-					if (sessionStorage.permissionCodesList) {
-						permissionList.forEach(elementPermission => {
-							if (elementPermission == elementGroup.permissionReport) {
-								permissionReport.push(elementGroup)
-								sessionStorage.setItem('permissionReport', JSON.stringify(permissionReport))
-							}
-							else if (elementPermission == elementGroup.permissionCreate) {
-								elementGroup.enableStatus = true;
-								permissionCreate.push(elementGroup)
-								sessionStorage.setItem('permissionCreate', JSON.stringify(permissionCreate))
-							}
-							else if (elementPermission == elementGroup.permissionDelete) {
-								permissionDelete.push(elementGroup)
-								sessionStorage.setItem('permissionDelete', JSON.stringify(permissionDelete))
-							}
-							else if (elementPermission == elementGroup.permissionConfirm) {
-								permissionConfirm.push(elementGroup)
-								sessionStorage.setItem('permissionConfirm', JSON.stringify(permissionConfirm))
-							}
-							else if (elementPermission == elementGroup.permissionApprove) {
-								permissionApprove.push(elementGroup)
-								sessionStorage.setItem('permissionApprove', JSON.stringify(permissionApprove))
-							}
-						});
-					} else {
-						alert('sessionStorage has no permissionCodesList')
-					}
-				});
-			},
+			this.groupList.forEach(elementGroup => {
+				if (sessionStorage.permissionCodesList) {
+					permissionList.forEach(elementPermission => {
+						if (elementPermission == elementGroup.permissionReport) {
+							permissionReport.push(elementGroup)
+							sessionStorage.setItem('permissionReport', JSON.stringify(permissionReport))
+						}
+						else if (elementPermission == elementGroup.permissionCreate) {
+							elementGroup.enableStatus = true;
+							permissionCreate.push(elementGroup)
+							sessionStorage.setItem('permissionCreate', JSON.stringify(permissionCreate))
+						}
+						else if (elementPermission == elementGroup.permissionDelete) {
+							permissionDelete.push(elementGroup)
+							sessionStorage.setItem('permissionDelete', JSON.stringify(permissionDelete))
+						}
+						else if (elementPermission == elementGroup.permissionConfirm) {
+							permissionConfirm.push(elementGroup)
+							sessionStorage.setItem('permissionConfirm', JSON.stringify(permissionConfirm))
+						}
+						else if (elementPermission == elementGroup.permissionApprove) {
+							permissionApprove.push(elementGroup)
+							sessionStorage.setItem('permissionApprove', JSON.stringify(permissionApprove))
+						}
+					});
+				} else {
+					alert('sessionStorage has no permissionCodesList')
+				}
+			});
+		},
 			error => {
 				this.errorHandler.alertError(error);
 			}

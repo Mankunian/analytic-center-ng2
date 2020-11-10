@@ -3,6 +3,7 @@ import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ErrorHandlerService } from "../services/error-handler.service";
+import { TabMenuComponent } from "../tab-menu/tab-menu.component";
 
 export interface Territory {
 	code: string;
@@ -26,7 +27,8 @@ export class NavBarComponent implements OnInit {
 		private httpService: HttpService,
 		private sharedService: SharedService,
 		public translate: TranslateService,
-		public errorHandler: ErrorHandlerService
+		public errorHandler: ErrorHandlerService,
+		public tabMenuComponent: TabMenuComponent
 	) {
 		translate.setDefaultLang("ru");
 		const browserLang = translate.getBrowserLang();
@@ -48,6 +50,7 @@ export class NavBarComponent implements OnInit {
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 			}
 			this.getUserInfo()
+			this.tabMenuComponent.getGroupList()
 		})
 	}
 

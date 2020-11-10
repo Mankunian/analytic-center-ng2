@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
 		this.checkTokenForValidation()
+		// this.tabCompon.getGroupList()
 	}
 
 	checkTokenForValidation() {
