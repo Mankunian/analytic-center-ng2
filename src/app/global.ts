@@ -39,6 +39,7 @@ export const GlobalConfig = Object.freeze({
 		ROZYSK: 110,
 		OM_SU: 112,
 		GPS_F5: 115,
-		VS_ADMIN_DELA: 118
+		VS_ADMIN_DELA: 118,
+		VS_UGOLOV_DELA: 120
 	}
 });

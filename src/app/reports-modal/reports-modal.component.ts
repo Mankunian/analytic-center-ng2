@@ -89,6 +89,8 @@ export class ReportsModalContentComponent {
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
+		console.log(this.data)
+
 		// Condition 4 reports modal has 1 table 
 		if (
 			this.groupCode == GlobalConfig.REPORT_GROUPS.ERSOP ||
@@ -106,7 +108,8 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.ROZYSK ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_ADMIN_DELA ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU
+			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA
 		) {
 			this.isGroupGov = true;
 		}
@@ -140,13 +143,19 @@ export class ReportsModalContentComponent {
 				if (
 					element.code == '800' || element.code == '801' ||
 					element.code == '510' || element.code == '511' ||
-					element.code == '050' || element.code == '720' || // группа отчетов Ф.2 прокурорский
+					// группа отчетов Ф.2 прокурорский
+					element.code == '050' || element.code == '720' ||
 					element.code == '707' || element.code == '708' || element.code == '710' || element.code == '530' ||
 					element.code == '705' || element.code == '731' ||
-					element.code == '514' || element.code == '516' || element.code == '519' || // КУИ и 1E
-					element.code == '515' || element.code == '518' || // Группа отчетов о работе прокурора
-					element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' || // Гражданские дела ВС
+					// КУИ и 1E
+					element.code == '514' || element.code == '516' || element.code == '519' ||
+					// Группа отчетов о работе прокурора
+					element.code == '515' || element.code == '518' ||
+					// Гражданские дела ВС
+					element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
+					//  Группа отчетов ВС. Уголовные дела
 					element.code == '717' || element.code == '718' || element.code == '719' ||
+					element.code == '711' || element.code == '712' || element.code == '713' || element.code == '714' || element.code == '715' || element.code == '716' || element.code == '721' ||
 					element.code == '810' // KISA 
 				) {
 					this.isReportOrgz = true;
