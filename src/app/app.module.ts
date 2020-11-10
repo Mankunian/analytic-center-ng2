@@ -135,6 +135,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		TreeTableComponent,
 		// ReportsModalComponent,
 		SliceOperationsModalComponent,
+		TabMenuComponent,
 		MessageService,
 		{ provide: InjectableRxStompConfig, useValue: rxStompConfig },
 		{ provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
@@ -145,6 +146,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		ReportsModalContentComponent,
 		RejectionReasonContentComponent,
 		EditReasonComponent,
+		TabMenuComponent
 	],
 })
 export class AppModule { }
