@@ -22,6 +22,7 @@ export class NavBarComponent implements OnInit {
 	public incomingUserInfo: any;
 	public selectedTerritory: any;
 	userInfo: any;
+	fullNameUser: any;
 
 	constructor(
 		private httpService: HttpService,
@@ -43,20 +44,24 @@ export class NavBarComponent implements OnInit {
 	}
 
 	getPermissionsByCurrentUser() {
+		console.log('permissions')
 		this.httpService.getPermissionsByUserService().subscribe(data => {
 			this.userInfo = data;
 			if (this.userInfo) {
+				console.log(this.userInfo)
 				sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
+				this.tabMenuComponent.getGroupList()
+				this.getUserInfo()
 			}
-			this.getUserInfo()
-			this.tabMenuComponent.getGroupList()
 		})
 	}
 
 	getUserInfo() {
 		this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+		this.fullNameUser = this.incomingUserInfo.fullName
 		this.selectedTerritory = this.incomingUserInfo.orgCode
+		console.log("selectedTerritory ", this.selectedTerritory);
 		if (this.selectedTerritory) {
 			this.sharedService.sendTerrCode(this.selectedTerritory);
 		}

@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpService } from './services/http.service';
+import { TabMenuComponent } from "../app/tab-menu/tab-menu.component";
+import { NavBarComponent } from "../app/nav-bar/nav-bar.component";
 
 @Component({
 	selector: "app-root",
@@ -9,12 +11,15 @@ import { HttpService } from './services/http.service';
 export class AppComponent implements OnInit {
 	userInfo: Record<string, any>;
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	constructor(private http: HttpService) { }
+	constructor(private http: HttpService,
+		public tabMenuComponent: TabMenuComponent,
+		public navbarComponent: NavBarComponent,
+		private httpService: HttpService
+	) { }
 
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
 		this.checkTokenForValidation()
-		// this.tabCompon.getGroupList()
 	}
 
 	checkTokenForValidation() {
@@ -23,11 +28,16 @@ export class AppComponent implements OnInit {
 			if (data == null) {
 				let tokenIsValid = 'true';
 				sessionStorage.setItem('tokenIsValid', tokenIsValid)
+				// this.navbarComponent.getPermissionsByCurrentUser()
+				// this.tabMenuComponent.getSliceNumber()
+				// this.navbarComponent.getTerritory()
 			}
 		}, error => {
 			console.log(error)
+			window.location.href = 'http://192.168.210.69'
 		})
 	}
+
 
 	checkAccessTokenFromAdminRedirect() {
 		if (window.location.search !== '') {
