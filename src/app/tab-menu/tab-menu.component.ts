@@ -56,6 +56,7 @@ export class TabMenuComponent implements OnInit {
 	elementGroup: any;
 	// enableGetReport: boolean;
 
+
 	constructor(
 		private httpService: HttpService,
 		private formBuilder: FormBuilder,

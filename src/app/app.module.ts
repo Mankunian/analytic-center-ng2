@@ -136,6 +136,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		// ReportsModalComponent,
 		SliceOperationsModalComponent,
 		TabMenuComponent,
+		NavBarComponent,
 		MessageService,
 		{ provide: InjectableRxStompConfig, useValue: rxStompConfig },
 		{ provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
