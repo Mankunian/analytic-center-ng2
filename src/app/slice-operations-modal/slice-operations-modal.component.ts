@@ -48,6 +48,7 @@ export class SliceOperationsModalContentComponent {
 	enableDeleteSliceBtn: any;
 	enableConfirmSliceBtn: any;
 	enableApproveSliceBtn: any;
+	matchTerrCode: boolean;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -67,6 +68,7 @@ export class SliceOperationsModalContentComponent {
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
+		this.getTerritory()
 		this.enableDeleteSliceBtn = this.data.permissionDelete
 
 		this.enableConfirmSliceBtn = this.data.permissionConfirm
@@ -101,13 +103,25 @@ export class SliceOperationsModalContentComponent {
 			// this.btnToAgreement = true
 			this.showOnApprovalBtn = true;
 		}
-
-
-		console.log(this.injectValueToModal.terrCode)
 		if (terrCode.startsWith('1900')) {
 			console.log(true)
 			this.headTerritory = true;
 		}
+	}
+
+	getTerritory() {
+		this.http.getTerritories().subscribe((data: any) => {
+			console.log(data)
+			let terrCode = this.injectValueToModal.terrCode
+			data.forEach(element => {
+				console.log(element)
+				if (terrCode == element.terrCode) {
+					console.log('aaaaaaaaa')
+				}
+			});
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
 	}
 
 	//Утвердить срез
@@ -198,33 +212,40 @@ export class SliceOperationsModalContentComponent {
 
 	//Согласовать срез
 	approveSlice() {
-		let approveSliceObj = {
-			historyId: this.historyValue.id,
-			approveCode: 1,
-			territoryCode: this.injectValueToModal.terrCode,
-			msg: "",
-		};
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe(
-			() => {
-				// update ui-grid-in-agreement
-				this.http.getDataGridInAgreement(this.historyValue.sliceId, this.historyValue.id).subscribe(
-					data => {
-						this.gridInAgreement = data;
-						this.service.sendGridInAgreement(this.gridInAgreement);
-						alert("Операция прошла успешно");
-						this.approved = true;
-						this.service.approveAndRejectBtnStatus(this.approved);
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
-			},
+		console.log(this.injectValueToModal.terrCode)
+
+
+
+
+		// let approveSliceObj = {
+		// 	historyId: this.historyValue.id,
+		// 	approveCode: 1,
+		// 	territoryCode: this.injectValueToModal.terrCode,
+		// 	msg: "",
+		// };
+		// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+		// this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe(
+		// 	() => {
+		// 		this.getDataGridInAgreement()
+		// 	},
+		// 	error => {
+		// 		this.errorHandler.alertError(error);
+		// 	});
+	}
+
+
+
+	getDataGridInAgreement() {
+		this.http.getDataGridInAgreement(this.historyValue.sliceId, this.historyValue.id).subscribe(data => {
+			this.gridInAgreement = data;
+			this.service.sendGridInAgreement(this.gridInAgreement);
+			alert("Операция прошла успешно");
+			this.approved = true;
+			this.service.approveAndRejectBtnStatus(this.approved);
+		},
 			error => {
 				this.errorHandler.alertError(error);
-			}
-		);
+			});
 	}
 
 	closeDialog(): void {

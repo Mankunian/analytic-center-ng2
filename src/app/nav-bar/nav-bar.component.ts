@@ -23,6 +23,8 @@ export class NavBarComponent implements OnInit {
 	public selectedTerritory: any;
 	userInfo: any;
 	fullNameUser: any;
+	showMyContainer = false;
+
 
 	constructor(
 		private httpService: HttpService,
@@ -69,6 +71,7 @@ export class NavBarComponent implements OnInit {
 
 	getTerritory() {
 		this.httpService.getTerritories().subscribe((data: Territory) => {
+			console.log(data)
 			this.territoryList = data;
 		}, error => {
 			this.errorHandler.alertError(error);
@@ -77,32 +80,21 @@ export class NavBarComponent implements OnInit {
 
 	changeLang(lang: string) {
 		this.sharedService.changeLangService(lang);
+		this.getTerritory()
+		this.getSliceGroups()
+	}
 
-		this.httpService.getTerritories().subscribe(
-			territories => {
-				this.territoryList = territories;
-			},
+	getSliceGroups() {
+		this.httpService.getSliceGroups().then(gridData => {
+			this.sharedService.sendSliceGroupLang(gridData);
+		},
 			error => {
 				this.errorHandler.alertError(error);
-			}
-		);
+			});
+	}
 
-		// this.httpService.getGroupList().subscribe(
-		// 	groupList => {
-		// 		this.sharedService.sendGroupListLang(groupList);
-		// 	},
-		// 	error => {
-		// 		this.errorHandler.alertError(error);
-		// 	}
-		// );
-
-		this.httpService.getSliceGroups().then(
-			gridData => {
-				this.sharedService.sendSliceGroupLang(gridData);
-			},
-			error => {
-				this.errorHandler.alertError(error);
-			}
-		);
+	logOut() {
+		sessionStorage.clear()
+		window.location.href = 'http://192.168.210.69'
 	}
 }

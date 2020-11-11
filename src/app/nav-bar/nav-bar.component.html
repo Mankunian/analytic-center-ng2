@@ -27,7 +27,22 @@
 
 <div class="main-navigation row">
 	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
-	<span class="userInfo">{{fullNameUser}} <br> Код органа:
-		{{selectedTerritory}}</span><br>
+	<span (click)="showMyContainer=!showMyContainer" class="userInfo">
+		<img src="assets/img/usuario.png" alt="">
+		{{fullNameUser}}</span>
+
+	<div class="userInfoBlock" *ngIf="showMyContainer">
+		<div class="info">
+			<h6>Логин:<span> {{userInfo.login}}</span></h6>
+			<h6>email:<span> {{userInfo.email}}</span></h6>
+			<h6>ИИН:<span> {{userInfo.idn}}</span></h6>
+			<h6>Код органа:<span> {{userInfo.orgCode}}</span></h6>
+			<h6>Должность:<span> {{userInfo.post}}</span></h6>
+		</div>
+		<div class="logout">
+			<button (click)="logOut()" pButton pRipple type="button" label="Выйти" class="p-button-danger"></button>
+		</div>
+	</div>
+
 </div>
 <br />
