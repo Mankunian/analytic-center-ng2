@@ -75,10 +75,49 @@ header h1{
 
 .main-navigation span.userInfo{
 	position: absolute;
-	right: 100px;
-	color: #fff;
-	// font-style: italic;
-	// padding: 5px;
+	right: 30px;
+	color: #fff;	
+	padding: 9px;
+  font-size: medium;
+}
+
+.main-navigation span.userInfo:hover{
+	background-color: #1975C0;
+	cursor: pointer;
+}
+
+.userInfoBlock{
+	position: absolute;
+	border: 1px solid rgba(0,0,0,.42);
+	right: 30px;
+	top: 50px;
+	background-color: #dee2e6;
+	// height: 135px;
+	padding: 15px;
+	width: 350px;
+	z-index: 1000;
+	button{
+		width: 100%;
+		color: #ffffff;
+    background: #D32F2F;
+    border: 1px solid #D32F2F;
+	}
+
+	button:hover{
+		background: #aa2424;
+    color: #ffffff;
+    border-color: #aa2424;
+	}
+
+	.info{
+		h6{
+			font-weight: 600;
+			span{
+				font-weight: 100;
+				font-style: oblique;
+			}
+		}
+	}
 }
 
 .mat-select-value{
@@ -106,7 +145,7 @@ header h1{
 	overflow: hidden;
 	
 	float: right;
-  margin-top: 20px;
+	margin-top: 20px;
 }
 
 .switch-field input {
@@ -138,4 +177,8 @@ header h1{
 .switch-field input:checked + label {
   background-color: #e4e4e4;
   box-shadow: none;
+}
+
+.logout{
+	
 }
