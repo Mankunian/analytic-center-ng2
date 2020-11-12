@@ -27,7 +27,7 @@
 
 <div class="main-navigation row">
 	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
-	<span (click)="showMyContainer=!showMyContainer" class="userInfo">
+	<span *ngIf="userInfo" (click)="showMyContainer=!showMyContainer" class="userInfo">
 		<img src="assets/img/usuario.png" alt="">
 		{{fullNameUser}}</span>
 

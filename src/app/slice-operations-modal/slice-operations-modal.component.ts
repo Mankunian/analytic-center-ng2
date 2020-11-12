@@ -49,6 +49,7 @@ export class SliceOperationsModalContentComponent {
 	enableConfirmSliceBtn: any;
 	enableApproveSliceBtn: any;
 	matchTerrCode: boolean;
+	allowedOrgId: boolean;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -111,12 +112,12 @@ export class SliceOperationsModalContentComponent {
 
 	getTerritory() {
 		this.http.getTerritories().subscribe((data: any) => {
-			console.log(data)
+			// console.log(data)
 			let terrCode = this.injectValueToModal.terrCode
 			data.forEach(element => {
-				console.log(element)
-				if (terrCode == element.terrCode) {
-					console.log('aaaaaaaaa')
+				if (terrCode == element.code) {
+					console.log(terrCode, '=', element.code)
+					this.allowedOrgId = true;
 				}
 			});
 		}, error => {
@@ -202,7 +203,7 @@ export class SliceOperationsModalContentComponent {
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const dialogRef = this.dialogEditRejection.open(EditReasonComponent, {
 			width: "500px",
-			data: [this.injectValueToModal, this.historyValue],
+			data: [this.injectValueToModal, this.historyValue, this.allowedOrgId],
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
@@ -212,25 +213,24 @@ export class SliceOperationsModalContentComponent {
 
 	//Согласовать срез
 	approveSlice() {
-		console.log(this.injectValueToModal.terrCode)
-
-
-
-
-		// let approveSliceObj = {
-		// 	historyId: this.historyValue.id,
-		// 	approveCode: 1,
-		// 	territoryCode: this.injectValueToModal.terrCode,
-		// 	msg: "",
-		// };
-		// // eslint-disable-next-line @typescript-eslint/no-unused-vars
-		// this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe(
-		// 	() => {
-		// 		this.getDataGridInAgreement()
-		// 	},
-		// 	error => {
-		// 		this.errorHandler.alertError(error);
-		// 	});
+		if (this.allowedOrgId) {
+			let approveSliceObj = {
+				historyId: this.historyValue.id,
+				approveCode: 1,
+				territoryCode: this.injectValueToModal.terrCode,
+				msg: "",
+			};
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			this.http.approveSliceService(this.historyValue.sliceId, approveSliceObj).subscribe(
+				() => {
+					this.getDataGridInAgreement()
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				});
+		} else {
+			alert('Запрещена операция для данного региона')
+		}
 	}
 
 
@@ -282,38 +282,41 @@ export class EditReasonComponent implements OnInit {
 	}
 
 	saveEditReason(reason) {
-		let SaveEditReasonObj = {
-			historyId: this.objOfRejectionReason[1].id,
-			approveCode: 2,
-			territoryCode: this.objOfRejectionReason[0].terrCode,
-			msg: reason,
-		};
-		this.sliceId = this.objOfRejectionReason[1].sliceId;
-		this.historyId = this.objOfRejectionReason[1].id;
+		let allowedOrgId = this.objOfRejectionReason.allowedOrgId
+		console.log(allowedOrgId)
+		if (allowedOrgId) {
+			let SaveEditReasonObj = {
+				historyId: this.objOfRejectionReason[1].id,
+				approveCode: 2,
+				territoryCode: this.objOfRejectionReason[0].terrCode,
+				msg: reason,
+			};
+			this.sliceId = this.objOfRejectionReason[1].sliceId;
+			this.historyId = this.objOfRejectionReason[1].id;
 
-
-
-		// eslint - disable - next - line @typescript-eslint / no - unused - vars
-		this.http.rejectSliceService(this.sliceId, SaveEditReasonObj).subscribe(
-			() => {
-				this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe(
-					data => {
-						this.gridInAgreement = data;
-						this.service.sendGridInAgreement(this.gridInAgreement);
-						this.rejected = true;
-						this.service.approveAndRejectBtnStatus(this.rejected);
-						alert('Операция прошла успешна');
-						this.dialogEditRejection.close()
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
-			},
-			error => {
-				this.errorHandler.alertError(error);
-			}
-		);
+			// eslint - disable - next - line @typescript-eslint / no - unused - vars
+			this.http.rejectSliceService(this.sliceId, SaveEditReasonObj).subscribe(
+				() => {
+					this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe(
+						data => {
+							this.gridInAgreement = data;
+							this.service.sendGridInAgreement(this.gridInAgreement);
+							this.rejected = true;
+							this.service.approveAndRejectBtnStatus(this.rejected);
+							alert('Операция прошла успешна');
+							this.dialogEditRejection.close()
+						},
+						error => {
+							this.errorHandler.alertError(error);
+						}
+					);
+				},
+				error => {
+					this.errorHandler.alertError(error);
+				});
+		} else {
+			alert('Запрещена операция для данного региона')
+		}
 	}
 
 }
