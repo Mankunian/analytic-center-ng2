@@ -21,7 +21,8 @@ export const GlobalConfig = Object.freeze({
 		GROUP_001: 0o1,
 		GROUP_002: 0o2,
 		GROUP_003: 0o3,
-		GROUP_004: 0o4
+		GROUP_004: 0o4,
+		GROUP_005: 0o5
 	},
 	REPORT_GROUPS: {
 		UGOLOV_PRESLED: 0o2,
@@ -40,6 +41,7 @@ export const GlobalConfig = Object.freeze({
 		OM_SU: 112,
 		GPS_F5: 115,
 		VS_ADMIN_DELA: 118,
-		VS_UGOLOV_DELA: 120
+		VS_UGOLOV_DELA: 120,
+		OL: 125
 	}
 });
