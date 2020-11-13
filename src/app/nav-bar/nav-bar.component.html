@@ -29,7 +29,10 @@
 	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
 	<span *ngIf="userInfo" (click)="showMyContainer=!showMyContainer" class="userInfo">
 		<img src="assets/img/usuario.png" alt="">
-		{{fullNameUser}}</span>
+
+		{{fullNameUser}} <i style="font-size: 12px;" class="pi pi-chevron-down"></i> </span>
+
+
 
 	<div class="userInfoBlock" *ngIf="showMyContainer">
 		<div class="info">

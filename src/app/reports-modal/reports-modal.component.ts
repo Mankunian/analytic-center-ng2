@@ -109,7 +109,8 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_ADMIN_DELA ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA
+			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.OL
 		) {
 			this.isGroupGov = true;
 		}
@@ -126,12 +127,13 @@ export class ReportsModalContentComponent {
 		];
 
 		this.colsGovs = [
-			{ field: "searchPattern", header: "Код органа", width: "180px" },
+			{ field: "searchPattern", header: "Код органа", width: "220px" },
 			{ field: "name", header: "Наименование", width: "auto" },
 		]
 
 		// Get reports list by slice id to genereate tabs
 		this.getReportsBySliceId()
+
 	}
 
 	getReportsBySliceId() {
@@ -156,7 +158,9 @@ export class ReportsModalContentComponent {
 					//  Группа отчетов ВС. Уголовные дела
 					element.code == '717' || element.code == '718' || element.code == '719' ||
 					element.code == '711' || element.code == '712' || element.code == '713' || element.code == '714' || element.code == '715' || element.code == '716' || element.code == '721' ||
-					element.code == '810' // KISA 
+					element.code == '810' ||// KISA 
+					element.code == '740' || element.code == '741' || element.code == '742' || element.code == '743' // 1-OL
+
 				) {
 					this.isReportOrgz = true;
 				} else {
@@ -222,6 +226,8 @@ export class ReportsModalContentComponent {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
 			} else if (reportCode == '810') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
+			} else if (reportCode == '740' || reportCode == '741' || reportCode == '742' || reportCode == '743') {
+				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_005
 			} else {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 			}
@@ -252,22 +258,24 @@ export class ReportsModalContentComponent {
 		});
 	}
 
-	onNodeExpandGroupOrgz(e, groupCode) {
+	onNodeExpandGroupOrgz(e, reportCode) {
 		let node = e.node;
 		let event = e;
 		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
 			this.loadingOrgz = true;
 			const searchPattern = node.data.searchPattern;
-			if (groupCode == '800' || groupCode == '801') {
+			if (reportCode == '800' || reportCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
-			} else if (groupCode == '050') {
+			} else if (reportCode == '050') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
-			} else if (groupCode == '810') {
+			} else if (reportCode == '810') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
+			} else if (reportCode == '740' || reportCode == '741' || reportCode == '742' || reportCode == '743') {
+				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_005
 			} else {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 			}
-			this.getRegionsChildren(event, searchPattern, groupCode)
+			this.getRegionsChildren(event, searchPattern, reportCode)
 		}
 	}
 
