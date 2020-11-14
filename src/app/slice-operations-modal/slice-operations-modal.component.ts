@@ -127,14 +127,13 @@ export class SliceOperationsModalContentComponent {
 
 	//Утвердить срез
 	confirmSlice() {
-		this.http.confirmSliceService(this.injectValueToModal.sliceId).subscribe(data => {
+		this.http.confirmSliceService(this.injectValueToModal.sliceId).subscribe(() => {
 			alert("Операция прошла успешна");
 			this.http.getHistory(this.injectValueToModal.sliceId).subscribe(historyValue => {
 				this.service.sendHistoryList(historyValue);
 			}, error => {
 				this.errorHandler.alertError(error);
-			}
-			);
+			});
 			this.showSendIntoPreliminaryBtn = true;
 			this.showOnApprovalBtn = false;
 			this.showApproveBtn = false;
@@ -146,9 +145,17 @@ export class SliceOperationsModalContentComponent {
 	}
 	// Удалить срез
 	deleteSlice() {
-		this.http.deleteSliceService(this.injectValueToModal.sliceId).subscribe(data => {
-			console.log(data)
+		this.http.deleteSliceService(this.injectValueToModal.sliceId).subscribe(() => {
 			alert("Операция прошла успешна");
+			this.http.getHistory(this.injectValueToModal.sliceId).subscribe(historyValue => {
+				this.service.sendHistoryList(historyValue);
+			}, error => {
+				this.errorHandler.alertError(error);
+			});
+			this.showSendIntoPreliminaryBtn = false;
+			this.showOnApprovalBtn = false;
+			this.showApproveBtn = false;
+			this.showDeleteBtn = false;
 		},
 			error => {
 				this.errorHandler.alertError(error);
@@ -188,10 +195,10 @@ export class SliceOperationsModalContentComponent {
 					this.errorHandler.alertError(error);
 				}
 			);
-			this.showApproveBtn = true;
-			this.showDeleteBtn = true;
 			this.showOnApprovalBtn = false;
 			this.showSendIntoPreliminaryBtn = false;
+			this.showDeleteBtn = true;
+			this.showApproveBtn = true;
 		},
 			error => {
 				this.errorHandler.alertError(error);

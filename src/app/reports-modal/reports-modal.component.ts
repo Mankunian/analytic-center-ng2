@@ -152,7 +152,7 @@ export class ReportsModalContentComponent {
 					// КУИ и 1E
 					element.code == '514' || element.code == '516' || element.code == '519' ||
 					// Группа отчетов о работе прокурора
-					element.code == '515' || element.code == '518' ||
+					element.code == '515' || element.code == '518' || element.code == '523' ||
 					// Гражданские дела ВС
 					element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
 					//  Группа отчетов ВС. Уголовные дела
