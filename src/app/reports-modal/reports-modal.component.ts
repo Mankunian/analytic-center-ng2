@@ -637,13 +637,14 @@ export class ReportsModalContentComponent {
 	}
 
 	redirectSystemToShowReport(item) {
+		let token = sessionStorage.token
 		let department = item.department
 		if (department == undefined) {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = '';
 			let sliceId = this.sliceId
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
 		} else {
 			let reportId = item.report.code;
 			let regionCode = item.region.code;
