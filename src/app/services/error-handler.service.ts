@@ -9,6 +9,6 @@ export class ErrorHandlerService {
 	alertError(errMsg) {
 		console.log("ErrorHandlerService -> alertError -> errMsg", errMsg);
 
-		errMsg != undefined ? alert(errMsg.error.errMsg) : alert("Произошла ошибка на сервере.");
+		// errMsg != undefined ? alert(errMsg.error.errMsg) : alert("Произошла ошибка на сервере.");
 	}
 }

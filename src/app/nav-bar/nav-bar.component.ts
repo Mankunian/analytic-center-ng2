@@ -4,6 +4,7 @@ import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ErrorHandlerService } from "../services/error-handler.service";
 import { TabMenuComponent } from "../tab-menu/tab-menu.component";
+import { GlobalConfig } from '../global';
 
 export interface Territory {
 	code: string;
@@ -46,7 +47,6 @@ export class NavBarComponent implements OnInit {
 	}
 
 	getPermissionsByCurrentUser() {
-		console.log('permissions')
 		this.httpService.getPermissionsByUserService().subscribe(data => {
 			this.userInfo = data;
 			if (this.userInfo) {
@@ -56,6 +56,8 @@ export class NavBarComponent implements OnInit {
 				this.tabMenuComponent.getGroupList()
 				this.getUserInfo()
 			}
+		}, error => {
+			this.errorHandler.alertError(error)
 		})
 	}
 
@@ -94,19 +96,7 @@ export class NavBarComponent implements OnInit {
 	}
 
 	logOut() {
-		let hostname = sessionStorage.hostname;
-		console.log(hostname)
-		// Internal ip
-		let ipStart192 = hostname.startsWith('192')
-		let ipStart10 = hostname.startsWith('10')
-		if (ipStart192) {
-			window.location.href = "http://192.168.210.69:8084"
-		} else if (ipStart10) {
-			window.location.href = "http://10.2.30.69:8084"
-		} else {
-			window.location.href = "http://localhost:4200/"
-		}
 		sessionStorage.clear()
-		// window.location.href = 'http://192.168.210.69'
+		window.location.href = GlobalConfig.ADMIN_PAGE
 	}
 }

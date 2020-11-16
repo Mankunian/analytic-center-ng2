@@ -131,6 +131,7 @@ export class TabMenuComponent implements OnInit {
 			});
 		},
 			error => {
+				console.log(error)
 				this.errorHandler.alertError(error);
 			}
 		);
@@ -142,6 +143,7 @@ export class TabMenuComponent implements OnInit {
 				this.max = data.value;
 			},
 			error => {
+				console.log(error)
 				this.errorHandler.alertError(error);
 			}
 		);

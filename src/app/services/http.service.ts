@@ -13,7 +13,7 @@ import { SharedService } from './shared.service';
 })
 export class HttpService {
 	private BASE_API_URL = GlobalConfig.BASE_API_URL;
-	private ADMIN_URL
+	private ADMIN_URL = GlobalConfig.ADM_URL;
 	private baseAuthUser = GlobalConfig.BASE_AUTH_USER
 	public changeLang: unknown = 'RU';
 	public checkDeleted: unknown = false;
@@ -39,28 +39,13 @@ export class HttpService {
 	}
 
 	getPermissionsByUserService() {
-		let hostname = sessionStorage.hostname;
-		// Internal ip
-		let ipStart192 = hostname.startsWith('192')
-		let ipStart10 = hostname.startsWith('10')
-
-		if (ipStart192) {
-			this.ADMIN_URL = "http://192.168.210.69:8084"
-		} else if (ipStart10) {
-			this.ADMIN_URL = "http://10.2.30.69:8084"
-		} else {
-			this.ADMIN_URL = "https://18.138.17.74:8084"
-		}
-
-		// let domain = sessionStorage.domain
-		// let domain = 'https://18.138.17.74:8084'
 		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
 			'authorization': 'bearer ' + token
 		});
 
 		let options = { headers: headers }
-		return this.http.get(this.ADMIN_URL + '/api/v1/RU/adm-core/my/permissions', options)
+		return this.http.get(GlobalConfig.ADM_URL + '/api/v1/RU/adm-core/my/permissions', options)
 	}
 
 	getGroupList() {
@@ -128,6 +113,10 @@ export class HttpService {
 		let options = { headers: headers }
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history', options)
 	}
+
+
+
+
 
 	getUsers() {
 		return this.http.get('./assets/json/users.json')
