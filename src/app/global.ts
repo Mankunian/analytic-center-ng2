@@ -1,11 +1,16 @@
 /* eslint-disable prettier/prettier */
+let hostname = window.location.hostname
+sessionStorage.setItem('hostname', hostname);
+
+const domain = window.location.protocol.toString() + "//" + window.location.hostname.toString();
 export const GlobalConfig = Object.freeze({
-	// BASE_API_URL: "http://192.168.210.10:8081/api/v1/", // IP PROD,
 	BASE_API_URL: "https://analytic-center.tk:8081/api/v1/", // IP TEST
-	// SOCKET_URL: "http://192.168.210.10:8081", // IP PROD,
 	SOCKET_URL: "https://18.140.232.52:8081", // IP TEST
-	// ADMIN_URL: "http://192.168.210.69:8084", // IP PROD,
-	ADMIN_URL: "https://18.138.17.74:8084", // IP TEST
+
+	// BASE_API_URL: domain + ":8084", // IP PROD,
+	// SOCKET_URL: domain + ":8084", // IP PROD,
+
+
 	BASE_AUTH_USER: "user0",
 	STATUS_CODES: {
 		IN_PROCESSING: "0", // В обработке

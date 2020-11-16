@@ -94,7 +94,19 @@ export class NavBarComponent implements OnInit {
 	}
 
 	logOut() {
+		let hostname = sessionStorage.hostname;
+		console.log(hostname)
+		// Internal ip
+		let ipStart192 = hostname.startsWith('192')
+		let ipStart10 = hostname.startsWith('10')
+		if (ipStart192) {
+			window.location.href = "http://192.168.210.69:8084"
+		} else if (ipStart10) {
+			window.location.href = "http://10.2.30.69:8084"
+		} else {
+			window.location.href = "http://localhost:4200/"
+		}
 		sessionStorage.clear()
-		window.location.href = 'http://192.168.210.69'
+		// window.location.href = 'http://192.168.210.69'
 	}
 }
