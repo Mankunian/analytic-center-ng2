@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { HttpService } from './services/http.service';
 import { TabMenuComponent } from "../app/tab-menu/tab-menu.component";
 import { NavBarComponent } from "../app/nav-bar/nav-bar.component";
+import { GlobalConfig } from './global';
+import { ErrorHandlerService } from './services/error-handler.service';
 
 @Component({
 	selector: "app-root",
@@ -14,12 +16,14 @@ export class AppComponent implements OnInit {
 	constructor(private http: HttpService,
 		public tabMenuComponent: TabMenuComponent,
 		public navbarComponent: NavBarComponent,
-		private httpService: HttpService
+		public errorHandler: ErrorHandlerService
 	) { }
 
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
 		this.checkTokenForValidation()
+		let hostname = window.location.hostname;
+		sessionStorage.setItem('hostname', hostname)
 	}
 
 	checkTokenForValidation() {
@@ -27,23 +31,12 @@ export class AppComponent implements OnInit {
 			console.log(data)
 			if (data == null) {
 				let tokenIsValid = 'true';
-				sessionStorage.setItem('tokenIsValid', tokenIsValid)
+				sessionStorage.setItem('tokenIsValid', tokenIsValid);
 			}
 		}, error => {
 			console.log(error)
-			// window.location.href = 'http://192.168.210.69'
-			let hostname = sessionStorage.hostname;
-			console.log(hostname)
-			// Internal ip
-			let ipStart192 = hostname.startsWith('192')
-			let ipStart10 = hostname.startsWith('10')
-			if (ipStart192) {
-				window.location.href = "http://192.168.210.69:8084"
-			} else if (ipStart10) {
-				window.location.href = "http://10.2.30.69:8084"
-			} else {
-				window.location.href = "https://18.138.17.74:8084"
-			}
+			this.errorHandler.alertError(error);
+			// window.location.href = GlobalConfig.ADMIN_PAGE
 		})
 	}
 
@@ -58,20 +51,7 @@ export class AppComponent implements OnInit {
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
 			// Here redirect to local IP-address url of admin 
-			// window.location.href = 'http://192.168.210.69'
-
-			let hostname = sessionStorage.hostname;
-			console.log(hostname)
-			// Internal ip
-			let ipStart192 = hostname.startsWith('192')
-			let ipStart10 = hostname.startsWith('10')
-			if (ipStart192) {
-				window.location.href = "http://192.168.210.69:8084"
-			} else if (ipStart10) {
-				window.location.href = "http://10.2.30.69:8084"
-			} else {
-				window.location.href = "http://localhost:4200/"
-			}
+			window.location.href = GlobalConfig.ADMIN_PAGE
 		}
 	}
 }

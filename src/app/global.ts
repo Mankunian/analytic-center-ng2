@@ -1,14 +1,45 @@
 /* eslint-disable prettier/prettier */
 let hostname = window.location.hostname
 sessionStorage.setItem('hostname', hostname);
+let ADM_PAGE = '';
+if (hostname === 'localhost') {
+	ADM_PAGE = 'http://localhost:4200';
+}
+else if (hostname.startsWith("10")) {
+	ADM_PAGE = 'http://10.2.30.69';
+}
+else if (hostname.startsWith("192")) {
+	ADM_PAGE = 'http://192.168.210.69';
+}
+else if (hostname.startsWith("master")) {
+	ADM_PAGE = 'https://master.d260huhvcvtk4w.amplifyapp.com'
+}
 
-const domain = window.location.protocol.toString() + "//" + window.location.hostname.toString();
+const SLICES_PROD_URL = window.location.protocol.toString() + "//" + hostname.toString() + ":8081";
+const SLICES_TEST_URL = "https://18.140.232.52:8081";
+const ADM_PROD_URL = hostname.startsWith("10") ? 'http://10.2.30.69:8084' : 'http://192.168.210.69:8084';
+const ADM_TEST_URL = 'https://18.138.17.74:8084';
+
+
 export const GlobalConfig = Object.freeze({
-	BASE_API_URL: "https://analytic-center.tk:8081/api/v1/", // IP TEST
-	SOCKET_URL: "https://18.140.232.52:8081", // IP TEST
 
-	// BASE_API_URL: domain + ":8084", // IP PROD,
-	// SOCKET_URL: domain + ":8084", // IP PROD,
+	// localhost
+	// BASE_API_URL: SLICES_TEST_URL + '/api/v1/',
+	// SOCKET_URL: SLICES_TEST_URL,
+	// ADM_URL: ADM_TEST_URL,
+	// ADMIN_PAGE: ADM_PAGE,
+
+	// amazon
+	BASE_API_URL: SLICES_TEST_URL + '/api/v1/',
+	SOCKET_URL: SLICES_TEST_URL,
+	ADM_URL: ADM_TEST_URL,
+	ADMIN_PAGE: ADM_PAGE,
+
+	//	production
+	// BASE_API_URL: SLICES_PROD_URL + '/api/v1/',
+	// SOCKET_URL: SLICES_PROD_URL,
+	// ADM_URL: ADM_PROD_URL,
+	// ADMIN_PAGE: ADM_PAGE,
 
 
 	BASE_AUTH_USER: "user0",
