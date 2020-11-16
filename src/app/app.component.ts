@@ -28,13 +28,22 @@ export class AppComponent implements OnInit {
 			if (data == null) {
 				let tokenIsValid = 'true';
 				sessionStorage.setItem('tokenIsValid', tokenIsValid)
-				// this.navbarComponent.getPermissionsByCurrentUser()
-				// this.tabMenuComponent.getSliceNumber()
-				// this.navbarComponent.getTerritory()
 			}
 		}, error => {
 			console.log(error)
-			window.location.href = 'http://192.168.210.69'
+			// window.location.href = 'http://192.168.210.69'
+			let hostname = sessionStorage.hostname;
+			console.log(hostname)
+			// Internal ip
+			let ipStart192 = hostname.startsWith('192')
+			let ipStart10 = hostname.startsWith('10')
+			if (ipStart192) {
+				window.location.href = "http://192.168.210.69:8084"
+			} else if (ipStart10) {
+				window.location.href = "http://10.2.30.69:8084"
+			} else {
+				window.location.href = "https://18.138.17.74:8084"
+			}
 		})
 	}
 
@@ -49,7 +58,20 @@ export class AppComponent implements OnInit {
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
 			// Here redirect to local IP-address url of admin 
-			window.location.href = 'http://192.168.210.69'
+			// window.location.href = 'http://192.168.210.69'
+
+			let hostname = sessionStorage.hostname;
+			console.log(hostname)
+			// Internal ip
+			let ipStart192 = hostname.startsWith('192')
+			let ipStart10 = hostname.startsWith('10')
+			if (ipStart192) {
+				window.location.href = "http://192.168.210.69:8084"
+			} else if (ipStart10) {
+				window.location.href = "http://10.2.30.69:8084"
+			} else {
+				window.location.href = "http://localhost:4200/"
+			}
 		}
 	}
 }
