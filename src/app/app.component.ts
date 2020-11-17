@@ -49,17 +49,15 @@ export class AppComponent implements OnInit {
 			let appCode = splittedSearch[1].substr(8)
 			let appPass = splittedSearch[2].substr(8)
 			let refreshToken = splittedSearch[3].substr(14)
-
-			console.log(accessToken)
-			console.log(appCode)
-			console.log(appPass)
-			console.log(refreshToken)
-			// console.log(window.location)
+			let lang = splittedSearch[4].substr(5)
 			let hostName = window.location.origin;
+
+
 			sessionStorage.setItem('token', accessToken)
 			sessionStorage.setItem('refresh_token', refreshToken)
 			sessionStorage.setItem('appCode', appCode)
 			sessionStorage.setItem('appPass', appPass)
+			sessionStorage.setItem('lang', lang)
 			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')

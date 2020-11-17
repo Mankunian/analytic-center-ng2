@@ -290,6 +290,33 @@ export class HttpService {
 	}
 
 	refreshTokenService() {
+		console.log(this.ADMIN_URL)
+		let refreshToken = sessionStorage.refresh_token;
+		let appCode = sessionStorage.appCode;
+		let appPass = sessionStorage.appPass;
+		let lang = sessionStorage.lang
 
+		const details = {
+			'grant_type': 'refresh_token',
+			'refresh_token': refreshToken,
+			'lang': lang
+		};
+
+		let formBody = [];
+		let formBodyString = '';
+
+		for (const property in details) {
+			const encodedKey = encodeURIComponent(property);
+			const encodedValue = encodeURIComponent(details[property]);
+			formBody.push(encodedKey + '=' + encodedValue);
+		}
+		formBodyString = formBody.join('&');
+
+		return this.http.post(this.ADMIN_URL + '/oauth/token', formBodyString, {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+				'Authorization': 'Basic ' + btoa(appCode + ':' + appPass)
+			})
+		})
 	}
 }
