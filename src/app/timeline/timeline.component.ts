@@ -137,8 +137,8 @@ export class TimelineComponent {
 			this.sliceDate = "Время утверждения среза:";
 		} else if (historyValue.statusCode == "7") {
 			// На согласовании
-			this.sliceCreator = "Срез отправил на согласование:";
-			this.sliceDate = "Время отправки на согласование среза:";
+			this.sliceCreator = "Срез отправил на подтверждение:";
+			this.sliceDate = "Время отправки на подтверждение среза:";
 			this.showTableInAgreement = true;
 			this.dataService.sendVisibleTableInAgreement(this.showTableInAgreement);
 			this.showTimeline = false;
