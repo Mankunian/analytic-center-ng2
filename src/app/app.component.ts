@@ -43,10 +43,23 @@ export class AppComponent implements OnInit {
 
 	checkAccessTokenFromAdminRedirect() {
 		if (window.location.search !== '') {
-			let accessToken = window.location.search.substr(7);
-			console.log(window.location)
+			let search = window.location.search.substr(7);
+			let splittedSearch = search.split('?')
+			let accessToken = splittedSearch[0]
+			let appCode = splittedSearch[1].substr(8)
+			let appPass = splittedSearch[2].substr(8)
+			let refreshToken = splittedSearch[3].substr(14)
+
+			console.log(accessToken)
+			console.log(appCode)
+			console.log(appPass)
+			console.log(refreshToken)
+			// console.log(window.location)
 			let hostName = window.location.origin;
 			sessionStorage.setItem('token', accessToken)
+			sessionStorage.setItem('refresh_token', refreshToken)
+			sessionStorage.setItem('appCode', appCode)
+			sessionStorage.setItem('appPass', appPass)
 			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')

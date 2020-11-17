@@ -288,4 +288,8 @@ export class HttpService {
 		};
 		return this.http.put(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/approve', body, options)
 	}
+
+	refreshTokenService() {
+
+	}
 }
