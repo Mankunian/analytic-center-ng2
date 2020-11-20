@@ -651,7 +651,7 @@ export class ReportsModalContentComponent {
 			let dvedomostv = item.department.code;
 			let sliceId = this.sliceId;
 
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
 		}
 	}
 }
