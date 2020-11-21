@@ -75,6 +75,7 @@ export class SliceOperationsModalContentComponent {
 		this.enableConfirmSliceBtn = this.data.permissionConfirm
 
 		this.enableApproveSliceBtn = this.data.permissionApprove
+		console.log(this.enableApproveSliceBtn)
 
 		this.injectValueToModal = this.data;
 		let statusCode = this.injectValueToModal.statusCode
@@ -286,10 +287,11 @@ export class EditReasonComponent implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
 		this.objOfRejectionReason = this.data; // rowEntity slice from table
+		console.log(this.objOfRejectionReason)
 	}
 
 	saveEditReason(reason) {
-		let allowedOrgId = this.objOfRejectionReason.allowedOrgId
+		let allowedOrgId = this.objOfRejectionReason[2]
 		console.log(allowedOrgId)
 		if (allowedOrgId) {
 			let SaveEditReasonObj = {
@@ -302,22 +304,21 @@ export class EditReasonComponent implements OnInit {
 			this.historyId = this.objOfRejectionReason[1].id;
 
 			// eslint - disable - next - line @typescript-eslint / no - unused - vars
-			this.http.rejectSliceService(this.sliceId, SaveEditReasonObj).subscribe(
-				() => {
-					this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe(
-						data => {
-							this.gridInAgreement = data;
-							this.service.sendGridInAgreement(this.gridInAgreement);
-							this.rejected = true;
-							this.service.approveAndRejectBtnStatus(this.rejected);
-							alert('Операция прошла успешна');
-							this.dialogEditRejection.close()
-						},
-						error => {
-							this.errorHandler.alertError(error);
-						}
-					);
-				},
+			this.http.rejectSliceService(this.sliceId, SaveEditReasonObj).subscribe(() => {
+				this.http.getDataGridInAgreement(this.sliceId, this.historyId).subscribe(
+					data => {
+						this.gridInAgreement = data;
+						this.service.sendGridInAgreement(this.gridInAgreement);
+						this.rejected = true;
+						this.service.approveAndRejectBtnStatus(this.rejected);
+						alert('Операция прошла успешна');
+						this.dialogEditRejection.close()
+					},
+					error => {
+						this.errorHandler.alertError(error);
+					}
+				);
+			},
 				error => {
 					this.errorHandler.alertError(error);
 				});

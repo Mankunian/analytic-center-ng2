@@ -110,7 +110,8 @@ export class ReportsModalContentComponent {
 			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU ||
 			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.OL
+			this.groupCode == GlobalConfig.REPORT_GROUPS.OL ||
+			this.groupCode == GlobalConfig.REPORT_GROUPS.PSISU
 		) {
 			this.isGroupGov = true;
 		}
@@ -148,6 +149,7 @@ export class ReportsModalContentComponent {
 					// группа отчетов Ф.2 прокурорский
 					element.code == '050' || element.code == '720' ||
 					element.code == '707' || element.code == '708' || element.code == '710' || element.code == '530' ||
+					element.code == '730' ||
 					element.code == '705' || element.code == '731' ||
 					// КУИ и 1E
 					element.code == '514' || element.code == '516' || element.code == '519' ||
@@ -222,7 +224,7 @@ export class ReportsModalContentComponent {
 			let reportCode = reportGroup.code;
 			if (reportCode == '800' || reportCode == '801') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
-			} else if (reportCode == '050') {
+			} else if (reportCode == '050' || reportCode == '730') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
 			} else if (reportCode == '810') {
 				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004

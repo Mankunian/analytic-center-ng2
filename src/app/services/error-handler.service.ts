@@ -21,6 +21,8 @@ export class ErrorHandlerService {
 				alert('Просрочен refresh_token')
 				window.location.href = GlobalConfig.ADMIN_PAGE
 			})
+		} else if (errMsg.error.errStatus == "BAD_REQUEST") {
+			alert(errMsg.error.errDetails)
 		}
 		// errMsg != undefined ? alert(errMsg.error.errMsg) : alert("Произошла ошибка на сервере.");
 	}
