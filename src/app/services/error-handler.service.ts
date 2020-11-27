@@ -15,7 +15,7 @@ export class ErrorHandlerService {
 				console.log(data.access_token)
 				let token = data.access_token
 				sessionStorage.setItem('token', token)
-				alert('Что-то пошло не так. Попробуйте еще раз')
+				window.location.href = window.location.origin;
 			}, error => {
 				console.log(error)
 				alert('Просрочен refresh_token')

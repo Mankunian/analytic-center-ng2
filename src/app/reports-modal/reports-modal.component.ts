@@ -76,6 +76,9 @@ export class ReportsModalContentComponent {
 	subscription: Subscription;
 	enableGetReportBtn: string;
 	isReport803: boolean;
+	show1table: boolean;
+	show2table: boolean;
+	show3Table: boolean;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -90,7 +93,7 @@ export class ReportsModalContentComponent {
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
-		this.getColsTable()
+		// this.getColsTable()
 		this.getReportsBySliceId()
 	}
 
@@ -117,35 +120,43 @@ export class ReportsModalContentComponent {
 			console.log(response)
 			this.reportGroups = response;
 			this.reportGroups.forEach(report => {
-				this.checkReports(report)
+				// this.checkReports(report.code)
 			});
 		}, error => {
 			this.errorHandler.alertError(error);
 		});
 	}
 
-	checkReports(element) {
-
+	checkReports(code) {
 		if (
 			// Reports starts 0
-			element.code == '050' ||
+			code == '050' ||
 			// Reports starts 5
-			element.code == '510' || element.code == '511' || element.code == '514' || element.code == '515' || element.code == '516' || element.code == '518' ||
-			element.code == '519' || element.code == '523' || element.code == '530' ||
+			code == '510' || code == '511' || code == '514' || code == '515' || code == '516' || code == '518' ||
+			code == '519' || code == '523' || code == '530' ||
 			// Reports starts 7
-			element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
-			element.code == '707' || element.code == '708' || element.code == '710' || element.code == '714' ||
-			element.code == '717' || element.code == '718' || element.code == '719' || element.code == '715' ||
-			element.code == '711' || element.code == '712' || element.code == '713' || element.code == '716' ||
-			element.code == '721' || element.code == '740' || element.code == '741' || element.code == '742' ||
-			element.code == '730' || element.code == '705' || element.code == '731' || element.code == '743' ||
-			element.code == '720' ||
+			code == '700' || code == '701' || code == '702' || code == '703' ||
+			code == '707' || code == '708' || code == '710' || code == '714' ||
+			code == '717' || code == '718' || code == '719' || code == '715' ||
+			code == '711' || code == '712' || code == '713' || code == '716' ||
+			code == '721' || code == '740' || code == '741' || code == '742' ||
+			code == '730' || code == '705' || code == '731' || code == '743' ||
+			code == '720' ||
 			// Reports stats 8
-			element.code == '800' || element.code == '801' || element.code == '810' || element.code == '803'
+			code == '801' || code == '810'
+			|| code == '800'
 		) {
-			this.isGroupGov = true;
+			this.show1table = true;
+			this.show2table = false;
+			// this.isGroupGov = true;
+		} else if (code == '803') {
+			this.show1table = false;
+			this.show2table = false;
+			this.show3Table = true;
 		} else {
-			this.isGroupGov = false;
+			this.show2table = true;
+			this.show1table = false;
+			// this.isGroupGov = false;
 		}
 	}
 
@@ -153,7 +164,7 @@ export class ReportsModalContentComponent {
 		this.tabIndex = index; // current tab index, used in openFirstTab()
 		if (this.tabIndex != 0) {
 			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
-			this.onClickReport(this.selectedGroupCode)
+			this.onClickTabReport(this.selectedGroupCode)
 
 		} else {
 			if (this.isReportsSelectedFn()) {
@@ -163,21 +174,21 @@ export class ReportsModalContentComponent {
 	}
 
 	// on click by tab reports call method for each 
-	onClickReport(selectedReportCode) {
+	onClickTabReport(selectedReportCode) {
+		this.checkReports(selectedReportCode)
 		this.contentLoading = true;
-		if (!this.isGroupGov) {
-			let reportCode = selectedReportCode;
+
+		let reportCode = selectedReportCode;
+		if (this.show1table) {
+			this.generateGridOrgz(reportCode)
+		}
+		if (this.show2table) {
 			this.getRegions(reportCode)
-		} else {
-			let reportCode = selectedReportCode;
-			console.log(reportCode)
-			if (reportCode == '803') {
-				alert('803 report')
-				this.isReport803 = true;
-				this.generate803(reportCode);
-			} else {
-				this.generateGridOrgz(reportCode)
-			}
+		}
+		if (this.show3Table) {
+			this.generate803Regions(reportCode)
+			this.generate803Vedomstva(reportCode)
+
 		}
 	}
 
@@ -188,6 +199,7 @@ export class ReportsModalContentComponent {
 			this.getDepsByReportId(selectedReportCode)
 			this.gridData.regs[selectedReportCode] = regionsTreeFormatted;
 			this.requestedReports.regs[selectedReportCode] = [];
+			this.getColsTable()
 		},
 			error => {
 				this.errorHandler.alertError(error);
@@ -212,15 +224,31 @@ export class ReportsModalContentComponent {
 		});
 	}
 
-	generate803(reportCode) {
+	generate803Regions(reportCode) {
+		console.log(reportCode)
+		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_006;
+		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
+
+		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
+			console.log(false)
+			this.gridData.regs[reportCode] = this.formatGridService.formatGridData(data, true, true);
+			this.requestedReports.regs[reportCode] = [];
+			this.getColsTable()
+			this.contentLoading = false;
+		})
+	}
+
+	generate803Vedomstva(reportCode) {
 		console.log(reportCode)
 		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_006;
 		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
 
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
 			console.log(false)
-			this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
-			this.requestedReports.orgz[reportCode] = [];
+			this.gridData.deps[reportCode] = this.formatGridService.formatGridData(data, true, true);
+			this.requestedReports.deps[reportCode] = [];
+			this.getColsTable()
+			this.contentLoading = false;
 		})
 	}
 
@@ -247,10 +275,12 @@ export class ReportsModalContentComponent {
 				});
 				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
 				this.requestedReports.orgz[reportCode] = [];
+				this.getColsTable()
 			} else {
 				console.log(false)
 				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
 				this.requestedReports.orgz[reportCode] = [];
+				this.getColsTable()
 			}
 		}, error => {
 			this.errorHandler.alertError(error);
@@ -355,7 +385,7 @@ export class ReportsModalContentComponent {
 		let counter = 0;
 		this.selectedReportsList = [];
 
-		if (this.isGroupGov) {
+		if (this.show1table) {
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
 			this.requestedReports.orgz[this.selectedGroupCode].forEach(element => {
 				this.selectedReportsList[counter] = {
@@ -369,7 +399,7 @@ export class ReportsModalContentComponent {
 				};
 				counter++;
 			});
-		} else {
+		} else if (this.show2table) {
 			this.readyReportsParts = 0;
 			// Check report Code for start with 0 or not. Example: 060, 510 etc..
 			console.log(this.requestedReports.regs)
@@ -438,13 +468,13 @@ export class ReportsModalContentComponent {
 		let groupCode = selectedReport.report.code;
 
 
-		if (this.isGroupGov) {
+		if (this.show1table) {
 			let row = selectedReport.region;
 			this.requestedReports.orgz[groupCode].splice(this.requestedReports.orgz[groupCode].indexOf(row), 1);
 			this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]];
 			this.requestedReports.orgz[groupCode] = [...this.requestedReports.orgz[groupCode]];
 		}
-		else {
+		else if (this.show2table) {
 			let regionCode = selectedReport.region.code,
 				departmentCode = selectedReport.department.code;
 
@@ -565,12 +595,12 @@ export class ReportsModalContentComponent {
 		let reportInfo = this.getReportInfoByCode(groupCode);
 		reportInfo !== undefined ? (reportName = reportInfo.name + delimiter) : (reportName = "");
 
-		if (this.isGroupGov) {
+		if (this.show1table) {
 			let commonIndex = this.requestedReports.orgz[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.orgz[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
 		}
-		else {
+		else if (this.show2table) {
 			console.log('aaaa')
 			// console.log('regs' + this.requestedReports.regs[groupCode])
 			// console.log('deps' + this.requestedReports.deps[groupCode])
