@@ -229,11 +229,14 @@ export class ReportsModalContentComponent {
 	}
 
 	// on click by tab reports call method for each 
-	onClickReport(selectGroupCode) {
+	onClickReport(selectedGroupCode) {
 		this.contentLoading = true;
 		if (!this.isGroupGov) {
-			let selectedGroupCode = selectGroupCode;
-			this.getRegions(selectedGroupCode)
+			let groupCode = selectedGroupCode;
+			this.getRegions(groupCode)
+		} else {
+			let groupCode = selectedGroupCode;
+			this.generateGridOrgz(groupCode)
 		}
 	}
 
@@ -268,46 +271,44 @@ export class ReportsModalContentComponent {
 		});
 	}
 
-	generateGridOrgz() {
-		this.reportGroups.forEach(reportGroup => {
-			console.log(reportGroup)
-			let reportCode = reportGroup.code;
-			if (reportCode == '800' || reportCode == '801') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
-			} else if (reportCode == '050' || reportCode == '730') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
-			} else if (reportCode == '810') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
-			} else if (reportCode == '740' || reportCode == '741' || reportCode == '742' || reportCode == '743') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_005
-			} else {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
-			}
+	generateGridOrgz(reportCode) {
+		if (reportCode == '800' || reportCode == '801') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
+		} else if (reportCode == '050' || reportCode == '730') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
+		} else if (reportCode == '810') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
+		} else if (reportCode == '740' || reportCode == '741' || reportCode == '742' || reportCode == '743') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_005
+		} else {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
+		}
 
-			this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
-				if (reportCode == '530' || reportCode == '731') {
-					console.log(true)
-					data.forEach(element => {
-						element.children.forEach(region => {
-							delete region.children
-						});
+		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
+			if (reportCode == '530' || reportCode == '731') {
+				console.log(true)
+				data.forEach(element => {
+					element.children.forEach(region => {
+						delete region.children
 					});
-					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
-					this.requestedReports.orgz[reportCode] = [];
-				} else {
-					console.log(false)
-					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
-					this.requestedReports.orgz[reportCode] = [];
-				}
-
-			}, error => {
-				this.errorHandler.alertError(error);
-			},
-				() => {
-					this.contentLoading = false;
-				}
-			);
+				});
+				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
+				this.requestedReports.orgz[reportCode] = [];
+			} else {
+				console.log(false)
+				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
+				this.requestedReports.orgz[reportCode] = [];
+			}
+		}, error => {
+			this.errorHandler.alertError(error);
+		}, () => {
+			this.contentLoading = false;
 		});
+		// this.reportGroups.forEach(reportGroup => {
+		// 	console.log(reportGroup)
+		// 	let reportCode = reportGroup.code;
+
+		// });
 	}
 
 	onNodeExpandGroupOrgz(e, reportCode) {
