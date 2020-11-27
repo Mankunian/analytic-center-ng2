@@ -50,7 +50,7 @@ export class NavBarComponent implements OnInit {
 		this.httpService.getPermissionsByUserService().subscribe(data => {
 			this.userInfo = data;
 			if (this.userInfo) {
-				console.log(this.userInfo)
+				// console.log(this.userInfo)
 				sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 				this.tabMenuComponent.getGroupList()
@@ -65,7 +65,7 @@ export class NavBarComponent implements OnInit {
 		this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 		this.fullNameUser = this.incomingUserInfo.fullName
 		this.selectedTerritory = this.incomingUserInfo.orgCode
-		console.log("selectedTerritory ", this.selectedTerritory);
+		// console.log("selectedTerritory ", this.selectedTerritory);
 		if (this.selectedTerritory) {
 			this.sharedService.sendTerrCode(this.selectedTerritory);
 		}
@@ -73,7 +73,7 @@ export class NavBarComponent implements OnInit {
 
 	getTerritory() {
 		this.httpService.getTerritories().subscribe((data: Territory) => {
-			console.log(data)
+			// console.log(data)
 			this.territoryList = data;
 		}, error => {
 			this.errorHandler.alertError(error);

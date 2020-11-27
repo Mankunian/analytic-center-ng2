@@ -238,19 +238,10 @@ export class ReportsModalContentComponent {
 	}
 
 	getRegions(selectedGroupCode) {
-		// Get regions grid data
 		this.http.getRegions().subscribe(regionsTree => {
 			let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
 			regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
-
-			console.log(selectedGroupCode)
 			this.getDepsByReportId(selectedGroupCode)
-			// this.reportGroups.forEach(element => {
-			// 	let reportCode = element.code;
-			// 	// Get department grid data
-
-			// 	// Assign regions to grid
-			// });
 			this.gridData.regs[selectedGroupCode] = regionsTreeFormatted;
 			this.requestedReports.regs[selectedGroupCode] = [];
 		},
