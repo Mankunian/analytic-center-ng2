@@ -231,45 +231,50 @@ export class ReportsModalContentComponent {
 	// on click by tab reports call method for each 
 	onClickReport(selectGroupCode) {
 		this.contentLoading = true;
-		console.log(selectGroupCode)
-		console.log(this.isGroupGov)
+		if (!this.isGroupGov) {
+			let selectedGroupCode = selectGroupCode;
+			this.getRegions(selectedGroupCode)
+		}
 	}
 
-	getRegions() {
+	getRegions(selectedGroupCode) {
 		// Get regions grid data
 		this.http.getRegions().subscribe(regionsTree => {
 			let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
 			regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
 
-			this.reportGroups.forEach(element => {
-				let reportCode = element.code;
-				// Get department grid data
-				this.http.getDepsByReportId(reportCode).subscribe(departments => {
-					this.departments = departments
-					this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-					console.log(this.departments)
-					if (this.departments[0].code == '03') {
-						this.requestedReports.deps[reportCode] = this.departments
-						this.isReportsSelectedDeps = true;
-					} else {
-						this.requestedReports.deps[reportCode] = [];
-					}
-				},
-					error => {
-						this.errorHandler.alertError(error);
-					},
-					() => {
-						this.contentLoading = false;
-					}
-				);
-				// Assign regions to grid
-				this.gridData.regs[reportCode] = regionsTreeFormatted;
-				this.requestedReports.regs[reportCode] = [];
-			});
+			console.log(selectedGroupCode)
+			this.getDepsByReportId(selectedGroupCode)
+			// this.reportGroups.forEach(element => {
+			// 	let reportCode = element.code;
+			// 	// Get department grid data
+
+			// 	// Assign regions to grid
+			// });
+			this.gridData.regs[selectedGroupCode] = regionsTreeFormatted;
+			this.requestedReports.regs[selectedGroupCode] = [];
 		},
 			error => {
 				this.errorHandler.alertError(error);
 			});
+	}
+
+	getDepsByReportId(selectedGroupCode) {
+		this.http.getDepsByReportId(selectedGroupCode).subscribe(departments => {
+			this.departments = departments
+			this.gridData.deps[selectedGroupCode] = this.formatGridService.formatGridData(departments, false);
+			console.log(this.departments)
+			if (this.departments[0].code == '03') {
+				this.requestedReports.deps[selectedGroupCode] = this.departments
+				this.isReportsSelectedDeps = true;
+			} else {
+				this.requestedReports.deps[selectedGroupCode] = [];
+			}
+		}, error => {
+			this.errorHandler.alertError(error);
+		}, () => {
+			this.contentLoading = false;
+		});
 	}
 
 	generateGridOrgz() {
