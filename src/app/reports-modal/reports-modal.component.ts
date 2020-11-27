@@ -89,34 +89,38 @@ export class ReportsModalContentComponent {
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
-		console.log(this.data)
-
 		// Condition 4 reports modal has 1 table 
-		if (
-			this.groupCode == GlobalConfig.REPORT_GROUPS.ERSOP ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.ADMIN_VIOLATIONS ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.COURT_REPORTS ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.PROKURATURA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.PROSECUTORS_WORK ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.CIVIL_CASES ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.KISA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_CORRUPTION ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.ROZYSK ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_ADMIN_DELA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.OL ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.PSISU
-		) {
-			this.isGroupGov = true;
-		}
+		// if (
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.ERSOP ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.ADMIN_VIOLATIONS ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.COURT_REPORTS ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.PROKURATURA ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.PROSECUTORS_WORK ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.CIVIL_CASES ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.KISA ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_CORRUPTION ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.KUI ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.ROZYSK ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.VS_ADMIN_DELA ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.OL ||
+		// 	this.groupCode == GlobalConfig.REPORT_GROUPS.PSISU
+		// ) {
+		// 	this.isGroupGov = true;
+		// }
 
 
+		this.getColsTable()
+		this.getReportsBySliceId()
+
+	}
+
+	getColsTable() {
 		this.colsDep = [
 			{ field: "code", header: "И/н", width: "90px" },
 			{ field: "name", header: "Ведомство", width: "auto" },
@@ -131,10 +135,6 @@ export class ReportsModalContentComponent {
 			{ field: "searchPattern", header: "Код органа", width: "220px" },
 			{ field: "name", header: "Наименование", width: "auto" },
 		]
-
-		// Get reports list by slice id to genereate tabs
-		this.getReportsBySliceId()
-
 	}
 
 	getReportsBySliceId() {
@@ -164,51 +164,18 @@ export class ReportsModalContentComponent {
 					element.code == '740' || element.code == '741' || element.code == '742' || element.code == '743' // 1-OL
 
 				) {
-					this.isReportOrgz = true;
+					// this.isReportOrgz = true;
+					this.isGroupGov = true;
 				} else {
-					this.isReportOrgz = false;
+					// this.isReportOrgz = false;
+					this.isGroupGov = false;
 				}
 			});
 			if (this.isGroupGov) {
 				this.generateGridOrgz();
 			}
 			else {
-				// Get regions grid data
-				this.http.getRegions().subscribe(
-					regionsTree => {
-						let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
-						regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
-
-						this.reportGroups.forEach(element => {
-							let reportCode = element.code;
-							// Get department grid data
-							this.http.getDepsByReportId(reportCode).subscribe(departments => {
-								this.departments = departments
-								this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-								console.log(this.departments)
-								if (this.departments[0].code == '03') {
-									this.requestedReports.deps[reportCode] = this.departments
-									this.isReportsSelectedDeps = true;
-								} else {
-									this.requestedReports.deps[reportCode] = [];
-								}
-							},
-								error => {
-									this.errorHandler.alertError(error);
-								},
-								() => {
-									this.contentLoading = false;
-								}
-							);
-							// Assign regions to grid
-							this.gridData.regs[reportCode] = regionsTreeFormatted;
-							this.requestedReports.regs[reportCode] = [];
-						});
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
+				this.getRegions()
 			}
 		},
 			error => {
@@ -217,6 +184,42 @@ export class ReportsModalContentComponent {
 		);
 	}
 
+	getRegions() {
+		// Get regions grid data
+		this.http.getRegions().subscribe(regionsTree => {
+			let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
+			regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
+
+			this.reportGroups.forEach(element => {
+				let reportCode = element.code;
+				// Get department grid data
+				this.http.getDepsByReportId(reportCode).subscribe(departments => {
+					this.departments = departments
+					this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
+					console.log(this.departments)
+					if (this.departments[0].code == '03') {
+						this.requestedReports.deps[reportCode] = this.departments
+						this.isReportsSelectedDeps = true;
+					} else {
+						this.requestedReports.deps[reportCode] = [];
+					}
+				},
+					error => {
+						this.errorHandler.alertError(error);
+					},
+					() => {
+						this.contentLoading = false;
+					}
+				);
+				// Assign regions to grid
+				this.gridData.regs[reportCode] = regionsTreeFormatted;
+				this.requestedReports.regs[reportCode] = [];
+			});
+		},
+			error => {
+				this.errorHandler.alertError(error);
+			});
+	}
 
 	generateGridOrgz() {
 		this.reportGroups.forEach(reportGroup => {
@@ -301,6 +304,11 @@ export class ReportsModalContentComponent {
 		this.tabIndex = index; // current tab index, used in openFirstTab()
 		if (this.tabIndex != 0) {
 			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
+			console.log(this.selectedGroupCode)
+			if (this.selectedGroupCode == '803') {
+				console.log('803')
+				// this.isGroupGov = false;
+			}
 		} else {
 			if (this.isReportsSelectedFn()) {
 				this.generateSelectedReportsList();
