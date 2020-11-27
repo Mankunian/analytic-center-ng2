@@ -84,7 +84,7 @@ export class ReportsModalContentComponent {
 
 	ngOnInit() {
 		this.enableGetReportBtn = this.data.permissionReport
-		this.contentLoading = true;
+		// this.contentLoading = true;
 		this.sliceId = this.data.sliceId;
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
@@ -137,51 +137,102 @@ export class ReportsModalContentComponent {
 		]
 	}
 
+
+
+
 	getReportsBySliceId() {
 		let sliceId = this.sliceId
 		this.http.getReportsBySliceIdService(sliceId).subscribe(response => {
 			console.log(response)
 			this.reportGroups = response;
-			this.reportGroups.forEach(element => {
-				if (
-					element.code == '800' || element.code == '801' ||
-					element.code == '510' || element.code == '511' ||
-					// группа отчетов Ф.2 прокурорский
-					element.code == '050' || element.code == '720' ||
-					element.code == '707' || element.code == '708' || element.code == '710' || element.code == '530' ||
-					element.code == '730' ||
-					element.code == '705' || element.code == '731' ||
-					// КУИ и 1E
-					element.code == '514' || element.code == '516' || element.code == '519' ||
-					// Группа отчетов о работе прокурора
-					element.code == '515' || element.code == '518' || element.code == '523' ||
-					// Гражданские дела ВС
-					element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
-					//  Группа отчетов ВС. Уголовные дела
-					element.code == '717' || element.code == '718' || element.code == '719' ||
-					element.code == '711' || element.code == '712' || element.code == '713' || element.code == '714' || element.code == '715' || element.code == '716' || element.code == '721' ||
-					element.code == '810' ||// KISA 
-					element.code == '740' || element.code == '741' || element.code == '742' || element.code == '743' // 1-OL
-
-				) {
-					// this.isReportOrgz = true;
-					this.isGroupGov = true;
-				} else {
-					// this.isReportOrgz = false;
-					this.isGroupGov = false;
-				}
+			this.reportGroups.forEach(report => {
+				console.log(report.code)
+				this.checkReports(report)
 			});
-			if (this.isGroupGov) {
-				this.generateGridOrgz();
-			}
-			else {
-				this.getRegions()
-			}
+			// this.reportGroups.forEach(element => {
+			// 	if (
+			// 		element.code == '800' || element.code == '801' ||
+			// 		element.code == '510' || element.code == '511' ||
+			// 		// группа отчетов Ф.2 прокурорский
+			// 		element.code == '050' || element.code == '720' ||
+			// 		element.code == '707' || element.code == '708' || element.code == '710' || element.code == '530' ||
+			// 		element.code == '730' ||
+			// 		element.code == '705' || element.code == '731' ||
+			// 		// КУИ и 1E
+			// 		element.code == '514' || element.code == '516' || element.code == '519' ||
+			// 		// Группа отчетов о работе прокурора
+			// 		element.code == '515' || element.code == '518' || element.code == '523' ||
+			// 		// Гражданские дела ВС
+			// 		element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
+			// 		//  Группа отчетов ВС. Уголовные дела
+			// 		element.code == '717' || element.code == '718' || element.code == '719' ||
+			// 		element.code == '711' || element.code == '712' || element.code == '713' || element.code == '714' || element.code == '715' || element.code == '716' || element.code == '721' ||
+			// 		element.code == '810' ||// KISA 
+			// 		element.code == '740' || element.code == '741' || element.code == '742' || element.code == '743' // 1-OL
+
+			// 	) {
+			// 		// this.isReportOrgz = true;
+			// 		this.isGroupGov = true;
+			// 	} else {
+			// 		// this.isReportOrgz = false;
+			// 		this.isGroupGov = false;
+			// 	}
+			// });
+			// if (this.isGroupGov) {
+			// 	this.generateGridOrgz();
+			// }
+			// else {
+			// 	this.getRegions()
+			// }
 		},
 			error => {
 				this.errorHandler.alertError(error);
 			}
 		);
+	}
+
+	checkReports(element) {
+		if (
+			// Reports starts 0
+			element.code == '050' ||
+			// Reports starts 5
+			element.code == '510' || element.code == '511' || element.code == '514' || element.code == '515' || element.code == '516' || element.code == '518' ||
+			element.code == '519' || element.code == '523' || element.code == '530' ||
+			// Reports starts 7
+			element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
+			element.code == '707' || element.code == '708' || element.code == '710' || element.code == '714' ||
+			element.code == '717' || element.code == '718' || element.code == '719' || element.code == '715' ||
+			element.code == '711' || element.code == '712' || element.code == '713' || element.code == '716' ||
+			element.code == '721' || element.code == '740' || element.code == '741' || element.code == '742' ||
+			element.code == '730' || element.code == '705' || element.code == '731' || element.code == '743' ||
+			element.code == '720' ||
+			// Reports stats 8
+			element.code == '800' || element.code == '801' || element.code == '810'
+		) {
+			this.isGroupGov = true;
+		} else {
+			this.isGroupGov = false;
+		}
+	}
+
+	tabChange(index: number) {
+		this.tabIndex = index; // current tab index, used in openFirstTab()
+		if (this.tabIndex != 0) {
+			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
+			this.onClickReport(this.selectedGroupCode)
+
+		} else {
+			if (this.isReportsSelectedFn()) {
+				this.generateSelectedReportsList();
+			}
+		}
+	}
+
+	// on click by tab reports call method for each 
+	onClickReport(selectGroupCode) {
+		this.contentLoading = true;
+		console.log(selectGroupCode)
+		console.log(this.isGroupGov)
 	}
 
 	getRegions() {
@@ -300,21 +351,6 @@ export class ReportsModalContentComponent {
 		}
 	}
 
-	tabChange(index: number) {
-		this.tabIndex = index; // current tab index, used in openFirstTab()
-		if (this.tabIndex != 0) {
-			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
-			console.log(this.selectedGroupCode)
-			if (this.selectedGroupCode == '803') {
-				console.log('803')
-				// this.isGroupGov = false;
-			}
-		} else {
-			if (this.isReportsSelectedFn()) {
-				this.generateSelectedReportsList();
-			}
-		}
-	}
 
 	onChangeCheckboxStatus(event, groupCode, selectAllStatus) {
 		// Calls after every checkbox change. Check for matching regions and deps, or selected ERSOP

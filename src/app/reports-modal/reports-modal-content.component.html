@@ -21,7 +21,7 @@
 
 
 <!-- <mat-dialog-content class="mat-typography tab-reports"> -->
-<mat-dialog-content class="mat-typography tab-reports" *ngIf="!contentLoading">
+<mat-dialog-content class="mat-typography tab-reports">
 	<mat-tab-group (selectedIndexChange)="tabChange($event)" animationDuration="5ms" [selectedIndex]="tabIndex">
 		<mat-tab>
 			<ng-template mat-tab-label>
@@ -151,7 +151,7 @@
 			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-12">
+						<!-- <div class="col-sm-12">
 							<div class="preloader-block" *ngIf="contentLoading">
 								<div class="lds-ring">
 									<div></div>
@@ -160,7 +160,7 @@
 									<div></div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- Treetable grid for Regions -->
 						<div class="col-sm-6" *ngIf="gridData.regs != undefined" [ngClass]="{'col-sm-12': hideColsDepTable}">
 							<p-treeTable [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true" dataKey="code"
