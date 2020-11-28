@@ -23,6 +23,8 @@ export class ReportsModalContentComponent {
 	colsDep: any[];
 	colsReg: any[];
 	colsGovs: any[];
+	colsRegNew: any[];
+	colsDepNew: any[];
 
 	selectedGroupCode: any;
 	gridData = {
@@ -99,12 +101,22 @@ export class ReportsModalContentComponent {
 
 	getColsTable() {
 		this.colsDep = [
-			{ field: "code", header: "И/н", width: "90px" },
+			{ field: "code", header: "И/н", width: "120px" },
+			{ field: "name", header: "Ведомство", width: "auto" },
+		];
+
+		this.colsDepNew = [
+			{ field: "searchPattern", header: "И/н", width: "120px" },
 			{ field: "name", header: "Ведомство", width: "auto" },
 		];
 
 		this.colsReg = [
 			{ field: "code", header: "И/н", width: "110px" },
+			{ field: "name", header: "Регион/Орган", width: "auto" },
+		];
+
+		this.colsRegNew = [
+			{ field: "searchPattern", header: "И/н", width: "150px" },
 			{ field: "name", header: "Регион/Орган", width: "auto" },
 		];
 
@@ -230,7 +242,13 @@ export class ReportsModalContentComponent {
 		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
 
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
-			console.log(false)
+			if (reportCode == '803') {
+				data.forEach(element => {
+					element.children.forEach(region => {
+						delete region.children
+					});
+				});
+			}
 			this.gridData.regs[reportCode] = this.formatGridService.formatGridData(data, true, true);
 			this.requestedReports.regs[reportCode] = [];
 			this.getColsTable()
@@ -310,10 +328,38 @@ export class ReportsModalContentComponent {
 		}
 	}
 
+	onNodeExpandGroupNew(e, reportCode) {
+		let node = e.node;
+		let event = e;
+		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
+			this.loadingOrgz = true;
+			const searchPattern = node.data.searchPattern;
+			if (reportCode == '803') {
+				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
+			}
+			this.getRegionsChildrenNew(event, searchPattern, reportCode)
+		}
+	}
+
 	getRegionsChildren(event, searchPattern, groupCode) {
 		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
 			event.node.children = this.formatGridService.formatGridData(data, false);
 			this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]]; //refresh the data
+			this.loadingOrgz = false;
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
+	}
+
+	getRegionsChildrenNew(event, searchPattern, groupCode) {
+		console.log(event, searchPattern, groupCode)
+		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
+			console.log('regions children', data)
+			debugger;
+
+			event.node.children = this.formatGridService.formatGridData(data, false);
+			console.log(event.node.children)
+			this.gridData.deps[groupCode] = [...this.gridData.deps[groupCode]]; //refresh the data
 			this.loadingOrgz = false;
 		}, error => {
 			this.errorHandler.alertError(error);

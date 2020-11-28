@@ -210,9 +210,9 @@
 						<div class="col-sm-12">
 							<div class="row">
 								<div class="col-sm-6" *ngIf="gridData.regs != undefined">
-									<p-treeTable *ngIf="show3Table" [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true"
-										dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)" [scrollable]="true"
-										scrollHeight="{{ gridScrollHeight }}">
+									<p-treeTable *ngIf="show3Table" [value]="gridData.regs[group.code]" [columns]="colsRegNew"
+										[lazy]="true" dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)"
+										[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
 										<ng-template pTemplate="header" let-columns>
 											<tr>
 												<th style="width: 70px">
@@ -245,9 +245,9 @@
 								</div>
 
 								<div class="col-sm-6" *ngIf="gridData.deps != undefined">
-									<p-treeTable *ngIf="show3Table" [value]="gridData.deps[group.code]" [columns]="colsDep" [lazy]="true"
-										dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)" [scrollable]="true"
-										scrollHeight="{{ gridScrollHeight }}">
+									<p-treeTable *ngIf="show3Table" [value]="gridData.deps[group.code]" [columns]="colsDepNew"
+										[lazy]="true" dataKey="code" (onNodeExpand)="onNodeExpandGroupNew($event, group.code)"
+										[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
 										<ng-template pTemplate="header" let-columns>
 											<tr>
 												<th style="width: 70px">
