@@ -31,7 +31,7 @@ export const rxStompConfig: InjectableRxStompConfig = {
 		});
 
 		let options = { headers: headers };
-		return new SockJS(GlobalConfig.SOCKET_URL + "/notifications", options);
+		// return new SockJS(GlobalConfig.SOCKET_URL + "/notifications", options);
 	},
 
 	// Will log diagnostics on console

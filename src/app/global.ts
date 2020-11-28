@@ -56,7 +56,9 @@ export const GlobalConfig = Object.freeze({
 		GROUP_002: 0o2,
 		GROUP_003: 0o3,
 		GROUP_004: 0o4,
-		GROUP_005: 0o5
+		GROUP_005: 0o5,
+		GROUP_006: 0o6,
+		GROUP_007: 0o7
 	},
 	REPORT_GROUPS: {
 		UGOLOV_PRESLED: 0o2,

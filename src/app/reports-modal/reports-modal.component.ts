@@ -23,6 +23,8 @@ export class ReportsModalContentComponent {
 	colsDep: any[];
 	colsReg: any[];
 	colsGovs: any[];
+	colsRegNew: any[];
+	colsDepNew: any[];
 
 	selectedGroupCode: any;
 	gridData = {
@@ -61,7 +63,7 @@ export class ReportsModalContentComponent {
 
 	isReportsLoading: boolean;
 	groupCode: any;
-	isGroupGov = false;
+	isGroupGov: boolean;
 
 	isReportOrgz = false;
 	hierarchyReportCode: any;
@@ -75,6 +77,10 @@ export class ReportsModalContentComponent {
 	regionsTabIndex: any;
 	subscription: Subscription;
 	enableGetReportBtn: string;
+	isReport803: boolean;
+	show1table: boolean;
+	show2table: boolean;
+	show3Table: boolean;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -84,41 +90,23 @@ export class ReportsModalContentComponent {
 
 	ngOnInit() {
 		this.enableGetReportBtn = this.data.permissionReport
-		this.contentLoading = true;
+		// this.contentLoading = true;
 		this.sliceId = this.data.sliceId;
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
-		console.log(this.data)
+		// this.getColsTable()
+		this.getReportsBySliceId()
+	}
 
-		// Condition 4 reports modal has 1 table 
-		if (
-			this.groupCode == GlobalConfig.REPORT_GROUPS.ERSOP ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.ADMIN_VIOLATIONS ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.COURT_REPORTS ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.PROKURATURA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.PROSECUTORS_WORK ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.CIVIL_CASES ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.KISA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_CORRUPTION ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.F8 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GP_F7 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.KUI ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.UGOLOV_PRESLED ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.ROZYSK ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_ADMIN_DELA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.GPS_F5 ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.OM_SU ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.VS_UGOLOV_DELA ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.OL ||
-			this.groupCode == GlobalConfig.REPORT_GROUPS.PSISU
-		) {
-			this.isGroupGov = true;
-		}
-
-
+	getColsTable() {
 		this.colsDep = [
-			{ field: "code", header: "И/н", width: "90px" },
+			{ field: "code", header: "И/н", width: "120px" },
+			{ field: "name", header: "Ведомство", width: "auto" },
+		];
+
+		this.colsDepNew = [
+			{ field: "searchPattern", header: "И/н", width: "120px" },
 			{ field: "name", header: "Ведомство", width: "auto" },
 		];
 
@@ -127,14 +115,15 @@ export class ReportsModalContentComponent {
 			{ field: "name", header: "Регион/Орган", width: "auto" },
 		];
 
+		this.colsRegNew = [
+			{ field: "searchPattern", header: "И/н", width: "150px" },
+			{ field: "name", header: "Регион/Орган", width: "auto" },
+		];
+
 		this.colsGovs = [
 			{ field: "searchPattern", header: "Код органа", width: "220px" },
 			{ field: "name", header: "Наименование", width: "auto" },
 		]
-
-		// Get reports list by slice id to genereate tabs
-		this.getReportsBySliceId()
-
 	}
 
 	getReportsBySliceId() {
@@ -142,121 +131,179 @@ export class ReportsModalContentComponent {
 		this.http.getReportsBySliceIdService(sliceId).subscribe(response => {
 			console.log(response)
 			this.reportGroups = response;
-			this.reportGroups.forEach(element => {
-				if (
-					element.code == '800' || element.code == '801' ||
-					element.code == '510' || element.code == '511' ||
-					// группа отчетов Ф.2 прокурорский
-					element.code == '050' || element.code == '720' ||
-					element.code == '707' || element.code == '708' || element.code == '710' || element.code == '530' ||
-					element.code == '730' ||
-					element.code == '705' || element.code == '731' ||
-					// КУИ и 1E
-					element.code == '514' || element.code == '516' || element.code == '519' ||
-					// Группа отчетов о работе прокурора
-					element.code == '515' || element.code == '518' || element.code == '523' ||
-					// Гражданские дела ВС
-					element.code == '700' || element.code == '701' || element.code == '702' || element.code == '703' ||
-					//  Группа отчетов ВС. Уголовные дела
-					element.code == '717' || element.code == '718' || element.code == '719' ||
-					element.code == '711' || element.code == '712' || element.code == '713' || element.code == '714' || element.code == '715' || element.code == '716' || element.code == '721' ||
-					element.code == '810' ||// KISA 
-					element.code == '740' || element.code == '741' || element.code == '742' || element.code == '743' // 1-OL
-
-				) {
-					this.isReportOrgz = true;
-				} else {
-					this.isReportOrgz = false;
-				}
+			this.reportGroups.forEach(report => {
+				// this.checkReports(report.code)
 			});
-			if (this.isGroupGov) {
-				this.generateGridOrgz();
-			}
-			else {
-				// Get regions grid data
-				this.http.getRegions().subscribe(
-					regionsTree => {
-						let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
-						regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
+	}
 
-						this.reportGroups.forEach(element => {
-							let reportCode = element.code;
-							// Get department grid data
-							this.http.getDepsByReportId(reportCode).subscribe(departments => {
-								this.departments = departments
-								this.gridData.deps[reportCode] = this.formatGridService.formatGridData(departments, false);
-								console.log(this.departments)
-								if (this.departments[0].code == '03') {
-									this.requestedReports.deps[reportCode] = this.departments
-									this.isReportsSelectedDeps = true;
-								} else {
-									this.requestedReports.deps[reportCode] = [];
-								}
-							},
-								error => {
-									this.errorHandler.alertError(error);
-								},
-								() => {
-									this.contentLoading = false;
-								}
-							);
-							// Assign regions to grid
-							this.gridData.regs[reportCode] = regionsTreeFormatted;
-							this.requestedReports.regs[reportCode] = [];
-						});
-					},
-					error => {
-						this.errorHandler.alertError(error);
-					}
-				);
+	checkReports(code) {
+		if (
+			// Reports starts 0
+			code == '050' ||
+			// Reports starts 5
+			code == '510' || code == '511' || code == '514' || code == '515' || code == '516' || code == '518' ||
+			code == '519' || code == '523' || code == '530' ||
+			// Reports starts 7
+			code == '700' || code == '701' || code == '702' || code == '703' ||
+			code == '707' || code == '708' || code == '710' || code == '714' ||
+			code == '717' || code == '718' || code == '719' || code == '715' ||
+			code == '711' || code == '712' || code == '713' || code == '716' ||
+			code == '721' || code == '740' || code == '741' || code == '742' ||
+			code == '730' || code == '705' || code == '731' || code == '743' ||
+			code == '720' ||
+			// Reports stats 8
+			code == '801' || code == '810'
+			|| code == '800'
+		) {
+			this.show1table = true;
+			this.show2table = false;
+			// this.isGroupGov = true;
+		} else if (code == '803') {
+			this.show1table = false;
+			this.show2table = false;
+			this.show3Table = true;
+		} else {
+			this.show2table = true;
+			this.show1table = false;
+			// this.isGroupGov = false;
+		}
+	}
+
+	tabChange(index: number) {
+		this.tabIndex = index; // current tab index, used in openFirstTab()
+		if (this.tabIndex != 0) {
+			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
+			this.onClickTabReport(this.selectedGroupCode)
+
+		} else {
+			if (this.isReportsSelectedFn()) {
+				this.generateSelectedReportsList();
 			}
+		}
+	}
+
+	// on click by tab reports call method for each 
+	onClickTabReport(selectedReportCode) {
+		this.checkReports(selectedReportCode)
+		this.contentLoading = true;
+
+		let reportCode = selectedReportCode;
+		if (this.show1table) {
+			this.generateGridOrgz(reportCode)
+		}
+		if (this.show2table) {
+			this.getRegions(reportCode)
+		}
+		if (this.show3Table) {
+			this.generate803Regions(reportCode)
+			this.generate803Vedomstva(reportCode)
+
+		}
+	}
+
+	getRegions(selectedReportCode) {
+		this.http.getRegions().subscribe(regionsTree => {
+			let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
+			regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
+			this.getDepsByReportId(selectedReportCode)
+			this.gridData.regs[selectedReportCode] = regionsTreeFormatted;
+			this.requestedReports.regs[selectedReportCode] = [];
+			this.getColsTable()
 		},
 			error => {
 				this.errorHandler.alertError(error);
-			}
-		);
+			});
 	}
 
-
-	generateGridOrgz() {
-		this.reportGroups.forEach(reportGroup => {
-			console.log(reportGroup)
-			let reportCode = reportGroup.code;
-			if (reportCode == '800' || reportCode == '801') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
-			} else if (reportCode == '050' || reportCode == '730') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
-			} else if (reportCode == '810') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
-			} else if (reportCode == '740' || reportCode == '741' || reportCode == '742' || reportCode == '743') {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_005
+	getDepsByReportId(selectedReportCode) {
+		this.http.getDepsByReportId(selectedReportCode).subscribe(departments => {
+			this.departments = departments
+			this.gridData.deps[selectedReportCode] = this.formatGridService.formatGridData(departments, false);
+			console.log(this.departments)
+			if (this.departments[0].code == '03') {
+				this.requestedReports.deps[selectedReportCode] = this.departments
+				this.isReportsSelectedDeps = true;
 			} else {
-				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
+				this.requestedReports.deps[selectedReportCode] = [];
 			}
+		}, error => {
+			this.errorHandler.alertError(error);
+		}, () => {
+			this.contentLoading = false;
+		});
+	}
 
-			this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
-				if (reportCode == '530' || reportCode == '731') {
-					console.log(true)
-					data.forEach(element => {
-						element.children.forEach(region => {
-							delete region.children
-						});
+	generate803Regions(reportCode) {
+		console.log(reportCode)
+		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_006;
+		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
+
+		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
+			if (reportCode == '803') {
+				data.forEach(element => {
+					element.children.forEach(region => {
+						delete region.children
 					});
-					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
-					this.requestedReports.orgz[reportCode] = [];
-				} else {
-					console.log(false)
-					this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
-					this.requestedReports.orgz[reportCode] = [];
-				}
+				});
+			}
+			this.gridData.regs[reportCode] = this.formatGridService.formatGridData(data, true, true);
+			this.requestedReports.regs[reportCode] = [];
+			this.getColsTable()
+			this.contentLoading = false;
+		})
+	}
 
-			}, error => {
-				this.errorHandler.alertError(error);
-			},
-				() => {
-					this.contentLoading = false;
-				}
-			);
+	generate803Vedomstva(reportCode) {
+		console.log(reportCode)
+		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_006;
+		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
+
+		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
+			console.log(false)
+			this.gridData.deps[reportCode] = this.formatGridService.formatGridData(data, true, true);
+			this.requestedReports.deps[reportCode] = [];
+			this.getColsTable()
+			this.contentLoading = false;
+		})
+	}
+
+	generateGridOrgz(reportCode) {
+		if (reportCode == '800' || reportCode == '801') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_001;
+		} else if (reportCode == '050' || reportCode == '730') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_003
+		} else if (reportCode == '810') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_004
+		} else if (reportCode == '740' || reportCode == '741' || reportCode == '742' || reportCode == '743') {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_005
+		} else {
+			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
+		}
+
+		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
+			if (reportCode == '530' || reportCode == '731') {
+				console.log(true)
+				data.forEach(element => {
+					element.children.forEach(region => {
+						delete region.children
+					});
+				});
+				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
+				this.requestedReports.orgz[reportCode] = [];
+				this.getColsTable()
+			} else {
+				console.log(false)
+				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
+				this.requestedReports.orgz[reportCode] = [];
+				this.getColsTable()
+			}
+		}, error => {
+			this.errorHandler.alertError(error);
+		}, () => {
+			this.contentLoading = false;
 		});
 	}
 
@@ -281,10 +328,38 @@ export class ReportsModalContentComponent {
 		}
 	}
 
+	onNodeExpandGroupNew(e, reportCode) {
+		let node = e.node;
+		let event = e;
+		if (!Object.entries(node.children[0].data).length && node.children[0].data.constructor === Object) {
+			this.loadingOrgz = true;
+			const searchPattern = node.data.searchPattern;
+			if (reportCode == '803') {
+				this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
+			}
+			this.getRegionsChildrenNew(event, searchPattern, reportCode)
+		}
+	}
+
 	getRegionsChildren(event, searchPattern, groupCode) {
 		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
 			event.node.children = this.formatGridService.formatGridData(data, false);
 			this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]]; //refresh the data
+			this.loadingOrgz = false;
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
+	}
+
+	getRegionsChildrenNew(event, searchPattern, groupCode) {
+		console.log(event, searchPattern, groupCode)
+		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
+			console.log('regions children', data)
+			debugger;
+
+			event.node.children = this.formatGridService.formatGridData(data, false);
+			console.log(event.node.children)
+			this.gridData.deps[groupCode] = [...this.gridData.deps[groupCode]]; //refresh the data
 			this.loadingOrgz = false;
 		}, error => {
 			this.errorHandler.alertError(error);
@@ -297,16 +372,6 @@ export class ReportsModalContentComponent {
 		}
 	}
 
-	tabChange(index: number) {
-		this.tabIndex = index; // current tab index, used in openFirstTab()
-		if (this.tabIndex != 0) {
-			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
-		} else {
-			if (this.isReportsSelectedFn()) {
-				this.generateSelectedReportsList();
-			}
-		}
-	}
 
 	onChangeCheckboxStatus(event, groupCode, selectAllStatus) {
 		// Calls after every checkbox change. Check for matching regions and deps, or selected ERSOP
@@ -366,7 +431,7 @@ export class ReportsModalContentComponent {
 		let counter = 0;
 		this.selectedReportsList = [];
 
-		if (this.isGroupGov) {
+		if (this.show1table) {
 			let reportInfo = this.getReportInfoByCode(this.selectedGroupCode);
 			this.requestedReports.orgz[this.selectedGroupCode].forEach(element => {
 				this.selectedReportsList[counter] = {
@@ -380,7 +445,7 @@ export class ReportsModalContentComponent {
 				};
 				counter++;
 			});
-		} else {
+		} else if (this.show2table) {
 			this.readyReportsParts = 0;
 			// Check report Code for start with 0 or not. Example: 060, 510 etc..
 			console.log(this.requestedReports.regs)
@@ -425,6 +490,50 @@ export class ReportsModalContentComponent {
 
 				});
 			});
+		} else if (this.show3Table) {
+			this.readyReportsParts = 0;
+			// Check report Code for start with 0 or not. Example: 060, 510 etc..
+			console.log(this.requestedReports.regs)
+			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
+				// console.log('key' + key)
+				this.startWith0ReportCodeRegs = key.startsWith("0"); // search for report code starts with 0
+				if (this.startWith0ReportCodeRegs) { // if true
+					this.removeLeadingZeroFromStringRegs() // 060 = 60
+				}
+			}
+			// console.log(this.requestedReports.regs)
+			this.requestedReports.regs.forEach((element, index) => {
+				// console.log(element)
+				if (this.startWith0ReportCodeRegs) {
+					let strIndex = '0' + index;
+					this.regionsTabIndex = strIndex
+				} else {
+					this.regionsTabIndex = index
+				}
+				let reportInfo = this.getReportInfoByCode(this.regionsTabIndex);
+				// eslint-disable-next-line @typescript-eslint/no-this-alias
+				let self = this;
+				element.forEach(region => {
+					// console.log(this.requestedReports.deps[this.regionsTabIndex])
+					if (this.requestedReports.deps[this.regionsTabIndex] != undefined) {
+						this.requestedReports.deps[this.regionsTabIndex].forEach(depElemen => {
+							// console.log(depElemen);
+							self.selectedReportsList[counter] = {
+								report: reportInfo,
+								region: region,
+								department: depElemen,
+							};
+							self.selectedReportsQuery[counter] = {
+								sliceId: self.sliceId,
+								reportCode: reportInfo.code,
+								orgCode: depElemen.searchPattern,
+								regCode: region.searchPattern,
+							};
+							counter++;
+						});
+					}
+				});
+			});
 		}
 	}
 
@@ -449,13 +558,30 @@ export class ReportsModalContentComponent {
 		let groupCode = selectedReport.report.code;
 
 
-		if (this.isGroupGov) {
+		if (this.show1table) {
 			let row = selectedReport.region;
 			this.requestedReports.orgz[groupCode].splice(this.requestedReports.orgz[groupCode].indexOf(row), 1);
 			this.gridData.orgz[groupCode] = [...this.gridData.orgz[groupCode]];
 			this.requestedReports.orgz[groupCode] = [...this.requestedReports.orgz[groupCode]];
 		}
-		else {
+		else if (this.show2table) {
+			let regionCode = selectedReport.region.code,
+				departmentCode = selectedReport.department.code;
+
+			if (this.selectedReportsQuery.findIndex(x => x.orgCode === departmentCode) === -1) {
+				this.requestedReports.deps[groupCode].splice(this.requestedReports.deps[groupCode].indexOf(departmentCode), 1);
+				this.gridData.deps[groupCode].splice(this.gridData.deps[groupCode].indexOf(departmentCode), 1);
+
+				this.requestedReports.deps[groupCode] = [...this.requestedReports.deps[groupCode]];
+			}
+
+			if (this.selectedReportsQuery.findIndex(x => x.regCode === regionCode) === -1) {
+				this.requestedReports.regs[groupCode].splice(this.requestedReports.regs[groupCode].indexOf(regionCode), 1);
+				this.gridData.regs[groupCode].splice(this.gridData.regs[groupCode].indexOf(regionCode), 1);
+
+				this.requestedReports.regs[groupCode] = [...this.requestedReports.regs[groupCode]];
+			}
+		} else if (this.show3Table) {
 			let regionCode = selectedReport.region.code,
 				departmentCode = selectedReport.department.code;
 
@@ -576,16 +702,38 @@ export class ReportsModalContentComponent {
 		let reportInfo = this.getReportInfoByCode(groupCode);
 		reportInfo !== undefined ? (reportName = reportInfo.name + delimiter) : (reportName = "");
 
-		if (this.isGroupGov) {
+		if (this.show1table) {
 			let commonIndex = this.requestedReports.orgz[groupCode].findIndex(x => x.searchPattern === govCode);
 			commonIndex !== -1 ? (regionName = this.requestedReports.orgz[groupCode][commonIndex].name) : (regionName = "");
 			departmentName = "";
 		}
-		else {
-			console.log('aaaa')
-			// console.log('regs' + this.requestedReports.regs[groupCode])
-			// console.log('deps' + this.requestedReports.deps[groupCode])
+		else if (this.show2table) {
+			this.requestedReports.regs.forEach((element, key) => {
+				// console.log(element, key)
+				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
+				console.log(regIndex)
+				regIndex !== -1 ? (regionName = this.requestedReports.regs[key][regIndex].name) : (regionName = "");
 
+				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+				depIndex !== -1
+					? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+					: (departmentName = "");
+
+			})
+
+			this.requestedReports.deps.forEach((element, key) => {
+				// console.log(element, key)
+				let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+				console.log(regIndex)
+				regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
+
+				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+				depIndex !== -1
+					? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+					: (departmentName = "");
+			})
+		}
+		else if (this.show3Table) {
 			this.requestedReports.regs.forEach((element, key) => {
 				// console.log(element, key)
 				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
