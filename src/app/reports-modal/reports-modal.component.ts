@@ -490,6 +490,50 @@ export class ReportsModalContentComponent {
 
 				});
 			});
+		} else if (this.show3Table) {
+			this.readyReportsParts = 0;
+			// Check report Code for start with 0 or not. Example: 060, 510 etc..
+			console.log(this.requestedReports.regs)
+			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
+				// console.log('key' + key)
+				this.startWith0ReportCodeRegs = key.startsWith("0"); // search for report code starts with 0
+				if (this.startWith0ReportCodeRegs) { // if true
+					this.removeLeadingZeroFromStringRegs() // 060 = 60
+				}
+			}
+			// console.log(this.requestedReports.regs)
+			this.requestedReports.regs.forEach((element, index) => {
+				// console.log(element)
+				if (this.startWith0ReportCodeRegs) {
+					let strIndex = '0' + index;
+					this.regionsTabIndex = strIndex
+				} else {
+					this.regionsTabIndex = index
+				}
+				let reportInfo = this.getReportInfoByCode(this.regionsTabIndex);
+				// eslint-disable-next-line @typescript-eslint/no-this-alias
+				let self = this;
+				element.forEach(region => {
+					// console.log(this.requestedReports.deps[this.regionsTabIndex])
+					if (this.requestedReports.deps[this.regionsTabIndex] != undefined) {
+						this.requestedReports.deps[this.regionsTabIndex].forEach(depElemen => {
+							// console.log(depElemen);
+							self.selectedReportsList[counter] = {
+								report: reportInfo,
+								region: region,
+								department: depElemen,
+							};
+							self.selectedReportsQuery[counter] = {
+								sliceId: self.sliceId,
+								reportCode: reportInfo.code,
+								orgCode: depElemen.searchPattern,
+								regCode: region.searchPattern,
+							};
+							counter++;
+						});
+					}
+				});
+			});
 		}
 	}
 
@@ -521,6 +565,23 @@ export class ReportsModalContentComponent {
 			this.requestedReports.orgz[groupCode] = [...this.requestedReports.orgz[groupCode]];
 		}
 		else if (this.show2table) {
+			let regionCode = selectedReport.region.code,
+				departmentCode = selectedReport.department.code;
+
+			if (this.selectedReportsQuery.findIndex(x => x.orgCode === departmentCode) === -1) {
+				this.requestedReports.deps[groupCode].splice(this.requestedReports.deps[groupCode].indexOf(departmentCode), 1);
+				this.gridData.deps[groupCode].splice(this.gridData.deps[groupCode].indexOf(departmentCode), 1);
+
+				this.requestedReports.deps[groupCode] = [...this.requestedReports.deps[groupCode]];
+			}
+
+			if (this.selectedReportsQuery.findIndex(x => x.regCode === regionCode) === -1) {
+				this.requestedReports.regs[groupCode].splice(this.requestedReports.regs[groupCode].indexOf(regionCode), 1);
+				this.gridData.regs[groupCode].splice(this.gridData.regs[groupCode].indexOf(regionCode), 1);
+
+				this.requestedReports.regs[groupCode] = [...this.requestedReports.regs[groupCode]];
+			}
+		} else if (this.show3Table) {
 			let regionCode = selectedReport.region.code,
 				departmentCode = selectedReport.department.code;
 
@@ -647,10 +708,32 @@ export class ReportsModalContentComponent {
 			departmentName = "";
 		}
 		else if (this.show2table) {
-			console.log('aaaa')
-			// console.log('regs' + this.requestedReports.regs[groupCode])
-			// console.log('deps' + this.requestedReports.deps[groupCode])
+			this.requestedReports.regs.forEach((element, key) => {
+				// console.log(element, key)
+				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
+				console.log(regIndex)
+				regIndex !== -1 ? (regionName = this.requestedReports.regs[key][regIndex].name) : (regionName = "");
 
+				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+				depIndex !== -1
+					? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+					: (departmentName = "");
+
+			})
+
+			this.requestedReports.deps.forEach((element, key) => {
+				// console.log(element, key)
+				let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
+				console.log(regIndex)
+				regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
+
+				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
+				depIndex !== -1
+					? (departmentName = delimiter + this.requestedReports.deps[groupCode][depIndex].name)
+					: (departmentName = "");
+			})
+		}
+		else if (this.show3Table) {
 			this.requestedReports.regs.forEach((element, key) => {
 				// console.log(element, key)
 				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
