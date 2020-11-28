@@ -354,9 +354,6 @@ export class ReportsModalContentComponent {
 	getRegionsChildrenNew(event, searchPattern, groupCode) {
 		console.log(event, searchPattern, groupCode)
 		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
-			console.log('regions children', data)
-			debugger;
-
 			event.node.children = this.formatGridService.formatGridData(data, false);
 			console.log(event.node.children)
 			this.gridData.deps[groupCode] = [...this.gridData.deps[groupCode]]; //refresh the data
@@ -787,8 +784,18 @@ export class ReportsModalContentComponent {
 	}
 
 	redirectSystemToShowReport(item) {
-		let token = sessionStorage.token
-		let department = item.department
+		console.log(item)
+		let token = sessionStorage.token;
+		let department = item.department;
+
+
+		if (item.report.code == '803') {
+			let reportId = item.report.code;
+			let regionCode = item.region.searchPattern;
+			let dvedomostv = item.department.searchPattern;
+			let sliceId = this.sliceId;
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+		}
 		if (department == undefined) {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
