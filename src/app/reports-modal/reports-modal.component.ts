@@ -187,6 +187,10 @@ export class ReportsModalContentComponent {
 
 	// on click by tab reports call method for each 
 	onClickTabReport(selectedReportCode) {
+		this.show1table = false;
+		this.show2table = false;
+		this.show3Table = false;
+
 		this.checkReports(selectedReportCode)
 		this.contentLoading = true;
 
