@@ -443,6 +443,7 @@ export class ReportsModalContentComponent {
 					sliceId: this.sliceId,
 					reportCode: this.selectedGroupCode,
 					govCode: element.searchPattern,
+					govName: element.name
 				};
 				counter++;
 			});
@@ -484,6 +485,8 @@ export class ReportsModalContentComponent {
 								reportCode: reportInfo.code,
 								orgCode: depElemen.code,
 								regCode: region.code,
+								regName: region.name,
+								orgName: depElemen.name
 							};
 							counter++;
 						});
@@ -515,10 +518,8 @@ export class ReportsModalContentComponent {
 				// eslint-disable-next-line @typescript-eslint/no-this-alias
 				let self = this;
 				element.forEach(region => {
-					// console.log(this.requestedReports.deps[this.regionsTabIndex])
 					if (this.requestedReports.deps[this.regionsTabIndex] != undefined) {
 						this.requestedReports.deps[this.regionsTabIndex].forEach(depElemen => {
-							// console.log(depElemen);
 							self.selectedReportsList[counter] = {
 								report: reportInfo,
 								region: region,
@@ -529,6 +530,8 @@ export class ReportsModalContentComponent {
 								reportCode: reportInfo.code,
 								orgCode: depElemen.searchPattern,
 								regCode: region.searchPattern,
+								orgName: depElemen.name,
+								regName: region.name
 							};
 							counter++;
 						});
