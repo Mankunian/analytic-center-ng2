@@ -187,10 +187,7 @@ export class ReportsModalContentComponent {
 
 	// on click by tab reports call method for each 
 	onClickTabReport(selectedReportCode) {
-		this.show1table = false;
-		this.show2table = false;
-		this.show3Table = false;
-
+		this.readyReports = [];
 		this.checkReports(selectedReportCode)
 		this.contentLoading = true;
 
@@ -209,6 +206,7 @@ export class ReportsModalContentComponent {
 	}
 
 	getRegions(selectedReportCode) {
+		this.show2table = false;
 		this.http.getRegions().subscribe(regionsTree => {
 			let regionsTreeFormatted = this.formatGridService.formatGridData([regionsTree], true);
 			regionsTreeFormatted[0]["expanded"] = true; // Раскрываем первую ветку по умолчанию
@@ -216,10 +214,10 @@ export class ReportsModalContentComponent {
 			this.gridData.regs[selectedReportCode] = regionsTreeFormatted;
 			this.requestedReports.regs[selectedReportCode] = [];
 			this.getColsTable()
-		},
-			error => {
-				this.errorHandler.alertError(error);
-			});
+			this.show2table = true;
+		}, error => {
+			this.errorHandler.alertError(error);
+		});
 	}
 
 	getDepsByReportId(selectedReportCode) {
@@ -241,10 +239,9 @@ export class ReportsModalContentComponent {
 	}
 
 	generate803Regions(reportCode) {
-		console.log(reportCode)
 		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_006;
 		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
-
+		this.show3Table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
 			if (reportCode == '803') {
 				data.forEach(element => {
@@ -257,20 +254,20 @@ export class ReportsModalContentComponent {
 			this.requestedReports.regs[reportCode] = [];
 			this.getColsTable()
 			this.contentLoading = false;
+			this.show3Table = true;
 		})
 	}
 
 	generate803Vedomstva(reportCode) {
-		console.log(reportCode)
-		// this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_006;
 		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
-
+		this.show3Table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
 			console.log(false)
 			this.gridData.deps[reportCode] = this.formatGridService.formatGridData(data, true, true);
 			this.requestedReports.deps[reportCode] = [];
 			this.getColsTable()
 			this.contentLoading = false;
+			this.show3Table = true;
 		})
 	}
 
@@ -286,7 +283,7 @@ export class ReportsModalContentComponent {
 		} else {
 			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 		}
-
+		this.show1table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
 			if (reportCode == '530' || reportCode == '731') {
 				console.log(true)
@@ -304,6 +301,7 @@ export class ReportsModalContentComponent {
 				this.requestedReports.orgz[reportCode] = [];
 				this.getColsTable()
 			}
+			this.show1table = true;
 		}, error => {
 			this.errorHandler.alertError(error);
 		}, () => {
@@ -412,9 +410,6 @@ export class ReportsModalContentComponent {
 	}
 
 	isReportsSelectedFn(): boolean {
-		// console.log(this.requestedReports.regs[this.selectedGroupCode])
-		// console.log(this.requestedReports.deps[this.selectedGroupCode])
-
 		if (
 			(this.requestedReports.regs[this.selectedGroupCode] !== undefined &&
 				this.requestedReports.regs[this.selectedGroupCode].length !== 0 &&
