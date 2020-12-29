@@ -54,6 +54,7 @@
 					preliminary: rowData.code === '2' && rowNode.level == 1,
 					final: rowData.code === '1' && rowNode.level == 1,
 					deleted: rowData.code === '3' && rowNode.level == 1,
+					error: rowData.code === '5' && rowNode.level == 1,
 					confirmed: rowData.code === '7' && rowNode.level == 1
 				}">{{ rowData.name }}</span>
 				<a *ngIf="rowNode.level == 2 && 
