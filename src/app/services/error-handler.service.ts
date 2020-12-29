@@ -10,7 +10,7 @@ export class ErrorHandlerService {
 	alertError(errMsg) {
 		console.log("ErrorHandlerService -> alertError -> errMsg", errMsg);
 		if (errMsg.error.errDetails == 'invalid_token: Token has expired' || errMsg.error.error == 'invalid_token') {
-			alert('Обвновление нового токена')
+			// alert('Обвновление нового токена')
 			this.http.refreshTokenService().subscribe((data: any) => {
 				console.log(data.access_token)
 				let token = data.access_token
@@ -18,7 +18,7 @@ export class ErrorHandlerService {
 				window.location.href = window.location.origin;
 			}, error => {
 				console.log(error)
-				alert('Просрочен refresh_token')
+				// alert('Просрочен refresh_token')
 				window.location.href = GlobalConfig.ADMIN_PAGE
 			})
 		} else if (errMsg.error.errStatus == "BAD_REQUEST") {
