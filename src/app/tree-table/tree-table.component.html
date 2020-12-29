@@ -48,9 +48,15 @@
 				<span class="folder-icon" [ngClass]="{
             folderIconOpen: rowNode.node.expanded,
             folderIconClose: !rowNode.node.expanded,
-            folderIconHide: rowNode.level == 2
+						folderIconHide: rowNode.level == 2
           }" [ngStyle]="{ 'margin-left.px': tableIndentSize * rowNode.level }"></span>
-				{{ rowData.name }}
+				<span [ngClass]="{
+					preliminary: rowData.code === '2' && rowNode.level == 1,
+					final: rowData.code === '1' && rowNode.level == 1,
+					deleted: rowData.code === '3' && rowNode.level == 1,
+					error: rowData.code === '5' && rowNode.level == 1,
+					confirmed: rowData.code === '7' && rowNode.level == 1
+				}">{{ rowData.name }}</span>
 				<a *ngIf="rowNode.level == 2 && 
 				rowData.statusCode !== STATUS_CODES.FORMED_WITH_ERROR &&
 				rowData.statusCode !== STATUS_CODES.IN_PROCESSING &&

@@ -12,7 +12,7 @@ if (hostname === 'localhost') {
 	sourceURLs.ADM_PAGE = 'http://localhost:4200';
 	sourceURLs.ADM_API_URL = 'https://18.138.17.74:8084';
 	sourceURLs.BASE_API_URL = 'https://18.140.232.52:8081/api/v1/';
-	sourceURLs.SOCKET_URL = 'https://18.138.17.74:8085';
+	sourceURLs.SOCKET_URL = 'http://18.138.17.74:8085';
 }
 else if (hostname.startsWith("10")) {
 	sourceURLs.ADM_PAGE = "http://10.2.30.69";
@@ -26,7 +26,7 @@ else if (hostname.startsWith("master")) {
 	sourceURLs.ADM_PAGE = 'https://master.d260huhvcvtk4w.amplifyapp.com';
 	sourceURLs.ADM_API_URL = 'https://18.138.17.74:8084';
 	sourceURLs.BASE_API_URL = 'https://18.140.232.52:8081/api/v1/';
-	sourceURLs.SOCKET_URL = 'https://18.138.17.74:8085';
+	sourceURLs.SOCKET_URL = 'http://18.138.17.74:8085';
 }
 
 
