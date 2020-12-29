@@ -66,7 +66,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { TruncatePipe } from "./pipes/truncate.pipe";
 
 import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from "@stomp/ng2-stompjs";
-import { rxStompConfig } from "./rx-stomp.config";
+// import { rxStompConfig } from "./rx-stomp.config";
 import { MessagesComponent } from "./messages/messages.component";
 
 
@@ -140,7 +140,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		TabMenuComponent,
 		NavBarComponent,
 		MessageService,
-		{ provide: InjectableRxStompConfig, useValue: rxStompConfig },
+		{
+			provide: InjectableRxStompConfig,
+			// useValue: rxStompConfig 
+		},
 		{ provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
 	],
 	bootstrap: [AppComponent],
