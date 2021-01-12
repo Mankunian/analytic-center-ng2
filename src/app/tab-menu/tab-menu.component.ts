@@ -126,7 +126,7 @@ export class TabMenuComponent implements OnInit {
 						}
 					});
 				} else {
-					alert('sessionStorage has no permissionCodesList')
+					// alert('sessionStorage has no permissionCodesList')
 				}
 			});
 		},

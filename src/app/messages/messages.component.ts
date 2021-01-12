@@ -27,9 +27,9 @@ export class MessagesComponent implements OnInit {
 
 
 	constructor(
+		public shared: SharedService,
 		private rxStompService: RxStompService,
 		private messageService: MessageService,
-		public shared: SharedService,
 		private http: HttpService,
 		private errorHandler: ErrorHandlerService
 	) { }
@@ -40,7 +40,7 @@ export class MessagesComponent implements OnInit {
 			также используем библиотеку sockjs для обеспечения для поддержки функционала в браузерах
 			неподдерживающих websocket и для пользователей работающих через прокси
 		*/
-		this.connect()
+		this.connect();
 		// this.subscribe(this.authUser);
 	}
 
@@ -56,15 +56,39 @@ export class MessagesComponent implements OnInit {
 			stompClient.subscribe('/topic/greetings', function (message) {
 				console.log("received greetings: " + message);
 			});
+
+			//Канал для получения данных о проценте формирования срезов
+			stompClient.subscribe('/topic/slice-completion-info', function (message) {
+				console.log("received slice completion info: " + message);
+			});
+
+			//Канал для получения индивидуальных сообщений
+			stompClient.subscribe('/user/queue/notifications', function (message) {
+				console.log("received private: " + message);
+			});
+
+			//Если хотим получить приветственное уведомление вызываем сервис sayHello, которому передаем sessionKey
+			stompClient.send('/app/hello', {}, JSON.stringify({ name: username }));
 		})
 	}
+
+
+
+
+
+
+
+
+
+
+
 
 	// ngOnDestroy() {
 	// 	this.topicSubscription.unsubscribe();
 	// }
 
 	// addSingle(message) {
-	// 	this.messageService.add({ severity: "info", summary: "Info Message", detail: message });
+	// 	// this.messageService.add({ severity: "info", summary: "Info Message", detail: message });
 	// }
 
 	// subscribe(authUser?) {

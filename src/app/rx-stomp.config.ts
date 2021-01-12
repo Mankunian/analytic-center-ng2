@@ -5,7 +5,7 @@
 
 // export const rxStompConfig: InjectableRxStompConfig = {
 // 	// Which server?
-// 	// brokerURL: GlobalConfig.SOCKET_URL + "/notifications",
+// 	brokerURL: GlobalConfig.SOCKET_URL + "/notifications",
 
 // 	// Headers
 // 	// Typical keys: login, passcode, host
@@ -31,7 +31,7 @@
 // 		});
 
 // 		let options = { headers: headers };
-// 		// return new SockJS(GlobalConfig.SOCKET_URL + "/notifications", options);
+// 		return new SockJS(GlobalConfig.SOCKET_URL + "/notifications", options);
 // 	},
 
 // 	// Will log diagnostics on console
