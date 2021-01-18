@@ -7,15 +7,16 @@ import { Subscription } from "rxjs";
 import { SharedService } from "../services/shared.service";
 import { TreeNode } from "primeng/api/treenode";
 import { ErrorHandlerService } from "../services/error-handler.service";
-
-import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
+// import { ToastService } from "../services/toast.service";
+import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
 import { AppDateAdapter, APP_DATE_FORMATS } from '../date.adapter';
+import { MessageService } from "primeng/api";
 
 @Component({
 	selector: "app-tab-menu",
 	templateUrl: "./tab-menu.component.html",
 	styleUrls: ["./tab-menu.component.scss"],
-	providers: [HttpService,
+	providers: [HttpService, MessageService,
 		{
 			provide: DateAdapter, useClass: AppDateAdapter
 		},
@@ -54,6 +55,7 @@ export class TabMenuComponent implements OnInit {
 	permissionElem: any;
 	elementPermissionList: any;
 	elementGroup: any;
+	// messageService: any;
 	// enableGetReport: boolean;
 
 
@@ -63,7 +65,8 @@ export class TabMenuComponent implements OnInit {
 		public translate: TranslateService,
 		public getShared: SharedService,
 		private service: SharedService,
-		public errorHandler: ErrorHandlerService
+		public errorHandler: ErrorHandlerService,
+		private messageService: MessageService
 	) {
 		translate.addLangs(["ru", "kaz", "qaz"]);
 		translate.setDefaultLang("ru");
@@ -126,7 +129,7 @@ export class TabMenuComponent implements OnInit {
 						}
 					});
 				} else {
-					alert('sessionStorage has no permissionCodesList')
+					// alert('sessionStorage has no permissionCodesList')
 				}
 			});
 		},
@@ -200,7 +203,7 @@ export class TabMenuComponent implements OnInit {
 		};
 
 		this.httpService.postOrderSlice(orderSliceObj).subscribe(
-			data => {
+			(data: any) => {
 				this.service.sendOrderSliceList(data);
 				this.preloaderByOrderSlice = true;
 				this.checkedGroups.forEach(element => {
@@ -210,10 +213,23 @@ export class TabMenuComponent implements OnInit {
 				this.checkedGroupList.length = 0; // clear checkbox array after response
 				this.selected = 0; // transfer to Home Tab after response
 				this.preloaderByOrderSlice = false;
+
+				data.forEach(element => {
+					this.showToastMessage(element);
+				});
 			},
 			error => {
 				this.errorHandler.alertError(error);
 			}
 		);
+	}
+
+	showToastMessage(elem) {
+		console.log(elem)
+		let groupName = elem.groupName;
+		let period = elem.period;
+		let detail = groupName + '' + period
+		this.messageService.add({ severity: 'info', summary: 'Сформирован срез', detail: detail });
+
 	}
 }

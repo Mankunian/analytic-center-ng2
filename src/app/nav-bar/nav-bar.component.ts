@@ -1,10 +1,14 @@
 import { Component, OnInit } from "@angular/core";
+import { GlobalConfig } from '../global';
+
 import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ErrorHandlerService } from "../services/error-handler.service";
+import { MessageService } from "primeng/api";
+
 import { TabMenuComponent } from "../tab-menu/tab-menu.component";
-import { GlobalConfig } from '../global';
+import { MessagesComponent } from "../messages/messages.component";
 
 export interface Territory {
 	code: string;
@@ -15,6 +19,8 @@ export interface Territory {
 	selector: "app-nav-bar",
 	templateUrl: "./nav-bar.component.html",
 	styleUrls: ["./nav-bar.component.scss"],
+	providers: [MessageService]
+
 })
 export class NavBarComponent implements OnInit {
 	public territoryList: any = [];
@@ -32,7 +38,9 @@ export class NavBarComponent implements OnInit {
 		private sharedService: SharedService,
 		public translate: TranslateService,
 		public errorHandler: ErrorHandlerService,
-		public tabMenuComponent: TabMenuComponent
+		public tabMenuComponent: TabMenuComponent,
+		public messageComponent: MessagesComponent,
+		private messageService: MessageService
 	) {
 		translate.setDefaultLang("ru");
 		const browserLang = translate.getBrowserLang();
@@ -55,10 +63,19 @@ export class NavBarComponent implements OnInit {
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 				this.tabMenuComponent.getGroupList()
 				this.getUserInfo()
+				this.showToastMessage()
+
 			}
 		}, error => {
 			this.errorHandler.alertError(error)
 		})
+	}
+
+	showToastMessage() {
+		let userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+		// console.log(userInfo)
+		// this.messageComponent.sayHello(userInfo)
+		this.messageService.add({ severity: 'info', summary: 'Добро Пожаловать', detail: userInfo.fullName });
 	}
 
 	getUserInfo() {

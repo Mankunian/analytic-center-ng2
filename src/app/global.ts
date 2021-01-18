@@ -2,6 +2,11 @@
 let hostname = window.location.hostname;
 sessionStorage.setItem('hostname', hostname);
 
+
+// console.log(JSON.parse(sessionStorage.userInfo));
+let userInfo = JSON.parse(sessionStorage.userInfo);
+let username = userInfo.fullName;
+
 const sourceURLs = {
 	ADM_PAGE: '',
 	ADM_API_URL: '',
@@ -12,7 +17,7 @@ if (hostname === 'localhost') {
 	sourceURLs.ADM_PAGE = 'http://localhost:4200';
 	sourceURLs.ADM_API_URL = 'https://18.138.17.74:8084';
 	sourceURLs.BASE_API_URL = 'https://18.140.232.52:8081/api/v1/';
-	sourceURLs.SOCKET_URL = 'http://18.138.17.74:8085';
+	sourceURLs.SOCKET_URL = 'http://18.138.17.74:8085/';
 }
 else if (hostname.startsWith("10")) {
 	sourceURLs.ADM_PAGE = "http://10.2.30.69";
@@ -40,7 +45,7 @@ export const GlobalConfig = Object.freeze({
 	ADMIN_PAGE: sourceURLs.ADM_PAGE,
 
 
-	BASE_AUTH_USER: "user0",
+	BASE_AUTH_USER: username,
 	STATUS_CODES: {
 		IN_PROCESSING: "0", // В обработке
 		APPROVED: "1", // Утвержден
