@@ -1,13 +1,24 @@
+// import { Component, OnDestroy, OnInit } from "@angular/core";
+// import { RxStompService } from "@stomp/ng2-stompjs";
+// import { Stomp } from "@stomp/stompjs";
+// import { Subscription } from "rxjs";
+// import { MessageService } from "primeng/api";
+// import * as SockJS from "sockjs-client";
+
+// import { Message, Stomp } from "@stomp/stompjs";
+
+
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { RxStompService } from "@stomp/ng2-stompjs";
-import { Message, Stomp } from "@stomp/stompjs";
+import { Client, Message, Stomp } from "@stomp/stompjs";
 import { Subscription } from "rxjs";
 import { MessageService } from "primeng/api";
+import { RxStompService } from "@stomp/ng2-stompjs";
 import { SharedService } from "../services/shared.service";
+import { ErrorHandlerService } from "../services/error-handler.service";
 import { HttpService } from "../services/http.service";
 import { GlobalConfig } from "../global";
-import { ErrorHandlerService } from "../services/error-handler.service";
 import * as SockJS from "sockjs-client";
+
 
 // eslint-disable-next-line prettier/prettier
 @Component({
@@ -27,11 +38,11 @@ export class MessagesComponent implements OnInit {
 
 
 	constructor(
+		// private rxStompService: RxStompService,
 		public shared: SharedService,
-		private rxStompService: RxStompService,
-		private messageService: MessageService,
-		private http: HttpService,
-		private errorHandler: ErrorHandlerService
+		// private messageService: MessageService,
+		// private http: HttpService,
+		// private errorHandler: ErrorHandlerService
 	) { }
 
 	ngOnInit() {
@@ -41,7 +52,7 @@ export class MessagesComponent implements OnInit {
 			неподдерживающих websocket и для пользователей работающих через прокси
 		*/
 		this.connect();
-		// this.subscribe(this.authUser);
+		// this.subscribe()
 	}
 
 	connect() {
@@ -50,79 +61,33 @@ export class MessagesComponent implements OnInit {
 		const socket = new SockJS('http://18.138.17.74:8085/notifications/' + username);
 		const stompClient = Stomp.over(socket);
 
+		console.log(stompClient)
+
+
 
 		stompClient.connect({}, function (frame) {
+			console.log(frame)
 			//Проверка связи
 			stompClient.subscribe('/topic/greetings', function (message) {
-				console.log("received greetings: " + message);
+				console.log(JSON.parse(message.body));
+				let body = message.body;
+				this.shared.getWsGreetings(body)
 			});
+
 
 			//Канал для получения данных о проценте формирования срезов
 			stompClient.subscribe('/topic/slice-completion-info', function (message) {
-				console.log("received slice completion info: " + message);
+				console.log(JSON.parse(message.body));
 			});
 
 			//Канал для получения индивидуальных сообщений
 			stompClient.subscribe('/user/queue/notifications', function (message) {
-				console.log("received private: " + message);
+				console.log(JSON.parse(message.body));
 			});
 
 			//Если хотим получить приветственное уведомление вызываем сервис sayHello, которому передаем sessionKey
 			stompClient.send('/app/hello', {}, JSON.stringify({ name: username }));
+
 		})
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-	// ngOnDestroy() {
-	// 	this.topicSubscription.unsubscribe();
-	// }
-
-	// addSingle(message) {
-	// 	// this.messageService.add({ severity: "info", summary: "Info Message", detail: message });
-	// }
-
-	// subscribe(authUser?) {
-	// 	//Подписка на уведомления для всех пользователей, по этому каналу будут приходить
-	// 	//рассылки общего характера предназначенный для всех пользователей
-	// 	this.topicSubscription = this.rxStompService
-	// 		.watch("/topic/notifications", { sessionKey: authUser })
-	// 		.subscribe((message: Message) => {
-	// 			console.log("received public: ", message.body);
-	// 			this.addSingle(message.body);
-	// 		});
-
-	// 	this.topicSubscription = this.rxStompService
-	// 		.watch("/topic/sliceCompletion", { sessionKey: authUser })
-	// 		.subscribe((message: Message) => {
-	// 			// console.log("slices: ", message.body);
-	// 			this.shared.sendProgressBarList(JSON.parse(message.body));
-	// 		});
-
-	// 	//Подписка на индивидуальные уведомления, по этому каналу будут приходить уведомдения,
-	// 	//пероснально для пользователя, зависящие от того какие у пользователя права
-	// 	this.topicSubscription = this.rxStompService
-	// 		.watch("/user/queue/notifications", { sessionKey: authUser })
-	// 		.subscribe((message: Message) => {
-	// 			console.log("received private: ", message.body);
-	// 			this.addSingle(message.body);
-	// 		});
-
-	// 	//Если хотим получить приветственное уведомление вызываем сервис sayHello, которому передаем sessionKey
-	// 	// this.rxStompService.publish({ destination: '/app/sayHello', headers: { sessionKey: authUser }, body: "Hello, STOMP" });
-	// 	this.rxStompService.publish({ destination: "/app/sayHello", body: "Hello world" });
-	// }
-
-	// clear() {
-	// 	this.messageService.clear();
-	// }
 }

@@ -1,11 +1,14 @@
 import { Component, OnInit } from "@angular/core";
+import { GlobalConfig } from '../global';
+
 import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ErrorHandlerService } from "../services/error-handler.service";
-import { TabMenuComponent } from "../tab-menu/tab-menu.component";
-import { GlobalConfig } from '../global';
 import { MessageService } from "primeng/api";
+
+import { TabMenuComponent } from "../tab-menu/tab-menu.component";
+import { MessagesComponent } from "../messages/messages.component";
 
 export interface Territory {
 	code: string;
@@ -36,6 +39,7 @@ export class NavBarComponent implements OnInit {
 		public translate: TranslateService,
 		public errorHandler: ErrorHandlerService,
 		public tabMenuComponent: TabMenuComponent,
+		public messageComponent: MessagesComponent,
 		private messageService: MessageService
 	) {
 		translate.setDefaultLang("ru");
@@ -60,6 +64,7 @@ export class NavBarComponent implements OnInit {
 				this.tabMenuComponent.getGroupList()
 				this.getUserInfo()
 				this.showToastMessage()
+
 			}
 		}, error => {
 			this.errorHandler.alertError(error)
@@ -67,9 +72,9 @@ export class NavBarComponent implements OnInit {
 	}
 
 	showToastMessage() {
-		// let username = sessionStorage.getItem('userInfo');
 		let userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-		console.log(userInfo)
+		// console.log(userInfo)
+		// this.messageComponent.sayHello(userInfo)
 		this.messageService.add({ severity: 'info', summary: 'Добро Пожаловать', detail: userInfo.fullName });
 	}
 

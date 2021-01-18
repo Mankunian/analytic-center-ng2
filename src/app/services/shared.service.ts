@@ -122,4 +122,14 @@ export class SharedService {
 		console.log(status)
 		this.subGridAgreementVisibleStatus.next(status)
 	}
+
+
+
+
+	private wsGreetings = new Subject();
+	wsGreetings$ = this.wsGreetings.asObservable();
+
+	getWsGreetings(body: any) {
+		console.log(body)
+	}
 }

@@ -70,6 +70,10 @@ import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from "
 import { MessagesComponent } from "./messages/messages.component";
 
 
+
+// import { rxStompConfig } from './rx-stomp.config';
+
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
 	return new TranslateHttpLoader(httpClient);
 }
@@ -140,11 +144,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		TabMenuComponent,
 		NavBarComponent,
 		MessageService,
+		MessagesComponent,
 		{
 			provide: InjectableRxStompConfig,
-			// useValue: rxStompConfig 
+			// useValue: rxStompConfig,
 		},
-		{ provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
+		{
+			provide: RxStompService,
+			useFactory: rxStompServiceFactory,
+			deps: [InjectableRxStompConfig],
+		},
 	],
 	bootstrap: [AppComponent],
 	entryComponents: [

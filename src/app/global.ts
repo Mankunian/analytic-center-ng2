@@ -2,6 +2,11 @@
 let hostname = window.location.hostname;
 sessionStorage.setItem('hostname', hostname);
 
+
+// console.log(JSON.parse(sessionStorage.userInfo));
+let userInfo = JSON.parse(sessionStorage.userInfo);
+let username = userInfo.fullName;
+
 const sourceURLs = {
 	ADM_PAGE: '',
 	ADM_API_URL: '',
@@ -40,7 +45,7 @@ export const GlobalConfig = Object.freeze({
 	ADMIN_PAGE: sourceURLs.ADM_PAGE,
 
 
-	BASE_AUTH_USER: "user0",
+	BASE_AUTH_USER: username,
 	STATUS_CODES: {
 		IN_PROCESSING: "0", // В обработке
 		APPROVED: "1", // Утвержден
