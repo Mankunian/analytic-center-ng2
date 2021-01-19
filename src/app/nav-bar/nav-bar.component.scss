@@ -178,6 +178,11 @@ header h1{
   box-shadow: none;
 }
 
-.logout{
-	
+.modal-actions button{
+	margin: 10px 5px;
+	float: right;
+}
+
+:host ::ng-deep body .ui-dialog .ui-dialog-titlebar{
+	background-color: red !important
 }

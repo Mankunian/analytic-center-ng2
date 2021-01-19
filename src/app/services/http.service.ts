@@ -48,6 +48,30 @@ export class HttpService {
 		return this.http.get(GlobalConfig.ADM_URL + '/api/v1/RU/adm-core/my/permissions', options)
 	}
 
+	getUserInfoService(userId) {
+		let token = sessionStorage.token;
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + token
+		});
+
+		let options = { headers: headers }
+		return this.http.get(GlobalConfig.ADM_URL + '/api/v1/RU/adm-core/users/' + userId, options)
+	}
+
+	changePassUserService(newPass, currentPass, userId) {
+		let token = sessionStorage.token;
+		let headers = new HttpHeaders({
+			'authorization': 'bearer ' + token
+		});
+
+		let options = { headers: headers }
+		const body = {
+			"currentPassword": currentPass,
+			"newPassword": newPass
+		}
+		return this.http.put(GlobalConfig.ADM_URL + '/api/v1/RU/adm-core/users/' + userId + '/change-password', body, options)
+	}
+
 	getGroupList() {
 		let token = sessionStorage.token;
 		let headers = new HttpHeaders({
@@ -113,10 +137,6 @@ export class HttpService {
 		let options = { headers: headers }
 		return this.http.get(this.BASE_API_URL + this.changeLang + '/slices/' + sliceId + '/history', options)
 	}
-
-
-
-
 
 	getUsers() {
 		return this.http.get('./assets/json/users.json')

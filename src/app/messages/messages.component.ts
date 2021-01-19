@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
+import { SharedService } from "../services/shared.service";
 // import { Subscription } from "rxjs";
 // import { RxStompService } from "@stomp/ng2-stompjs";
 // import { SharedService } from "../services/shared.service";
@@ -20,53 +21,47 @@ import * as SockJS from "sockjs-client";
 export class MessagesComponent implements OnInit {
 	public stompClient;
 	public msg = [];
-
+	public userInfo
 
 	ngOnInit() { }
 
-	constructor() {
+	constructor(private sharedService: SharedService) {
 		this.initializeWebSocketConnection();
 	}
 
 	initializeWebSocketConnection() {
-		const userInfo = JSON.parse(sessionStorage.userInfo);
-		const username = userInfo.fullName;
-		const serverUrl = 'http://18.138.17.74:8085/notifications/' + username;
-		const ws = new SockJS(serverUrl);
-		this.stompClient = Stomp.over(ws);
-		// eslint-disable-next-line @typescript-eslint/no-this-alias
-		const that = this;
-		this.stompClient.connect({}, function (frame) {
-			that.stompClient.subscribe('/topic/greetings', (message) => {
-				console.log(JSON.parse(message.body));
-				// if (message.body) {
-				// 	this.msg.push(message.body)
-				// }
-				// console.log(this.msg)
-			})
+		if (sessionStorage.userInfo) {
+			// console.log(sessionStorage.userInfo)
+			const userInfo = JSON.parse(sessionStorage.userInfo);
+			const username = userInfo.fullName;
+			const serverUrl = 'http://18.138.17.74:8085/notifications/' + username;
+			const ws = new SockJS(serverUrl);
+			this.stompClient = Stomp.over(ws);
+
+			// eslint-disable-next-line @typescript-eslint/no-this-alias
+			const that = this;
+			this.stompClient.connect({}, function (frame) {
+				that.stompClient.subscribe('/topic/greetings', (message) => {
+					console.log(JSON.parse(message.body));
+				})
 
 
-			that.stompClient.subscribe('/topic/slice-completion-info', (message) => {
-				console.log(JSON.parse(message.body));
-				that.showToast(message.body)
-				// if (message.body) {
-				// 	this.msg.push(message.body)
-				// }
-			})
+				that.stompClient.subscribe('/topic/slice-completion-info', (message) => {
+					console.log(JSON.parse(message.body));
+					that.showToast(message.body)
+				})
 
-			that.stompClient.subscribe('/user/queue/notifications', (message) => {
-				console.log(JSON.parse(message.body));
-				// if (message.body) {
-				// 	this.msg.push(message.body)
-				// }
+				that.stompClient.subscribe('/user/queue/notifications', (message) => {
+					console.log(JSON.parse(message.body));
+				})
 			})
-		})
+		}
+
+
+
 	}
 
 	showToast(body) {
-		console.log(body)
+		this.sharedService.sendProgressBarList(body)
 	}
-
-
-
 }

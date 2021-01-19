@@ -87,7 +87,6 @@ export class SharedService {
 	subjProgressbarWs$ = this.subProgressbarWs.asObservable();
 
 	sendProgressBarList(progressbarWsList: any) {
-		// console.log(progressbarWsList)
 		this.subProgressbarWs.next(progressbarWsList)
 	}
 	/////////////////////////////
@@ -123,13 +122,4 @@ export class SharedService {
 		this.subGridAgreementVisibleStatus.next(status)
 	}
 
-
-
-
-	private wsGreetings = new Subject();
-	wsGreetings$ = this.wsGreetings.asObservable();
-
-	getWsGreetings(body: any) {
-		console.log(body)
-	}
 }

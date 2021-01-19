@@ -23,6 +23,8 @@ export class ErrorHandlerService {
 			})
 		} else if (errMsg.error.errStatus == "BAD_REQUEST") {
 			alert(errMsg.error.errDetails)
+		} else if (errMsg.error.message === "USER:CURRENT-PASSWORD:INVALID" && errMsg.error.status === "BAD_REQUEST") {
+			alert('Неверный пароль')
 		}
 		// errMsg != undefined ? alert(errMsg.error.errMsg) : alert("Произошла ошибка на сервере.");
 	}
