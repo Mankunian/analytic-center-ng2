@@ -5,10 +5,10 @@ import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ErrorHandlerService } from "../services/error-handler.service";
-import { MessageService } from "primeng/api";
 
 import { TabMenuComponent } from "../tab-menu/tab-menu.component";
 import { MessagesComponent } from "../messages/messages.component";
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 export interface Territory {
 	code: string;
@@ -19,7 +19,7 @@ export interface Territory {
 	selector: "app-nav-bar",
 	templateUrl: "./nav-bar.component.html",
 	styleUrls: ["./nav-bar.component.scss"],
-	providers: [MessageService]
+	providers: [MessageService, ConfirmationService]
 
 })
 export class NavBarComponent implements OnInit {
@@ -31,6 +31,11 @@ export class NavBarComponent implements OnInit {
 	userInfo: any;
 	fullNameUser: any;
 	showMyContainer = false;
+	displayBasic: boolean;
+	newPass: string;
+	currentPass: string;
+	userId: any;
+	disabledBtn: boolean;
 
 
 	constructor(
@@ -40,7 +45,8 @@ export class NavBarComponent implements OnInit {
 		public errorHandler: ErrorHandlerService,
 		public tabMenuComponent: TabMenuComponent,
 		public messageComponent: MessagesComponent,
-		private messageService: MessageService
+		private messageService: MessageService,
+		private confirmationService: ConfirmationService
 	) {
 		translate.setDefaultLang("ru");
 		const browserLang = translate.getBrowserLang();
@@ -58,13 +64,11 @@ export class NavBarComponent implements OnInit {
 		this.httpService.getPermissionsByUserService().subscribe(data => {
 			this.userInfo = data;
 			if (this.userInfo) {
-				// console.log(this.userInfo)
 				sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 				this.tabMenuComponent.getGroupList()
-				this.getUserInfo()
+				this.getUserInfo(data)
 				this.showToastMessage()
-
 			}
 		}, error => {
 			this.errorHandler.alertError(error)
@@ -72,25 +76,32 @@ export class NavBarComponent implements OnInit {
 	}
 
 	showToastMessage() {
-		let userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-		// console.log(userInfo)
-		// this.messageComponent.sayHello(userInfo)
+		let userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
 		this.messageService.add({ severity: 'info', summary: 'Добро Пожаловать', detail: userInfo.fullName });
 	}
 
-	getUserInfo() {
+	getUserInfo(userInfo) {
 		this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 		this.fullNameUser = this.incomingUserInfo.fullName
 		this.selectedTerritory = this.incomingUserInfo.orgCode
-		// console.log("selectedTerritory ", this.selectedTerritory);
 		if (this.selectedTerritory) {
 			this.sharedService.sendTerrCode(this.selectedTerritory);
 		}
+
+		let userId = userInfo.userId;
+		this.userId = userInfo.userId;
+		this.httpService.getUserInfoService(userId).subscribe((data: any) => {
+			console.log(data)
+			if (data.isChangePasswordRequired === true) {
+				this.displayBasic = true;
+			}
+		})
+
 	}
+
 
 	getTerritory() {
 		this.httpService.getTerritories().subscribe((data: Territory) => {
-			// console.log(data)
 			this.territoryList = data;
 		}, error => {
 			this.errorHandler.alertError(error);
@@ -115,5 +126,28 @@ export class NavBarComponent implements OnInit {
 	logOut() {
 		sessionStorage.clear()
 		window.location.href = GlobalConfig.ADMIN_PAGE
+	}
+
+	cancelDialog() {
+		this.displayBasic = false;
+	}
+
+	saveChangePass() {
+		this.disabledBtn = true;
+		let newPass = this.newPass;
+		let oldPass = this.currentPass;
+		let userId = this.userId;
+
+		this.httpService.changePassUserService(newPass, oldPass, userId).subscribe(data => {
+			console.log(data)
+			this.displayBasic = false;
+			this.messageService.add({ severity: 'success', summary: '200', detail: 'Пароль успешно изменен' });
+		}, error => {
+			console.log(error)
+			this.errorHandler.alertError(error)
+			this.currentPass = '';
+			this.newPass = '';
+			this.disabledBtn = false;
+		})
 	}
 }

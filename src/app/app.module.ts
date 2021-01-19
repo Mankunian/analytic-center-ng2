@@ -49,8 +49,10 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { TableModule } from "primeng/table";
 import { ProgressBarModule } from "primeng/progressbar";
 import { TreeTableModule } from "primeng/treetable";
-import { MessageService } from "primeng/api";
+import { ConfirmationService, MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PasswordModule } from 'primeng/password';
 
 // Services
 import { HttpService } from "./services/http.service";
@@ -126,6 +128,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		ProgressSpinnerModule,
 		TableModule,
 		MatProgressSpinnerModule,
+		ConfirmDialogModule,
+		PasswordModule,
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,
@@ -138,13 +142,15 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 	providers: [
 		HttpService,
 		SharedService,
+		ConfirmationService,
+		MessageService,
 		TimelineComponent,
 		TreeTableComponent,
 		SliceOperationsModalComponent,
 		TabMenuComponent,
 		NavBarComponent,
-		MessageService,
 		MessagesComponent,
+		NavBarComponent,
 		{
 			provide: InjectableRxStompConfig,
 			// useValue: rxStompConfig,
@@ -161,7 +167,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 		ReportsModalContentComponent,
 		RejectionReasonContentComponent,
 		EditReasonComponent,
-		TabMenuComponent
+		TabMenuComponent,
+		NavBarComponent
 	],
 })
 export class AppModule { }

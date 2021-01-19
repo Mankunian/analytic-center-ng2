@@ -51,6 +51,7 @@ export class TreeTableComponent implements OnInit {
 	enableConfirmSliceBtn: string;
 	permissionApprove: any;
 	enableApproveSliceBtn: string;
+	sliceInfo: any;
 
 	constructor(
 		// public reportsModalInstance: ReportsModalComponent,
@@ -129,6 +130,8 @@ export class TreeTableComponent implements OnInit {
 
 			this.httpService.getSlices(this.groupCode, this.statusCode, this.year).then(
 				data => {
+					console.log(data)
+					this.sliceInfo = data;
 					event.node.children = this.formatGridService.formatGridData(data, false);
 					this.gridData = [...this.gridData]; //refresh the data
 					this.loader = false;
@@ -379,13 +382,14 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	setPercentValue(progressbarList) {
-		if (this.childrenNode) {
-			this.childrenNode.forEach(function (childElement) {
-				progressbarList.forEach(function (progressElement) {
-					if (childElement.data.id === progressElement.sliceId) {
-						childElement.data.percentComplete = progressElement.percent;
-					}
-				});
+		if (this.sliceInfo) {
+			this.sliceInfo.forEach(function (childElement) {
+				console.log(childElement)
+				// progressbarList.forEach(function (progressElement) {
+				// 	if (childElement.data.id === progressElement.sliceId) {
+				// 		childElement.data.percentComplete = progressElement.percent;
+				// 	}
+				// });
 			});
 		}
 	}
