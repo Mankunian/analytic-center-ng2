@@ -95,8 +95,10 @@ export class NavBarComponent implements OnInit {
 			if (data.isChangePasswordRequired === true) {
 				this.displayBasic = true;
 			}
+		}, error => {
+			console.log(error);
+			this.errorHandler.alertError(error)
 		})
-
 	}
 
 
