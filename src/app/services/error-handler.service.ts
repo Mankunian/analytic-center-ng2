@@ -8,7 +8,6 @@ export class ErrorHandlerService {
 	constructor(private http: HttpService) { }
 
 	alertError(errMsg) {
-		console.log("ErrorHandlerService -> alertError -> errMsg", errMsg);
 		if (errMsg.error.errDetails == 'invalid_token: Token has expired' || errMsg.error.error == 'invalid_token') {
 			// alert('Обвновление нового токена')
 			this.http.refreshTokenService().subscribe((data: any) => {
@@ -25,7 +24,8 @@ export class ErrorHandlerService {
 			alert(errMsg.error.errDetails)
 		} else if (errMsg.error.message === "USER:CURRENT-PASSWORD:INVALID" && errMsg.error.status === "BAD_REQUEST") {
 			alert('Неверный пароль')
+		} else if (errMsg.status === 403) {
+			alert(errMsg.error.message)
 		}
-		// errMsg != undefined ? alert(errMsg.error.errMsg) : alert("Произошла ошибка на сервере.");
 	}
 }
