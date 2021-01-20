@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
 			sessionStorage.setItem('appCode', appCode)
 			sessionStorage.setItem('appPass', appPass)
 			sessionStorage.setItem('lang', lang)
-			// window.location.href = hostName;
+			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
 			// Here redirect to local IP-address url of admin 
