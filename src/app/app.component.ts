@@ -42,9 +42,11 @@ export class AppComponent implements OnInit {
 
 	checkAccessTokenFromAdminRedirect() {
 		if (window.location.search !== '') {
+			console.log(window.location.search)
 			let search = window.location.search.substr(7);
-			console.log(search)
 			let splittedSearch = search.split('&')
+			console.log(splittedSearch)
+			// debugger;
 			let accessToken = splittedSearch[0]
 			let appCode = splittedSearch[1].substr(8)
 			let appPass = splittedSearch[2].substr(8)
@@ -58,7 +60,7 @@ export class AppComponent implements OnInit {
 			sessionStorage.setItem('appCode', appCode)
 			sessionStorage.setItem('appPass', appPass)
 			sessionStorage.setItem('lang', lang)
-			window.location.href = hostName;
+			// window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
 			// Here redirect to local IP-address url of admin 
