@@ -52,6 +52,7 @@ export class TreeTableComponent implements OnInit {
 	permissionApprove: any;
 	enableApproveSliceBtn: string;
 	sliceInfo: any;
+	percenComplete = 0;
 
 	constructor(
 		// public reportsModalInstance: ReportsModalComponent,
@@ -76,8 +77,9 @@ export class TreeTableComponent implements OnInit {
 			this.refreshGridTableFromOrder(orderSliceList);
 		});
 
-		this.subscription = shared.subjProgressbarWs$.subscribe(progressbarList => {
-			this.setPercentValue(progressbarList);
+		this.subscription = shared.subjProgressbarWs$.subscribe((data: any) => {
+			let progressBarList = JSON.parse(data)
+			this.setPercentValue(progressBarList);
 		});
 
 		this.subscription = shared.subjHistoryValue$.subscribe(historyValue => {
@@ -122,6 +124,7 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
+		console.log(event)
 		if (event.node.parent != null) {
 			this.loader = true;
 			(this.groupCode = event.node.parent.data.code),
@@ -310,6 +313,8 @@ export class TreeTableComponent implements OnInit {
 
 		this.httpService.getSliceGroups().then(
 			data => {
+				console.log(data)
+				debugger;
 				this.getGridData(data);
 				this.gridData.forEach(function (groups, groupKey) {
 					self.expandedGroupCodeList.forEach(function (groupValue) {
@@ -385,11 +390,15 @@ export class TreeTableComponent implements OnInit {
 		if (this.sliceInfo) {
 			this.sliceInfo.forEach(function (childElement) {
 				console.log(childElement)
-				// progressbarList.forEach(function (progressElement) {
-				// 	if (childElement.data.id === progressElement.sliceId) {
-				// 		childElement.data.percentComplete = progressElement.percent;
-				// 	}
-				// });
+				console.log('progressBarList', progressbarList)
+				progressbarList.forEach(function (progressElement) {
+					console.log(progressElement)
+					if (childElement.id === progressElement.sliceId) {
+						childElement.percentComplete = progressElement.percent;
+						// this.value = progressElement.percent;
+						// this.getGridData()
+					}
+				});
 			});
 		}
 	}
@@ -397,4 +406,6 @@ export class TreeTableComponent implements OnInit {
 	getGridData(gridData) {
 		this.gridData = this.formatGridService.formatGridData(gridData, true, true);
 	}
+
+
 }
