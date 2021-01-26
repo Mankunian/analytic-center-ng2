@@ -103,7 +103,7 @@
 			<td>
 				<p-progressBar
 					*ngIf="rowData.statusCode == STATUS_CODES.IN_PROCESSING || rowData.statusCode == STATUS_CODES.WAITING_FOR_PROCESSING"
-					[value]="percenComplete"> </p-progressBar>
+					[value]="rowData.percentComplete"> </p-progressBar>
 			</td>
 		</tr>
 	</ng-template>
