@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Component, OnInit, Input } from "@angular/core";
-import { TreeNode } from "primeng/api";
+import { MessageService, TreeNode } from "primeng/api";
 import { HttpService } from "../services/http.service";
 import { MatDialog } from "@angular/material/dialog";
 import { ReportsModalContentComponent } from "../reports-modal/reports-modal.component";
@@ -66,6 +66,7 @@ export class TreeTableComponent implements OnInit {
 		private httpService: HttpService,
 		private formatGridService: FormatGridService,
 		private sharedService: SharedService,
+		public msg: MessageService
 	) {
 		this.subscription = shared.subjTerrCode$.subscribe(val => {
 			this.terrCode = val;
@@ -399,6 +400,12 @@ export class TreeTableComponent implements OnInit {
 					console.log(this.eventOnNodeExpand)
 					this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
 					this.gridData = [...this.gridData]; //refresh the data
+
+					if (sliceElem.percentComplete >= 100) {
+						sliceElem.percentComplete = 100;
+						this.msg.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
+						clearInterval(interval);
+					}
 				}, 2000);
 				// console.log(this.gridData)
 
