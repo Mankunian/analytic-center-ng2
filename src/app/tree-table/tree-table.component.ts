@@ -83,7 +83,7 @@ export class TreeTableComponent implements OnInit {
 		this.subscription = shared.subjProgressbarWs$.subscribe((data: any) => {
 			let progressBarList = JSON.parse(data)
 			this.progressBarList = progressBarList;
-			// this.setPercentValue(progressBarList);
+			this.setPercentValue(progressBarList)
 		});
 
 		this.subscription = shared.subjHistoryValue$.subscribe(historyValue => {
@@ -118,7 +118,6 @@ export class TreeTableComponent implements OnInit {
 
 	getSliceGroups() {
 		this.httpService.getSliceGroups().then(gridData => {
-			console.log(gridData)
 			this.getGridData(gridData);
 			this.loader = false;
 		},
@@ -394,39 +393,59 @@ export class TreeTableComponent implements OnInit {
 
 	checkForProgress() {
 		this.sliceInfo.forEach(sliceElem => {
-			if (sliceElem.id === 1) {
-				let interval = setInterval(() => {
-					sliceElem.percentComplete = sliceElem.percentComplete + Math.floor(Math.random() * 10) + 1;
-					console.log(this.eventOnNodeExpand)
-					this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
-					this.gridData = [...this.gridData]; //refresh the data
-
-					if (sliceElem.percentComplete >= 100) {
-						sliceElem.percentComplete = 100;
-						this.msg.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
-						clearInterval(interval);
+			// console.log(this.progressBarList)
+			if (this.progressBarList) {
+				this.progressBarList.forEach(progressElem => {
+					if (sliceElem.id === progressElem.sliceId) {
+						sliceElem.percentComplete = progressElem.percent;
+						this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
+						this.gridData = [...this.gridData];
 					}
-				}, 2000);
-				// console.log(this.gridData)
+				});
+			}
 
+			if (sliceElem.percentComplete >= 100) {
+				sliceElem.percentComplete = 100;
+				this.msg.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
 			}
 		});
 	}
 
-	// setPercentValue(progressbarList) {
-	// 	if (this.sliceInfo) {
-	// 		this.sliceInfo.forEach(function (childElement) {
-	// 			console.log(childElement)
-	// 			console.log('progressBarList', progressbarList)
-	// 			progressbarList.forEach(function (progressElement) {
-	// 				console.log(progressElement)
-	// 				if (childElement.id === progressElement.sliceId) {
-	// 					childElement.percentComplete = progressElement.percent;
-	// 				}
-	// 			});
-	// 		});
-	// 	}
-	// }
+	setPercentValue(progressbarList) {
+		// 1. В параметре метода имеем список прогрессбар 
+		// console.log(progressbarList)
+		// 2. Тут делаем проверку на открытие дерева 
+		progressbarList.forEach(progress => {
+			if (this.sliceInfo) {
+				// console.log(this.sliceInfo)
+				this.sliceInfo.forEach(slice => {
+					if (slice.id === progress.sliceId) {
+						// alert('Yes')
+						slice.percentComplete = progress.percent;
+						this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
+						this.gridData = [...this.gridData];
+					}
+				});
+			}
+		});
+
+
+
+
+
+		// if (this.sliceInfo) {
+		// 	this.sliceInfo.forEach(function (childElement) {
+		// 		progressbarList.forEach(function (progressElement) {
+		// 			console.log(progressElement)
+		// 			if (childElement.id === progressElement.sliceId) {
+		// 				childElement.percentComplete = progressElement.percent;
+		// 				this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
+		// 				this.gridData = [...this.gridData]; //refresh the data
+		// 			}
+		// 		});
+		// 	});
+		// }
+	}
 
 	getGridData(gridData) {
 		this.gridData = this.formatGridService.formatGridData(gridData, true, true);
