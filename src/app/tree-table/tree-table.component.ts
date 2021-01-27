@@ -404,27 +404,24 @@ export class TreeTableComponent implements OnInit {
 				});
 			}
 
-			if (sliceElem.percentComplete >= 100) {
-				sliceElem.percentComplete = 100;
-				this.msg.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
-			}
+			// if (sliceElem.percentComplete >= 100) {
+			// 	sliceElem.percentComplete = 100;
+			// 	this.msg.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
+			// }
 		});
 	}
 
 	setPercentValue(progressbarList) {
-		// 1. В параметре метода имеем список прогрессбар 
-		// console.log(progressbarList)
-		// 2. Тут делаем проверку на открытие дерева 
 		progressbarList.forEach(progress => {
 			if (this.sliceInfo) {
-				// console.log(this.sliceInfo)
 				this.sliceInfo.forEach(slice => {
 					if (slice.id === progress.sliceId) {
-						// alert('Yes')
 						slice.percentComplete = progress.percent;
 						this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
 						this.gridData = [...this.gridData];
 					}
+
+
 				});
 			}
 		});
