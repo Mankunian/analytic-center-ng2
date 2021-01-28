@@ -138,7 +138,6 @@ export class TreeTableComponent implements OnInit {
 
 			this.httpService.getSlices(this.groupCode, this.statusCode, this.year).then(
 				data => {
-					console.log(data)
 					this.sliceInfo = data;
 					this.checkForProgress()
 					event.node.children = this.formatGridService.formatGridData(data, false);
@@ -393,7 +392,6 @@ export class TreeTableComponent implements OnInit {
 
 	checkForProgress() {
 		this.sliceInfo.forEach(sliceElem => {
-			// console.log(this.progressBarList)
 			if (this.progressBarList) {
 				this.progressBarList.forEach(progressElem => {
 					if (sliceElem.id === progressElem.sliceId) {
@@ -403,11 +401,6 @@ export class TreeTableComponent implements OnInit {
 					}
 				});
 			}
-
-			// if (sliceElem.percentComplete >= 100) {
-			// 	sliceElem.percentComplete = 100;
-			// 	this.msg.add({ severity: 'info', summary: 'Success', detail: 'Process Completed' });
-			// }
 		});
 	}
 
@@ -420,28 +413,9 @@ export class TreeTableComponent implements OnInit {
 						this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
 						this.gridData = [...this.gridData];
 					}
-
-
 				});
 			}
 		});
-
-
-
-
-
-		// if (this.sliceInfo) {
-		// 	this.sliceInfo.forEach(function (childElement) {
-		// 		progressbarList.forEach(function (progressElement) {
-		// 			console.log(progressElement)
-		// 			if (childElement.id === progressElement.sliceId) {
-		// 				childElement.percentComplete = progressElement.percent;
-		// 				this.eventOnNodeExpand.node.children = this.formatGridService.formatGridData(this.sliceInfo, false);
-		// 				this.gridData = [...this.gridData]; //refresh the data
-		// 			}
-		// 		});
-		// 	});
-		// }
 	}
 
 	getGridData(gridData) {

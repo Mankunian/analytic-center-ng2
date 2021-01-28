@@ -34,7 +34,7 @@ export class MessagesComponent implements OnInit {
 			// console.log(sessionStorage.userInfo)
 			const userInfo = JSON.parse(sessionStorage.userInfo);
 			const username = userInfo.fullName;
-			const serverUrl = 'http://18.138.17.74:8085/notifications/' + username;
+			const serverUrl = 'https://18.138.17.74:8085/notifications/' + username;
 			const ws = new SockJS(serverUrl);
 			this.stompClient = Stomp.over(ws);
 
