@@ -3,6 +3,7 @@ import { MessageService } from "primeng/api";
 import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import { SharedService } from "../services/shared.service";
+import { GlobalConfig } from "../global";
 // import { Subscription } from "rxjs";
 // import { RxStompService } from "@stomp/ng2-stompjs";
 // import { SharedService } from "../services/shared.service";
@@ -34,7 +35,8 @@ export class MessagesComponent implements OnInit {
 			// console.log(sessionStorage.userInfo)
 			const userInfo = JSON.parse(sessionStorage.userInfo);
 			const username = userInfo.fullName;
-			const serverUrl = 'https://18.138.17.74:8085/notifications/' + username;
+			// const serverUrl = 'https://18.138.17.74:8085/notifications/' + username;
+			const serverUrl = GlobalConfig.SOCKET_URL + username;
 			const ws = new SockJS(serverUrl);
 			this.stompClient = Stomp.over(ws);
 
