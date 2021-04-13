@@ -32,7 +32,6 @@ export class MessagesComponent implements OnInit {
 
 	initializeWebSocketConnection() {
 		if (sessionStorage.userInfo) {
-			// console.log(sessionStorage.userInfo)
 			const userInfo = JSON.parse(sessionStorage.userInfo);
 			const username = userInfo.fullName;
 			// const serverUrl = 'https://18.138.17.74:8085/notifications/' + username;

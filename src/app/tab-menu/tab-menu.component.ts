@@ -47,7 +47,7 @@ export class TabMenuComponent implements OnInit {
 
 	gridData: TreeNode[];
 
-	dateFrom = new FormControl(new Date(1577859165 * 1000));
+	dateFrom = new FormControl(new Date(new Date().getFullYear(), 0, 1));
 	dateTo = new FormControl(new Date());
 
 	sliceNumber: SliceNumber;
@@ -55,8 +55,6 @@ export class TabMenuComponent implements OnInit {
 	permissionElem: any;
 	elementPermissionList: any;
 	elementGroup: any;
-	// messageService: any;
-	// enableGetReport: boolean;
 
 
 	constructor(
