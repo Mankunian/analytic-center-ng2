@@ -30,7 +30,7 @@ else if (hostname.startsWith("10")) {
 else if (hostname.startsWith("192")) {
 	sourceURLs.ADM_PAGE = 'http://192.168.210.69';
 	sourceURLs.ADM_API_URL = 'http://192.168.210.69:8084';
-	sourceURLs.SOCKET_URL = 'http://192.168.210.41:8085/notifications.';
+	sourceURLs.SOCKET_URL = 'http://192.168.210.41:8085/notifications/';
 }
 else if (hostname.startsWith("master")) {
 	sourceURLs.ADM_PAGE = 'https://master.d260huhvcvtk4w.amplifyapp.com';
