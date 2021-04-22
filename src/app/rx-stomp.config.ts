@@ -2,9 +2,11 @@ import { InjectableRxStompConfig } from "@stomp/ng2-stompjs";
 import * as SockJS from "sockjs-client";
 import { GlobalConfig } from "./global";
 
+let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+
 export const rxStompConfig: InjectableRxStompConfig = {
 	// Which server?
-	brokerURL: GlobalConfig.SOCKET_URL + "/notifications" + GlobalConfig.BASE_AUTH_USER,
+	brokerURL: GlobalConfig.SOCKET_URL + "/notifications" + userInfo.login,
 
 	// Headers
 	// Typical keys: login, passcode, host
@@ -23,7 +25,8 @@ export const rxStompConfig: InjectableRxStompConfig = {
 	reconnectDelay: 10000,
 
 	webSocketFactory: () => {
-		return new SockJS(GlobalConfig.SOCKET_URL + "/notifications" + GlobalConfig.BASE_AUTH_USER);
+		// return new SockJS(GlobalConfig.SOCKET_URL + "/notifications" + GlobalConfig.BASE_AUTH_USER);
+		return new SockJS(GlobalConfig.SOCKET_URL + "/notifications");
 	},
 
 	// Will log diagnostics on console

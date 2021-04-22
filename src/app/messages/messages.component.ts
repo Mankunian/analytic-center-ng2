@@ -33,9 +33,8 @@ export class MessagesComponent implements OnInit {
 	initializeWebSocketConnection() {
 		if (sessionStorage.userInfo) {
 			const userInfo = JSON.parse(sessionStorage.userInfo);
-			const username = userInfo.fullName;
-			// const serverUrl = 'https://18.138.17.74:8085/notifications/' + username;
-			const serverUrl = GlobalConfig.SOCKET_URL + username;
+			const login = userInfo.login;
+			const serverUrl = 'https://18.138.17.74:8085/notifications/' + login;
 			const ws = new SockJS(serverUrl);
 			this.stompClient = Stomp.over(ws);
 
