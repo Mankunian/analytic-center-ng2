@@ -14,34 +14,34 @@ const sourceURLs = {
 	ADM_PAGE: '',
 	ADM_API_URL: '',
 	BASE_API_URL: window.location.protocol.toString() + "//" + hostname.toString() + ":8081/api/v1/",
-	SOCKET_URL: window.location.protocol.toString() + "//" + hostname.toString() + ":8085/",
+	SOCKET_URL: window.location.protocol.toString() + "//" + hostname.toString() + ":8085/notifications/",
 }
 if (hostname === 'localhost') {
 	sourceURLs.ADM_PAGE = 'http://localhost:4200';
 	sourceURLs.ADM_API_URL = 'https://18.138.17.74:8084';
 	sourceURLs.BASE_API_URL = 'https://18.140.232.52:8081/api/v1/';
-	sourceURLs.SOCKET_URL = 'https://18.138.17.74:8085/';
+	sourceURLs.SOCKET_URL = 'https://18.138.17.74:8085/notifications/';
 }
 else if (hostname.startsWith("10")) {
 	sourceURLs.ADM_PAGE = "http://10.2.30.69";
 	sourceURLs.ADM_API_URL = "http://10.2.30.69:8084";
-	sourceURLs.SOCKET_URL = 'http://192.168.210.41:8085/';
+	sourceURLs.SOCKET_URL = 'http://192.168.210.41:8085/notifications/';
 }
 else if (hostname.startsWith("192")) {
 	sourceURLs.ADM_PAGE = 'http://192.168.210.69';
 	sourceURLs.ADM_API_URL = 'http://192.168.210.69:8084';
-	sourceURLs.SOCKET_URL = 'http://192.168.210.41:8085/';
+	sourceURLs.SOCKET_URL = 'http://192.168.210.41:8085/notifications.';
 }
 else if (hostname.startsWith("master")) {
 	sourceURLs.ADM_PAGE = 'https://master.d260huhvcvtk4w.amplifyapp.com';
 	sourceURLs.ADM_API_URL = 'https://18.138.17.74:8084';
 	sourceURLs.BASE_API_URL = 'https://18.140.232.52:8081/api/v1/';
-	sourceURLs.SOCKET_URL = 'https://18.138.17.74:8085';
+	sourceURLs.SOCKET_URL = 'https://18.138.17.74:8085/notifications/';
 }
-else if (hostname.startsWith('stat.kgp.kz')) {
+else if (hostname.startsWith('stat')) {
 	sourceURLs.ADM_PAGE = 'https://ac.kgp.kz';
 	sourceURLs.ADM_API_URL = 'https://ac.kgp.kz:8084';
-	sourceURLs.SOCKET_URL = 'https://stat.kgp.kz:8085'
+	sourceURLs.SOCKET_URL = 'https://stat.kgp.kz:8085/notifications/'
 }
 
 
