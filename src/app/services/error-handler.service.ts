@@ -9,15 +9,10 @@ export class ErrorHandlerService {
 
 	alertError(errMsg) {
 		if (errMsg.error.errDetails == 'invalid_token: Token has expired' || errMsg.error.error == 'invalid_token') {
-			// alert('Обвновление нового токена')
 			this.http.refreshTokenService().subscribe((data: any) => {
-				console.log(data.access_token)
 				let token = data.access_token
-				sessionStorage.setItem('token', token)
-				window.location.href = window.location.origin;
+				sessionStorage.setItem('token', token);
 			}, error => {
-				console.log(error)
-				// alert('Просрочен refresh_token')
 				window.location.href = GlobalConfig.ADMIN_PAGE
 			})
 		} else if (errMsg.error.errStatus == "BAD_REQUEST") {
