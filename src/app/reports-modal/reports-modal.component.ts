@@ -747,9 +747,7 @@ export class ReportsModalContentComponent {
 			})
 
 			this.requestedReports.deps.forEach((element, key) => {
-				// console.log(element, key)
 				let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
-				console.log(regIndex)
 				regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
 
 				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
@@ -786,30 +784,23 @@ export class ReportsModalContentComponent {
 	}
 
 	redirectSystemToShowReport(item) {
-		console.log(item)
 		let department = item.department;
-
-
 		if (item.report.code == '803') {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = item.department.searchPattern;
 			let sliceId = this.sliceId;
-
 		}
 		if (department == undefined) {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = '';
 			let sliceId = this.sliceId
-
 		} else {
 			let reportId = item.report.code;
 			let regionCode = item.region.code;
 			let dvedomostv = item.department.code;
 			let sliceId = this.sliceId;
-
-
 		}
 	}
 }
