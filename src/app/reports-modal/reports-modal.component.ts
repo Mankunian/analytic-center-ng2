@@ -129,7 +129,6 @@ export class ReportsModalContentComponent {
 	getReportsBySliceId() {
 		let sliceId = this.sliceId
 		this.http.getReportsBySliceIdService(sliceId).subscribe(response => {
-			console.log(response)
 			this.reportGroups = response;
 			this.reportGroups.forEach(report => {
 				// this.checkReports(report.code)
@@ -185,7 +184,7 @@ export class ReportsModalContentComponent {
 		}
 	}
 
-	// on click by tab reports call method for each 
+	// on click by tab reports call method for each
 	onClickTabReport(selectedReportCode) {
 		this.readyReports = [];
 		this.checkReports(selectedReportCode)
@@ -224,7 +223,6 @@ export class ReportsModalContentComponent {
 		this.http.getDepsByReportId(selectedReportCode).subscribe(departments => {
 			this.departments = departments
 			this.gridData.deps[selectedReportCode] = this.formatGridService.formatGridData(departments, false);
-			console.log(this.departments)
 			if (this.departments[0].code == '03') {
 				this.requestedReports.deps[selectedReportCode] = this.departments
 				this.isReportsSelectedDeps = true;
@@ -262,7 +260,6 @@ export class ReportsModalContentComponent {
 		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
 		this.show3Table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
-			console.log(false)
 			this.gridData.deps[reportCode] = this.formatGridService.formatGridData(data, true, true);
 			this.requestedReports.deps[reportCode] = [];
 			this.getColsTable()
@@ -286,7 +283,6 @@ export class ReportsModalContentComponent {
 		this.show1table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
 			if (reportCode == '530' || reportCode == '731') {
-				console.log(true)
 				data.forEach(element => {
 					element.children.forEach(region => {
 						delete region.children
@@ -296,7 +292,6 @@ export class ReportsModalContentComponent {
 				this.requestedReports.orgz[reportCode] = [];
 				this.getColsTable()
 			} else {
-				console.log(false)
 				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
 				this.requestedReports.orgz[reportCode] = [];
 				this.getColsTable()
@@ -354,10 +349,8 @@ export class ReportsModalContentComponent {
 	}
 
 	getRegionsChildrenNew(event, searchPattern, groupCode) {
-		console.log(event, searchPattern, groupCode)
 		this.http.getGroupsChildren4DialogTable(searchPattern, this.hierarchyReportCode).then(data => {
 			event.node.children = this.formatGridService.formatGridData(data, false);
-			console.log(event.node.children)
 			this.gridData.deps[groupCode] = [...this.gridData.deps[groupCode]]; //refresh the data
 			this.loadingOrgz = false;
 		}, error => {
@@ -445,17 +438,13 @@ export class ReportsModalContentComponent {
 		} else if (this.show2table) {
 			this.readyReportsParts = 0;
 			// Check report Code for start with 0 or not. Example: 060, 510 etc..
-			console.log(this.requestedReports.regs)
 			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
-				// console.log('key' + key)
 				this.startWith0ReportCodeRegs = key.startsWith("0"); // search for report code starts with 0
 				if (this.startWith0ReportCodeRegs) { // if true
 					this.removeLeadingZeroFromStringRegs() // 060 = 60
 				}
 			}
-			// console.log(this.requestedReports.regs)
 			this.requestedReports.regs.forEach((element, index) => {
-				// console.log(element)
 				if (this.startWith0ReportCodeRegs) {
 					let strIndex = '0' + index;
 					this.regionsTabIndex = strIndex
@@ -466,10 +455,8 @@ export class ReportsModalContentComponent {
 				// eslint-disable-next-line @typescript-eslint/no-this-alias
 				let self = this;
 				element.forEach(region => {
-					// console.log(this.requestedReports.deps[this.regionsTabIndex])
 					if (this.requestedReports.deps[this.regionsTabIndex] != undefined) {
 						this.requestedReports.deps[this.regionsTabIndex].forEach(depElemen => {
-							// console.log(depElemen);
 							self.selectedReportsList[counter] = {
 								report: reportInfo,
 								region: region,
@@ -492,17 +479,13 @@ export class ReportsModalContentComponent {
 		} else if (this.show3Table) {
 			this.readyReportsParts = 0;
 			// Check report Code for start with 0 or not. Example: 060, 510 etc..
-			console.log(this.requestedReports.regs)
 			for (const [key, value] of Object.entries(this.requestedReports.regs)) {
-				// console.log('key' + key)
 				this.startWith0ReportCodeRegs = key.startsWith("0"); // search for report code starts with 0
 				if (this.startWith0ReportCodeRegs) { // if true
 					this.removeLeadingZeroFromStringRegs() // 060 = 60
 				}
 			}
-			// console.log(this.requestedReports.regs)
 			this.requestedReports.regs.forEach((element, index) => {
-				// console.log(element)
 				if (this.startWith0ReportCodeRegs) {
 					let strIndex = '0' + index;
 					this.regionsTabIndex = strIndex
@@ -540,7 +523,6 @@ export class ReportsModalContentComponent {
 		let newKey;
 		let oldKey;
 		for (const [key, value] of Object.entries(this.requestedReports.regs)) {
-			// console.log(key, value)
 			if (key.charAt(0) === '0') {
 				oldKey = key;
 				newKey = oldKey.substring(1);
@@ -548,7 +530,6 @@ export class ReportsModalContentComponent {
 				delete this.requestedReports.regs[oldKey];
 			}
 		}
-		console.log(this.requestedReports.regs)
 	}
 
 	removeSelectedReport = function (index, selectedReport) {
@@ -622,7 +603,6 @@ export class ReportsModalContentComponent {
 			selectedLang = this.checkLang();
 		if (this.selectedReportsQuery != undefined && this.selectedReportsQuery.length > 0) {
 			reportsSlice = this.selectedReportsQuery.splice(0, this.sliceSize);
-			// console.log(reportsSlice)
 			this.generateReports(reportsSlice, selectedLang, counterFromIn);
 		} else {
 			this.isReportsLoading = false;
@@ -633,7 +613,6 @@ export class ReportsModalContentComponent {
 		if (reportsSlice.length === 0) {
 			return false;
 		} else {
-			// console.log(reportsSlice)
 			this.http.generateReports(selectedLang, reportsSlice).subscribe(
 				data => {
 					this.showReports(data);
@@ -667,8 +646,6 @@ export class ReportsModalContentComponent {
 				reportDownloadUrl = "#";
 				reportDownloadName = errMsg;
 			} else {
-				console.log('1aaaaaaaaaaaaaaaaa')
-				console.log(element)
 				reportDownloadUrl = self.BASE_API_URL + element.lang + "/slices/reports/" + element.value + "/download";
 				reportDownloadName = self.generateReportName(element);
 			}
@@ -682,7 +659,6 @@ export class ReportsModalContentComponent {
 	}
 
 	generateReportName(element) {
-		console.log(element)
 		let delimiter = " - ",
 			reportName,
 			regionName,
@@ -693,7 +669,6 @@ export class ReportsModalContentComponent {
 			govCode = element.govCode,
 			langPostfix = "";
 
-		console.log(groupCode)
 		if (element.lang !== "RU") {
 			langPostfix = delimiter + "[" + element.lang + "]";
 		}
@@ -708,9 +683,7 @@ export class ReportsModalContentComponent {
 		}
 		else if (this.show2table) {
 			this.requestedReports.regs.forEach((element, key) => {
-				// console.log(element, key)
 				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
-				console.log(regIndex)
 				regIndex !== -1 ? (regionName = this.requestedReports.regs[key][regIndex].name) : (regionName = "");
 
 				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
@@ -721,9 +694,7 @@ export class ReportsModalContentComponent {
 			})
 
 			this.requestedReports.deps.forEach((element, key) => {
-				// console.log(element, key)
 				let regIndex = this.requestedReports.regs[groupCode].findIndex(x => x.code === regCode);
-				console.log(regIndex)
 				regIndex !== -1 ? (regionName = this.requestedReports.regs[groupCode][regIndex].name) : (regionName = "");
 
 				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);
@@ -734,9 +705,7 @@ export class ReportsModalContentComponent {
 		}
 		else if (this.show3Table) {
 			this.requestedReports.regs.forEach((element, key) => {
-				// console.log(element, key)
 				let regIndex = this.requestedReports.regs[key].findIndex(x => x.code === regCode);
-				console.log(regIndex)
 				regIndex !== -1 ? (regionName = this.requestedReports.regs[key][regIndex].name) : (regionName = "");
 
 				let depIndex = this.requestedReports.deps[groupCode].findIndex(x => x.code === orgCode);

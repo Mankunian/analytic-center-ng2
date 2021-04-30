@@ -90,7 +90,6 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	getGroupList() {
-		// console.log('Получение групп отчетов')
 		this.httpService.getGroupList().subscribe(data => {
 			this.groupList = data;
 			let permissionReport = []
@@ -223,7 +222,6 @@ export class TabMenuComponent implements OnInit {
 	}
 
 	showToastMessage(elem) {
-		console.log(elem)
 		let groupName = elem.groupName;
 		let period = elem.period;
 		let detail = groupName + '' + period
