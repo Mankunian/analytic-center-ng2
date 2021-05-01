@@ -44,21 +44,19 @@ export class AppComponent implements OnInit {
 		if (window.location.search !== '') {
 			console.log(window.location.search)
 			let search = window.location.search.substr(7);
-			let splittedSearch = search.split('&')
-			console.log(splittedSearch)
-			// debugger;
+			let splittedSearch = search.split('&');
 			let accessToken = splittedSearch[0]
-			let appCode = splittedSearch[1].substr(8)
-			let appPass = splittedSearch[2].substr(8)
-			let refreshToken = splittedSearch[3].substr(14)
-			let lang = splittedSearch[4].substr(5)
+			// let appCode = splittedSearch[1].substr(8)
+			// let appPass = splittedSearch[2].substr(8)
+			let refreshToken = splittedSearch[1].substr(14)
+			let lang = splittedSearch[2].substr(5)
 			let hostName = window.location.origin;
 
 
 			sessionStorage.setItem('token', accessToken)
 			sessionStorage.setItem('refresh_token', refreshToken)
-			sessionStorage.setItem('appCode', appCode)
-			sessionStorage.setItem('appPass', appPass)
+			// sessionStorage.setItem('appCode', appCode)
+			// sessionStorage.setItem('appPass', appPass)
 			sessionStorage.setItem('lang', lang)
 			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
