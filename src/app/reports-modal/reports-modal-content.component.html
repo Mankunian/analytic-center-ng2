@@ -33,8 +33,8 @@
 					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]="true" matInput value="{{ data.sliceId }}" />
 					</mat-form-field>
-					<span
-						class="reports-modal-form-label reports-modal-form-label-period">{{ "REPORTS_MODAL.REPORT_PERIOD" | translate }}</span>
+					<span class="reports-modal-form-label reports-modal-form-label-period">{{ "REPORTS_MODAL.REPORT_PERIOD" |
+						translate }}</span>
 					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]="true" matInput value="{{ data.slicePeriod }}" />
 					</mat-form-field>
@@ -89,7 +89,7 @@
 								</div>
 								<ul *ngIf="!isReportsLoading">
 									<li *ngFor="let item of readyReports">
-										<a href="{{ item.url }}" target="_blank">{{ item.name | truncate: 55 }}</a>
+										<a href="{{ item.url }}">{{ item.name | truncate: 55 }}</a>
 									</li>
 								</ul>
 							</div>
