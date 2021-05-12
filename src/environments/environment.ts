@@ -5,7 +5,6 @@
 export const environment = {
 	production: false,
 	api: "wss://anal-centre.tk:8081/notifications",
-	apiSocket: "https://18.140.232.52:8081/notifications",
 };
 
 /*
