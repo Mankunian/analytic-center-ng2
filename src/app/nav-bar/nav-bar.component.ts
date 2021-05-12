@@ -87,18 +87,6 @@ export class NavBarComponent implements OnInit {
 		if (this.selectedTerritory) {
 			this.sharedService.sendTerrCode(this.selectedTerritory);
 		}
-
-		// let userId = userInfo.userId;
-		// this.userId = userInfo.userId;
-		// this.httpService.getUserInfoService(userId).subscribe((data: any) => {
-		// 	console.log(data)
-		// 	if (data.isChangePasswordRequired === true) {
-		// 		this.displayBasic = true;
-		// 	}
-		// }, error => {
-		// 	console.log(error);
-		// 	this.errorHandler.alertError(error)
-		// })
 	}
 
 
@@ -133,23 +121,4 @@ export class NavBarComponent implements OnInit {
 	cancelDialog() {
 		this.displayBasic = false;
 	}
-
-	// saveChangePass() {
-	// 	this.disabledBtn = true;
-	// 	let newPass = this.newPass;
-	// 	let oldPass = this.currentPass;
-	// 	let userId = this.userId;
-
-	// 	this.httpService.changePassUserService(newPass, oldPass, userId).subscribe(data => {
-	// 		console.log(data)
-	// 		this.displayBasic = false;
-	// 		this.messageService.add({ severity: 'success', summary: '200', detail: 'Пароль успешно изменен' });
-	// 	}, error => {
-	// 		console.log(error)
-	// 		this.errorHandler.alertError(error)
-	// 		this.currentPass = '';
-	// 		this.newPass = '';
-	// 		this.disabledBtn = false;
-	// 	})
-	// }
 }

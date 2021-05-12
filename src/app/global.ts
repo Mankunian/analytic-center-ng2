@@ -3,7 +3,6 @@ let hostname = window.location.hostname;
 sessionStorage.setItem('hostname', hostname);
 
 let username;
-// console.log(JSON.parse(sessionStorage.userInfo));
 if (sessionStorage.userInfo) {
 	let userInfo = JSON.parse(sessionStorage.userInfo);
 	username = userInfo.fullName;

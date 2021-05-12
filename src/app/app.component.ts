@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
 
 	checkTokenForValidation() {
 		this.http.checkTokenValidationService().subscribe(data => {
-			console.log(data)
 			if (data == null) {
 				let tokenIsValid = 'true';
 				sessionStorage.setItem('tokenIsValid', tokenIsValid);
@@ -58,7 +57,7 @@ export class AppComponent implements OnInit {
 			sessionStorage.setItem('lang', lang)
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
-			// Here redirect to local IP-address url of admin 
+			// Here redirect to local IP-address url of admin
 			window.location.href = GlobalConfig.ADMIN_PAGE
 		}
 	}

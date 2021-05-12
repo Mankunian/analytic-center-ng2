@@ -128,7 +128,6 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
-		console.log(event)
 		this.eventOnNodeExpand = event;
 		if (event.node.parent != null) {
 			this.loader = true;
@@ -264,7 +263,7 @@ export class TreeTableComponent implements OnInit {
 								gridValue["expanded"] = true;
 								gridValue.children.forEach(function (childValue) {
 									if (
-										// orderListValue.statusCode == self.STATUS_CODES.WAITING_FOR_PROCESSING && 
+										// orderListValue.statusCode == self.STATUS_CODES.WAITING_FOR_PROCESSING &&
 										childValue.data.code == self.STATUS_CODES.IN_PROCESSING &&
 										childValue.data.statusYear == orderListValue.year
 									) {
@@ -318,7 +317,6 @@ export class TreeTableComponent implements OnInit {
 
 		this.httpService.getSliceGroups().then(
 			data => {
-				console.log(data)
 				this.getGridData(data);
 				this.gridData.forEach(function (groups, groupKey) {
 					self.expandedGroupCodeList.forEach(function (groupValue) {

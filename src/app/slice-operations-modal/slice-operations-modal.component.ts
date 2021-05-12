@@ -75,7 +75,6 @@ export class SliceOperationsModalContentComponent {
 		this.enableConfirmSliceBtn = this.data.permissionConfirm
 
 		this.enableApproveSliceBtn = this.data.permissionApprove
-		console.log(this.enableApproveSliceBtn)
 
 		this.injectValueToModal = this.data;
 		let statusCode = this.injectValueToModal.statusCode
@@ -106,18 +105,15 @@ export class SliceOperationsModalContentComponent {
 			this.showOnApprovalBtn = true;
 		}
 		if (terrCode.startsWith('1900')) {
-			console.log(true)
 			this.headTerritory = true;
 		}
 	}
 
 	getTerritory() {
 		this.http.getTerritories().subscribe((data: any) => {
-			// console.log(data)
 			let terrCode = this.injectValueToModal.terrCode
 			data.forEach(element => {
 				if (terrCode == element.code) {
-					console.log(terrCode, '=', element.code)
 					this.allowedOrgId = true;
 				}
 			});
@@ -166,7 +162,6 @@ export class SliceOperationsModalContentComponent {
 	//Перевести в предварительный
 	sendToPreliminary() {
 		this.http.sendToPreliminaryService(this.injectValueToModal.sliceId).subscribe(data => {
-			console.log(data)
 			alert("Операция прошла успешна");
 			this.http.getHistory(this.injectValueToModal.sliceId).subscribe(historyValue => {
 				this.service.sendHistoryList(historyValue);
@@ -215,7 +210,6 @@ export class SliceOperationsModalContentComponent {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log(result)
 		});
 	}
 
@@ -287,12 +281,10 @@ export class EditReasonComponent implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	ngOnInit() {
 		this.objOfRejectionReason = this.data; // rowEntity slice from table
-		console.log(this.objOfRejectionReason)
 	}
 
 	saveEditReason(reason) {
 		let allowedOrgId = this.objOfRejectionReason[2]
-		console.log(allowedOrgId)
 		if (allowedOrgId) {
 			let SaveEditReasonObj = {
 				historyId: this.objOfRejectionReason[1].id,

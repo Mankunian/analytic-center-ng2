@@ -12,7 +12,6 @@ export class SharedService {
 	subjTerrCode$ = this.subTerrCode.asObservable();
 
 	sendTerrCode(terrCode: string) {
-		// console.log(terrCode)
 		this.subTerrCode.next(terrCode)
 	}
 
@@ -21,11 +20,10 @@ export class SharedService {
 	subjTable$ = this.subTable.asObservable();
 
 	showTableAgreement(showTable: boolean) {
-		console.log('показать таблицу ' + showTable)
 		this.subTable.next(showTable)
 	}
 
-	// HistoryList update 
+	// HistoryList update
 	private subHistoryValue = new Subject();
 	subjHistoryValue$ = this.subHistoryValue.asObservable()
 
@@ -46,7 +44,6 @@ export class SharedService {
 	subjGridInAgreement$ = this.subGridInAgreement.asObservable()
 
 	sendGridInAgreement(gridData: any) {
-		console.log(gridData)
 		this.subGridInAgreement.next(gridData)
 	}
 
@@ -58,7 +55,7 @@ export class SharedService {
 		this.subBtnStatus.next(btnStatus)
 	}
 
-	// Список групп на КАЗ во вкладке "Сформировать срез" 
+	// Список групп на КАЗ во вкладке "Сформировать срез"
 	private subGroupListKaz = new Subject();
 	subjGroupListKaz$ = this.subGroupListKaz.asObservable();
 
@@ -109,7 +106,6 @@ export class SharedService {
 	subjGridAgreementHeaderInfo$ = this.subGridAgreementHeaderInfo.asObservable();
 
 	sendHeaderInfo(headerInfoObj: any) {
-		console.log(headerInfoObj)
 		this.subGridAgreementHeaderInfo.next(headerInfoObj)
 	}
 
@@ -118,7 +114,6 @@ export class SharedService {
 	subjGridAgreementVisibleStatus$ = this.subGridAgreementVisibleStatus.asObservable();
 
 	sendVisibleTableInAgreement(status: any) {
-		console.log(status)
 		this.subGridAgreementVisibleStatus.next(status)
 	}
 
