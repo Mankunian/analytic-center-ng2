@@ -12,6 +12,22 @@
   font-weight: 700;
   padding: 15px 0;
 }
+
 body .ui-treetable .ui-treetable-tbody > tr > td {
   padding: 0.3em 0.857em;
+}
+
+.marqueeText{
+	font-weight: 700;
+	color: #000 !important;
+}
+
+.marquee{
+	position: fixed;
+	bottom: 0;
+	background-color: #fff;
+	z-index: 10000;
+	width: 100%;
+	border: 2px solid #eaeaea;
+	height: 30px;
 }

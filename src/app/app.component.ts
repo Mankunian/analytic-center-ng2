@@ -12,6 +12,7 @@ import { ErrorHandlerService } from './services/error-handler.service';
 })
 export class AppComponent implements OnInit {
 	userInfo: Record<string, any>;
+	marqueeText: any[];
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor(private http: HttpService,
 		public tabMenuComponent: TabMenuComponent,
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.checkAccessTokenFromAdminRedirect()
-		this.checkTokenForValidation()
+		this.checkTokenForValidation();
+		this.checkNotification();
 		let hostname = window.location.hostname;
 		sessionStorage.setItem('hostname', hostname)
 	}
@@ -42,27 +44,38 @@ export class AppComponent implements OnInit {
 
 	checkAccessTokenFromAdminRedirect() {
 		if (window.location.search !== '') {
-			console.log(window.location.search)
 			let search = window.location.search.substr(7);
 			let splittedSearch = search.split('&');
-			let accessToken = splittedSearch[0]
-			// let appCode = splittedSearch[1].substr(8)
-			// let appPass = splittedSearch[2].substr(8)
-			let refreshToken = splittedSearch[1].substr(14)
-			let lang = splittedSearch[2].substr(5)
+			let accessToken = splittedSearch[0];
+			let refreshToken = splittedSearch[1].substr(14);
+			let lang = splittedSearch[2].substr(5);
+			let appCode = splittedSearch[3].substr(8);
 			let hostName = window.location.origin;
 
-
-			sessionStorage.setItem('token', accessToken)
-			sessionStorage.setItem('refresh_token', refreshToken)
-			// sessionStorage.setItem('appCode', appCode)
-			// sessionStorage.setItem('appPass', appPass)
-			sessionStorage.setItem('lang', lang)
+			sessionStorage.setItem('token', accessToken);
+			sessionStorage.setItem('refresh_token', refreshToken);
+			sessionStorage.setItem('lang', lang);
+			sessionStorage.setItem('appCode', appCode);
 			window.location.href = hostName;
 		} else if (!sessionStorage.token) {
 			alert('У вас недостаточно прав')
 			// Here redirect to local IP-address url of admin 
 			window.location.href = GlobalConfig.ADMIN_PAGE
 		}
+	}
+
+
+	checkNotification() {
+		let appCode = sessionStorage.getItem('appCode');
+		this.http.getTechnicalNotificationService(appCode).subscribe((data: any) => {
+			console.log(data);
+			this.marqueeText = [];
+			data.forEach(element => {
+				if (element.status == 'PLANNED') {
+					this.marqueeText.push(element);
+
+				}
+			});
+		})
 	}
 }

@@ -10,8 +10,8 @@
 		<div class="bar"></div>
 	</div>
 </div>
-<p-treeTable [style]="{'margin': '15px 0'}" [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true"
-	[loading]="loader" [showLoader]="false">
+<p-treeTable class="mb-4" [style]="{'margin': '15px 0'}" [value]="gridData" (onNodeExpand)="onNodeExpand($event)"
+	[lazy]="true" [loading]="loader" [showLoader]="false">
 	<ng-template pTemplate="colgroup" let-columns>
 		<colgroup>
 			<!-- treeTableToggler -->
@@ -19,7 +19,7 @@
 			<!-- Группы -->
 			<col style="width: 40%;" />
 			<!-- На номер -->
-			<col style="width: 6%;" />
+			<col style="width: auto" />
 			<!-- Сформирован -->
 			<col style="width: 10%;" />
 			<!-- Действие -->

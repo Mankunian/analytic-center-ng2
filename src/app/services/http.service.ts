@@ -28,6 +28,10 @@ export class HttpService {
 		})
 	}
 
+	getTechnicalNotificationService(appCode) {
+		return this.http.get(GlobalConfig.ADM_URL + '/api/v1/ru/adm-core/maintenance-messages/?app-code=' + appCode);
+	}
+
 	checkTokenValidationService() {
 		let token = sessionStorage.token;
 		let headers = new HttpHeaders({

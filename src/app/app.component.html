@@ -1,3 +1,12 @@
 <app-messages></app-messages>
 <app-nav-bar></app-nav-bar>
 <app-tab-menu></app-tab-menu>
+
+<div class="marquee">
+	<marquee behavior="scroll" direction="left">
+		<span style="color: red;" *ngFor="let item of marqueeText; let i = index">
+			<span class="marqueeText">{{i+1}}.</span>
+			{{item.message}} с {{item.startDate}} по
+			{{item.endDate}} </span>
+	</marquee>
+</div>
