@@ -4,12 +4,6 @@ import { Stomp } from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import { SharedService } from "../services/shared.service";
 import { GlobalConfig } from "../global";
-// import { Subscription } from "rxjs";
-// import { RxStompService } from "@stomp/ng2-stompjs";
-// import { SharedService } from "../services/shared.service";
-// import { ErrorHandlerService } from "../services/error-handler.service";
-// import { HttpService } from "../services/http.service";
-// import { GlobalConfig } from "../global";
 
 
 // eslint-disable-next-line prettier/prettier

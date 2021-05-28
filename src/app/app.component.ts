@@ -17,29 +17,17 @@ export class AppComponent implements OnInit {
 	constructor(private http: HttpService,
 		public tabMenuComponent: TabMenuComponent,
 		public navbarComponent: NavBarComponent,
-		public errorHandler: ErrorHandlerService
-	) { }
+		public errorHandler: ErrorHandlerService,
+	) {
+	}
 
 	ngOnInit() {
-		this.checkAccessTokenFromAdminRedirect()
+		this.checkAccessTokenFromAdminRedirect();
 		this.checkTokenForValidation();
 		this.checkNotification();
 		let hostname = window.location.hostname;
 		sessionStorage.setItem('hostname', hostname)
 	}
-
-	checkTokenForValidation() {
-		this.http.checkTokenValidationService().subscribe(data => {
-			if (data == null) {
-				let tokenIsValid = 'true';
-				sessionStorage.setItem('tokenIsValid', tokenIsValid);
-			}
-		}, error => {
-			console.log(error);
-			this.errorHandler.alertError(error);
-		})
-	}
-
 
 	checkAccessTokenFromAdminRedirect() {
 		if (window.location.search !== '') {
@@ -63,6 +51,17 @@ export class AppComponent implements OnInit {
 		}
 	}
 
+	checkTokenForValidation() {
+		this.http.checkTokenValidationService().subscribe(data => {
+			if (data == null) {
+				let tokenIsValid = 'true';
+				sessionStorage.setItem('tokenIsValid', tokenIsValid);
+			}
+		}, error => {
+			console.log(error);
+			this.errorHandler.alertError(error);
+		})
+	}
 
 	checkNotification() {
 		let appCode = sessionStorage.getItem('appCode');
@@ -75,6 +74,8 @@ export class AppComponent implements OnInit {
 					element.endDate = this.convertEndDate(element);
 				}
 			});
+		}, error => {
+			this.errorHandler.alertError(error)
 		})
 	}
 

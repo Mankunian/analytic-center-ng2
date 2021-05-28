@@ -29,11 +29,7 @@
 	<span class="title">{{ "HOME.STAT_SREZ" | translate }}</span>
 	<span *ngIf="userInfo" (click)="showMyContainer=!showMyContainer" class="userInfo">
 		<img src="assets/img/usuario.png" alt="">
-
 		{{fullNameUser}} <i style="font-size: 12px;" class="pi pi-chevron-down"></i> </span>
-
-
-
 	<div class="userInfoBlock" *ngIf="showMyContainer">
 		<div class="info">
 			<h6>Логин:<span> {{userInfo.login}}</span></h6>
@@ -49,32 +45,6 @@
 
 </div>
 <br />
-
-<!-- <p-dialog header="Требуется смена пароля для безопасности" [(visible)]="displayBasic" [style]="{width: '50vw'}"
-	[baseZIndex]="10000">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-6">
-				<label for="oldPassword">Старый пароль</label>
-				<input [(ngModel)]="currentPass" type="password" class="form-control" id="oldPassword">
-			</div>
-			<div class="col-sm-6">
-				<label for="newPassword">Новый пароль</label>
-				<input [(ngModel)]="newPass" type="password" class="form-control" id="newPassword">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-12 modal-actions">
-				<button [disabled]="disabledBtn" (click)="saveChangePass()" type="button"
-					class="btn btn-primary btn-sm">Сохранить</button>
-				<button (click)="cancelDialog()" type="button" class="btn btn-primary btn-sm">Отмена</button>
-			</div>
-		</div>
-	</div>
-
-
-</p-dialog> -->
 
 
 <div>

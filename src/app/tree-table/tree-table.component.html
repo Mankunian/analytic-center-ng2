@@ -19,13 +19,13 @@
 			<!-- Группы -->
 			<col style="width: 40%;" />
 			<!-- На номер -->
-			<col style="width: 10%" />
+			<col style="width: 15%" />
 			<!-- Сформирован -->
 			<col style="width: 12%;" />
 			<!-- Действие -->
 			<col style="width: 13%;" />
 			<!-- По органу -->
-			<col style="width: 7%" />
+			<!-- <col style="width: 7%" /> -->
 			<!-- Прогресс -->
 			<col style="width: 15%;" />
 		</colgroup>
@@ -78,7 +78,7 @@
 				</span>
 			</td>
 			<!-- На номер -->
-			<td>
+			<td class="text-align-center">
 				{{ rowData.maxRecNum }}
 			</td>
 			<!-- Сформирован -->
@@ -96,9 +96,9 @@
           " label="{{ 'TREE_TABLE.SLICE_OPERATION' | translate }}"></p-button>
 			</td>
 			<!-- По органу -->
-			<td>
+			<!-- <td>
 				{{ rowData.region }}
-			</td>
+			</td> -->
 			<!-- Прогресс -->
 			<td>
 				<p-progressBar

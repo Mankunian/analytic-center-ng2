@@ -111,7 +111,7 @@ export class TreeTableComponent implements OnInit {
 			{ field: "maxRecNum", header: "На номер" },
 			{ field: "completed", header: "Сформирован" },
 			{ field: "action", header: "Действие" },
-			{ field: "region", header: "По органу" },
+			// { field: "region", header: "По органу" },
 			{ field: "percentComplete", header: "Прогресс" },
 		];
 	}
