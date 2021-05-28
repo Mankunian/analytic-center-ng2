@@ -30,13 +30,12 @@ export class AppComponent implements OnInit {
 
 	checkTokenForValidation() {
 		this.http.checkTokenValidationService().subscribe(data => {
-			console.log(data)
 			if (data == null) {
 				let tokenIsValid = 'true';
 				sessionStorage.setItem('tokenIsValid', tokenIsValid);
 			}
 		}, error => {
-			console.log(error)
+			console.log(error);
 			this.errorHandler.alertError(error);
 		})
 	}
@@ -68,14 +67,48 @@ export class AppComponent implements OnInit {
 	checkNotification() {
 		let appCode = sessionStorage.getItem('appCode');
 		this.http.getTechnicalNotificationService(appCode).subscribe((data: any) => {
-			console.log(data);
 			this.marqueeText = [];
 			data.forEach(element => {
 				if (element.status == 'PLANNED') {
 					this.marqueeText.push(element);
-
+					element.startDate = this.convertStartDate(element);
+					element.endDate = this.convertEndDate(element);
 				}
 			});
 		})
+	}
+
+	convertStartDate(element) {
+		let year, month, dt, hour, minute
+		let startDate = new Date(element.startDate);
+		year = startDate.getFullYear();
+		month = startDate.getMonth() + 1;
+		dt = startDate.getDate();
+		hour = startDate.getUTCHours() + 6;
+		minute = startDate.getUTCMinutes();
+
+		if (hour < 10) hour = '0' + hour;
+		if (minute < 10) minute = '0' + minute;
+		if (dt < 10) dt = '0' + dt;
+		if (month < 10) month = '0' + month;
+
+		return dt + '/' + month + '/' + year + ', ' + hour + ':' + minute;
+
+	}
+
+	convertEndDate(element) {
+		let year, month, dt, hour, minute
+		let endDate = new Date(element.endDate);
+		year = endDate.getFullYear();
+		month = endDate.getMonth() + 1;
+		dt = endDate.getDate();
+		hour = endDate.getUTCHours() + 6;
+		minute = endDate.getUTCMinutes();
+
+		if (hour < 10) hour = '0' + hour;
+		if (minute < 10) minute = '0' + minute;
+		if (dt < 10) dt = '0' + dt;
+		if (month < 10) month = '0' + month;
+		return dt + '/' + month + '/' + year + ' ,' + hour + ':' + minute;
 	}
 }

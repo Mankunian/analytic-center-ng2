@@ -128,7 +128,6 @@ export class TreeTableComponent implements OnInit {
 	}
 
 	onNodeExpand(event) {
-		console.log(event)
 		this.eventOnNodeExpand = event;
 		if (event.node.parent != null) {
 			this.loader = true;
