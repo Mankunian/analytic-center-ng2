@@ -16,7 +16,7 @@
 							<div class="col-md-6">
 								<form [formGroup]="groupListFormGroup">
 									<div class="box">
-										<mat-checkbox color="primary" [disabled]="!group.enableStatus" (change)="onCheckedGroup($event)"
+										<mat-checkbox color="primary" (change)="onCheckedGroup($event)"
 											*ngFor="let group of groupList; let i = index" [value]="group">{{ group.name }}</mat-checkbox>
 									</div>
 								</form>
