@@ -89,13 +89,11 @@ export class ReportsModalContentComponent {
 		public errorHandler: ErrorHandlerService) { }
 
 	ngOnInit() {
-		this.enableGetReportBtn = this.data.permissionReport
-		// this.contentLoading = true;
+		this.enableGetReportBtn = this.data.permissionReport;
 		this.sliceId = this.data.sliceId;
 		this.slicePeriod = this.data.slicePeriod;
 		this.groupCode = this.data.groupCode;
 
-		// this.getColsTable()
 		this.getReportsBySliceId()
 	}
 
@@ -129,14 +127,32 @@ export class ReportsModalContentComponent {
 	getReportsBySliceId() {
 		let sliceId = this.sliceId
 		this.http.getReportsBySliceIdService(sliceId).subscribe(response => {
-			console.log(response)
 			this.reportGroups = response;
-			this.reportGroups.forEach(report => {
-				// this.checkReports(report.code)
-			});
 		}, error => {
 			this.errorHandler.alertError(error);
 		});
+	}
+
+
+
+	tabChange(index: number) {
+		this.tabIndex = index; // current tab index, used in openFirstTab()
+		if (this.tabIndex != 0) {
+			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
+			this.onClickTabReport(this.selectedGroupCode)
+
+		} else {
+			if (this.isReportsSelectedFn()) {
+				this.generateSelectedReportsList();
+			}
+		}
+	}
+
+	// on click by tab reports call method for each 
+	onClickTabReport(selectedReportCode) {
+		this.readyReports = [];
+		this.checkReports(selectedReportCode);
+
 	}
 
 	checkReports(code) {
@@ -170,28 +186,9 @@ export class ReportsModalContentComponent {
 			this.show1table = false;
 			// this.isGroupGov = false;
 		}
-	}
 
-	tabChange(index: number) {
-		this.tabIndex = index; // current tab index, used in openFirstTab()
-		if (this.tabIndex != 0) {
-			this.selectedGroupCode = this.reportGroups[this.tabIndex - 1].code;
-			this.onClickTabReport(this.selectedGroupCode)
-
-		} else {
-			if (this.isReportsSelectedFn()) {
-				this.generateSelectedReportsList();
-			}
-		}
-	}
-
-	// on click by tab reports call method for each 
-	onClickTabReport(selectedReportCode) {
-		this.readyReports = [];
-		this.checkReports(selectedReportCode)
 		this.contentLoading = true;
-
-		let reportCode = selectedReportCode;
+		let reportCode = code;
 		if (this.show1table) {
 			this.generateGridOrgz(reportCode)
 		}
@@ -262,7 +259,6 @@ export class ReportsModalContentComponent {
 		this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_007;
 		this.show3Table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
-			console.log(false)
 			this.gridData.deps[reportCode] = this.formatGridService.formatGridData(data, true, true);
 			this.requestedReports.deps[reportCode] = [];
 			this.getColsTable()
@@ -284,9 +280,9 @@ export class ReportsModalContentComponent {
 			this.hierarchyReportCode = GlobalConfig.HIERARCHY_REPORTS.GROUP_002
 		}
 		this.show1table = false;
+		this.show3Table = false;
 		this.http.getGroups4DialogTable(this.hierarchyReportCode, reportCode).subscribe((data: any) => {
 			if (reportCode == '530' || reportCode == '731') {
-				console.log(true)
 				data.forEach(element => {
 					element.children.forEach(region => {
 						delete region.children
@@ -296,7 +292,6 @@ export class ReportsModalContentComponent {
 				this.requestedReports.orgz[reportCode] = [];
 				this.getColsTable()
 			} else {
-				console.log(false)
 				this.gridData.orgz[reportCode] = this.formatGridService.formatGridData(data, true, true);
 				this.requestedReports.orgz[reportCode] = [];
 				this.getColsTable()
@@ -789,6 +784,8 @@ export class ReportsModalContentComponent {
 		console.log(item)
 		let token = sessionStorage.token;
 		let department = item.department;
+		// eslint-disable-next-line @typescript-eslint/camelcase
+		let refreshToken = sessionStorage.refresh_token;
 
 
 		if (item.report.code == '803') {
@@ -796,21 +793,22 @@ export class ReportsModalContentComponent {
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = item.department.searchPattern;
 			let sliceId = this.sliceId;
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+			// eslint-disable-next-line @typescript-eslint/camelcase
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
 		}
 		if (department == undefined) {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = '';
 			let sliceId = this.sliceId
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
 		} else {
 			let reportId = item.report.code;
 			let regionCode = item.region.code;
 			let dvedomostv = item.department.code;
 			let sliceId = this.sliceId;
 
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
 		}
 	}
 }

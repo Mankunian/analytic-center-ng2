@@ -10,22 +10,22 @@
 		<div class="bar"></div>
 	</div>
 </div>
-<p-treeTable [style]="{'margin': '15px 0'}" [value]="gridData" (onNodeExpand)="onNodeExpand($event)" [lazy]="true"
-	[loading]="loader" [showLoader]="false">
+<p-treeTable class="mb-4" [style]="{'margin': '15px 0'}" [value]="gridData" (onNodeExpand)="onNodeExpand($event)"
+	[lazy]="true" [loading]="loader" [showLoader]="false">
 	<ng-template pTemplate="colgroup" let-columns>
 		<colgroup>
 			<!-- treeTableToggler -->
-			<col style="width: 4%;" />
+			<col style="width: 5%;" />
 			<!-- Группы -->
 			<col style="width: 40%;" />
 			<!-- На номер -->
-			<col style="width: 6%;" />
+			<col style="width: 15%" />
 			<!-- Сформирован -->
-			<col style="width: 10%;" />
+			<col style="width: 12%;" />
 			<!-- Действие -->
 			<col style="width: 13%;" />
 			<!-- По органу -->
-			<col style="width: 6%;" />
+			<!-- <col style="width: 7%" /> -->
 			<!-- Прогресс -->
 			<col style="width: 15%;" />
 		</colgroup>
@@ -78,7 +78,7 @@
 				</span>
 			</td>
 			<!-- На номер -->
-			<td class="text-align-right">
+			<td class="text-align-center">
 				{{ rowData.maxRecNum }}
 			</td>
 			<!-- Сформирован -->
@@ -96,9 +96,9 @@
           " label="{{ 'TREE_TABLE.SLICE_OPERATION' | translate }}"></p-button>
 			</td>
 			<!-- По органу -->
-			<td>
+			<!-- <td>
 				{{ rowData.region }}
-			</td>
+			</td> -->
 			<!-- Прогресс -->
 			<td>
 				<p-progressBar

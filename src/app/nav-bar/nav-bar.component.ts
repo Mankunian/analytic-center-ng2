@@ -1,14 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { GlobalConfig } from '../global';
-
 import { HttpService } from "../services/http.service";
 import { SharedService } from "../services/shared.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ErrorHandlerService } from "../services/error-handler.service";
-
 import { TabMenuComponent } from "../tab-menu/tab-menu.component";
 import { MessagesComponent } from "../messages/messages.component";
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Stomp } from "@stomp/stompjs";
+import * as SockJS from "sockjs-client";
 
 export interface Territory {
 	code: string;
@@ -37,6 +37,8 @@ export class NavBarComponent implements OnInit {
 	userId: any;
 	disabledBtn: boolean;
 
+	public stompClient;
+	public msg = [];
 
 	constructor(
 		private httpService: HttpService,
@@ -67,12 +69,45 @@ export class NavBarComponent implements OnInit {
 				sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo))
 				sessionStorage.setItem('permissionCodesList', JSON.stringify(this.userInfo.permissions))
 				this.tabMenuComponent.getGroupList()
-				this.getUserInfo(data)
-				this.showToastMessage()
+				this.getUserInfo();
+				this.showToastMessage();
+				this.initializeWebSocketConnection();
 			}
 		}, error => {
 			this.errorHandler.alertError(error)
 		})
+	}
+
+	initializeWebSocketConnection() {
+		if (sessionStorage.userInfo) {
+			const userInfo = JSON.parse(sessionStorage.userInfo);
+			const login = userInfo.login;
+			const serverUrl = GlobalConfig.SOCKET_URL + login;
+			const ws = new SockJS(serverUrl);
+			this.stompClient = Stomp.over(ws);
+
+			// eslint-disable-next-line @typescript-eslint/no-this-alias
+			const that = this;
+			this.stompClient.connect({}, function (frame) {
+				that.stompClient.subscribe('/topic/greetings', (message) => {
+					console.log(JSON.parse(message.body));
+				})
+
+
+				that.stompClient.subscribe('/topic/slice-completion-info', (message) => {
+					console.log(JSON.parse(message.body));
+					that.showToast(message.body)
+				})
+
+				that.stompClient.subscribe('/user/queue/notifications', (message) => {
+					console.log(JSON.parse(message.body));
+				})
+			})
+		}
+	}
+
+	showToast(body) {
+		this.sharedService.sendProgressBarList(body)
 	}
 
 	showToastMessage() {
@@ -80,25 +115,13 @@ export class NavBarComponent implements OnInit {
 		this.messageService.add({ severity: 'info', summary: 'Добро Пожаловать', detail: userInfo.fullName });
 	}
 
-	getUserInfo(userInfo) {
+	getUserInfo() {
 		this.incomingUserInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 		this.fullNameUser = this.incomingUserInfo.fullName
 		this.selectedTerritory = this.incomingUserInfo.orgCode
 		if (this.selectedTerritory) {
 			this.sharedService.sendTerrCode(this.selectedTerritory);
 		}
-
-		// let userId = userInfo.userId;
-		// this.userId = userInfo.userId;
-		// this.httpService.getUserInfoService(userId).subscribe((data: any) => {
-		// 	console.log(data)
-		// 	if (data.isChangePasswordRequired === true) {
-		// 		this.displayBasic = true;
-		// 	}
-		// }, error => {
-		// 	console.log(error);
-		// 	this.errorHandler.alertError(error)
-		// })
 	}
 
 
@@ -133,23 +156,4 @@ export class NavBarComponent implements OnInit {
 	cancelDialog() {
 		this.displayBasic = false;
 	}
-
-	// saveChangePass() {
-	// 	this.disabledBtn = true;
-	// 	let newPass = this.newPass;
-	// 	let oldPass = this.currentPass;
-	// 	let userId = this.userId;
-
-	// 	this.httpService.changePassUserService(newPass, oldPass, userId).subscribe(data => {
-	// 		console.log(data)
-	// 		this.displayBasic = false;
-	// 		this.messageService.add({ severity: 'success', summary: '200', detail: 'Пароль успешно изменен' });
-	// 	}, error => {
-	// 		console.log(error)
-	// 		this.errorHandler.alertError(error)
-	// 		this.currentPass = '';
-	// 		this.newPass = '';
-	// 		this.disabledBtn = false;
-	// 	})
-	// }
 }

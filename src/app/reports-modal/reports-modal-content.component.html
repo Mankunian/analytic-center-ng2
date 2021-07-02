@@ -33,8 +33,8 @@
 					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]="true" matInput value="{{ data.sliceId }}" />
 					</mat-form-field>
-					<span
-						class="reports-modal-form-label reports-modal-form-label-period">{{ "REPORTS_MODAL.REPORT_PERIOD" | translate }}</span>
+					<span class="reports-modal-form-label reports-modal-form-label-period">{{ "REPORTS_MODAL.REPORT_PERIOD" |
+						translate }}</span>
 					<mat-form-field appearance="fill" class="full-width">
 						<input [disabled]="true" matInput value="{{ data.slicePeriod }}" />
 					</mat-form-field>
@@ -98,192 +98,193 @@
 				</div>
 			</div>
 		</mat-tab>
-
-		<ng-container>
-			<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
-				<div class="container-fluid custom-class">
-					<div class="row">
-						<div style="height: 5px; width: 100%; background: transparent">
-							<div *ngIf="loadingOrgz" class="loader">
-								<div class="bar"></div>
-							</div>
+		<mat-tab label="{{ group.name }}" *ngFor="let group of reportGroups; let index = index">
+			<div class="container-fluid custom-class">
+				<div class="row">
+					<div style="height: 5px; width: 100%; background: transparent">
+						<div *ngIf="loadingOrgz" class="loader">
+							<div class="bar"></div>
 						</div>
-						<div class="col-sm-12" *ngIf="gridData.orgz != undefined">
-							{{gridData.orgz}}
-							<p-treeTable *ngIf="show1table" [value]="gridData.orgz[group.code]" [columns]="colsGovs" [lazy]="true"
-								dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)" [scrollable]="true"
-								scrollHeight="{{ gridScrollHeight }}">
-								<ng-template pTemplate="header" let-columns>
-									<tr>
-										<th style="width: 70px">
-											<p-checkbox [binary]="true"
-												(click)="selectAllRows(group.code, requestedReports.orgz, gridData.orgz, selectAllStatus.orgz)"
-												[(ngModel)]="selectAllStatus.orgz[group.code]"></p-checkbox>
-										</th>
-										<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
-									</tr>
-								</ng-template>
-								<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-									<tr [ttSelectableRow]="rowNode">
-										<td style="width: 70px">
-											<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-										</td>
-										<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
-											<p-checkbox [(ngModel)]="requestedReports.orgz[group.code]" [(value)]="rowNode.node.data"
-												*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
-												(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.orgz)"></p-checkbox>
-											<span [ngStyle]="{
-                          width: col.width,
-                          'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
-                        }">
+					</div>
+					<!-- 1 TABLE -->
+					<div class="col-sm-12" *ngIf="gridData.orgz != undefined">
+						{{gridData.orgz}}
+						<p-treeTable *ngIf="show1table" [value]="gridData.orgz[group.code]" [columns]="colsGovs" [lazy]="true"
+							dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)" [scrollable]="true"
+							scrollHeight="{{ gridScrollHeight }}">
+							<ng-template pTemplate="header" let-columns>
+								<tr>
+									<th style="width: 70px">
+										<p-checkbox [binary]="true"
+											(click)="selectAllRows(group.code, requestedReports.orgz, gridData.orgz, selectAllStatus.orgz)"
+											[(ngModel)]="selectAllStatus.orgz[group.code]"></p-checkbox>
+									</th>
+									<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
+								</tr>
+							</ng-template>
+							<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+								<tr [ttSelectableRow]="rowNode">
+									<td style="width: 70px">
+										<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+									</td>
+									<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
+										<p-checkbox [(ngModel)]="requestedReports.orgz[group.code]" [(value)]="rowNode.node.data"
+											*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
+											(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.orgz)"></p-checkbox>
+										<span [ngStyle]="{
+												width: col.width,
+												'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
+											}">
+											{{ rowData[col.field] }}
+										</span>
+									</td>
+								</tr>
+							</ng-template>
+						</p-treeTable>
+					</div>
+					<!-- 2 TABLE -->
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-6" *ngIf="gridData.regs != undefined" [ngClass]="{'col-sm-12': hideColsDepTable}">
+								<p-treeTable *ngIf="show2table" [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true"
+									dataKey="code" [scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
+									<ng-template pTemplate="header" let-columns>
+										<tr>
+											<th style="width: 100px">
+												<p-checkbox [binary]="true"
+													(click)="selectAllRows(group.code, requestedReports.regs, gridData.regs, selectAllStatus.regs)"
+													[(ngModel)]="selectAllStatus.regs[group.code]"></p-checkbox>
+											</th>
+											<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
+										</tr>
+									</ng-template>
+									<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+										<tr [ttSelectableRow]="rowNode">
+											<td style="width: 100px">
+												<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+											</td>
+											<td *ngFor="let col of columns; let i = index"
+												[ngStyle]="{ width: col.width, 'padding-left.px': rowNode.level === 0 ? regionTableIndent : regionTableIndent * rowNode.level }">
+												<p-checkbox *ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
+													[(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data"
+													(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.regs)">
+												</p-checkbox>
 												{{ rowData[col.field] }}
-											</span>
-										</td>
-									</tr>
-								</ng-template>
-							</p-treeTable>
-						</div>
-
-						<div class="col-sm-12">
-							<div class="row">
-								<div class="col-sm-6" *ngIf="gridData.regs != undefined" [ngClass]="{'col-sm-12': hideColsDepTable}">
-									<p-treeTable *ngIf="show2table" [value]="gridData.regs[group.code]" [columns]="colsReg" [lazy]="true"
-										dataKey="code" [scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
-										<ng-template pTemplate="header" let-columns>
-											<tr>
-												<th style="width: 100px">
-													<p-checkbox [binary]="true"
-														(click)="selectAllRows(group.code, requestedReports.regs, gridData.regs, selectAllStatus.regs)"
-														[(ngModel)]="selectAllStatus.regs[group.code]"></p-checkbox>
-												</th>
-												<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
-											</tr>
-										</ng-template>
-										<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-											<tr [ttSelectableRow]="rowNode">
-												<td style="width: 100px">
-													<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-												</td>
-												<td *ngFor="let col of columns; let i = index"
-													[ngStyle]="{ width: col.width, 'padding-left.px': rowNode.level === 0 ? regionTableIndent : regionTableIndent * rowNode.level }">
-													<p-checkbox *ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
-														[(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data"
-														(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.regs)">
-													</p-checkbox>
-													{{ rowData[col.field] }}
-												</td>
-											</tr>
-										</ng-template>
-									</p-treeTable>
-								</div>
-
-								<div class="col-sm-6" *ngIf="gridData.deps != undefined && !hideColsDepTable">
-									<p-treeTable *ngIf="show2table" [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code"
-										[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
-										<ng-template pTemplate="header" let-columns>
-											<tr>
-												<th style="width: 45px">
-													<p-checkbox [binary]="true"
-														(click)="selectAllRows(group.code, requestedReports.deps, gridData.deps, selectAllStatus.deps)"
-														[(ngModel)]="selectAllStatus.deps[group.code]"></p-checkbox>
-												</th>
-												<th *ngFor="let col of columns" [style.width]="col.width">{{ col.header }}</th>
-											</tr>
-										</ng-template>
-										<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-											<tr [ttSelectableRow]="rowNode">
-												<td style="width: 45px">
-													<p-checkbox [binary]="isReportsSelectedDeps" [(ngModel)]="requestedReports.deps[group.code]"
-														[(value)]="rowNode.node.data"
-														(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
-												</td>
-												<td *ngFor="let col of columns; let i = index" [style.width]="col.width">
-													{{ rowData[col.field] }}
-												</td>
-											</tr>
-										</ng-template>
-									</p-treeTable>
-								</div>
+											</td>
+										</tr>
+									</ng-template>
+								</p-treeTable>
+							</div>
+							<div class="col-sm-6" *ngIf="gridData.deps != undefined && !hideColsDepTable">
+								<p-treeTable *ngIf="show2table" [value]="gridData.deps[group.code]" [columns]="colsDep" dataKey="code"
+									[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
+									<ng-template pTemplate="header" let-columns>
+										<tr>
+											<th style="width: 45px">
+												<p-checkbox [binary]="true"
+													(click)="selectAllRows(group.code, requestedReports.deps, gridData.deps, selectAllStatus.deps)"
+													[(ngModel)]="selectAllStatus.deps[group.code]"></p-checkbox>
+											</th>
+											<th *ngFor="let col of columns" [style.width]="col.width">{{ col.header }}</th>
+										</tr>
+									</ng-template>
+									<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+										<tr [ttSelectableRow]="rowNode">
+											<td style="width: 45px">
+												<p-checkbox [binary]="isReportsSelectedDeps" [(ngModel)]="requestedReports.deps[group.code]"
+													[(value)]="rowNode.node.data"
+													(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
+											</td>
+											<td *ngFor="let col of columns; let i = index" [style.width]="col.width">
+												{{ rowData[col.field] }}
+											</td>
+										</tr>
+									</ng-template>
+								</p-treeTable>
 							</div>
 						</div>
+					</div>
+					<!-- 3 TABLE -->
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-6" *ngIf="gridData.regs != undefined">
+								<p-treeTable *ngIf="show3Table" [value]="gridData.regs[group.code]" [columns]="colsRegNew" [lazy]="true"
+									dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)" [scrollable]="true"
+									scrollHeight="{{ gridScrollHeight }}">
+									<ng-template pTemplate="header" let-columns>
+										<tr>
+											<th style="width: 70px">
+												<p-checkbox [binary]="true"
+													(click)="selectAllRows(group.code, requestedReports.regs, gridData.regs, selectAllStatus.regs)"
+													[(ngModel)]="selectAllStatus.regs[group.code]"></p-checkbox>
+											</th>
+											<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
+										</tr>
+									</ng-template>
+									<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+										<tr [ttSelectableRow]="rowNode">
+											<td style="width: 70px">
+												<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+											</td>
+											<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
+												<p-checkbox [(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data"
+													*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
+													(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.regs)"></p-checkbox>
+												<span [ngStyle]="{
+														width: col.width,
+														'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
+													}">
+													{{ rowData[col.field] }}
+												</span>
+											</td>
+										</tr>
+									</ng-template>
+								</p-treeTable>
+							</div>
 
-						<div class="col-sm-12">
-							<div class="row">
-								<div class="col-sm-6" *ngIf="gridData.regs != undefined">
-									<p-treeTable *ngIf="show3Table" [value]="gridData.regs[group.code]" [columns]="colsRegNew"
-										[lazy]="true" dataKey="code" (onNodeExpand)="onNodeExpandGroupOrgz($event, group.code)"
-										[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
-										<ng-template pTemplate="header" let-columns>
-											<tr>
-												<th style="width: 70px">
-													<p-checkbox [binary]="true"
-														(click)="selectAllRows(group.code, requestedReports.regs, gridData.regs, selectAllStatus.regs)"
-														[(ngModel)]="selectAllStatus.regs[group.code]"></p-checkbox>
-												</th>
-												<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
-											</tr>
-										</ng-template>
-										<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-											<tr [ttSelectableRow]="rowNode">
-												<td style="width: 70px">
-													<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-												</td>
-												<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
-													<p-checkbox [(ngModel)]="requestedReports.regs[group.code]" [(value)]="rowNode.node.data"
-														*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
-														(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.regs)"></p-checkbox>
-													<span [ngStyle]="{
-															width: col.width,
-															'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
-														}">
-														{{ rowData[col.field] }}
-													</span>
-												</td>
-											</tr>
-										</ng-template>
-									</p-treeTable>
-								</div>
-
-								<div class="col-sm-6" *ngIf="gridData.deps != undefined">
-									<p-treeTable *ngIf="show3Table" [value]="gridData.deps[group.code]" [columns]="colsDepNew"
-										[lazy]="true" dataKey="code" (onNodeExpand)="onNodeExpandGroupNew($event, group.code)"
-										[scrollable]="true" scrollHeight="{{ gridScrollHeight }}">
-										<ng-template pTemplate="header" let-columns>
-											<tr>
-												<th style="width: 70px">
-													<p-checkbox [binary]="true"
-														(click)="selectAllRows(group.code, requestedReports.deps, gridData.deps, selectAllStatus.deps)"
-														[(ngModel)]="selectAllStatus.deps[group.code]"></p-checkbox>
-												</th>
-												<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
-											</tr>
-										</ng-template>
-										<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-											<tr [ttSelectableRow]="rowNode">
-												<td style="width: 70px">
-													<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-												</td>
-												<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
-													<p-checkbox [(ngModel)]="requestedReports.deps[group.code]" [(value)]="rowNode.node.data"
-														*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
-														(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
-													<span [ngStyle]="{
-															width: col.width,
-															'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
-														}">
-														{{ rowData[col.field] }}
-													</span>
-												</td>
-											</tr>
-										</ng-template>
-									</p-treeTable>
-								</div>
+							<div class="col-sm-6" *ngIf="gridData.deps != undefined">
+								<p-treeTable *ngIf="show3Table" [value]="gridData.deps[group.code]" [columns]="colsDepNew" [lazy]="true"
+									dataKey="code" (onNodeExpand)="onNodeExpandGroupNew($event, group.code)" [scrollable]="true"
+									scrollHeight="{{ gridScrollHeight }}">
+									<ng-template pTemplate="header" let-columns>
+										<tr>
+											<th style="width: 70px">
+												<p-checkbox [binary]="true"
+													(click)="selectAllRows(group.code, requestedReports.deps, gridData.deps, selectAllStatus.deps)"
+													[(ngModel)]="selectAllStatus.deps[group.code]"></p-checkbox>
+											</th>
+											<th *ngFor="let col of columns" [ngStyle]="{ width: col.width }">{{ col.header }}</th>
+										</tr>
+									</ng-template>
+									<ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+										<tr [ttSelectableRow]="rowNode">
+											<td style="width: 70px">
+												<p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+											</td>
+											<td *ngFor="let col of columns; let i = index" [ngStyle]="{ width: col.width }">
+												<p-checkbox [(ngModel)]="requestedReports.deps[group.code]" [(value)]="rowNode.node.data"
+													*ngIf="i == 0 && (rowNode.node.data | json) != '{}'"
+													(onChange)="onChangeCheckboxStatus($event, group.code, selectAllStatus.deps)"></p-checkbox>
+												<span [ngStyle]="{
+														width: col.width,
+														'padding-left.px': rowNode.level === 0 ? regionTableIndent / 2 : regionTableIndent * rowNode.level
+													}">
+													{{ rowData[col.field] }}
+												</span>
+											</td>
+										</tr>
+									</ng-template>
+								</p-treeTable>
 							</div>
 						</div>
 					</div>
 				</div>
-			</mat-tab>
-		</ng-container>
+			</div>
+		</mat-tab>
+		<!-- <ng-container>
+
+		</ng-container> -->
+
 	</mat-tab-group>
 </mat-dialog-content>
 
