@@ -784,6 +784,8 @@ export class ReportsModalContentComponent {
 		console.log(item)
 		let token = sessionStorage.token;
 		let department = item.department;
+		// eslint-disable-next-line @typescript-eslint/camelcase
+		let refreshToken = sessionStorage.refresh_token;
 
 
 		if (item.report.code == '803') {
@@ -791,21 +793,22 @@ export class ReportsModalContentComponent {
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = item.department.searchPattern;
 			let sliceId = this.sliceId;
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+			// eslint-disable-next-line @typescript-eslint/camelcase
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
 		}
 		if (department == undefined) {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = '';
 			let sliceId = this.sliceId
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
 		} else {
 			let reportId = item.report.code;
 			let regionCode = item.region.code;
 			let dvedomostv = item.department.code;
 			let sliceId = this.sliceId;
 
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
 		}
 	}
 }
