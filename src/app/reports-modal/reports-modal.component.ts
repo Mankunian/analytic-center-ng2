@@ -794,21 +794,21 @@ export class ReportsModalContentComponent {
 			let dvedomostv = item.department.searchPattern;
 			let sliceId = this.sliceId;
 			// eslint-disable-next-line @typescript-eslint/camelcase
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + '&refresh_token=' + refreshToken)
 		}
 		if (department == undefined) {
 			let reportId = item.report.code;
 			let regionCode = item.region.searchPattern;
 			let dvedomostv = '';
 			let sliceId = this.sliceId
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + '&refresh_token=' + refreshToken)
 		} else {
 			let reportId = item.report.code;
 			let regionCode = item.region.code;
 			let dvedomostv = item.department.code;
 			let sliceId = this.sliceId;
 
-			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + 'refresh_token' + refreshToken)
+			window.open('http://192.168.210.180/?reportId=' + reportId + '&regionCode=' + regionCode + '&dvedomostv=' + dvedomostv + '&sliceId=' + sliceId + '&token=' + token + '&refresh_token=' + refreshToken)
 		}
 	}
 }
